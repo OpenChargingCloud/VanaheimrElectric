@@ -1,3 +1,3 @@
-# Vanaheimr_Electric
+# Vanaheimr Electric
 
 An entire e-mobility ecosystem.
