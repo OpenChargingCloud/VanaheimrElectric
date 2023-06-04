@@ -40,3 +40,6 @@
 [submodule "libs/OpenChargingCloudAPI"]
 	path = libs/OpenChargingCloudAPI
 	url = ssh://git@git.graphdefined.com:5001/OpenChargingCloud/OpenChargingCloudAPI.git
+[submodule "libs/WWCP_ChargingStation"]
+	path = libs/WWCP_ChargingStation
+	url = ssh://git@git.graphdefined.com:5001/OpenChargingCloud/WWCP_ChargingStation.git
