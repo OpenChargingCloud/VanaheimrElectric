@@ -43,3 +43,6 @@
 [submodule "libs/WWCP_ChargingStation"]
 	path = libs/WWCP_ChargingStation
 	url = ssh://git@git.graphdefined.com:5001/OpenChargingCloud/WWCP_ChargingStation.git
+[submodule "libs/WWCP_OSGP"]
+	path = libs/WWCP_OSGP
+	url = ssh://git@git.graphdefined.com:5001/OpenChargingCloud/WWCP_OSGP.git
