@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanaheimr Electric", "Vanaheimr Electric\Vanaheimr Electric.csproj", "{6990E2E9-3707-4456-AD1F-386F400FE536}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{C691C2D7-A55A-467A-BF53-89CAC066614E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Vanaheimr", "Vanaheimr", "{1F7765AA-DD28-4B6D-95C8-42C2A3E4D2E9}"
@@ -105,9 +103,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WWCP_ESGP", "libs\WWCP_ESGP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WWCP_ESGP_Tests", "libs\WWCP_ESGP\WWCP_ESGP_Tests\WWCP_ESGP_Tests.csproj", "{A7A78ACA-B03A-45CB-8909-B9EC7C48BCA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WWCP_ChargingStation", "libs\WWCP_ChargingStation\WWCP_ChargingStation\WWCP_ChargingStation.csproj", "{519CC2ED-D0AB-47E5-B500-6C42A3CAFBDC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WWCP_ChargingStation", "libs\WWCP_ChargingStation\WWCP_ChargingStation\WWCP_ChargingStation.csproj", "{519CC2ED-D0AB-47E5-B500-6C42A3CAFBDC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WWCP_ChargingStation_Tests", "libs\WWCP_ChargingStation\WWCP_ChargingStation_Tests\WWCP_ChargingStation_Tests.csproj", "{5380381A-BEFC-4F9D-949B-4F499F5F36B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WWCP_ChargingStation_Tests", "libs\WWCP_ChargingStation\WWCP_ChargingStation_Tests\WWCP_ChargingStation_Tests.csproj", "{5380381A-BEFC-4F9D-949B-4F499F5F36B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VanaheimrElectric_Tests", "VanaheimrElectric_Tests\VanaheimrElectric_Tests.csproj", "{35830EC6-6A6B-48EF-9994-B7B2715D6283}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanaheimr Electric", "Vanaheimr Electric\Vanaheimr Electric.csproj", "{00C105FE-B5C7-4F1D-AE4F-7162B26657BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -115,10 +117,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6990E2E9-3707-4456-AD1F-386F400FE536}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6990E2E9-3707-4456-AD1F-386F400FE536}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6990E2E9-3707-4456-AD1F-386F400FE536}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6990E2E9-3707-4456-AD1F-386F400FE536}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9FEF406C-BB02-47A9-B2A3-9EA33B33FAE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9FEF406C-BB02-47A9-B2A3-9EA33B33FAE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FEF406C-BB02-47A9-B2A3-9EA33B33FAE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -299,6 +297,14 @@ Global
 		{5380381A-BEFC-4F9D-949B-4F499F5F36B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5380381A-BEFC-4F9D-949B-4F499F5F36B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5380381A-BEFC-4F9D-949B-4F499F5F36B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35830EC6-6A6B-48EF-9994-B7B2715D6283}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35830EC6-6A6B-48EF-9994-B7B2715D6283}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35830EC6-6A6B-48EF-9994-B7B2715D6283}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35830EC6-6A6B-48EF-9994-B7B2715D6283}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00C105FE-B5C7-4F1D-AE4F-7162B26657BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00C105FE-B5C7-4F1D-AE4F-7162B26657BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00C105FE-B5C7-4F1D-AE4F-7162B26657BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00C105FE-B5C7-4F1D-AE4F-7162B26657BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
