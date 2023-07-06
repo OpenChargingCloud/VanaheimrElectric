@@ -33,6 +33,7 @@ using cloud.charging.open.protocols.OCPIv2_1_1.WebAPI;
 
 using cloud.charging.open.protocols.WWCP;
 using cloud.charging.open.protocols.WWCP.MobilityProvider;
+using org.GraphDefined.Vanaheimr.Hermod.DNS;
 
 #endregion
 
@@ -46,6 +47,34 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
     {
 
         #region Data
+
+        public          DNSClient                                      dnsClient;
+        public          RoamingNetwork_Id                              RoamingNetworkPROD;
+
+        public          ChargingNode?                                  GraphDefinedStationA1;
+        public          ChargingNode?                                  GraphDefinedStationA2;
+        public          ChargingNode?                                  GraphDefinedStationA3;
+
+        public          ChargingNode?                                  GraphDefinedPoolB;
+        public          ChargingNode?                                  GraphDefinedStationB1;
+        public          ChargingNode?                                  GraphDefinedStationB2;
+        public          ChargingNode?                                  GraphDefinedStationB3;
+
+        public          ChargingNode?                                  GraphDefinedCSO_Node1;
+        public          ChargingNode?                                  GraphDefinedCSO_Node2;
+        public          ChargingNode?                                  GraphDefinedCSO_Node3;
+
+        public          ChargingNode?                                  GraphDefinedEMP_Node1;
+        public          ChargingNode?                                  GraphDefinedEMP_Node2;
+        public          ChargingNode?                                  GraphDefinedEMP_Node3;
+
+        public          ChargingNode?                                  Hubject_Node1;
+        public          ChargingNode?                                  Hubject_Node2;
+        public          ChargingNode?                                  Hubject_Node3;
+
+
+
+        // old
 
         public          URL?                                           cpoVersionsAPIURL;
         public          URL?                                           emsp1VersionsAPIURL;
@@ -109,6 +138,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
         public AChargingInfrastructure()
         {
 
+            this.dnsClient           = new();
+            this.RoamingNetworkPROD  = RoamingNetwork_Id.Parse("PROD");
+
         }
 
         #endregion
@@ -119,6 +151,199 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
         [OneTimeSetUp]
         public void SetupOnce()
         {
+
+            #region GraphDefined CSO
+
+            GraphDefinedCSO_Node1  = new ChargingNode(
+                                             Name:          I18NString.Create(Languages.en, "GraphDefinedCSO_Node1"),
+                                             Description:   I18NString.Create(Languages.en, "GraphDefined Charging Station Operator - Node 1 of 3"),
+                                             DNSClient:     dnsClient
+                                         );
+
+            Assert.IsNotNull(GraphDefinedCSO_Node1);
+
+            GraphDefinedCSO_Node1.CreateNewRoamingNetwork(
+                                      RoamingNetworkPROD,
+                                      Name:                 I18NString.Create(Languages.en, "Roaming Network PROD"),
+                                      Description:          I18NString.Create(Languages.en, "Roaming Network PROD"),
+                                      InitialAdminStatus:   RoamingNetworkAdminStatusTypes.Operational,
+                                      InitialStatus:        RoamingNetworkStatusTypes.Available
+                                  );
+
+            var graphDefinedCSOHTTPPort = 3301;
+
+            GraphDefinedCSO_Node1.AddHTTPAPI("default",
+                                             new HTTPAPI(
+                                                 HTTPServerPort:  IPPort.Parse(graphDefinedCSOHTTPPort),
+                                                 Autostart:       true
+                                             ));
+
+            #region OCPI v2.1
+
+            cpoVersionsAPIURL = URL.Parse($"http://127.0.0.1:{graphDefinedCSOHTTPPort}/ocpi/v2.1/versions");
+
+            cpoCommonAPI         = new CommonAPI(
+
+                                       OurBaseURL:                          URL.Parse($"http://127.0.0.1:{graphDefinedCSOHTTPPort}/ocpi/v2.1"),
+                                       OurVersionsURL:                      cpoVersionsAPIURL.Value,
+                                       OurBusinessDetails:                  new BusinessDetails(
+                                                                                "GraphDefined CSO OCPI v2.1.1 Services",
+                                                                                URL.Parse("https://www.graphdefined.com/cso")
+                                                                            ),
+                                       OurCountryCode:                      CountryCode.Parse("DE"),
+                                       OurPartyId:                          Party_Id.   Parse("GEF"),
+                                       OurRole:                             Roles.      CPO,
+
+                                       HTTPServer:                          GraphDefinedCSO_Node1.GetHTTPAPI("default")!.HTTPServer,
+
+                                       AdditionalURLPathPrefix:             null,
+                                       KeepRemovedEVSEs:                    null,
+                                       LocationsAsOpenData:                 true,
+                                       AllowDowngrades:                     null,
+                                       Disable_RootServices:                false,
+
+                                       HTTPHostname:                        null,
+                                       ExternalDNSName:                     null,
+                                       HTTPServiceName:                     null,
+                                       BasePath:                            null,
+
+                                       URLPathPrefix:                       HTTPPath.Parse("/ocpi/v2.1"),
+                                       APIVersionHashes:                    null,
+
+                                       DisableMaintenanceTasks:             null,
+                                       MaintenanceInitialDelay:             null,
+                                       MaintenanceEvery:                    null,
+
+                                       DisableWardenTasks:                  null,
+                                       WardenInitialDelay:                  null,
+                                       WardenCheckEvery:                    null,
+
+                                       IsDevelopment:                       null,
+                                       DevelopmentServers:                  null,
+                                       DisableLogging:                      null,
+                                       LoggingPath:                         null,
+                                       LogfileName:                         $"GraphDefined_OCPI{protocols.OCPIv2_1_1.Version.String}_CSO.log",
+                                       LogfileCreator:                      null,
+                                       DatabaseFilePath:                    null,
+                                       RemotePartyDBFileName:               $"GraphDefined_OCPI{protocols.OCPIv2_1_1.Version.String}_RemoteParties_CPO.log",
+                                       AssetsDBFileName:                    $"GraphDefined_OCPI{protocols.OCPIv2_1_1.Version.String}_Assets_CPO.log",
+                                       Autostart:                           false
+
+                                   );
+
+            #endregion
+
+            #endregion
+
+            #region GraphDefined EMP
+
+            GraphDefinedEMP_Node1 = new ChargingNode(
+                                             Name:          I18NString.Create(Languages.en, "GraphDefinedEMP_Node1"),
+                                             Description:   I18NString.Create(Languages.en, "GraphDefined E-Mobility Provider - Node 1 of 3"),
+                                             DNSClient:     dnsClient
+                                         );
+
+            Assert.IsNotNull(GraphDefinedEMP_Node1);
+
+            GraphDefinedEMP_Node1.CreateNewRoamingNetwork(
+                                      RoamingNetworkPROD,
+                                      Name:                 I18NString.Create(Languages.en, "Roaming Network PROD"),
+                                      Description:          I18NString.Create(Languages.en, "Roaming Network PROD"),
+                                      InitialAdminStatus:   RoamingNetworkAdminStatusTypes.Operational,
+                                      InitialStatus:        RoamingNetworkStatusTypes.Available
+                                  );
+
+            var graphDefinedEMPHTTPPort = 3301;
+
+            GraphDefinedCSO_Node1.AddHTTPAPI("default",
+                                             new HTTPAPI(
+                                                 HTTPServerPort:  IPPort.Parse(graphDefinedEMPHTTPPort),
+                                                 Autostart:       true
+                                             ));
+
+            #region OCPI v2.1
+
+            emsp1VersionsAPIURL  = URL.Parse($"http://127.0.0.1:{graphDefinedEMPHTTPPort}/ocpi/v2.1/versions");
+
+            emsp1CommonAPI       = new CommonAPI(
+
+                                       OurBaseURL:                          URL.Parse($"http://127.0.0.1:{graphDefinedEMPHTTPPort}/ocpi/v2.1"),
+                                       OurVersionsURL:                      emsp1VersionsAPIURL.Value,
+                                       OurBusinessDetails:                  new BusinessDetails(
+                                                                                "GraphDefined EMP Services",
+                                                                                URL.Parse("https://www.graphdefined.com/emp")
+                                                                            ),
+                                       OurCountryCode:                      CountryCode.Parse("DE"),
+                                       OurPartyId:                          Party_Id.   Parse("GDF"),
+                                       OurRole:                             Roles.      EMSP,
+
+                                       HTTPServer:                          GraphDefinedCSO_Node1.GetHTTPAPI("default")!.HTTPServer,
+
+                                       AdditionalURLPathPrefix:             null,
+                                       KeepRemovedEVSEs:                    null,
+                                       LocationsAsOpenData:                 true,
+                                       AllowDowngrades:                     null,
+                                       Disable_RootServices:                false,
+
+                                       HTTPHostname:                        null,
+                                       ExternalDNSName:                     null,
+                                       HTTPServiceName:                     null,
+                                       BasePath:                            null,
+
+                                       URLPathPrefix:                       HTTPPath.Parse("/ocpi/v2.1"),
+                                       APIVersionHashes:                    null,
+
+                                       DisableMaintenanceTasks:             null,
+                                       MaintenanceInitialDelay:             null,
+                                       MaintenanceEvery:                    null,
+
+                                       DisableWardenTasks:                  null,
+                                       WardenInitialDelay:                  null,
+                                       WardenCheckEvery:                    null,
+
+                                       IsDevelopment:                       null,
+                                       DevelopmentServers:                  null,
+                                       DisableLogging:                      null,
+                                       LoggingPath:                         null,
+                                       LogfileName:                         $"GraphDefined_OCPI{protocols.OCPIv2_1_1.Version.String}_EMSP1.log",
+                                       LogfileCreator:                      null,
+                                       DatabaseFilePath:                    null,
+                                       RemotePartyDBFileName:               $"GraphDefined_OCPI{protocols.OCPIv2_1_1.Version.String}_RemoteParties_EMSP1.log",
+                                       AssetsDBFileName:                    $"GraphDefined_OCPI{protocols.OCPIv2_1_1.Version.String}_Assets_EMSP1.log",
+                                       Autostart:                           false
+
+                                   );
+
+            #endregion
+
+            #endregion
+
+            #region Hubject
+
+            Hubject_Node1 = new ChargingNode(
+                                             Name:          I18NString.Create(Languages.en, "Hubject_Node1"),
+                                             Description:   I18NString.Create(Languages.en, "Hubject Central EV Roaming Hub - Node 1 of 3"),
+                                             DNSClient:     dnsClient
+                                         );
+
+            Assert.IsNotNull(Hubject_Node1);
+
+            Hubject_Node1.CreateNewRoamingNetwork(
+                              RoamingNetworkPROD,
+                              Name:                 I18NString.Create(Languages.en, "Roaming Network PROD"),
+                              Description:          I18NString.Create(Languages.en, "Roaming Network PROD"),
+                              InitialAdminStatus:   RoamingNetworkAdminStatusTypes.Operational,
+                              InitialStatus:        RoamingNetworkStatusTypes.Available
+                          );
+
+            GraphDefinedCSO_Node1.AddHTTPAPI("default",
+                                             new HTTPAPI(
+                                                 HTTPServerPort:  IPPort.Parse(3501),
+                                                 Autostart:       true
+                                             ));
+
+            #endregion
+
 
         }
 
@@ -135,20 +360,20 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             #region Create cpo/emsp1/emsp2 HTTP API
 
-            cpoHTTPAPI           = new HTTPAPI(
-                                       HTTPServerPort:  IPPort.Parse(3301),
-                                       Autostart:       true
-                                   );
+            cpoHTTPAPI            = new HTTPAPI(
+                                        HTTPServerPort:  IPPort.Parse(3301),
+                                        Autostart:       true
+                                    );
 
             emsp1HTTPAPI          = new HTTPAPI(
-                                       HTTPServerPort:  IPPort.Parse(3401),
-                                       Autostart:       true
-                                   );
+                                        HTTPServerPort:  IPPort.Parse(3401),
+                                        Autostart:       true
+                                    );
 
             emsp2HTTPAPI          = new HTTPAPI(
                                        HTTPServerPort:  IPPort.Parse(3402),
                                        Autostart:       true
-                                   );
+                                    );
 
             Assert.IsNotNull(cpoHTTPAPI);
             Assert.IsNotNull(emsp1HTTPAPI);
