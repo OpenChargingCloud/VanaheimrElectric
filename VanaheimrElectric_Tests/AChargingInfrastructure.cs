@@ -318,10 +318,17 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             #region Hubject
 
+            var hubjectHTTPPort = 3501;
+
             Hubject_Node1 = new ChargingNode(
-                                             Name:          I18NString.Create(Languages.en, "Hubject_Node1"),
-                                             Description:   I18NString.Create(Languages.en, "Hubject Central EV Roaming Hub - Node 1 of 3"),
-                                             DNSClient:     dnsClient
+                                             Name:             I18NString.Create(Languages.en, "Hubject_Node1"),
+                                             Description:      I18NString.Create(Languages.en, "Hubject Central EV Roaming Hub - Node 1 of 3"),
+                                             DefaultHTTPAPI:   new HTTPAPI(
+                                                                   HTTPServerPort:  IPPort.Parse(hubjectHTTPPort),
+                                                                   DNSClient:       dnsClient,
+                                                                   Autostart:       true
+                                                               ),
+                                             DNSClient:        dnsClient
                                          );
 
             Assert.IsNotNull(Hubject_Node1);
@@ -333,12 +340,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                               InitialAdminStatus:   RoamingNetworkAdminStatusTypes.Operational,
                               InitialStatus:        RoamingNetworkStatusTypes.Available
                           );
-
-            GraphDefinedCSO_Node1.AddHTTPAPI("default",
-                                             new HTTPAPI(
-                                                 HTTPServerPort:  IPPort.Parse(3501),
-                                                 Autostart:       true
-                                             ));
 
             #endregion
 
