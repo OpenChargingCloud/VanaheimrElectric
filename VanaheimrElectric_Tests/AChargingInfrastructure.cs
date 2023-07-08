@@ -159,13 +159,23 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             GraphDefinedCSO_Node1  = new ChargingNode(
                                              Name:             I18NString.Create(Languages.en, "GraphDefinedCSO_Node1"),
                                              Description:      I18NString.Create(Languages.en, "GraphDefined Charging Station Operator - Node 1 of 3"),
+                                             Identity:         new CryptoKeyInfo(
+                                                                   "BLMl4daDO/n+kf3Qz0kcBwG0cGxoDCGQNz/H6W21VL8cAq3l+vgJeNWR50MhoSyVOvI+x8YZRpoBdMl5AzKebaE=",
+                                                                   "APKdkn4o9ozmwJ+WFxEJ6qxnsWf6p6Tghcy7aQThJLqq",
+                                                                   CryptoKeyUsage_Id.Identity
+                                                               ),
+                                             IdentityGroup:    new CryptoKeyInfo(
+                                                                   "BKDXmC6yyP1OMlDPgsE67fsfII90cskSVkd993EtW+1/1TY5KJAGSpEsQTGdGruKH4sKDztqNbxXpUYicfYUzQ4=",
+                                                                   "AOawdrgs0v4cQWmg4vokRzp2cxq+1V2ftr4oVTB+A6we",
+                                                                   CryptoKeyUsage_Id.IdentityGroup
+                                                               ),
                                              DefaultHTTPAPI:   new HTTPAPI(
                                                                    HTTPServerPort:  IPPort.Parse(graphDefinedCSOHTTPPort),
                                                                    DNSClient:       dnsClient,
                                                                    Autostart:       true
                                                                ),
                                              DNSClient:        dnsClient
-                                         );
+                                         );;
 
             Assert.IsNotNull(GraphDefinedCSO_Node1);
 
@@ -311,6 +321,16 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             GraphDefinedEMP_Node1 = new ChargingNode(
                                         Name:             I18NString.Create(Languages.en, "GraphDefinedEMP_Node1"),
                                         Description:      I18NString.Create(Languages.en, "GraphDefined E-Mobility Provider - Node 1 of 3"),
+                                        Identity:         new CryptoKeyInfo(
+                                                              "BCphDksQSmKHJKMVcbPv8ABAYwM4oPz+lW47A5mS0V986jhZpjRo+a4bhhnBDtbvbWgObe0t5Z4fC63IxXG/Y8k=",
+                                                              "PiE4dMglv6W5km72JIdPL2adDF3PdBuRaoitaX8+L8g=",
+                                                              CryptoKeyUsage_Id.Identity
+                                                          ),
+                                        IdentityGroup:    new CryptoKeyInfo(
+                                                              "BEycchG1xCCAbgIii15U6s4P9D91u5TdS66T/Qf2bnBAi83jilLce56W8p9B6f6PwQyj2Rjw0b7z228ZElSTDtM=",
+                                                              "ALRCex+A7QwYU0rdlFrS6Q19vTXeccaGtzXkT66mt8Hh",
+                                                              CryptoKeyUsage_Id.IdentityGroup
+                                                          ),
                                         DefaultHTTPAPI:   new HTTPAPI(
                                                               HTTPServerPort:  IPPort.Parse(graphDefinedEMPHTTPPort),
                                                               DNSClient:       dnsClient,
