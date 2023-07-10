@@ -34,6 +34,8 @@ using cloud.charging.open.protocols.OCPIv2_1_1.WebAPI;
 using cloud.charging.open.protocols.WWCP;
 using cloud.charging.open.protocols.WWCP.MobilityProvider;
 using org.GraphDefined.Vanaheimr.Hermod.DNS;
+using System.Drawing;
+using System.Runtime.InteropServices;
 
 #endregion
 
@@ -50,6 +52,15 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
         public          DNSClient                                      dnsClient;
         public          RoamingNetwork_Id                              RoamingNetworkPROD;
+
+        public          ChargingNode?                                  OpenChargingCloudPKI_Node1;
+        public          ChargingNode?                                  OpenChargingCloudPKI_Node2;
+        public          ChargingNode?                                  OpenChargingCloudPKI_Node3;
+
+        public          ChargingNode?                                  PTB_Node1;
+
+
+        public          ChargingNode?                                  GraphDefinedMetering_Node1;
 
         public          ChargingNode?                                  GraphDefinedStationA1;
         public          ChargingNode?                                  GraphDefinedStationA2;
@@ -152,6 +163,148 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
         public void SetupOnce()
         {
 
+            #region Open Charging Cloud PKI Service
+
+            #region Node 1
+
+            var OpenChargingCloudPKI_Node1_HTTPPort = 3001;
+
+            OpenChargingCloudPKI_Node1  = new ChargingNode(
+                                             Name:             I18NString.Create(Languages.en, "OpenChargingCloudPKI_Node1"),
+                                             Description:      I18NString.Create(Languages.en, "Open Charging Cloud Public Key Infrastructure - Node 1 of 3"),
+                                             Identity:         new CryptoKeyInfo(
+                                                                   "BAFZihMJdtrB5ixV7guNQAoVY46QO/AI7xF/7DOiZh8kANGOKI+EvcLxVYSs6wO/mhAj8SvwmltQ/Cs2iFuEuGQ4FQFRGBf16cG5dM4jfS0LewqfeATjtmT9AjQgyJu41EDiqf8g/vogBO0NHBq9wGzlseasWlnRlbGvqzGr6EoVmA1C7A==",
+                                                                   "ATvTmppPVADEbTCujGnIiq5pu2viKXh4wuIqR/tyEcJrILc0tBhzUAUbGPZmUyVPq1RTaVQE12p5fJc7kIETxfLe",
+                                                                   CryptoKeyUsage.Identity
+                                                               ),
+                                             IdentityGroup:    new CryptoKeyInfo(
+                                                                   "BACJyOXVYqYRHi0Tkt9PEcUR1UZj4NJGpxiv0d4ysOZhto/wrDa3Et9QNg+sTxDkhQZ0hiVN3n4O3Uz2Q+ijjL4dpQH0GsKj5siTcEtUnRUUihIYNhRn42x0iG5N96ObTCeMqM85TaBahGTySrxOEMRx0gWOJ0MBKnprJpsunmsdHvt9Kw==",
+                                                                   "ASwnHt2QKA4JEyK9J8Pd25+icdoYuqJcABeGANFgXw/XmZcdnBtFGtEvQJfXFpsKiNaFYcZH6MSw8sTHqLbOPsOg",
+                                                                   CryptoKeyUsage.IdentityGroup
+                                                               ),
+                                             DefaultHTTPAPI:   new HTTPAPI(
+                                                                   HTTPServerPort:  IPPort.Parse(OpenChargingCloudPKI_Node1_HTTPPort),
+                                                                   DNSClient:       dnsClient,
+                                                                   Autostart:       true
+                                                               ),
+                                             DNSClient:        dnsClient
+                                          );
+
+
+            #endregion
+
+            #region Node 2
+
+            var OpenChargingCloudPKI_Node2_HTTPPort = 3002;
+
+            OpenChargingCloudPKI_Node2  = new ChargingNode(
+                                             Name:             I18NString.Create(Languages.en, "OpenChargingCloudPKI_Node2"),
+                                             Description:      I18NString.Create(Languages.en, "Open Charging Cloud Public Key Infrastructure - Node 2 of 3"),
+                                             Identity:         new CryptoKeyInfo(
+                                                                   "BAEi3ZlHFUtzyav3FzbYpNzjHwnMGp2xCQPEK24hSlzYTl4AEkcxnPJzAGD/MQBnhCitsnLOKDACBWrwwGgbYwZxBwHB+dAD9NQgov/kAOphWP9ZzQXfyslPpRTZFHEu0ZJ4RSKDj8K53f1tUbMjdEZVMX2+HsAEeWr5E1Af7xWIUusd4g==",
+                                                                   "ALX4MIq5wuUEKa0FoOgD0LyoTClxoYaFOBSoDGB88uok0uPmWXMxS+49A5sn5DuFghZRA6yfN17Qt6S/JZn8z2Hf",
+                                                                   CryptoKeyUsage.Identity
+                                                               ),
+                                             IdentityGroup:    new CryptoKeyInfo(
+                                                                   "BACJyOXVYqYRHi0Tkt9PEcUR1UZj4NJGpxiv0d4ysOZhto/wrDa3Et9QNg+sTxDkhQZ0hiVN3n4O3Uz2Q+ijjL4dpQH0GsKj5siTcEtUnRUUihIYNhRn42x0iG5N96ObTCeMqM85TaBahGTySrxOEMRx0gWOJ0MBKnprJpsunmsdHvt9Kw==",
+                                                                   "ASwnHt2QKA4JEyK9J8Pd25+icdoYuqJcABeGANFgXw/XmZcdnBtFGtEvQJfXFpsKiNaFYcZH6MSw8sTHqLbOPsOg",
+                                                                   CryptoKeyUsage.IdentityGroup
+                                                               ),
+                                             DefaultHTTPAPI:   new HTTPAPI(
+                                                                   HTTPServerPort:  IPPort.Parse(OpenChargingCloudPKI_Node2_HTTPPort),
+                                                                   DNSClient:       dnsClient,
+                                                                   Autostart:       true
+                                                               ),
+                                             DNSClient:        dnsClient
+                                          );
+
+
+            #endregion
+
+            #region Node 3
+
+            var OpenChargingCloudPKI_Node3_HTTPPort = 3003;
+
+            OpenChargingCloudPKI_Node3  = new ChargingNode(
+                                             Name:             I18NString.Create(Languages.en, "OpenChargingCloudPKI_Node3"),
+                                             Description:      I18NString.Create(Languages.en, "Open Charging Cloud Public Key Infrastructure - Node 3 of 3"),
+                                             Identity:         new CryptoKeyInfo(
+                                                                   "BAHg2Wzfj4Xm5DtJzCUIxu/niGxY2cO1hf3jh2azthT3Y+nip6BpcvWcPy+BR6Rj9h/qbgukAimfTqLNUsjDW709EgF+mtGy6JJAm3e1jxtRZcc//s+K7Q6Qw63zAnpnNIPJTHKgag6LY/VaP9a8hYJZOg5xwiCEH9Vkg9rIHziOYMHhiw==",
+                                                                   "AcwWAmnwzfjsePCg9u02ustsaOR/916i8jrK6nv7mJmt9+t5gXg0XVm7UXIvGtoi8wB97LTY34RSK0q7vzSQPQVj",
+                                                                   CryptoKeyUsage.Identity
+                                                               ),
+                                             IdentityGroup:    new CryptoKeyInfo(
+                                                                   "BACJyOXVYqYRHi0Tkt9PEcUR1UZj4NJGpxiv0d4ysOZhto/wrDa3Et9QNg+sTxDkhQZ0hiVN3n4O3Uz2Q+ijjL4dpQH0GsKj5siTcEtUnRUUihIYNhRn42x0iG5N96ObTCeMqM85TaBahGTySrxOEMRx0gWOJ0MBKnprJpsunmsdHvt9Kw==",
+                                                                   "ASwnHt2QKA4JEyK9J8Pd25+icdoYuqJcABeGANFgXw/XmZcdnBtFGtEvQJfXFpsKiNaFYcZH6MSw8sTHqLbOPsOg",
+                                                                   CryptoKeyUsage.IdentityGroup
+                                                               ),
+                                             DefaultHTTPAPI:   new HTTPAPI(
+                                                                   HTTPServerPort:  IPPort.Parse(OpenChargingCloudPKI_Node3_HTTPPort),
+                                                                   DNSClient:       dnsClient,
+                                                                   Autostart:       true
+                                                               ),
+                                             DNSClient:        dnsClient
+                                          );
+
+
+            #endregion
+
+            #endregion
+
+            #region PTB
+
+            var PTB_Node1_HTTPPort = 3101;
+
+            PTB_Node1  = new ChargingNode(
+                             Name:             I18NString.Create(Languages.en, "PTB_Node1"),
+                             Description:      I18NString.Create(Languages.de, "Physikalisch-Technische Bundesanstalt - Node 1 of 3"),
+                             Identity:         new CryptoKeyInfo(
+                                                   "BAHyie2ntlBNEJaiY0kFyGkTXf3uBL0gyQIqKQZmgwLec550jmzztm52CPUBQLB1wtxwIUzGobcmtbwk7SsHdBFalgDrCE8UQY2G6rD7TocQWs+0UOAMuTktUUO04JQUs2Ea1CSZ5YvfjVi0ZXC/y+Ui1tqMKtfW5SOLHJ8AkfhPrdSN8A==",
+                                                   "AUU/uHl2kQ7abGQgJmulyxBZeLpY2YK346Bn6dnTTQelr9oYs0lW3pOJwDTcV/iUdGNDPCgOcqfITUuukVQRLU6W",
+                                                   CryptoKeyUsage.Identity
+                                               ),
+                             IdentityGroup:    new CryptoKeyInfo(
+                                                   "BAFOQI8mUNfqgPp7SuKF5oQ1CJK/CjHPR3g+2cc8w4rtuESjAYD+uHlQdA67/IZnoamZY+EMWWQzaoQ5W52c7PM3xAH3nYfJkKKhS2oFjPkXZDaAR81tSkJ0YLgr25tce9m0KD8iYBlb83sG/S8dOd2L25il9Q8SSOIwUbmVN1jONTlfIQ==",
+                                                   "I59i1RwKSncsy/FY1Rb3PV0Ev9pj0HBae9EeU9Uau6ee3AgtZPGpmKRLwgVS8o7HyZA2ORLvbVvk1HJxuLBjloo=",
+                                                   CryptoKeyUsage.IdentityGroup
+                                               ),
+                             DefaultHTTPAPI:   new HTTPAPI(
+                                                   HTTPServerPort:  IPPort.Parse(PTB_Node1_HTTPPort),
+                                                   DNSClient:       dnsClient,
+                                                   Autostart:       true
+                                               ),
+                             DNSClient:        dnsClient
+                          );
+
+            #endregion
+
+            #region GraphDefined Metering
+
+            var GraphDefinedMetering_Node1_HTTPPort = 3201;
+
+            GraphDefinedMetering_Node1 = new ChargingNode(
+                                             Name:             I18NString.Create(Languages.en, "PTB_Node1"),
+                                             Description:      I18NString.Create(Languages.de, "Physikalisch-Technische Bundesanstalt - Node 1 of 3"),
+                                             Identity:         new CryptoKeyInfo(
+                                                                   "BAClhSA92s1KInjXUqZ8L89Y2y80fJnaQSyuBPCknjxeYQhuc+hCD5dDED+uOd4Ccms+xr/sJEIIKSljLdiaAdxkWQEJNzMJbIKgfyKfNjEYNphNYBKt0udayF5c/ZqHTO+oWAYY304ojjs9WAbPWx0CSB7qjHIRCWLgV1BTKE/naVQgBA==",
+                                                                   "VAL7TXDRnNy9Mc7ENCtbHQ3EDCCOUuSiNgfyP6NEcumeh7kPAguhibCFuFqb6jzjn5XK6/fPv4B5JgQcgxilDVc=",
+                                                                   CryptoKeyUsage.Identity
+                                                               ),
+                                             IdentityGroup:    new CryptoKeyInfo(
+                                                                   "BAF6HcyIwIstkj7u9KzZz9dYfMPfxMdhqZyXT2G9ZSZxqfzCDU+N2sRfD8a63/LTHheD5opC5I/1AjbTX2t9abLnhAHq1vUuYNkWpOzmVHJWel6cnRgKVcqsS4z8XTImU8D45LgLfny1lFaGqBqp0B9gyfoOyvFxX4NlpgYMjFb1jdsOig==",
+                                                                   "AYSbfXi+895sYLiiAHsxWsButKu4JurjDoDkZSA7g31V+SMs3MD0homVHIqYqbZqP5dS24fjsZQUvDv0c8kcrsHP",
+                                                                   CryptoKeyUsage.IdentityGroup
+                                                               ),
+                                             DefaultHTTPAPI:   new HTTPAPI(
+                                                                   HTTPServerPort:  IPPort.Parse(GraphDefinedMetering_Node1_HTTPPort),
+                                                                   DNSClient:       dnsClient,
+                                                                   Autostart:       true
+                                                               ),
+                                             DNSClient:        dnsClient
+                                          );
+
+            #endregion
+
             #region GraphDefined CSO
 
             var graphDefinedCSOHTTPPort = 3301;
@@ -162,12 +315,14 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                              Identity:         new CryptoKeyInfo(
                                                                    "BLMl4daDO/n+kf3Qz0kcBwG0cGxoDCGQNz/H6W21VL8cAq3l+vgJeNWR50MhoSyVOvI+x8YZRpoBdMl5AzKebaE=",
                                                                    "APKdkn4o9ozmwJ+WFxEJ6qxnsWf6p6Tghcy7aQThJLqq",
-                                                                   CryptoKeyUsage_Id.Identity
+                                                                   CryptoKeyUsage.Identity,
+                                                                   CryptoKeyType.SecP256r1
                                                                ),
                                              IdentityGroup:    new CryptoKeyInfo(
                                                                    "BKDXmC6yyP1OMlDPgsE67fsfII90cskSVkd993EtW+1/1TY5KJAGSpEsQTGdGruKH4sKDztqNbxXpUYicfYUzQ4=",
                                                                    "AOawdrgs0v4cQWmg4vokRzp2cxq+1V2ftr4oVTB+A6we",
-                                                                   CryptoKeyUsage_Id.IdentityGroup
+                                                                   CryptoKeyUsage.IdentityGroup,
+                                                                   CryptoKeyType.SecP256r1
                                                                ),
                                              DefaultHTTPAPI:   new HTTPAPI(
                                                                    HTTPServerPort:  IPPort.Parse(graphDefinedCSOHTTPPort),
@@ -186,6 +341,18 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                       InitialAdminStatus:   RoamingNetworkAdminStatusTypes.Operational,
                                       InitialStatus:        RoamingNetworkStatusTypes.Available
                                   );
+
+            #region OICP v2.3
+
+            #endregion
+
+            #region OICP v2.3 p2p
+
+            #endregion
+
+            #region OCPI v2.2
+
+            #endregion
 
             #region OCPI v2.1
 
@@ -254,12 +421,14 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                         Identity:         new CryptoKeyInfo(
                                                               "BCphDksQSmKHJKMVcbPv8ABAYwM4oPz+lW47A5mS0V986jhZpjRo+a4bhhnBDtbvbWgObe0t5Z4fC63IxXG/Y8k=",
                                                               "PiE4dMglv6W5km72JIdPL2adDF3PdBuRaoitaX8+L8g=",
-                                                              CryptoKeyUsage_Id.Identity
+                                                              CryptoKeyUsage.Identity,
+                                                              CryptoKeyType.SecP256r1
                                                           ),
                                         IdentityGroup:    new CryptoKeyInfo(
                                                               "BEycchG1xCCAbgIii15U6s4P9D91u5TdS66T/Qf2bnBAi83jilLce56W8p9B6f6PwQyj2Rjw0b7z228ZElSTDtM=",
                                                               "ALRCex+A7QwYU0rdlFrS6Q19vTXeccaGtzXkT66mt8Hh",
-                                                              CryptoKeyUsage_Id.IdentityGroup
+                                                              CryptoKeyUsage.IdentityGroup,
+                                                              CryptoKeyType.SecP256r1
                                                           ),
                                         DefaultHTTPAPI:   new HTTPAPI(
                                                               HTTPServerPort:  IPPort.Parse(graphDefinedEMPHTTPPort),
@@ -278,6 +447,14 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                       InitialAdminStatus:   RoamingNetworkAdminStatusTypes.Operational,
                                       InitialStatus:        RoamingNetworkStatusTypes.Available
                                   );
+
+            #region OICP v2.3
+
+            #endregion
+
+            #region OICP v2.3 p2p
+
+            #endregion
 
             #region OCPI v2.1
 
@@ -331,6 +508,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                        Autostart:                           false
 
                                    );
+
+            #endregion
+
+            #region OCPI v2.2
 
             #endregion
 
