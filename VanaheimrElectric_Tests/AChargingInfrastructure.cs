@@ -94,6 +94,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
         public          ChargingNode?                                  Gireve_Node3;
 
 
+        public          ChargingNode?                                  Leitstelle_Node1;
+
+
 
         // old
 
@@ -190,6 +193,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             var Hubject_Node1_HTTPPort                = 3601;
             var Gireve_Node1_HTTPPort                 = 3611;
+
+            var Leitstelle_Node1_HTTPPort             = 3701;
+
 
 
             #region Open Charging Cloud PKI Service
@@ -698,10 +704,47 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             #endregion
 
+            #region National Contact Points
 
-            // National Contact Points
+            // National Contact Points collect data about charging stations and statistics about errors.
+            // They also might collect informations about charging sessions, but this might conflict with data privacy laws.
+
+            #region Leitstelle Elektromobilität
+
+            Leitstelle_Node1 = new ChargingNode(
+                                   Name:             I18NString.Create(Languages.en, "LeitstelleElektromobilität_Node1"),
+                                   Description:      I18NString.Create(Languages.en, "Leitstelle Elektromobilität Deutschland - Node 1 of 3"),
+                                   Identity:         new CryptoKeyInfo(
+                                                         "BAFqS+zv2Q/nhKWGMY06g9PGsLOu2v24riOvi3WaL5djnx4Y7QoY9foRPOQyBbbvM6v9dsDDILt93X4cHbQj2NE1KgAlvnwnvMEdMqJAv94iqwZvIN9Mqva/y8yntHktRmhMXC0UtsXH9gN8FOUAwrgaeZMCQEN1Lv8S15+L9PvlcOnq0w==",
+                                                         "AYo7JRM88IACoKGnyendgFJbm1bPZlQfrksaR9UEEsXyXQR4DMiP96j4OIb6LnzgeK91KxVdSvAsePbDa3apVKao",
+                                                         CryptoKeyUsage.Identity
+                                                     ),
+                                   IdentityGroup:    new CryptoKeyInfo(
+                                                         "BAD2xjS3DzoZ59vdND49xOB1jobmHfztFWI1m1N1U1Jj4x+jcr093sG1lTZscZem49tg75AUsH7NfUFI15mzyPeN9wHWugHzRbCXx46zP9ybMlAFTL2/riRRykbp3ZD3c+EfHJ+ViEu7azxLu4XiXNs/OH9P0HTv2E8Sf3O46ZgieTlwzQ==",
+                                                         "AeiVNgKk+kaWSdmMaPmFLyTmq8u+PpWm8DpbVttjffmERrFPJME1KbXWvav0kFWEOQr+xKePTamBM6UOWrVa2zwc",
+                                                         CryptoKeyUsage.IdentityGroup
+                                                     ),
+                                   DefaultHTTPAPI:   new HTTPAPI(
+                                                         HTTPServerPort:  IPPort.Parse(GraphDefinedEMP_Node1_HTTPPort),
+                                                         DNSClient:       DNSClient,
+                                                         Autostart:       true
+                                                     ),
+                                   DNSClient:        DNSClient
+                               );
+
+            Assert.IsNotNull(Leitstelle_Node1);
+
+            #endregion
+
+            #endregion
 
             // Smart Cities
+
+            // Smart Energy Providers
+
+            // Utilities
+
+            // E-Car OEMs
 
         }
 
