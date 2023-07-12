@@ -34,6 +34,7 @@ using cloud.charging.open.protocols.OCPIv2_1_1.WebAPI;
 
 using cloud.charging.open.protocols.WWCP;
 using cloud.charging.open.protocols.WWCP.MobilityProvider;
+using cloud.charging.open.protocols.WWCP.PKI;
 using cloud.charging.open.protocols.WWCP.SMM;
 using cloud.charging.open.protocols.WWCP.CSM;
 using cloud.charging.open.protocols.WWCP.MCL;
@@ -54,6 +55,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
         public          DNSClient                                      DNSClient;
         public          RoamingNetwork_Id                              RoamingNetworkPROD;
 
+        public          OpenChargingCloudPKI_CA?                       OCCPKICA;
         public          ChargingNode?                                  OpenChargingCloudPKI_Node1;
         public          ChargingNode?                                  OpenChargingCloudPKI_Node2;
         public          ChargingNode?                                  OpenChargingCloudPKI_Node3;
@@ -210,31 +212,54 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             // Open Charging Cloud brings order to the galaxy ;)
 
+            OCCPKICA                    = new OpenChargingCloudPKI_CA(
+                                              Name:             I18NString.Create(Languages.en, "OpenChargingCloud PKI CA"),
+                                              Description:      I18NString.Create(Languages.en, "Open Charging Cloud Public Key Infrastructure Certification Authority"),
+                                              CryptoKeys:       new[] {
+                                                                    // Quorum 3 of 3!
+                                                                    new CryptoKeyInfo(
+                                                                        "BAHJHVXPl5pM3uIvimkDvhEqQv3fQVfIvyEGwG9ER9qsuil2bKVEYTurJjH5c51kiOoM3F+zcgfjszCHyDMzoJ09bAHp4Wgow7gKlEJrug3DZk2lQURg82IFvcmVoS/PNci52L0Xlx6gLmKKaYXp8BpwwYDY+VrOdoeE+sbWOBg8nkiXQg==",
+                                                                        "AOF/+/sO1vcmbiOeuzm9ap5llq1Uzw4tjBpl8d2jiUEL4UhUMy3enx6OKdFeKb/uJZ7YJaPrutWXUeRQ4wLE8lAr",
+                                                                        CryptoKeyUsage.Identity
+                                                                    ),
+                                                                    new CryptoKeyInfo(
+                                                                        "BACiZ5ny6sL+GGQlgNMBNiQAnpfy9Eay4e+zFfTVmQUJ8F3f8PSysgS/MMCz75wK6MNZSVtfId5oIoDNf1Ye++siCgHeDTBU6sMQC0XdMdXMUqYB2xuM9mK3hk0naHoq/poR0C5qbWF2a2II/oS5psSF2msWCaBR4nlmYCbtXSk9zSSvsA==",
+                                                                        "Abww+cx4+tMxLNAUyEMripnJr5lE8i/bsDbH9Jm38au7FskEn1W/W8UxUpxSSqgC1FOtfvz/hI6CKFcueG4gHKEz",
+                                                                        CryptoKeyUsage.Identity
+                                                                    ),
+                                                                    new CryptoKeyInfo(
+                                                                        "BABsuWebS95+a2pB7wZglFjg/uraplxor1U6Fag/k2sbPacZlEtDeU0AlwDG//fA8cdyxufu5LpiwgdJUSPdrO2xWwButQwDXrwTLY+oXQwL/DFzMjIAEQhVPu4Mp9h5ChJ5cQYhRK1VVj2//6Mfr7xoA+ZYxksRIUOtoMaptFTTyi8hOw==",
+                                                                        "AbKoRYT/FBsUDCX2ikTf4JlHkoVDryljx1jcJJLcdbD/HygmaIBlPnA5kIkDJRtXdVHxiYR9xKlXekYeqcohvKdB",
+                                                                        CryptoKeyUsage.Identity
+                                                                    )
+                                                                }
+                                          );
+
             #region Node 1
 
-            OpenChargingCloudPKI_Node1 = new ChargingNode(
-                                             Name:             I18NString.Create(Languages.en, "OpenChargingCloudPKI_Node1"),
-                                             Description:      I18NString.Create(Languages.en, "Open Charging Cloud Public Key Infrastructure - Node 1 of 3"),
-                                             Identities:       new[] {
-                                                                   new CryptoKeyInfo(
-                                                                       "BAFZihMJdtrB5ixV7guNQAoVY46QO/AI7xF/7DOiZh8kANGOKI+EvcLxVYSs6wO/mhAj8SvwmltQ/Cs2iFuEuGQ4FQFRGBf16cG5dM4jfS0LewqfeATjtmT9AjQgyJu41EDiqf8g/vogBO0NHBq9wGzlseasWlnRlbGvqzGr6EoVmA1C7A==",
-                                                                       "ATvTmppPVADEbTCujGnIiq5pu2viKXh4wuIqR/tyEcJrILc0tBhzUAUbGPZmUyVPq1RTaVQE12p5fJc7kIETxfLe",
-                                                                       CryptoKeyUsage.Identity
-                                                                   )
-                                                               },
-                                             IdentityGroups:   new[] {
-                                                                   new CryptoKeyInfo(
-                                                                       "BACJyOXVYqYRHi0Tkt9PEcUR1UZj4NJGpxiv0d4ysOZhto/wrDa3Et9QNg+sTxDkhQZ0hiVN3n4O3Uz2Q+ijjL4dpQH0GsKj5siTcEtUnRUUihIYNhRn42x0iG5N96ObTCeMqM85TaBahGTySrxOEMRx0gWOJ0MBKnprJpsunmsdHvt9Kw==",
-                                                                       "ASwnHt2QKA4JEyK9J8Pd25+icdoYuqJcABeGANFgXw/XmZcdnBtFGtEvQJfXFpsKiNaFYcZH6MSw8sTHqLbOPsOg",
-                                                                       CryptoKeyUsage.IdentityGroup
-                                                                   )
-                                                               },
-                                             DefaultHTTPAPI:   new HTTPAPI(
-                                                                   HTTPServerPort:  IPPort.Parse(OpenChargingCloudPKI_Node1_HTTPPort),
-                                                                   DNSClient:       DNSClient,
-                                                                   Autostart:       true
-                                                               ),
-                                             DNSClient:        DNSClient
+            OpenChargingCloudPKI_Node1  = new ChargingNode(
+                                              Name:             I18NString.Create(Languages.en, "OpenChargingCloudPKI_Node1"),
+                                              Description:      I18NString.Create(Languages.en, "Open Charging Cloud Public Key Infrastructure - Node 1 of 3"),
+                                              Identities:       new[] {
+                                                                    new CryptoKeyInfo(
+                                                                        "BAFZihMJdtrB5ixV7guNQAoVY46QO/AI7xF/7DOiZh8kANGOKI+EvcLxVYSs6wO/mhAj8SvwmltQ/Cs2iFuEuGQ4FQFRGBf16cG5dM4jfS0LewqfeATjtmT9AjQgyJu41EDiqf8g/vogBO0NHBq9wGzlseasWlnRlbGvqzGr6EoVmA1C7A==",
+                                                                        "ATvTmppPVADEbTCujGnIiq5pu2viKXh4wuIqR/tyEcJrILc0tBhzUAUbGPZmUyVPq1RTaVQE12p5fJc7kIETxfLe",
+                                                                        CryptoKeyUsage.Identity
+                                                                    )
+                                                                },
+                                              IdentityGroups:   new[] {
+                                                                    new CryptoKeyInfo(
+                                                                        "BACJyOXVYqYRHi0Tkt9PEcUR1UZj4NJGpxiv0d4ysOZhto/wrDa3Et9QNg+sTxDkhQZ0hiVN3n4O3Uz2Q+ijjL4dpQH0GsKj5siTcEtUnRUUihIYNhRn42x0iG5N96ObTCeMqM85TaBahGTySrxOEMRx0gWOJ0MBKnprJpsunmsdHvt9Kw==",
+                                                                        "ASwnHt2QKA4JEyK9J8Pd25+icdoYuqJcABeGANFgXw/XmZcdnBtFGtEvQJfXFpsKiNaFYcZH6MSw8sTHqLbOPsOg",
+                                                                        CryptoKeyUsage.IdentityGroup
+                                                                    )
+                                                                },
+                                              DefaultHTTPAPI:   new HTTPAPI(
+                                                                    HTTPServerPort:  IPPort.Parse(OpenChargingCloudPKI_Node1_HTTPPort),
+                                                                    DNSClient:       DNSClient,
+                                                                    Autostart:       true
+                                                                ),
+                                              DNSClient:        DNSClient
                                           );
 
 
@@ -316,7 +341,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                              Id:               MeteringCalibrationLawAgency_Id.Parse("PTB"),
                              Name:             I18NString.Create(Languages.de, "Physikalisch-Technische Bundesanstalt"),
                              Description:      I18NString.Create(Languages.de, "Die Physikalisch-Technische Bundesanstalt ist das nationale Metrologieinstitut der Bundesrepublik Deutschland"),
-                             Identities:       new[] {
+                             CryptoKeys:       new[] {
                                                    new CryptoKeyInfo(
                                                        "BABXbnt69Dr5+X9T04Y//nhP8UP7c97BSuCn+FX4ZlzwZ0fyMQTnTcZ9ulQ6v4u32XzWB4BFPD0w4oWQDlwOd5o93gFeNd5gmYh31vu2Tv7hqfMfg6H8D+tuU0TSL2d2AdxHnvGEFPBzPVYWmR25zKFeijYUQF998CHrywz/reMCgX++Vw==",
                                                        "AYE6HKxDNg1FSZj9zgCMmSnBZP6VWMCOOO2PTbd/g/LatCACPWRGqsOUv0IGzlOU5Pi+nGysnL/TnxgI+mt/MU7F",
@@ -378,7 +403,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                              Id:               MeteringCalibrationLawAgency_Id.Parse("VDE"),
                              Name:             I18NString.Create(Languages.de, "Verband der Elektrotechnik Elektronik Informationstechnik"),
                              Description:      I18NString.Create(Languages.de, "VDE Verband der Elektrotechnik Elektronik Informationstechnik e. V."),
-                             Identities:       new[] {
+                             CryptoKeys:       new[] {
                                                    new CryptoKeyInfo(
                                                        "BAArNbJfoQAo2gNPLp7dPFVW39pWs1+z3CG/BYcjTuCWocU6Mj6kdbTfe9fKvS5NzoD870NZWk4IEwhENnt7hvQRHQB75RuVdGOxXNhkfXUDHawlhjjuPwrssrP4OqaQgM+Ah0aZ+tztpK+cCluph8gMAdpyQuNVFYTV2NnGww/7B0wpWQ==",
                                                        "AaG3cKLbLJpFFt3+dnPVz6L7Hdw0GHpGianqAFCCFCimY4alqHGLN6allSoXW2LoW7uVjZMutK73zXLm0x3CQKTv",
@@ -466,7 +491,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             GraphDefinedSEM          = new SmartMeterManufacturer(
                                            Id:               SmartMeterManufacturer_Id.Parse("GraphDefinedSEM"),
                                            Name:             I18NString.Create(Languages.en, "GraphDefined Smart Energy Metering"),
-                                           Identities:       new[] {
+                                           CryptoKeys:       new[] {
                                                                  new CryptoKeyInfo(
                                                                      "BAHFKMrHD0Gu8finZockYrUjC3sHWnnHzwBQoNWZYmriuyT+F33k+36vZP9ZqZjAvBMerJbcEeEM3ulVPAIt1CLFVAFaTqZm3JHpre2I1Rkneh/TVvf3pEo72rEaY4/D3KdE8i6kQnPGDnOdp6DAfDMRm0kRmCmGe9Dj/tKa4oqw/JndUw==",
                                                                      "aqOnZ+ucfOyF0/xPJiPSlFqEdS51Z21vTuimbU0PW8pi3pV23ThdP9Zms9JcX9mNqmC4vLcDoRJdzxOVH0GdCUE=",
@@ -560,7 +585,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             GraphDefinedCSM        = new ChargingStationManufacturer(
                                          Id:           ChargingStationManufacturer_Id.Parse("GraphDefinedCSM"),
                                          Name:         I18NString.Create(Languages.en, "GraphDefined Charging Station Manufacturing"),
-                                         Identities:   new[] {
+                                         CryptoKeys:   new[] {
                                                            new CryptoKeyInfo(
                                                                "BAAStI+niDMflUP0x82HHlss6az/yAZ0Z/P3EQZjUvfCWvxlg69qDMmpgW1WovOTw9XZshB1JIf3dxikqEEAXfGyRAFQj6ofJFwbeVYzo8w0/0+IlPSlErQR6FDmWHvWR6ouuoP1R1m0BDdhpeCp9z1KlYl/qIDsivuB2Qzy682SUUnO8Q==",
                                                                "AZ7Ef+Hqn1+TZtWilHB/d7jKTGtN6kx9IwA2946tLbal8kR95K2aBJ1iCw5MPMZzVdAO8oEARidtfFbDYcfqpZGe",
@@ -581,8 +606,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                            },
                                          IdentityGroups:   new[] {
                                                                new CryptoKeyInfo(
-                                                                   "",
-                                                                   "",
+                                                                   "BACZW58CNfw/orPAY77TmYU+m346s6gWywQEU32co6LXryxRKY1owu9PrgHF2xDL305JBCul60ivagAduznmIWKrXQDjSk6KMwve1lOtp6Q/3rMUmhoWteRdwj8ZjLqlZh6mlhYg+cwxD2SHYZ6MMhniEofkMdJl3be1/KuC2lKuHpvF7A==",
+                                                                   "AUT+bzHvlhMjnmsa+Qb6zPPD0J3lInMy80sb1vIdG5inEqYUGlOQ9ZIbRv60rJdTAPk7VhPgSeW4PJmIJcOQGgdD",
                                                                    CryptoKeyUsage.IdentityGroup
                                                                )
                                                            },
