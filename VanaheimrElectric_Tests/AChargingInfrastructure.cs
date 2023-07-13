@@ -1159,6 +1159,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             #endregion
 
+            // Parking Operators
+
             // Payment Providers
 
             // Bank Cards
@@ -1172,9 +1174,12 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             // Smart Energy Providers
 
+            // Home Energy Management System Manufacturers
+
+            // Home Energy Management Systems
+
             // Smart Cities
 
-            // Parking Operators
 
         }
 
