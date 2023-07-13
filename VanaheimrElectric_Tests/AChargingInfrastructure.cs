@@ -1175,7 +1175,12 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             // Ortsnetztrafo
             // Ortsnetztrafoabgang
 
+            // FNN-Steuerbox (EEBus, KNX)
+
             // Statistische Daten
+
+
+            // Smart MicroGrid
 
             #endregion
 
