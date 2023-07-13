@@ -1169,6 +1169,13 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             // Grid Operators may send information about available energy to CSOs or directly to local controllers or charging stations.
             // Grid Operators may receive energy prognoses data from CSOs based to smart charging schedules.
+            // Dokumentationspflichten (2 Jahre, redundante Speicherung, ..., hohe Konventionalstrafen, @Bundesnetzagentur)
+
+            // Ortsnetzstation
+            // Ortsnetztrafo
+            // Ortsnetztrafoabgang
+
+            // Statistische Daten
 
             #endregion
 
