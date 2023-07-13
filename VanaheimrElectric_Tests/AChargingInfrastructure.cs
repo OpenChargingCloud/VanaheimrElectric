@@ -250,7 +250,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                 }
                                           );
 
-            var RegisterNetworkingNodesKey = OCCPKICA.SignKey(new SecP521r1Keys(
+            var registerNetworkingNodesKey = OCCPKICA.SignKey(new SecP521r1Keys(
                                                                   PublicKey:   "BABUB3itslWidVRI4EaS4Apf1QQNX6+LbYMJkiYddVSu+s05lDQlrotOX9y3IMsvqB1U2m0pQZvZYqN4+Y/YUxkZOwEAVcgnbaFijzVt8bEwol8AStpEABeZvv9GMiBcUgi62LVaxNcQWy0mmP6gJ4N10TSdbhHiusCRQxnE+GHNw4mclA==",
                                                                   PrivateKey:  "AYaza+xoMmqOtYJRoLIh4S2OiM5Dv6RUs7LT1gmqWNzG8Y/eO0nNiYmPEjCtLrVPbddpyCocbLfquyGBxUWgDDKC",
                                                                   KeyUsage:    WWCPCryptoKeyUsage.RegisterNetworkingNodes,
