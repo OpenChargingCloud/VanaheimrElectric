@@ -213,6 +213,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             var Leitstelle_Node1_HTTPPort             = 3701;
 
 
+            var notBefore = Timestamp.Now - TimeSpan.FromDays(1);
+            var notAfter  = notBefore     + TimeSpan.FromDays(365);
+
 
             #region Open Charging Cloud PKI Service
 
@@ -226,23 +229,23 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                     new SecP521r1Keys(
                                                                         "BAHJHVXPl5pM3uIvimkDvhEqQv3fQVfIvyEGwG9ER9qsuil2bKVEYTurJjH5c51kiOoM3F+zcgfjszCHyDMzoJ09bAHp4Wgow7gKlEJrug3DZk2lQURg82IFvcmVoS/PNci52L0Xlx6gLmKKaYXp8BpwwYDY+VrOdoeE+sbWOBg8nkiXQg==",
                                                                         "AOF/+/sO1vcmbiOeuzm9ap5llq1Uzw4tjBpl8d2jiUEL4UhUMy3enx6OKdFeKb/uJZ7YJaPrutWXUeRQ4wLE8lAr",
-                                                                        CryptoKeyUsage.Identity
-                                                                        // NotBefore
-                                                                        // NotAfter
+                                                                        CryptoKeyUsage.Identity,
+                                                                        notBefore,
+                                                                        notAfter
                                                                     ),
                                                                     new SecP521r1Keys(
                                                                         "BACiZ5ny6sL+GGQlgNMBNiQAnpfy9Eay4e+zFfTVmQUJ8F3f8PSysgS/MMCz75wK6MNZSVtfId5oIoDNf1Ye++siCgHeDTBU6sMQC0XdMdXMUqYB2xuM9mK3hk0naHoq/poR0C5qbWF2a2II/oS5psSF2msWCaBR4nlmYCbtXSk9zSSvsA==",
                                                                         "Abww+cx4+tMxLNAUyEMripnJr5lE8i/bsDbH9Jm38au7FskEn1W/W8UxUpxSSqgC1FOtfvz/hI6CKFcueG4gHKEz",
-                                                                        CryptoKeyUsage.Identity
-                                                                        // NotBefore
-                                                                        // NotAfter
+                                                                        CryptoKeyUsage.Identity,
+                                                                        notBefore,
+                                                                        notAfter
                                                                     ),
                                                                     new SecP521r1Keys(
                                                                         "BABsuWebS95+a2pB7wZglFjg/uraplxor1U6Fag/k2sbPacZlEtDeU0AlwDG//fA8cdyxufu5LpiwgdJUSPdrO2xWwButQwDXrwTLY+oXQwL/DFzMjIAEQhVPu4Mp9h5ChJ5cQYhRK1VVj2//6Mfr7xoA+ZYxksRIUOtoMaptFTTyi8hOw==",
                                                                         "AbKoRYT/FBsUDCX2ikTf4JlHkoVDryljx1jcJJLcdbD/HygmaIBlPnA5kIkDJRtXdVHxiYR9xKlXekYeqcohvKdB",
-                                                                        CryptoKeyUsage.Identity
-                                                                        // NotBefore
-                                                                        // NotAfter
+                                                                        CryptoKeyUsage.Identity,
+                                                                        notBefore,
+                                                                        notAfter
                                                                     )
                                                                 }
                                           );
@@ -250,17 +253,25 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             OCCPKICA.SignKey(new SecP521r1Keys(
                                  "BABUB3itslWidVRI4EaS4Apf1QQNX6+LbYMJkiYddVSu+s05lDQlrotOX9y3IMsvqB1U2m0pQZvZYqN4+Y/YUxkZOwEAVcgnbaFijzVt8bEwol8AStpEABeZvv9GMiBcUgi62LVaxNcQWy0mmP6gJ4N10TSdbhHiusCRQxnE+GHNw4mclA==",
                                  "AYaza+xoMmqOtYJRoLIh4S2OiM5Dv6RUs7LT1gmqWNzG8Y/eO0nNiYmPEjCtLrVPbddpyCocbLfquyGBxUWgDDKC",
-                                 CryptoKeyUsage.RegisterNetworkingNodes
-                                 // NotBefore
-                                 // NotAfter
+                                 CryptoKeyUsage.RegisterNetworkingNodes,
+                                 notBefore,
+                                 notAfter
+                             ));
+
+            OCCPKICA.SignKey(new SecP521r1Keys(
+                                 "BAAZHRUmGHyRy4gJ27KnLoxjJiwS/2lXgxFziuIT7Re5ThNDJcXPbNK8sPmJfavYyOMtZxetIIBNAgD6BHJJZTh00gH0xumUDMxzYp4VsGhAWEuFpcw5s5wDCSb0ZuVRsbPXcr6RriMCCEPeuLdCG/2ErMZ5O41WELOGd6d10qqR1w+8bA==",
+                                 "AWzcywdo3SSotXMyW0UzoIZsT5l12tXXVJMp7bB0f3SW6goVeYWUUiIYtZmyorFgqouXWx8qnCQ0GyRh9BGXPOTi",
+                                 CryptoKeyUsage.RegisterMeteringCalibrationLawAgencies,
+                                 notBefore,
+                                 notAfter
                              ));
 
             OCCPKICA.SignKey(new SecP521r1Keys(
                                  "BADA8CcMmGFcpeYoHyrbTMI+qBNCsdPfpAeX5Gou3un9iHEjONwu+jBPbdJL3w6hjv1ZTEsKi01bCwzqHcOVwFOQWQAocK20b/1BbAJAsVV50QiVn/7ePX8rlhIzbDavEbMEkVjOd5Vl/34Pro1U2Q+gs3AP881RBFBEvMLQA/4tlei3yA==",
                                  "AKSIT5TjWzKc4zYD4XYxVjWv1vCMVdzKSpdg2a6D9anohzienL8qKZVeQbDlUBNJiyPwI1TOtIurzPu/47c0YrTW",
-                                 CryptoKeyUsage.RegisterSmartMeterManufacturers
-                                 // NotBefore
-                                 // NotAfter
+                                 CryptoKeyUsage.RegisterSmartMeterManufacturers,
+                                 notBefore,
+                                 notAfter
                              ));
 
 
@@ -273,14 +284,18 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                     new SecP521r1Keys(
                                                                         "BAFZihMJdtrB5ixV7guNQAoVY46QO/AI7xF/7DOiZh8kANGOKI+EvcLxVYSs6wO/mhAj8SvwmltQ/Cs2iFuEuGQ4FQFRGBf16cG5dM4jfS0LewqfeATjtmT9AjQgyJu41EDiqf8g/vogBO0NHBq9wGzlseasWlnRlbGvqzGr6EoVmA1C7A==",
                                                                         "ATvTmppPVADEbTCujGnIiq5pu2viKXh4wuIqR/tyEcJrILc0tBhzUAUbGPZmUyVPq1RTaVQE12p5fJc7kIETxfLe",
-                                                                        CryptoKeyUsage.Identity
+                                                                        CryptoKeyUsage.Identity,
+                                                                        notBefore,
+                                                                        notAfter
                                                                     )
                                                                 },
                                               IdentityGroups:   new[] {
                                                                     new SecP521r1Keys(
                                                                         "BACJyOXVYqYRHi0Tkt9PEcUR1UZj4NJGpxiv0d4ysOZhto/wrDa3Et9QNg+sTxDkhQZ0hiVN3n4O3Uz2Q+ijjL4dpQH0GsKj5siTcEtUnRUUihIYNhRn42x0iG5N96ObTCeMqM85TaBahGTySrxOEMRx0gWOJ0MBKnprJpsunmsdHvt9Kw==",
                                                                         "ASwnHt2QKA4JEyK9J8Pd25+icdoYuqJcABeGANFgXw/XmZcdnBtFGtEvQJfXFpsKiNaFYcZH6MSw8sTHqLbOPsOg",
-                                                                        CryptoKeyUsage.IdentityGroup
+                                                                        CryptoKeyUsage.IdentityGroup,
+                                                                        notBefore,
+                                                                        notAfter
                                                                     )
                                                                 },
                                               DefaultHTTPAPI:   new HTTPAPI(
@@ -303,14 +318,18 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                    new SecP521r1Keys(
                                                                        "BAEi3ZlHFUtzyav3FzbYpNzjHwnMGp2xCQPEK24hSlzYTl4AEkcxnPJzAGD/MQBnhCitsnLOKDACBWrwwGgbYwZxBwHB+dAD9NQgov/kAOphWP9ZzQXfyslPpRTZFHEu0ZJ4RSKDj8K53f1tUbMjdEZVMX2+HsAEeWr5E1Af7xWIUusd4g==",
                                                                        "ALX4MIq5wuUEKa0FoOgD0LyoTClxoYaFOBSoDGB88uok0uPmWXMxS+49A5sn5DuFghZRA6yfN17Qt6S/JZn8z2Hf",
-                                                                       CryptoKeyUsage.Identity
+                                                                       CryptoKeyUsage.Identity,
+                                                                       notBefore,
+                                                                       notAfter
                                                                    )
                                                                },
                                              IdentityGroups:   new[] {
                                                                    new SecP521r1Keys(
                                                                        "BACJyOXVYqYRHi0Tkt9PEcUR1UZj4NJGpxiv0d4ysOZhto/wrDa3Et9QNg+sTxDkhQZ0hiVN3n4O3Uz2Q+ijjL4dpQH0GsKj5siTcEtUnRUUihIYNhRn42x0iG5N96ObTCeMqM85TaBahGTySrxOEMRx0gWOJ0MBKnprJpsunmsdHvt9Kw==",
                                                                        "ASwnHt2QKA4JEyK9J8Pd25+icdoYuqJcABeGANFgXw/XmZcdnBtFGtEvQJfXFpsKiNaFYcZH6MSw8sTHqLbOPsOg",
-                                                                       CryptoKeyUsage.IdentityGroup
+                                                                       CryptoKeyUsage.IdentityGroup,
+                                                                       notBefore,
+                                                                       notAfter
                                                                    )
                                                                },
                                              DefaultHTTPAPI:   new HTTPAPI(
@@ -333,14 +352,18 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                    new SecP521r1Keys(
                                                                        "BAHg2Wzfj4Xm5DtJzCUIxu/niGxY2cO1hf3jh2azthT3Y+nip6BpcvWcPy+BR6Rj9h/qbgukAimfTqLNUsjDW709EgF+mtGy6JJAm3e1jxtRZcc//s+K7Q6Qw63zAnpnNIPJTHKgag6LY/VaP9a8hYJZOg5xwiCEH9Vkg9rIHziOYMHhiw==",
                                                                        "AcwWAmnwzfjsePCg9u02ustsaOR/916i8jrK6nv7mJmt9+t5gXg0XVm7UXIvGtoi8wB97LTY34RSK0q7vzSQPQVj",
-                                                                       CryptoKeyUsage.Identity
+                                                                       CryptoKeyUsage.Identity,
+                                                                       notBefore,
+                                                                       notAfter
                                                                    )
                                                                },
                                              IdentityGroups:   new[] {
                                                                    new SecP521r1Keys(
                                                                        "BACJyOXVYqYRHi0Tkt9PEcUR1UZj4NJGpxiv0d4ysOZhto/wrDa3Et9QNg+sTxDkhQZ0hiVN3n4O3Uz2Q+ijjL4dpQH0GsKj5siTcEtUnRUUihIYNhRn42x0iG5N96ObTCeMqM85TaBahGTySrxOEMRx0gWOJ0MBKnprJpsunmsdHvt9Kw==",
                                                                        "ASwnHt2QKA4JEyK9J8Pd25+icdoYuqJcABeGANFgXw/XmZcdnBtFGtEvQJfXFpsKiNaFYcZH6MSw8sTHqLbOPsOg",
-                                                                       CryptoKeyUsage.IdentityGroup
+                                                                       CryptoKeyUsage.IdentityGroup,
+                                                                       notBefore,
+                                                                       notAfter
                                                                    )
                                                                },
                                              DefaultHTTPAPI:   new HTTPAPI(
@@ -374,27 +397,37 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                    new SecP521r1Keys(
                                                        "BABXbnt69Dr5+X9T04Y//nhP8UP7c97BSuCn+FX4ZlzwZ0fyMQTnTcZ9ulQ6v4u32XzWB4BFPD0w4oWQDlwOd5o93gFeNd5gmYh31vu2Tv7hqfMfg6H8D+tuU0TSL2d2AdxHnvGEFPBzPVYWmR25zKFeijYUQF998CHrywz/reMCgX++Vw==",
                                                        "AYE6HKxDNg1FSZj9zgCMmSnBZP6VWMCOOO2PTbd/g/LatCACPWRGqsOUv0IGzlOU5Pi+nGysnL/TnxgI+mt/MU7F",
-                                                       CryptoKeyUsage.Identity
+                                                       CryptoKeyUsage.Identity,
+                                                       notBefore,
+                                                       notAfter
                                                    ),
                                                    new SecP521r1Keys(
                                                        "BAHT6heRMQ6Rwgnr2KC9jAd64xgx/qyrlfTyClHi7YCR7KvmZEOpF2PZJiTQYVjdgwDvG8xjoQDkvkrjwVxNDDMXLAFES3DOoZxFvsjdtCOOi1bVLN9/lww+FM4cX8Nd4YwVfC+Pita4WPhYVgbltAEvFS5sLd1+H7C4LhOWCZa7NOqWpg==",
                                                        "OZBe1/wwIz//Y5PCHBdY2McG57k60p79+s58ZftvdRon2GJvWQ1uARkbiFnrEiD4LVuBCOHSxGekn5AFMyGNMag=",
-                                                       CryptoKeyUsage.Signature
+                                                       CryptoKeyUsage.Signature,
+                                                       notBefore,
+                                                       notAfter
                                                    ),
                                                    new SecP521r1Keys(
                                                        "BABvBdJ+Rn09fnGAz8romSS5pRF9Y9LQl60/sFFkxDORgaEt4WalFNOs/zWJqR7ARxMo5loT9i0XtoOvSYT8ySaSCgC+Ma1zqp1u06vVSDHCoLuL+qCvsRYQsueDkaPswDlgdEIlQpGBGMeKGJxwLEmNEJcrU9OD233EC6NA6EpE2XFevw==",
                                                        "AbEM0M0d4w+YuT/DguS/RAR6AgCKyT0bZGRkQ19kWWw+Mvde46x6HEP2AL5TNeyLhaQ0RcFoZVshLn4mCmuXW2cn",
-                                                       CryptoKeyUsage.MeasuringInstrumentsDirective
+                                                       CryptoKeyUsage.MeasuringInstrumentsDirective,
+                                                       notBefore,
+                                                       notAfter
                                                    ),
                                                    new SecP521r1Keys(
                                                        "BAGqwpw1G2OGnqJgazPuclh6m0GzbeLHZNggZ314RcfmfFWEXLcz53wm0/moZwp/fvY+OJESKJYLsCPTtUEcVn68eQDO3HVM1kx3nOEEyjYsRai8CfUWcnVFwjk1qeZvxI748Pw2wqw+JRsylIeFZtQMy05kX52P6dp3ba10WWHJeRdHLQ==",
                                                        "ARoDAWvjiZgwlbxmHPSizaMXgRVC/nrKxQpbQpsxJAcNiHLRRaQdk/E6ofdh9qspJPf+OeMUZ4ktxeKqN+MInLZj",
-                                                       CryptoKeyUsage.GermanCalibrationLaw_TypeApproval
+                                                       CryptoKeyUsage.GermanCalibrationLaw_TypeApproval,
+                                                       notBefore,
+                                                       notAfter
                                                    ),
                                                    new SecP521r1Keys(
                                                        "BABZDc4qWIAtxqvAw8OimnkTz+lliJqzhT2oJjXRm3n01MV0Z9EKHbKToFpycN56xBy754/2oWmntHgDqYYR3ubANwH1UOmbF/VFpn9zMJ71Y4hnYgRT+MUyBUK2yBsKRHYIyBBj6l/XhpAHYtDnEjaAbnk7FUHJUXA2arlTqCgeL72dgQ==",
                                                        "AO0vNjU/Pp+P88qVLPzwCAvZz4lnvgY7gO2/hgE3ce7hDlBxJ2o8O6X+k7ZpcfwPGq4defsU4zxzvBj2vz322scm",
-                                                       CryptoKeyUsage.GermanCalibrationLaw_QualityAssurance
+                                                       CryptoKeyUsage.GermanCalibrationLaw_QualityAssurance,
+                                                       notBefore,
+                                                       notAfter
                                                    )
                                                }
                          );
@@ -406,14 +439,18 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                    new SecP521r1Keys(
                                                        "BAHyie2ntlBNEJaiY0kFyGkTXf3uBL0gyQIqKQZmgwLec550jmzztm52CPUBQLB1wtxwIUzGobcmtbwk7SsHdBFalgDrCE8UQY2G6rD7TocQWs+0UOAMuTktUUO04JQUs2Ea1CSZ5YvfjVi0ZXC/y+Ui1tqMKtfW5SOLHJ8AkfhPrdSN8A==",
                                                        "AUU/uHl2kQ7abGQgJmulyxBZeLpY2YK346Bn6dnTTQelr9oYs0lW3pOJwDTcV/iUdGNDPCgOcqfITUuukVQRLU6W",
-                                                       CryptoKeyUsage.Identity
+                                                       CryptoKeyUsage.Identity,
+                                                       notBefore,
+                                                       notAfter
                                                    )
                                                },
                              IdentityGroups:   new[] {
                                                    new SecP521r1Keys(
                                                        "BAFOQI8mUNfqgPp7SuKF5oQ1CJK/CjHPR3g+2cc8w4rtuESjAYD+uHlQdA67/IZnoamZY+EMWWQzaoQ5W52c7PM3xAH3nYfJkKKhS2oFjPkXZDaAR81tSkJ0YLgr25tce9m0KD8iYBlb83sG/S8dOd2L25il9Q8SSOIwUbmVN1jONTlfIQ==",
                                                        "I59i1RwKSncsy/FY1Rb3PV0Ev9pj0HBae9EeU9Uau6ee3AgtZPGpmKRLwgVS8o7HyZA2ORLvbVvk1HJxuLBjloo=",
-                                                       CryptoKeyUsage.IdentityGroup
+                                                       CryptoKeyUsage.IdentityGroup,
+                                                       notBefore,
+                                                       notAfter
                                                    )
                                                },
                              DefaultHTTPAPI:   new HTTPAPI(
@@ -436,27 +473,37 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                    new SecP521r1Keys(
                                                        "BAArNbJfoQAo2gNPLp7dPFVW39pWs1+z3CG/BYcjTuCWocU6Mj6kdbTfe9fKvS5NzoD870NZWk4IEwhENnt7hvQRHQB75RuVdGOxXNhkfXUDHawlhjjuPwrssrP4OqaQgM+Ah0aZ+tztpK+cCluph8gMAdpyQuNVFYTV2NnGww/7B0wpWQ==",
                                                        "AaG3cKLbLJpFFt3+dnPVz6L7Hdw0GHpGianqAFCCFCimY4alqHGLN6allSoXW2LoW7uVjZMutK73zXLm0x3CQKTv",
-                                                       CryptoKeyUsage.Identity
+                                                       CryptoKeyUsage.Identity,
+                                                       notBefore,
+                                                       notAfter
                                                    ),
                                                    new SecP521r1Keys(
                                                        "BAEzDxT6qHDTJqfWjbZZC9F1FPr0s3GyJvcJb91wii8lr8sbJ9pIgyh6eFhIQ2PTKEGlqJHnDAkf4ty/2V6gvFYpPAF5JFMnhFmlo9/M2xnOKZ2ovkRyQRQeUqOu0YygOvKa96xa6aTXgJr+92GMNg0nlx1E8tPaD+VT0jCPaW0UZk/xhA==",
                                                        "dW0YZxkrCmhVcd9tkRTAyZ13rb7Yb0+J304jA67DocKD9qpWHaC0mnCwe7W9lr/oJYcaNzjFvmzetHjfyNU7aPY=",
-                                                       CryptoKeyUsage.Signature
+                                                       CryptoKeyUsage.Signature,
+                                                       notBefore,
+                                                       notAfter
                                                    ),
                                                    new SecP521r1Keys(
                                                        "BABwKA4OTHsENYfSUWNfBkNcJ5PcM7vdnaYa9JkGy4viwCuqKDf8X3u/Z7dFUj5g+kexpCyozlbuzdQLpi9JmxFMugBxMDF3eqUWnBB/NBc4rWOC1LiKBYNJ1J0DFJljtE8Vunnmbarw39ncA8VOjzecpsMfjPlDUcDgvh/NKeCbiaf4Tw==",
                                                        "AOauw6htnOUIHGqtHr8kAedfm8Taw6VHP0hRHlRtMJM8jwdwPrlH4gvaZA/3JbnvUtSUH1kvN/veyiMic8ITj+kE",
-                                                       CryptoKeyUsage.MeasuringInstrumentsDirective
+                                                       CryptoKeyUsage.MeasuringInstrumentsDirective,
+                                                       notBefore,
+                                                       notAfter
                                                    ),
                                                    new SecP521r1Keys(
                                                        "BAEGs8vF+l4rFGaCRm6pnnIHU9AAZBD42/98d5R+XMNiLjWmnO/p+GUnBf2QPrrsVQA6YXP648vGKu6ac5OS/Ye4+wG84/mFSmTGtG9VkQPa5aEN+7HBS7kLNHjqed4QFNQMpsgeuB04+WTlw63Gm0sejOcy5mZ9ApwWRynzbuORX61djw==",
                                                        "AP35EuWEP5kq7dQGv2cyzCbcU0aSV4fr4DmBoxVspF9UFwxf5P9J6bj/rJ/rj5iiFmoRTg0D5WU67i4Bkdzok6JD",
-                                                       CryptoKeyUsage.GermanCalibrationLaw_TypeApproval
+                                                       CryptoKeyUsage.GermanCalibrationLaw_TypeApproval,
+                                                       notBefore,
+                                                       notAfter
                                                    ),
                                                    new SecP521r1Keys(
                                                        "BABi6MPJx8GjK7eWvF9ofRVq0PRwJlzKj27NwrUug2w2DoFB+UO+H1JHfHOyFdG2K8wy7oSM2RIxNchX/ASKgRYUIgB7g9eoYy+fgulsjuYP9fe7DiPe3xyVWIrNjeLazGWOM+B4exbZYmIMnzVCUeGAhR8KwZili/CsMSNxq+S/nOJntg==",
                                                        "AIMt6YtKd6CXUDiOUrYfvOEJoo1LFrOJ+vmSrD19vy4WqzNjrYDeMRLIApaIdg8AS9WEbyqm0l+9OXEkzDrWREom",
-                                                       CryptoKeyUsage.GermanCalibrationLaw_QualityAssurance
+                                                       CryptoKeyUsage.GermanCalibrationLaw_QualityAssurance,
+                                                       notBefore,
+                                                       notAfter
                                                    )
                                                }
                          );
@@ -468,14 +515,18 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                    new SecP521r1Keys(
                                                        "BAEjk2LHaXC3bHewphY2VtxEKmBuUd6FiW/6h52IKdra2vcPEjR7piR2CvActMppLGtaEaz29bXksutwYG6y2IsDHQC2BqesLANOtj0lj80zI1NC6JylHN7xm+mkVs+X4REltPhJG44Xp5z1vKvmPvyAR9o/9X/LKv3oXbE85m+MIAaIig==",
                                                        "AaTKr2YNbG0rOsmX/oSVfFZ1+MT1Ovad6CxcWkPwri3BvjXCFDa1qGmgOuPie2LiX8DL3fV56iLl22hK0559/6UK",
-                                                       CryptoKeyUsage.Identity
+                                                       CryptoKeyUsage.Identity,
+                                                       notBefore,
+                                                       notAfter
                                                    )
                                                },
                              IdentityGroups:   new[] {
                                                    new SecP521r1Keys(
                                                        "BAF8nLf89yliV7MlxnBw5btyzY/+dcKAvyeX4GTfD2k0QQI8qdMd+wlRVQ3DaYcJ9L7m6ZR05EPegUGz9otFB7GnNwGULhlImqBf5h7j0qvPXXcittez40EQsSL6pVW9Y4gyMz1ktlZIM1wHY+kochH7zf5Lc5SQKhPWnral9QdER6b1zg==",
                                                        "APsSJ++EGD7OECmxBsIeqXZp1QEP5aKmKHv1Kl1b8q3M2mBrQic6ZClQgqhOnca1N5mLXKF0/rSRdDVnTf33w1Uo",
-                                                       CryptoKeyUsage.IdentityGroup
+                                                       CryptoKeyUsage.IdentityGroup,
+                                                       notBefore,
+                                                       notAfter
                                                    )
                                                },
                              DefaultHTTPAPI:   new HTTPAPI(
@@ -524,12 +575,16 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                  new SecP521r1Keys(
                                                                      "BAHFKMrHD0Gu8finZockYrUjC3sHWnnHzwBQoNWZYmriuyT+F33k+36vZP9ZqZjAvBMerJbcEeEM3ulVPAIt1CLFVAFaTqZm3JHpre2I1Rkneh/TVvf3pEo72rEaY4/D3KdE8i6kQnPGDnOdp6DAfDMRm0kRmCmGe9Dj/tKa4oqw/JndUw==",
                                                                      "aqOnZ+ucfOyF0/xPJiPSlFqEdS51Z21vTuimbU0PW8pi3pV23ThdP9Zms9JcX9mNqmC4vLcDoRJdzxOVH0GdCUE=",
-                                                                     CryptoKeyUsage.Identity
+                                                                     CryptoKeyUsage.Identity,
+                                                                     notBefore,
+                                                                     notAfter
                                                                  ),
                                                                  new SecP521r1Keys(
                                                                      "BACcr9r7JizaJMdMZwCpg58sE+yr+tr9qCnXJ5+VjcparB2xlwQhRBZ69urpSgku5kYU06o/0JxLC/TCTjLUId/H+QAI5K6FHfzytdWRG1uOI0yAL1ZuWH/KTXGKrAOn59phEyzmXYwltJKgq7ux5pS2MMA+3bKwoHFIP8eeKqR2BqkM5Q==",
                                                                      "AaCYLMYwo4aw6zt2rPlRvdVfF/WQoMfIyuk+S4XJOuN1MwwtzgozjLzs4GG46kUbZAjqN90vdOHA+M/RDE/UZ50s",
-                                                                     CryptoKeyUsage.Signature
+                                                                     CryptoKeyUsage.Signature,
+                                                                     notBefore,
+                                                                     notAfter
                                                                  )
                                                              }
                                        );
@@ -546,12 +601,16 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                  new SecP521r1Keys(
                                                                      "BADwHOMkplbgGAzHAxmDHl600L2a4CYJ5S629DVYxAQy7ELVUvCCu4wMivwa3A+A2YNr32zF92NPd85LwyYO4Tb44AEH5NNbSMaWYpuHyC9pKZ8NjbDtPg5YcjO/7oLWXh0vcVeKFNeWdi0Rc370ucknSmsY71Sgj1TyFNIFHSXYqXAYbA==",
                                                                      "AJsJ8RtjQihyxVL/iRwyh8eWJhzByoF9xqc9eWG7cbdqtPB7TvtvnRlL4zDn8N4YFzyaNSyPTLFAXE48vBKTbaOY",
-                                                                     CryptoKeyUsage.Identity
+                                                                     CryptoKeyUsage.Identity,
+                                                                     notBefore,
+                                                                     notAfter
                                                                  ),
                                                                  new SecP256r1Keys(
                                                                      "BKr3Np0dgN9MH6ANP/2L3Ubl9r49bQkJsslA/GH2tf7B0gqODH+tcz+/0TDvw90QWoW6N1Z/rhcr33WBTQ9+rf0=",
                                                                      "XLdToBdLCjSlxQmSDv6Sw4NLOi3JaCuI8dJVpHTHBaU=",
-                                                                     CryptoKeyUsage.Signature
+                                                                     CryptoKeyUsage.Signature,
+                                                                     notBefore,
+                                                                     notAfter
                                                                  )
                                                              }
                                        );
@@ -563,14 +622,18 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                  new SecP521r1Keys(
                                                                      "BAClhSA92s1KInjXUqZ8L89Y2y80fJnaQSyuBPCknjxeYQhuc+hCD5dDED+uOd4Ccms+xr/sJEIIKSljLdiaAdxkWQEJNzMJbIKgfyKfNjEYNphNYBKt0udayF5c/ZqHTO+oWAYY304ojjs9WAbPWx0CSB7qjHIRCWLgV1BTKE/naVQgBA==",
                                                                      "VAL7TXDRnNy9Mc7ENCtbHQ3EDCCOUuSiNgfyP6NEcumeh7kPAguhibCFuFqb6jzjn5XK6/fPv4B5JgQcgxilDVc=",
-                                                                     CryptoKeyUsage.Identity
+                                                                     CryptoKeyUsage.Identity,
+                                                                     notBefore,
+                                                                     notAfter
                                                                  )
                                                              },
                                            IdentityGroups:   new[] {
                                                                  new SecP521r1Keys(
                                                                      "BAF6HcyIwIstkj7u9KzZz9dYfMPfxMdhqZyXT2G9ZSZxqfzCDU+N2sRfD8a63/LTHheD5opC5I/1AjbTX2t9abLnhAHq1vUuYNkWpOzmVHJWel6cnRgKVcqsS4z8XTImU8D45LgLfny1lFaGqBqp0B9gyfoOyvFxX4NlpgYMjFb1jdsOig==",
                                                                      "AYSbfXi+895sYLiiAHsxWsButKu4JurjDoDkZSA7g31V+SMs3MD0homVHIqYqbZqP5dS24fjsZQUvDv0c8kcrsHP",
-                                                                     CryptoKeyUsage.IdentityGroup
+                                                                     CryptoKeyUsage.IdentityGroup,
+                                                                     notBefore,
+                                                                     notAfter
                                                                  )
                                                              },
                                            DefaultHTTPAPI:   new HTTPAPI(
@@ -611,15 +674,17 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             #region GraphDefined CSM
 
             GraphDefinedCSM        = new ChargingStationManufacturer(
-                                         Id:           ChargingStationManufacturer_Id.Parse("GraphDefinedCSM"),
-                                         Name:         I18NString.Create(Languages.en, "GraphDefined Charging Station Manufacturing"),
-                                         CryptoKeys:   new[] {
-                                                           new SecP521r1Keys(
-                                                               "BAAStI+niDMflUP0x82HHlss6az/yAZ0Z/P3EQZjUvfCWvxlg69qDMmpgW1WovOTw9XZshB1JIf3dxikqEEAXfGyRAFQj6ofJFwbeVYzo8w0/0+IlPSlErQR6FDmWHvWR6ouuoP1R1m0BDdhpeCp9z1KlYl/qIDsivuB2Qzy682SUUnO8Q==",
-                                                               "AZ7Ef+Hqn1+TZtWilHB/d7jKTGtN6kx9IwA2946tLbal8kR95K2aBJ1iCw5MPMZzVdAO8oEARidtfFbDYcfqpZGe",
-                                                               CryptoKeyUsage.Identity
-                                                           )
-                                                       }
+                                         Id:               ChargingStationManufacturer_Id.Parse("GraphDefinedCSM"),
+                                         Name:             I18NString.Create(Languages.en, "GraphDefined Charging Station Manufacturing"),
+                                         CryptoKeys:       new[] {
+                                                               new SecP521r1Keys(
+                                                                   "BAAStI+niDMflUP0x82HHlss6az/yAZ0Z/P3EQZjUvfCWvxlg69qDMmpgW1WovOTw9XZshB1JIf3dxikqEEAXfGyRAFQj6ofJFwbeVYzo8w0/0+IlPSlErQR6FDmWHvWR6ouuoP1R1m0BDdhpeCp9z1KlYl/qIDsivuB2Qzy682SUUnO8Q==",
+                                                                   "AZ7Ef+Hqn1+TZtWilHB/d7jKTGtN6kx9IwA2946tLbal8kR95K2aBJ1iCw5MPMZzVdAO8oEARidtfFbDYcfqpZGe",
+                                                                   CryptoKeyUsage.Identity,
+                                                                   notBefore,
+                                                                   notAfter
+                                                               )
+                                                           }
                                      );
 
             GraphDefinedCSM_Node1  = new ChargingNode(
@@ -629,14 +694,18 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                new SecP521r1Keys(
                                                                    "BAB7om+G9sLoccGkXrc2ak3QKcobuDmPvfu/dzXsLbWbrm3RU/xoO8TB5HmuKsBxAwWH9IBIZNn6ndNZ93U0B+ViwQCpNq48nL1ZCpBWh/jaSNmdW9T1JSOhzHTWzc7CR9/7+Yn5HqQtS3Md0uPURbskX7rR7R3WS2PK9xqdVOyYKvgltQ==",
                                                                    "APvu7tPDN/XVNvQLR6ZCevFgvaOQl02KhfK3GkSPByJE6uqm0gmzd3CPS56mQBc9dlDjZlRUFT3gJX4UQUT2B6W3",
-                                                                   CryptoKeyUsage.Identity
+                                                                   CryptoKeyUsage.Identity,
+                                                                   notBefore,
+                                                                   notAfter
                                                                )
                                                            },
                                          IdentityGroups:   new[] {
                                                                new SecP521r1Keys(
                                                                    "BACZW58CNfw/orPAY77TmYU+m346s6gWywQEU32co6LXryxRKY1owu9PrgHF2xDL305JBCul60ivagAduznmIWKrXQDjSk6KMwve1lOtp6Q/3rMUmhoWteRdwj8ZjLqlZh6mlhYg+cwxD2SHYZ6MMhniEofkMdJl3be1/KuC2lKuHpvF7A==",
                                                                    "AUT+bzHvlhMjnmsa+Qb6zPPD0J3lInMy80sb1vIdG5inEqYUGlOQ9ZIbRv60rJdTAPk7VhPgSeW4PJmIJcOQGgdD",
-                                                                   CryptoKeyUsage.IdentityGroup
+                                                                   CryptoKeyUsage.IdentityGroup,
+                                                                   notBefore,
+                                                                   notAfter
                                                                )
                                                            },
                                          DefaultHTTPAPI:   new HTTPAPI(
@@ -673,14 +742,18 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                               new SecP256r1Keys(
                                                                   "BLMl4daDO/n+kf3Qz0kcBwG0cGxoDCGQNz/H6W21VL8cAq3l+vgJeNWR50MhoSyVOvI+x8YZRpoBdMl5AzKebaE=",
                                                                   "APKdkn4o9ozmwJ+WFxEJ6qxnsWf6p6Tghcy7aQThJLqq",
-                                                                  CryptoKeyUsage.Identity
+                                                                  CryptoKeyUsage.Identity,
+                                                                  notBefore,
+                                                                  notAfter
                                                               )
                                                           },
                                         IdentityGroups:   new[] {
                                                               new SecP256r1Keys(
                                                                   "BKDXmC6yyP1OMlDPgsE67fsfII90cskSVkd993EtW+1/1TY5KJAGSpEsQTGdGruKH4sKDztqNbxXpUYicfYUzQ4=",
                                                                   "AOawdrgs0v4cQWmg4vokRzp2cxq+1V2ftr4oVTB+A6we",
-                                                                  CryptoKeyUsage.IdentityGroup
+                                                                  CryptoKeyUsage.IdentityGroup,
+                                                                  notBefore,
+                                                                  notAfter
                                                               )
                                                           },
                                         DefaultHTTPAPI:   new HTTPAPI(
@@ -792,14 +865,18 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                               new SecP256r1Keys(
                                                                   "BCphDksQSmKHJKMVcbPv8ABAYwM4oPz+lW47A5mS0V986jhZpjRo+a4bhhnBDtbvbWgObe0t5Z4fC63IxXG/Y8k=",
                                                                   "PiE4dMglv6W5km72JIdPL2adDF3PdBuRaoitaX8+L8g=",
-                                                                  CryptoKeyUsage.Identity
+                                                                  CryptoKeyUsage.Identity,
+                                                                  notBefore,
+                                                                  notAfter
                                                               )
                                                           },
                                         IdentityGroups:   new[] {
                                                               new SecP256r1Keys(
                                                                   "BEycchG1xCCAbgIii15U6s4P9D91u5TdS66T/Qf2bnBAi83jilLce56W8p9B6f6PwQyj2Rjw0b7z228ZElSTDtM=",
                                                                   "ALRCex+A7QwYU0rdlFrS6Q19vTXeccaGtzXkT66mt8Hh",
-                                                                  CryptoKeyUsage.IdentityGroup
+                                                                  CryptoKeyUsage.IdentityGroup,
+                                                                  notBefore,
+                                                                  notAfter
                                                               )
                                                           },
                                         DefaultHTTPAPI:   new HTTPAPI(
@@ -906,16 +983,20 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                 Description:      I18NString.Create(Languages.en, "Hubject Central EV Roaming Hub - Node 1 of 3"),
                                 Identities:       new[] {
                                                       new SecP521r1Keys(
-                                                          "",
-                                                          "",
-                                                          CryptoKeyUsage.Identity
+                                                          "BAD8/yuP2rfOhTasqruUkfjs9Q79HkClX3rfbZfXmo/GicuSPYdR0u7FghdgXzmT5/uPSG7IXreExRJbBJ6wHHZA1wBhi9ykAJ1iyKppWbfLTvWYuTlxXjfBLUABbB0eLgJQrM7v0TAPwSXSSbAOATQWLP3dX1bqeHk7GQVXZQYFSef34g==",
+                                                          "ZN8c3h0ndlbs2kam8sYeZCfgX0JdUXJhZ7oOuSr3Xc/Z7+wWby6VXgLyJXlTFSXCnx/4X24VwOjYaY54wF1W2Ks=",
+                                                          CryptoKeyUsage.Identity,
+                                                          notBefore,
+                                                          notAfter
                                                       )
                                                   },
                                 IdentityGroups:   new[] {
                                                       new SecP521r1Keys(
-                                                          "",
-                                                          "",
-                                                          CryptoKeyUsage.IdentityGroup
+                                                          "BACmzmoboAAvcjgXpamKZJF+mfJLbsT+StFa7IrcLgmaVflZ8sRltTxgc0hdnNDvvqlbJ3yCbsYDlsRkWrCqzXWP7AFvinp8W/KjR7+JlrabtwzqeHs97dRX/LXlpa+swSpGc9ThiE/HJwzjBvqt+adTRONQdUipUi2p5yiNqNo4zRDe/A==",
+                                                          "Abei2hQuiz5Dd6guUfT5R4CUdCF2jJhpl1VJAd3kKRBhKy/WZPMA4zO8gjJ4te6pg1C3LoAG5ZwgW6sHVizajzwV",
+                                                          CryptoKeyUsage.IdentityGroup,
+                                                          notBefore,
+                                                          notAfter
                                                       )
                                                   },
                                 DefaultHTTPAPI:   new HTTPAPI(
@@ -945,16 +1026,20 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                Description:      I18NString.Create(Languages.en, "Gireve Central EV Roaming Hub - Node 1 of 3"),
                                Identities:       new[] {
                                                      new SecP521r1Keys(
-                                                         "",
-                                                         "",
-                                                         CryptoKeyUsage.Identity
+                                                         "BADdccXxF+XWPajp7EbLSJZ/LJY0kgBr3rKRpF8e5snWkjGHFKRLvIIUVzKRBOerPgucjIaq23dGkWJSgyG/2hG13AENa3IwGHrR6GbvpCim8JrKIcGdZOX7gaQRw4mZHu21EZvtl7vewlcO+7Hklm90++/4/TJRldGACZ2gLYL7gz0pFA==",
+                                                         "AS9YuNgq0yY9rbO/z2fH6gEo+YBWCjwRMhWq0BomPoFS1rZf8lJG/NLAe+3gkcilz+4YoeELFoOHSTnR07qGeXuX",
+                                                         CryptoKeyUsage.Identity,
+                                                         notBefore,
+                                                         notAfter
                                                      )
                                                  },
                                IdentityGroups:   new[] {
                                                      new SecP521r1Keys(
-                                                         "",
-                                                         "",
-                                                         CryptoKeyUsage.IdentityGroup
+                                                         "BACI/FAAWdKEKOYlZAUEKNPV3y/QLSv3prerXMRoWiWAqq1ClzbUuGnPYIMr6Jy6Qpo0fpyU52HusQ5y0BqPWVdgUQAb+sswTGcu1M+A4ygB6sOOU0YWnGGjCEFRbWOMbb5KJn4r7o3UCItmOUov7In2PKAj54WKbpH8ZleDS6/wnjyHoQ==",
+                                                         "FjoJyQD2e0cKrcv4qD+7jULWfgCKkJYYXL3KFkyEE4+COKCPdgwEQPjQy3narDHmmxzsgCxYRNMiMqet9rLbPIA=",
+                                                         CryptoKeyUsage.IdentityGroup,
+                                                         notBefore,
+                                                         notAfter
                                                      )
                                                  },
                                DefaultHTTPAPI:   new HTTPAPI(
@@ -996,7 +1081,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                           new SecP521r1Keys(
                                                               "BADBAkQtES7KC9pWzaQQZFgWINmYRDxUzYzwYCc5Qug6F9i7rXB+5dmNoJGV+ay9LM5nDPoF2kSB+4h96POldZb5/gFQH7R5T94WFQFGfeL2fBL9M7QYKYkBw4FwvyA7E1y/ag3XhgdK7A9eoQqOy4kTkEaxgUa9CdZh4rQO1kSup64kPQ==",
                                                               "AOQlqe8KsK8lEBb975TC3CujMHUY6F0R40EGuyElt8yih/1qo9gqqn2qsDVMGdxaIjcYmKTLPCXVjVVW7W20Uazy",
-                                                              CryptoKeyUsage.Identity
+                                                              CryptoKeyUsage.Identity,
+                                                              notBefore,
+                                                              notAfter
                                                           )
                                                       }
                                 );
@@ -1008,14 +1095,18 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                           new SecP521r1Keys(
                                                               "BAFqS+zv2Q/nhKWGMY06g9PGsLOu2v24riOvi3WaL5djnx4Y7QoY9foRPOQyBbbvM6v9dsDDILt93X4cHbQj2NE1KgAlvnwnvMEdMqJAv94iqwZvIN9Mqva/y8yntHktRmhMXC0UtsXH9gN8FOUAwrgaeZMCQEN1Lv8S15+L9PvlcOnq0w==",
                                                               "AYo7JRM88IACoKGnyendgFJbm1bPZlQfrksaR9UEEsXyXQR4DMiP96j4OIb6LnzgeK91KxVdSvAsePbDa3apVKao",
-                                                              CryptoKeyUsage.Identity
+                                                              CryptoKeyUsage.Identity,
+                                                              notBefore,
+                                                              notAfter
                                                           )
                                                       },
                                     IdentityGroups:   new[] {
                                                           new SecP521r1Keys(
                                                               "BAD2xjS3DzoZ59vdND49xOB1jobmHfztFWI1m1N1U1Jj4x+jcr093sG1lTZscZem49tg75AUsH7NfUFI15mzyPeN9wHWugHzRbCXx46zP9ybMlAFTL2/riRRykbp3ZD3c+EfHJ+ViEu7azxLu4XiXNs/OH9P0HTv2E8Sf3O46ZgieTlwzQ==",
                                                               "AeiVNgKk+kaWSdmMaPmFLyTmq8u+PpWm8DpbVttjffmERrFPJME1KbXWvav0kFWEOQr+xKePTamBM6UOWrVa2zwc",
-                                                              CryptoKeyUsage.IdentityGroup
+                                                              CryptoKeyUsage.IdentityGroup,
+                                                              notBefore,
+                                                              notAfter
                                                           )
                                                       },
                                     DefaultHTTPAPI:   new HTTPAPI(
