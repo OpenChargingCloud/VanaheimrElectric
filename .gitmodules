@@ -46,3 +46,6 @@
 [submodule "libs/WWCP_ESGP"]
 	path = libs/WWCP_ESGP
 	url = ssh://git@git.graphdefined.com:5001/OpenChargingCloud/WWCP_ESGP.git
+[submodule "libs/WWCP_DCC"]
+	path = libs/WWCP_DCC
+	url = ssh://git@git.graphdefined.com:5001/OpenChargingCloud/WWCP_DCC.git
