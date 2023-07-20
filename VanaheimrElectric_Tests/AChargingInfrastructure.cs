@@ -38,6 +38,7 @@ using cloud.charging.open.protocols.WWCP.PKI;
 using cloud.charging.open.protocols.WWCP.SMM;
 using cloud.charging.open.protocols.WWCP.CSM;
 using cloud.charging.open.protocols.WWCP.MCL;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 #endregion
 
@@ -1191,6 +1192,94 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             // Home Energy Management Systems
 
             // Smart Cities
+
+
+
+            // Deutsche Akkreditierungsstelle GmbH (DAkkS)
+            // https://www.dakks.de
+            // Datenbank der akkreditierten Stellen: https://www.dakks.de/de/akkreditierte-stellen-suche.html
+            // ^^^^^^^^
+            // Akkreditierungsurkunde D-PL-12133-01-00 (EMV Prüfung)
+            // https://ce-lab.de/fileadmin/user_upload/downloads/DAkkS-Urkunde_2020-12.pdf
+            // https://www.dakks.de/files/data/as/pdf/D-PL-12133-01-00.pdf
+            // https://www.dakks.de/files/data/as/pdf/D-PL-12133-01-01.pdf
+            // ^^^^^^^^
+            // CE-LAB GmbH
+            // Am Hammergrund 1
+            // D-98693 Ilmenau
+            // https://ce-lab.de
+            // ^^^^^^^^
+            // # Digital EMC Testreport
+            //
+            // Id:                                 PB EMV 290323-1 Pulsares
+            // Project No:                         4598
+            // Equipment under Test (EUT):         EV EasyCharge, Schaltunit und Differenzstromsensor
+            // Name:                               PulCharge EV-Ladesystem
+            // Serial Number:                      -
+            // Manufacturer:                       Pulsares GmbH
+            // Customer:                           Pulsares GmbH
+            // Address of the Customer:            Steinbreite 3, 31688 Nienstädt, Germany
+            // Test Target:                        Compliance with Test Specification
+            // Test Specification:                 - Emission:       EN IEC 61000-6-4:2019 mit den Grenzwerten IEC 61851 - 21 - 2:2018 *
+            //                                     - Susceptibility: EN IEC 61000-6-2:2019 mit den Prüfpegeln  IEC 61851 - 21 - 2:2018 *
+            // Deviation from test specification:  EN 61000-4-3, jeweils nur eine Position
+            // Test Result:                        Requirements fulfilled, tests passed
+            // Restrictions to the test result:    keine
+            // Comment:                            This test report applies to the tested EUT only and is not a certificate about the quality of the series production. With * marked procedures
+            //                                     were performed outside of accreditation.This test report does not authorise to use any test marks.This report may not be published or
+            //                                     changed in content without the express prior written consent of the lab. Without permission of the lab this report is not permitted to be
+            //                                     duplicated in extracts.
+            // Date:                               31.03.2023
+            // Report prepared by:                 Andreas Reh
+            // Report approved by:                 Dr.-Ing. Michael Naß
+            // URLs:                               - https://www.pulsares.shop/medien/dokumente/EMV-Report_PulCharge.pdf
+            // SHA512:                             0x00...
+            // Digital Signatures:                 - 0x00...(Andreas Reh,           CE-LAB)
+            //                                     - 0x00...(Dr.-Ing. Michael Naß,  CE-LAB)
+            //                                     - 0x00...(Manuel Hupe,           Pulsares GmbH)
+            // ^^^^^^^^
+            // # Digital Product Passport
+            // 
+            // Name:                               Elektroauto Ladesystem Ladesteuerung PulCharge mit DC-Fehlerstromerkennung (Mode-3, 62955)
+            // Main-URL:                           https://www.pulsares.shop/pulcharge.html
+            // ...
+            // ^^^^^^^^
+            // Pulsares GmbH
+            // Steinbreite 3
+            // 31688 Nienstädt
+            // https://www.pulsares.shop
+            // Registergericht: Amtsgericht Stadthagen
+            // Registernummer: HRB 201443
+            // Geschäftsführung: Joerg Hupe, Manuel Hupe
+            // Umsatzsteuer-Identifikationsnummer: DE314906204
+            // WEEE-Register-Nummer: DE67983095
+            // ------------------
+            // European WEEE registers network (EWRN)
+            // https://www.ewrn.org/national-registers/national-registers
+            // EU Directive 2012/19/EU: https://www.ewrn.org/fileadmin/ewrn/documents/WEEE-Directive__recast_.pdf
+            //  => Deutschland: Stiftung elektro-altgeräte register
+            //                  https://www.stiftung-ear.de
+            //                  https://www.ear-system.de/ear-verzeichnis/hersteller.jsf
+            // 
+
+
+            // Measurement Information Infrastructure (MII) - set of normative standards that unambiguously define data structures, taxonomies, service protocols and security for locating, communicating and sharing measurement information.
+            // International Quality Infrastructure (IQI)
+            // M-Layer - Information layer to support metrological data and application types
+
+            // Value-creating innovation and production drive demand, not consumers:
+            // "No one ever asked for a streaming music service to replace their phonograph."
+            // "No one asked for a smartphone to replace their landline or a car-sharing service to replace their car."
+            // "No one asked for a search engine to replace their encyclopedia."
+            // "No one asked for a social network to replace their address book."
+            // "No one asked for a video streaming service to replace their DVD player."
+            // "No one asked for a mobile payment service to replace their wallet."
+            // "No one asked for a messaging service to replace their email."
+            // "No one asked for a digital camera to replace their film camera."
+            // "No one asked for a GPS to replace their map."
+            // "No one asked for an online retailer to replace their local store."
+            // "No one asked for a cloud storage service to replace their hard drive."
+            // Build it and they will come!
 
 
         }
