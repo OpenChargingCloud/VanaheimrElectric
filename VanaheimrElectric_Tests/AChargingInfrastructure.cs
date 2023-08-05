@@ -38,7 +38,6 @@ using cloud.charging.open.protocols.WWCP.PKI;
 using cloud.charging.open.protocols.WWCP.SMM;
 using cloud.charging.open.protocols.WWCP.CSM;
 using cloud.charging.open.protocols.WWCP.MCL;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 #endregion
 
@@ -1195,9 +1194,27 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
 
 
+            // https://iaf.nu
+            // International Accreditation Forum
+
+            // https://ilac.org
+            // The international organisation for accreditation bodies
+
+            // EURAMET - THE EUROPEAN ASSOCIATION OF NATIONAL METROLOGY INSTITUTES
+            // https://www.euramet.org
+
+            // "European Quality Infrastructure"
+
+            // European co-operation for Accreditation (EA)
+            // https://european-accreditation.org
+            // EU Regulation (EC) No 765/2008 is the legal framework for the provision of accreditation services across Europe: https://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2008:218:0030:0047:EN:PDF
+            // ISO/IEC 17025:2017 General requirements for the competence, impartiality and consistent operation of (certification and calibration) laboratories.
+            // ^^^^^^^^
+
             // Deutsche Akkreditierungsstelle GmbH (DAkkS)
             // https://www.dakks.de
             // Datenbank der akkreditierten Stellen: https://www.dakks.de/de/akkreditierte-stellen-suche.html
+            // ISO/IEC 17011:2018-03 Conformity assessment - Requirements for accreditation bodies accrediting conformity assessment bodies
             // ^^^^^^^^
             // Akkreditierungsurkunde D-PL-12133-01-00 (EMV Prüfung)
             // https://ce-lab.de/fileadmin/user_upload/downloads/DAkkS-Urkunde_2020-12.pdf
