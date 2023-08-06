@@ -309,7 +309,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                               DefaultHTTPAPI:   new HTTPAPI(
                                                                     HTTPServerPort:  IPPort.Parse(OpenChargingCloudPKI_Node1_HTTPPort),
                                                                     DNSClient:       DNSClient,
-                                                                    Autostart:       true
+                                                                    AutoStart:       true
                                                                 ),
                                               DNSClient:        DNSClient
                                           );
@@ -343,7 +343,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                              DefaultHTTPAPI:   new HTTPAPI(
                                                                    HTTPServerPort:  IPPort.Parse(OpenChargingCloudPKI_Node2_HTTPPort),
                                                                    DNSClient:       DNSClient,
-                                                                   Autostart:       true
+                                                                   AutoStart:       true
                                                                ),
                                              DNSClient:        DNSClient
                                           );
@@ -377,7 +377,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                              DefaultHTTPAPI:   new HTTPAPI(
                                                                    HTTPServerPort:  IPPort.Parse(OpenChargingCloudPKI_Node3_HTTPPort),
                                                                    DNSClient:       DNSClient,
-                                                                   Autostart:       true
+                                                                   AutoStart:       true
                                                                ),
                                              DNSClient:        DNSClient
                                           );
@@ -464,7 +464,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                              DefaultHTTPAPI:   new HTTPAPI(
                                                    HTTPServerPort:  IPPort.Parse(PTB_Node1_HTTPPort),
                                                    DNSClient:       DNSClient,
-                                                   Autostart:       true
+                                                   AutoStart:       true
                                                ),
                              DNSClient:        DNSClient
                          );
@@ -540,7 +540,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                              DefaultHTTPAPI:   new HTTPAPI(
                                                    HTTPServerPort:  IPPort.Parse(VDE_Node1_HTTPPort),
                                                    DNSClient:       DNSClient,
-                                                   Autostart:       true
+                                                   AutoStart:       true
                                                ),
                              DNSClient:        DNSClient
                           );
@@ -647,7 +647,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                            DefaultHTTPAPI:   new HTTPAPI(
                                                                  HTTPServerPort:  IPPort.Parse(GraphDefinedSEM_Node1_HTTPPort),
                                                                  DNSClient:       DNSClient,
-                                                                 Autostart:       true
+                                                                 AutoStart:       true
                                                              ),
                                            DNSClient:        DNSClient
                                         );
@@ -719,7 +719,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                          DefaultHTTPAPI:   new HTTPAPI(
                                                                HTTPServerPort:  IPPort.Parse(GraphDefinedCSM_Node1_HTTPPort),
                                                                DNSClient:       DNSClient,
-                                                               Autostart:       true
+                                                               AutoStart:       true
                                                            ),
                                          DNSClient:        DNSClient
                                       );
@@ -767,7 +767,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                         DefaultHTTPAPI:   new HTTPAPI(
                                                               HTTPServerPort:  IPPort.Parse(GraphDefinedCSO_Node1_HTTPPort),
                                                               DNSClient:       DNSClient,
-                                                              Autostart:       true
+                                                              AutoStart:       true
                                                           ),
                                         DNSClient:        DNSClient
                                     );
@@ -843,7 +843,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                        DatabaseFilePath:                    null,
                                        RemotePartyDBFileName:               $"GraphDefined_OCPI{protocols.OCPIv2_1_1.Version.String}_RemoteParties_CPO.log",
                                        AssetsDBFileName:                    $"GraphDefined_OCPI{protocols.OCPIv2_1_1.Version.String}_Assets_CPO.log",
-                                       Autostart:                           false
+                                       AutoStart:                           false
 
                                    );
 
@@ -890,7 +890,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                         DefaultHTTPAPI:   new HTTPAPI(
                                                               HTTPServerPort:  IPPort.Parse(GraphDefinedEMP_Node1_HTTPPort),
                                                               DNSClient:       DNSClient,
-                                                              Autostart:       true
+                                                              AutoStart:       true
                                                           ),
                                         DNSClient:        DNSClient
                                     );
@@ -962,7 +962,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                        DatabaseFilePath:                    null,
                                        RemotePartyDBFileName:               $"GraphDefined_OCPI{protocols.OCPIv2_1_1.Version.String}_RemoteParties_EMSP1.log",
                                        AssetsDBFileName:                    $"GraphDefined_OCPI{protocols.OCPIv2_1_1.Version.String}_Assets_EMSP1.log",
-                                       Autostart:                           false
+                                       AutoStart:                           false
 
                                    );
 
@@ -1010,7 +1010,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                 DefaultHTTPAPI:   new HTTPAPI(
                                                       HTTPServerPort:  IPPort.Parse(Hubject_Node1_HTTPPort),
                                                       DNSClient:       DNSClient,
-                                                      Autostart:       true
+                                                      AutoStart:       true
                                                   ),
                                 DNSClient:        DNSClient
                             );
@@ -1053,7 +1053,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                DefaultHTTPAPI:   new HTTPAPI(
                                                      HTTPServerPort:  IPPort.Parse(Gireve_Node1_HTTPPort),
                                                      DNSClient:       DNSClient,
-                                                     Autostart:       true
+                                                     AutoStart:       true
                                                  ),
                                DNSClient:        DNSClient
                            );
@@ -1120,7 +1120,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                     DefaultHTTPAPI:   new HTTPAPI(
                                                           HTTPServerPort:  IPPort.Parse(Leitstelle_Node1_HTTPPort),
                                                           DNSClient:       DNSClient,
-                                                          Autostart:       true
+                                                          AutoStart:       true
                                                       ),
                                     DNSClient:        DNSClient
                                 );
@@ -1316,17 +1316,17 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             cpoHTTPAPI            = new HTTPAPI(
                                         HTTPServerPort:  IPPort.Parse(3301),
-                                        Autostart:       true
+                                        AutoStart:       true
                                     );
 
             emsp1HTTPAPI          = new HTTPAPI(
                                         HTTPServerPort:  IPPort.Parse(3401),
-                                        Autostart:       true
+                                        AutoStart:       true
                                     );
 
             emsp2HTTPAPI          = new HTTPAPI(
                                        HTTPServerPort:  IPPort.Parse(3402),
-                                       Autostart:       true
+                                       AutoStart:       true
                                     );
 
             Assert.IsNotNull(cpoHTTPAPI);
@@ -1393,7 +1393,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                        DatabaseFilePath:                    null,
                                        RemotePartyDBFileName:               $"GraphDefined_OCPI{protocols.OCPIv2_2_1.Version.String}_RemoteParties_CPO.log",
                                        AssetsDBFileName:                    $"GraphDefined_OCPI{protocols.OCPIv2_2_1.Version.String}_Assets_CPO.log",
-                                       Autostart:                           false
+                                       AutoStart:                           false
 
                                    );
 
@@ -1445,7 +1445,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                        DatabaseFilePath:                    null,
                                        RemotePartyDBFileName:               $"GraphDefined_OCPI{protocols.OCPIv2_2_1.Version.String}_RemoteParties_EMSP1.log",
                                        AssetsDBFileName:                    $"GraphDefined_OCPI{protocols.OCPIv2_2_1.Version.String}_Assets_EMSP1.log",
-                                       Autostart:                           false
+                                       AutoStart:                           false
 
                                    );
 
@@ -1497,7 +1497,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                        DatabaseFilePath:                    null,
                                        RemotePartyDBFileName:               $"GraphDefined_OCPI{protocols.OCPIv2_2_1.Version.String}_RemoteParties_EMSP2.log",
                                        AssetsDBFileName:                    $"GraphDefined_OCPI{protocols.OCPIv2_2_1.Version.String}_Assets_EMSP2.log",
-                                       Autostart:                           false
+                                       AutoStart:                           false
 
                                    );
 
@@ -1592,7 +1592,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                        LoggingPath:                         null,
                                        LogfileName:                         null,
                                        LogfileCreator:                      null,
-                                       Autostart:                           false
+                                       AutoStart:                           false
 
                                    );
 
@@ -1625,7 +1625,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                        LoggingPath:                         null,
                                        LogfileName:                         null,
                                        LogfileCreator:                      null,
-                                       Autostart:                           false
+                                       AutoStart:                           false
 
                                    );
 
@@ -1658,7 +1658,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                        LoggingPath:                         null,
                                        LogfileName:                         null,
                                        LogfileCreator:                      null,
-                                       Autostart:                           false
+                                       AutoStart:                           false
 
                                    );
 
