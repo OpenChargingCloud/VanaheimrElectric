@@ -1,0 +1,51 @@
+[submodule "libs/Styx"]
+	path = libs/Styx
+	url = ssh://git@git.graphdefined.com:5001/Vanaheimr/Styx.git
+[submodule "libs/Hermod"]
+	path = libs/Hermod
+	url = ssh://git@git.graphdefined.com:5001/Vanaheimr/Hermod.git
+[submodule "libs/UsersAPI"]
+	path = libs/UsersAPI
+	url = ssh://git@git.graphdefined.com:5001/OpenData/UsersAPI.git
+[submodule "libs/SMSAPI"]
+	path = libs/SMSAPI
+	url = ssh://git@git.graphdefined.com:5001/APIs/SMSAPI.git
+[submodule "libs/TelegramBotAPI"]
+	path = libs/TelegramBotAPI
+	url = ssh://git@git.graphdefined.com:5001/APIs/TelegramBotAPI.git
+[submodule "libs/WWCP_Core"]
+	path = libs/WWCP_Core
+	url = ssh://git@git.graphdefined.com:5001/OpenChargingCloud/WWCP_Core.git
+[submodule "libs/WWCP_ISO15118"]
+	path = libs/WWCP_ISO15118
+	url = ssh://git@git.graphdefined.com:5001/OpenChargingCloud/WWCP_ISO15118.git
+[submodule "libs/WWCP_OCPP"]
+	path = libs/WWCP_OCPP
+	url = ssh://git@git.graphdefined.com:5001/OpenChargingCloud/WWCP_OCPP.git
+[submodule "libs/WWCP_OICP"]
+	path = libs/WWCP_OICP
+	url = ssh://git@git.graphdefined.com:5001/OpenChargingCloud/WWCP_OICP.git
+[submodule "libs/WWCP_OCPI"]
+	path = libs/WWCP_OCPI
+	url = ssh://git@git.graphdefined.com:5001/OpenChargingCloud/WWCP_OCPI.git
+[submodule "libs/WWCP_CPO"]
+	path = libs/WWCP_CPO
+	url = ssh://git@git.graphdefined.com:5001/OpenChargingCloud/WWCP_CPO.git
+[submodule "libs/WWCP_EMP"]
+	path = libs/WWCP_EMP
+	url = ssh://git@git.graphdefined.com:5001/OpenChargingCloud/WWCP_EMP.git
+[submodule "libs/WWCP_MQTT"]
+	path = libs/WWCP_MQTT
+	url = ssh://git@git.graphdefined.com:5001/OpenChargingCloud/WWCP_MQTT.git
+[submodule "libs/OpenChargingCloudAPI"]
+	path = libs/OpenChargingCloudAPI
+	url = ssh://git@git.graphdefined.com:5001/OpenChargingCloud/OpenChargingCloudAPI.git
+[submodule "libs/WWCP_ChargingStation"]
+	path = libs/WWCP_ChargingStation
+	url = ssh://git@git.graphdefined.com:5001/OpenChargingCloud/WWCP_ChargingStation.git
+[submodule "libs/WWCP_ESGP"]
+	path = libs/WWCP_ESGP
+	url = ssh://git@git.graphdefined.com:5001/OpenChargingCloud/WWCP_ESGP.git
+[submodule "libs/WWCP_DCC"]
+	path = libs/WWCP_DCC
+	url = ssh://git@git.graphdefined.com:5001/OpenChargingCloud/WWCP_DCC.git
