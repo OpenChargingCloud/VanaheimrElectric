@@ -1964,7 +1964,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                 cpoAdapter           = csoRoamingNetwork.CreateOCPIv2_1_1_CSOAdapter(
 
-                                           Id:                                  EMPRoamingProvider_Id.Parse("OCPIv2.1_CSO_" + this.csoRoamingNetwork.Id),
+                                           Id:                                  CSORoamingProvider_Id.Parse("OCPIv2.1_CSO_" + this.csoRoamingNetwork.Id),
                                            Name:                                I18NString.Create(Languages.de, "OCPI v2.1 CSO"),
                                            Description:                         I18NString.Create(Languages.de, "OCPI v2.1 CSO Roaming"),
 
@@ -1994,7 +1994,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                 emsp1Adapter          = emp1RoamingNetwork.CreateOCPIv2_1_EMPAdapter(
 
-                                           Id:                                  CSORoamingProvider_Id.Parse("OCPIv2.1_EMP1_" + this.emp1RoamingNetwork.Id),
+                                           Id:                                  EMPRoamingProvider_Id.Parse("OCPIv2.1_EMP1_" + this.emp1RoamingNetwork.Id),
                                            Name:                                I18NString.Create(Languages.de, "OCPI v2.1 EMP1"),
                                            Description:                         I18NString.Create(Languages.de, "OCPI v2.1 EMP1 Roaming"),
 
@@ -2024,7 +2024,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                 emsp2Adapter          = emp2RoamingNetwork.CreateOCPIv2_1_EMPAdapter(
 
-                                           Id:                                  CSORoamingProvider_Id.Parse("OCPIv2.1_EMP2_" + this.emp1RoamingNetwork.Id),
+                                           Id:                                  EMPRoamingProvider_Id.Parse("OCPIv2.1_EMP2_" + this.emp1RoamingNetwork.Id),
                                            Name:                                I18NString.Create(Languages.de, "OCPI v2.1 EMP2"),
                                            Description:                         I18NString.Create(Languages.de, "OCPI v2.1 EMP2 Roaming"),
 
