@@ -1899,7 +1899,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                              );
 
             Assert.IsNotNull(csoResult);
-            Assert.AreEqual (org.GraphDefined.Vanaheimr.Hermod.CommandResult.Success, csoResult.Result);
+            Assert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, csoResult.Result);
             Assert.IsNotNull(csoResult.ChargingStationOperator);
 
             graphDefinedCSO        = csoResult.ChargingStationOperator;
@@ -1922,7 +1922,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                               );
 
             Assert.IsNotNull(emp1result);
-            Assert.AreEqual (org.GraphDefined.Vanaheimr.Hermod.CommandResult.Success, emp1result.Result);
+            Assert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, emp1result.Result);
             Assert.IsNotNull(emp1result.EMobilityProvider);
 
             graphDefinedEMP1       = emp1result.EMobilityProvider;
@@ -1945,7 +1945,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                               );
 
             Assert.IsNotNull(emp2result);
-            Assert.AreEqual (org.GraphDefined.Vanaheimr.Hermod.CommandResult.Success, emp2result.Result);
+            Assert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, emp2result.Result);
             Assert.IsNotNull(emp2result.EMobilityProvider);
 
             graphDefinedEMP2       = emp2result.EMobilityProvider;
