@@ -1325,8 +1325,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                     );
 
             emsp2HTTPAPI          = new HTTPAPI(
-                                       HTTPServerPort:  IPPort.Parse(3402),
-                                       AutoStart:       true
+                                        HTTPServerPort:  IPPort.Parse(3402),
+                                        AutoStart:       true
                                     );
 
             Assert.IsNotNull(cpoHTTPAPI);
@@ -1898,7 +1898,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                  InitialStatus:        ChargingStationOperatorStatusTypes.Available
                                                              );
 
-            Assert.IsTrue   (csoResult.IsSuccess);
+            Assert.IsNotNull(csoResult);
+            Assert.AreEqual (org.GraphDefined.Vanaheimr.Hermod.CommandResult.Success, csoResult.Result);
             Assert.IsNotNull(csoResult.ChargingStationOperator);
 
             graphDefinedCSO        = csoResult.ChargingStationOperator;
@@ -1920,7 +1921,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                                               );
 
-            Assert.IsTrue   (emp1result.IsSuccess);
+            Assert.IsNotNull(emp1result);
+            Assert.AreEqual (org.GraphDefined.Vanaheimr.Hermod.CommandResult.Success, emp1result.Result);
             Assert.IsNotNull(emp1result.EMobilityProvider);
 
             graphDefinedEMP1       = emp1result.EMobilityProvider;
@@ -1942,7 +1944,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                                               );
 
-            Assert.IsTrue   (emp2result.IsSuccess);
+            Assert.IsNotNull(emp2result);
+            Assert.AreEqual (org.GraphDefined.Vanaheimr.Hermod.CommandResult.Success, emp2result.Result);
             Assert.IsNotNull(emp2result.EMobilityProvider);
 
             graphDefinedEMP2       = emp2result.EMobilityProvider;
