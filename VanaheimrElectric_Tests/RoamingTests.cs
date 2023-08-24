@@ -2131,8 +2131,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                       ProviderIdStart:              EMobilityProvider_Id.Parse("DE-GDF"),
                                                       ProviderIdStop:               EMobilityProvider_Id.Parse("DE-GD2"),
 
-                                                      EMPRoamingProvider:           null,
-                                                      EMPRoamingProviderId:         null,
+                                                      CSORoamingProvider:           null,
+                                                      CSORoamingProviderId:         null,
 
                                                       Reservation:                  null,
                                                       ReservationId:                null,
@@ -2405,8 +2405,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                              ProviderIdStart:             authStartResult.ProviderId,
                                                              ProviderIdStop:              authStopResult. ProviderId,
 
-                                                             EMPRoamingProvider:          null,
-                                                             EMPRoamingProviderId:        null,
+                                                             CSORoamingProvider:          null,
+                                                             CSORoamingProviderId:        null,
 
                                                              Reservation:                 null,
                                                              ReservationId:               null,
@@ -2689,8 +2689,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                              ProviderIdStart:             graphDefinedEMP1Local.Id,
                                                              ProviderIdStop:              providerIdStop,
 
-                                                             EMPRoamingProvider:          null,
-                                                             EMPRoamingProviderId:        null,
+                                                             CSORoamingProvider:          null,
+                                                             CSORoamingProviderId:        null,
 
                                                              Reservation:                 null,
                                                              ReservationId:               null,
