@@ -9,10 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BouncyCastle.NetCore" Version="2.2.1" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\libs\Hermod\Hermod\Hermod.csproj" />
     <ProjectReference Include="..\libs\OpenChargingCloudAPI\OpenChargingCloudAPI\OpenChargingCloudAPI.csproj" />
     <ProjectReference Include="..\libs\SMSAPI\SMSAPI\SMSAPI.csproj" />
