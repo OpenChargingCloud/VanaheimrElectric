@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="NUnit" Version="3.14.0" />
+    <PackageReference Include="NUnit" Version="4.1.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
   </ItemGroup>
 
@@ -55,12 +55,16 @@
     <ProjectReference Include="..\libs\WWCP_OCPI\WWCP_OCPI_Common\WWCP_OCPI_Common.csproj" />
     <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv1.6\WWCP_OCPPv1.6.csproj" />
     <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv1.6_Adapter\WWCP_OCPPv1.6_Adapter.csproj" />
+    <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv1.6_CentralSystem\WWCP_OCPPv1.6_CentralSystem.csproj" />
+    <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv1.6_ChargePoint\WWCP_OCPPv1.6_ChargePoint.csproj" />
     <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv1.6_Tests\WWCP_OCPPv1.6_Tests.csproj" />
-    <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv1.6_WebAPI\WWCP_OCPPv1.6_WebAPI.csproj" />
-    <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv2.0.1\WWCP_OCPPv2.0.1.csproj" />
-    <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv2.0.1_Adapter\WWCP_OCPPv2.0.1_Adapter.csproj" />
-    <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv2.0.1_Tests\WWCP_OCPPv2.0.1_Tests.csproj" />
-    <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv2.0.1_WebAPI\WWCP_OCPPv2.0.1_WebAPI.csproj" />
+    <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv2.1\WWCP_OCPPv2.1.csproj" />
+    <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv2.1_Adapter\WWCP_OCPPv2.1_Adapter.csproj" />
+    <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv2.1_ChargingStation\WWCP_OCPPv2.1_ChargingStation.csproj" />
+    <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv2.1_CSMS\WWCP_OCPPv2.1_CSMS.csproj" />
+    <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv2.1_NetworkingNode\WWCP_OCPPv2.1_NetworkingNode.csproj" />
+    <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv2.1_Tests\WWCP_OCPPv2.1_Tests.csproj" />
+    <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPP_Common\WWCP_OCPP_Common.csproj" />
     <ProjectReference Include="..\libs\WWCP_OICP\WWCP_OICPv2.3\WWCP_OICPv2.3.csproj" />
     <ProjectReference Include="..\libs\WWCP_OICP\WWCP_OICPv2.3_Adapter\WWCP_OICPv2.3_Adapter.csproj" />
     <ProjectReference Include="..\libs\WWCP_OICP\WWCP_OICPv2.3_Tests\WWCP_OICPv2.3_Tests.csproj" />

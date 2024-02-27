@@ -1,5 +1,5 @@
 ﻿﻿/*
- * Copyright (c) 2015-2023 GraphDefined GmbH
+ * Copyright (c) 2015-2024 GraphDefined GmbH
  * This file is part of WWCP OCPI <https://github.com/OpenChargingCloud/WWCP_OCPI>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,6 +20,7 @@
 using System.Collections.Concurrent;
 
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod;
@@ -772,7 +773,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                         DNSClient:        DNSClient
                                     );
 
-            Assert.IsNotNull(GraphDefinedCSO_Node1);
+            ClassicAssert.IsNotNull(GraphDefinedCSO_Node1);
 
             GraphDefinedCSO_Node1.CreateNewRoamingNetwork(
                                       RoamingNetworkPROD,
@@ -895,7 +896,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                         DNSClient:        DNSClient
                                     );
 
-            Assert.IsNotNull(GraphDefinedEMP_Node1);
+            ClassicAssert.IsNotNull(GraphDefinedEMP_Node1);
 
             GraphDefinedEMP_Node1.CreateNewRoamingNetwork(
                                       RoamingNetworkPROD,
@@ -1015,7 +1016,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                 DNSClient:        DNSClient
                             );
 
-            Assert.IsNotNull(Hubject_Node1);
+            ClassicAssert.IsNotNull(Hubject_Node1);
 
             Hubject_Node1.CreateNewRoamingNetwork(
                               RoamingNetworkPROD,
@@ -1058,7 +1059,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                DNSClient:        DNSClient
                            );
 
-            Assert.IsNotNull(Gireve_Node1);
+            ClassicAssert.IsNotNull(Gireve_Node1);
 
             Gireve_Node1.CreateNewRoamingNetwork(
                              RoamingNetworkPROD,
@@ -1125,7 +1126,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                     DNSClient:        DNSClient
                                 );
 
-            Assert.IsNotNull(Leitstelle_Node1);
+            ClassicAssert.IsNotNull(Leitstelle_Node1);
 
             #endregion
 
@@ -1329,9 +1330,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                         AutoStart:       true
                                     );
 
-            Assert.IsNotNull(cpoHTTPAPI);
-            Assert.IsNotNull(emsp1HTTPAPI);
-            Assert.IsNotNull(emsp2HTTPAPI);
+            ClassicAssert.IsNotNull(cpoHTTPAPI);
+            ClassicAssert.IsNotNull(emsp1HTTPAPI);
+            ClassicAssert.IsNotNull(emsp2HTTPAPI);
 
             #endregion
 
@@ -1501,13 +1502,13 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                    );
 
-            Assert.IsNotNull(cpoVersionsAPIURL);
-            Assert.IsNotNull(emsp1VersionsAPIURL);
-            Assert.IsNotNull(emsp2VersionsAPIURL);
+            ClassicAssert.IsNotNull(cpoVersionsAPIURL);
+            ClassicAssert.IsNotNull(emsp1VersionsAPIURL);
+            ClassicAssert.IsNotNull(emsp2VersionsAPIURL);
 
-            Assert.IsNotNull(cpoCommonAPI);
-            Assert.IsNotNull(emsp1CommonAPI);
-            Assert.IsNotNull(emsp2CommonAPI);
+            ClassicAssert.IsNotNull(cpoCommonAPI);
+            ClassicAssert.IsNotNull(emsp1CommonAPI);
+            ClassicAssert.IsNotNull(emsp2CommonAPI);
 
             #endregion
 
@@ -1555,9 +1556,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                        RequestTimeout:                      null
                                    );
 
-            Assert.IsNotNull(cpoWebAPI);
-            Assert.IsNotNull(emsp1WebAPI);
-            Assert.IsNotNull(emsp2WebAPI);
+            ClassicAssert.IsNotNull(cpoWebAPI);
+            ClassicAssert.IsNotNull(emsp1WebAPI);
+            ClassicAssert.IsNotNull(emsp2WebAPI);
 
             #endregion
 
@@ -1662,9 +1663,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                    );
 
-            Assert.IsNotNull(cpoCPOAPI);
-            Assert.IsNotNull(emsp1EMSPAPI);
-            Assert.IsNotNull(emsp2EMSPAPI);
+            ClassicAssert.IsNotNull(cpoCPOAPI);
+            ClassicAssert.IsNotNull(emsp1EMSPAPI);
+            ClassicAssert.IsNotNull(emsp2EMSPAPI);
 
             #endregion
 
@@ -1739,13 +1740,13 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                 PartyStatus:                 PartyStatus.ENABLED);
 
 
-            Assert.AreEqual(2, cpoCommonAPI.  RemoteParties.Count());
-            Assert.AreEqual(1, emsp1CommonAPI.RemoteParties.Count());
-            Assert.AreEqual(1, emsp2CommonAPI.RemoteParties.Count());
+            ClassicAssert.AreEqual(2, cpoCommonAPI.  RemoteParties.Count());
+            ClassicAssert.AreEqual(1, emsp1CommonAPI.RemoteParties.Count());
+            ClassicAssert.AreEqual(1, emsp2CommonAPI.RemoteParties.Count());
 
-            Assert.AreEqual(2, File.ReadAllLines(cpoCommonAPI.  RemotePartyDBFileName).Length);
-            Assert.AreEqual(1, File.ReadAllLines(emsp1CommonAPI.RemotePartyDBFileName).Length);
-            Assert.AreEqual(1, File.ReadAllLines(emsp2CommonAPI.RemotePartyDBFileName).Length);
+            ClassicAssert.AreEqual(2, File.ReadAllLines(cpoCommonAPI.  RemotePartyDBFileName).Length);
+            ClassicAssert.AreEqual(1, File.ReadAllLines(emsp1CommonAPI.RemotePartyDBFileName).Length);
+            ClassicAssert.AreEqual(1, File.ReadAllLines(emsp2CommonAPI.RemotePartyDBFileName).Length);
 
             #endregion
 
@@ -1782,9 +1783,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                 PartyStatus:       PartyStatus. ENABLED);
 
 
-            Assert.AreEqual(3, cpoCommonAPI.  RemoteParties.Count());
-            Assert.AreEqual(2, emsp1CommonAPI.RemoteParties.Count());
-            Assert.AreEqual(2, emsp2CommonAPI.RemoteParties.Count());
+            ClassicAssert.AreEqual(3, cpoCommonAPI.  RemoteParties.Count());
+            ClassicAssert.AreEqual(2, emsp1CommonAPI.RemoteParties.Count());
+            ClassicAssert.AreEqual(2, emsp2CommonAPI.RemoteParties.Count());
 
             #endregion
 
@@ -1882,9 +1883,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                        InitialStatus:       RoamingNetworkStatusTypes.Available
                                    );
 
-            Assert.IsNotNull(csoRoamingNetwork);
-            Assert.IsNotNull(emp1RoamingNetwork);
-            Assert.IsNotNull(emp2RoamingNetwork);
+            ClassicAssert.IsNotNull(csoRoamingNetwork);
+            ClassicAssert.IsNotNull(emp1RoamingNetwork);
+            ClassicAssert.IsNotNull(emp2RoamingNetwork);
 
             #endregion
 
@@ -1898,9 +1899,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                  InitialStatus:        ChargingStationOperatorStatusTypes.Available
                                                              );
 
-            Assert.IsNotNull(csoResult);
-            Assert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, csoResult.Result);
-            Assert.IsNotNull(csoResult.ChargingStationOperator);
+            ClassicAssert.IsNotNull(csoResult);
+            ClassicAssert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, csoResult.Result);
+            ClassicAssert.IsNotNull(csoResult.ChargingStationOperator);
 
             graphDefinedCSO        = csoResult.ChargingStationOperator;
 
@@ -1921,9 +1922,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                                               );
 
-            Assert.IsNotNull(emp1result);
-            Assert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, emp1result.Result);
-            Assert.IsNotNull(emp1result.EMobilityProvider);
+            ClassicAssert.IsNotNull(emp1result);
+            ClassicAssert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, emp1result.Result);
+            ClassicAssert.IsNotNull(emp1result.EMobilityProvider);
 
             graphDefinedEMP1       = emp1result.EMobilityProvider;
             graphDefinedEMP1Local  = graphDefinedEMP1?.RemoteEMobilityProvider as VirtualEMobilityProvider;
@@ -1944,9 +1945,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                                               );
 
-            Assert.IsNotNull(emp2result);
-            Assert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, emp2result.Result);
-            Assert.IsNotNull(emp2result.EMobilityProvider);
+            ClassicAssert.IsNotNull(emp2result);
+            ClassicAssert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, emp2result.Result);
+            ClassicAssert.IsNotNull(emp2result.EMobilityProvider);
 
             graphDefinedEMP2       = emp2result.EMobilityProvider;
             graphDefinedEMP2Local  = graphDefinedEMP2?.RemoteEMobilityProvider as VirtualEMobilityProvider;
@@ -1956,9 +1957,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             #region Create cpo/emsp1/emsp2 adapter
 
-            Assert.IsNotNull(cpoCPOAPI);
-            Assert.IsNotNull(emsp1EMSPAPI);
-            Assert.IsNotNull(emsp2EMSPAPI);
+            ClassicAssert.IsNotNull(cpoCPOAPI);
+            ClassicAssert.IsNotNull(emsp1EMSPAPI);
+            ClassicAssert.IsNotNull(emsp2EMSPAPI);
 
             if (cpoCPOAPI    is not null &&
                 emsp1EMSPAPI is not null &&
@@ -2055,9 +2056,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                        );
 
-                Assert.IsNotNull(cpoAdapter);
-                Assert.IsNotNull(emsp1Adapter);
-                Assert.IsNotNull(emsp2Adapter);
+                ClassicAssert.IsNotNull(cpoAdapter);
+                ClassicAssert.IsNotNull(emsp1Adapter);
+                ClassicAssert.IsNotNull(emsp2Adapter);
 
             }
 

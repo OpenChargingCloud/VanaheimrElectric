@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2015-2023 GraphDefined GmbH
+ * Copyright (c) 2015-2024 GraphDefined GmbH
  * This file is part of WWCP Vanaheimr Electric <https://github.com/OpenChargingCloud/VanaheimrElectric>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,6 +18,7 @@
 #region Usings
 
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Aegir;
@@ -108,35 +109,35 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                              );
 
-                Assert.IsNotNull(addChargingPoolResult1);
-                Assert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, addChargingPoolResult1.Result);
+                ClassicAssert.IsNotNull(addChargingPoolResult1);
+                ClassicAssert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, addChargingPoolResult1.Result);
 
                 var chargingPool1 = addChargingPoolResult1.ChargingPool;
-                Assert.IsNotNull(chargingPool1);
+                ClassicAssert.IsNotNull(chargingPool1);
 
                 if (chargingPool1 is not null)
                 {
 
                     var ocpiLocation1 = cpoAdapter.CommonAPI.GetLocations().FirstOrDefault(location => location.Name == chargingPool1.Name.FirstText());
-                    Assert.IsNotNull(ocpiLocation1);
+                    ClassicAssert.IsNotNull(ocpiLocation1);
 
                     if (ocpiLocation1 is not null)
                     {
 
-                        Assert.AreEqual($"{chargingPool1.Address?.Street} {chargingPool1.Address?.HouseNumber}", ocpiLocation1.Address);
-                        Assert.AreEqual(chargingPool1.Address?.City.FirstText(), ocpiLocation1.City);
-                        Assert.AreEqual(chargingPool1.Address?.PostalCode, ocpiLocation1.PostalCode);
-                        Assert.AreEqual(chargingPool1.Address?.TimeZone?.ToString(), ocpiLocation1.Timezone);
+                        ClassicAssert.AreEqual($"{chargingPool1.Address?.Street} {chargingPool1.Address?.HouseNumber}", ocpiLocation1.Address);
+                        ClassicAssert.AreEqual(chargingPool1.Address?.City.FirstText(), ocpiLocation1.City);
+                        ClassicAssert.AreEqual(chargingPool1.Address?.PostalCode, ocpiLocation1.PostalCode);
+                        ClassicAssert.AreEqual(chargingPool1.Address?.TimeZone?.ToString(), ocpiLocation1.Timezone);
 
-                        Assert.AreEqual(chargingPool1.GeoLocation, ocpiLocation1.Coordinates);
+                        ClassicAssert.AreEqual(chargingPool1.GeoLocation, ocpiLocation1.Coordinates);
 
-                        Assert.AreEqual(chargingPool1.ChargingWhenClosed, ocpiLocation1.ChargingWhenClosed);
+                        ClassicAssert.AreEqual(chargingPool1.ChargingWhenClosed, ocpiLocation1.ChargingWhenClosed);
 
                     }
 
                 }
 
-                Assert.AreEqual(1, cpoAdapter.CommonAPI.GetLocations().Count());
+                ClassicAssert.AreEqual(1, cpoAdapter.CommonAPI.GetLocations().Count());
 
                 #endregion
 
@@ -182,33 +183,33 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                              );
 
-                Assert.IsNotNull(addChargingPoolResult2);
-                Assert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, addChargingPoolResult2.Result);
+                ClassicAssert.IsNotNull(addChargingPoolResult2);
+                ClassicAssert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, addChargingPoolResult2.Result);
 
                 var chargingPool2 = addChargingPoolResult2.ChargingPool;
-                Assert.IsNotNull(chargingPool2);
+                ClassicAssert.IsNotNull(chargingPool2);
 
                 if (chargingPool2 is not null)
                 {
 
                     var ocpiLocation2 = cpoAdapter.CommonAPI.GetLocations().FirstOrDefault(location => location.Name == chargingPool2.Name.FirstText());
-                    Assert.IsNotNull(ocpiLocation2);
+                    ClassicAssert.IsNotNull(ocpiLocation2);
 
                     if (ocpiLocation2 is not null)
                     {
 
-                        Assert.AreEqual($"{chargingPool2.Address?.Street} {chargingPool2.Address?.HouseNumber}", ocpiLocation2.Address);
-                        Assert.AreEqual(chargingPool2.Address?.City.FirstText(), ocpiLocation2.City);
-                        Assert.AreEqual(chargingPool2.Address?.PostalCode, ocpiLocation2.PostalCode);
-                        Assert.AreEqual(chargingPool2.Address?.TimeZone?.ToString(), ocpiLocation2.Timezone);
+                        ClassicAssert.AreEqual($"{chargingPool2.Address?.Street} {chargingPool2.Address?.HouseNumber}", ocpiLocation2.Address);
+                        ClassicAssert.AreEqual(chargingPool2.Address?.City.FirstText(), ocpiLocation2.City);
+                        ClassicAssert.AreEqual(chargingPool2.Address?.PostalCode, ocpiLocation2.PostalCode);
+                        ClassicAssert.AreEqual(chargingPool2.Address?.TimeZone?.ToString(), ocpiLocation2.Timezone);
 
-                        Assert.AreEqual(chargingPool2.GeoLocation, ocpiLocation2.Coordinates);
+                        ClassicAssert.AreEqual(chargingPool2.GeoLocation, ocpiLocation2.Coordinates);
 
                     }
 
                 }
 
-                Assert.AreEqual(2, cpoAdapter.CommonAPI.GetLocations().Count());
+                ClassicAssert.AreEqual(2, cpoAdapter.CommonAPI.GetLocations().Count());
 
                 #endregion
 
@@ -234,11 +235,11 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                                 );
 
-                Assert.IsNotNull(addChargingStationResult1);
-                Assert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, addChargingStationResult1.Result);
+                ClassicAssert.IsNotNull(addChargingStationResult1);
+                ClassicAssert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, addChargingStationResult1.Result);
 
                 var chargingStation1 = addChargingStationResult1.ChargingStation;
-                Assert.IsNotNull(chargingStation1);
+                ClassicAssert.IsNotNull(chargingStation1);
 
                 #endregion
 
@@ -261,11 +262,11 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                                 );
 
-                Assert.IsNotNull(addChargingStationResult2);
-                Assert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, addChargingStationResult2.Result);
+                ClassicAssert.IsNotNull(addChargingStationResult2);
+                ClassicAssert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, addChargingStationResult2.Result);
 
                 var chargingStation2 = addChargingStationResult2.ChargingStation;
-                Assert.IsNotNull(chargingStation2);
+                ClassicAssert.IsNotNull(chargingStation2);
 
                 #endregion
 
@@ -288,11 +289,11 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                                 );
 
-                Assert.IsNotNull(addChargingStationResult3);
-                Assert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, addChargingStationResult3.Result);
+                ClassicAssert.IsNotNull(addChargingStationResult3);
+                ClassicAssert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, addChargingStationResult3.Result);
 
                 var chargingStation3 = addChargingStationResult3.ChargingStation;
-                Assert.IsNotNull(chargingStation3);
+                ClassicAssert.IsNotNull(chargingStation3);
 
                 #endregion
 
@@ -324,31 +325,31 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                       );
 
-                Assert.IsNotNull(addEVSE1Result1);
-                Assert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, addEVSE1Result1.Result);
+                ClassicAssert.IsNotNull(addEVSE1Result1);
+                ClassicAssert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, addEVSE1Result1.Result);
 
                 var evse1 = addEVSE1Result1.EVSE;
-                Assert.IsNotNull(evse1);
+                ClassicAssert.IsNotNull(evse1);
 
                 if (evse1 is not null)
                 {
 
                     var ocpiLocation1 = cpoAdapter.CommonAPI.GetLocations().FirstOrDefault(location => location.Name == chargingPool1.Name.FirstText());
-                    Assert.IsNotNull(ocpiLocation1);
+                    ClassicAssert.IsNotNull(ocpiLocation1);
 
                     var ocpiEVSE1 = ocpiLocation1!.FirstOrDefault(evse => evse.UId.ToString() == evse1.Id.ToString());
-                    Assert.IsNotNull(ocpiEVSE1);
+                    ClassicAssert.IsNotNull(ocpiEVSE1);
 
                     if (ocpiEVSE1 is not null)
                     {
 
-                        Assert.AreEqual(ocpiEVSE1.EVSEId.ToString(), evse1.Id.ToString());
+                        ClassicAssert.AreEqual(ocpiEVSE1.EVSEId.ToString(), evse1.Id.ToString());
 
                     }
 
                 }
 
-                Assert.AreEqual(1, cpoAdapter.CommonAPI.GetLocations().SelectMany(location => location.EVSEs).Count());
+                ClassicAssert.AreEqual(1, cpoAdapter.CommonAPI.GetLocations().SelectMany(location => location.EVSEs).Count());
 
                 #endregion
 
@@ -378,10 +379,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                       );
 
-                Assert.IsNotNull(addEVSE1Result2);
+                ClassicAssert.IsNotNull(addEVSE1Result2);
 
                 var evse2 = addEVSE1Result2.EVSE;
-                Assert.IsNotNull(evse2);
+                ClassicAssert.IsNotNull(evse2);
 
                 #endregion
 
@@ -411,10 +412,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                       );
 
-                Assert.IsNotNull(addEVSE1Result3);
+                ClassicAssert.IsNotNull(addEVSE1Result3);
 
                 var evse3 = addEVSE1Result3.EVSE;
-                Assert.IsNotNull(evse2);
+                ClassicAssert.IsNotNull(evse2);
 
                 #endregion
 
@@ -444,10 +445,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                       );
 
-                Assert.IsNotNull(addEVSE1Result4);
+                ClassicAssert.IsNotNull(addEVSE1Result4);
 
                 var evse4 = addEVSE1Result4.EVSE;
-                Assert.IsNotNull(evse4);
+                ClassicAssert.IsNotNull(evse4);
 
                 #endregion
 
@@ -459,29 +460,29 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                 #region Validate, that locations had been sent to the CPO OCPI module
 
                 var allLocationsAtCPO = cpoAdapter.CommonAPI.GetLocations().ToArray();
-                Assert.IsNotNull(allLocationsAtCPO);
-                Assert.AreEqual(2, allLocationsAtCPO.Length);
+                ClassicAssert.IsNotNull(allLocationsAtCPO);
+                ClassicAssert.AreEqual(2, allLocationsAtCPO.Length);
 
                 #endregion
 
                 #region Validate, that EVSEs had been sent to the CPO OCPI module
 
                 var allEVSEsAtCPO = cpoAdapter.CommonAPI.GetLocations().SelectMany(location => location.EVSEs).ToArray();
-                Assert.IsNotNull(allEVSEsAtCPO);
-                Assert.AreEqual(4, allEVSEsAtCPO.Length);
+                ClassicAssert.IsNotNull(allEVSEsAtCPO);
+                ClassicAssert.AreEqual(4, allEVSEsAtCPO.Length);
 
                 #endregion
 
                 #region Validate, that both CPO locations have EVSEs
 
                 if (cpoAdapter.CommonAPI.TryGetLocation(Location_Id.Parse(chargingPool1.Id.ToString()), out var location1) && location1 is not null)
-                    Assert.AreEqual(3, location1.EVSEs.Count());
+                    ClassicAssert.AreEqual(3, location1.EVSEs.Count());
                 else
                     Assert.Fail("location1 was not found!");
 
 
                 if (cpoAdapter.CommonAPI.TryGetLocation(Location_Id.Parse(chargingPool2.Id.ToString()), out var location2) && location2 is not null)
-                    Assert.AreEqual(1, location2.EVSEs.Count());
+                    ClassicAssert.AreEqual(1, location2.EVSEs.Count());
                 else
                     Assert.Fail("location2 was not found!");
 
@@ -491,16 +492,16 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                 #region Validate, that EVSEs had been sent to the 1st e-mobility provider
 
                 //var allEVSEsAtEMSP1  = emsp1Adapter.CommonAPI.GetLocations().SelectMany(location => location.EVSEs).ToArray();
-                //Assert.IsNotNull(allEVSEsAtEMSP1);
-                //Assert.AreEqual (4, allEVSEsAtEMSP1.Length);
+                //ClassicAssert.IsNotNull(allEVSEsAtEMSP1);
+                //ClassicAssert.AreEqual (4, allEVSEsAtEMSP1.Length);
 
                 #endregion
 
                 #region Validate, that EVSEs had been sent to the 2nd e-mobility provider
 
                 //var allEVSEsAtEMSP2  = emsp2Adapter.CommonAPI.GetLocations().SelectMany(location => location.EVSEs).ToArray();
-                //Assert.IsNotNull(allEVSEsAtEMSP2);
-                //Assert.AreEqual (4, allEVSEsAtEMSP2.Length);
+                //ClassicAssert.IsNotNull(allEVSEsAtEMSP2);
+                //ClassicAssert.AreEqual (4, allEVSEsAtEMSP2.Length);
 
                 #endregion
 
@@ -570,10 +571,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                              );
 
-                Assert.IsNotNull(addChargingPoolResult1);
+                ClassicAssert.IsNotNull(addChargingPoolResult1);
 
                 var chargingPool1  = addChargingPoolResult1.ChargingPool;
-                Assert.IsNotNull(chargingPool1);
+                ClassicAssert.IsNotNull(chargingPool1);
 
                 #endregion
 
@@ -614,10 +615,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                              );
 
-                Assert.IsNotNull(addChargingPoolResult2);
+                ClassicAssert.IsNotNull(addChargingPoolResult2);
 
                 var chargingPool2  = addChargingPoolResult2.ChargingPool;
-                Assert.IsNotNull(chargingPool2);
+                ClassicAssert.IsNotNull(chargingPool2);
 
                 #endregion
 
@@ -642,10 +643,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                                 );
 
-                Assert.IsNotNull(addChargingStationResult1);
+                ClassicAssert.IsNotNull(addChargingStationResult1);
 
                 var chargingStation1  = addChargingStationResult1.ChargingStation;
-                Assert.IsNotNull(chargingStation1);
+                ClassicAssert.IsNotNull(chargingStation1);
 
                 #endregion
 
@@ -667,10 +668,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                                 );
 
-                Assert.IsNotNull(addChargingStationResult2);
+                ClassicAssert.IsNotNull(addChargingStationResult2);
 
                 var chargingStation2  = addChargingStationResult2.ChargingStation;
-                Assert.IsNotNull(chargingStation2);
+                ClassicAssert.IsNotNull(chargingStation2);
 
                 #endregion
 
@@ -692,10 +693,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                                 );
 
-                Assert.IsNotNull(addChargingStationResult3);
+                ClassicAssert.IsNotNull(addChargingStationResult3);
 
                 var chargingStation3  = addChargingStationResult3.ChargingStation;
-                Assert.IsNotNull(chargingStation3);
+                ClassicAssert.IsNotNull(chargingStation3);
 
                 #endregion
 
@@ -726,10 +727,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                       );
 
-                Assert.IsNotNull(addEVSE1Result1);
+                ClassicAssert.IsNotNull(addEVSE1Result1);
 
                 var evse1     = addEVSE1Result1.EVSE;
-                Assert.IsNotNull(evse1);
+                ClassicAssert.IsNotNull(evse1);
 
                 #endregion
 
@@ -759,10 +760,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                       );
 
-                Assert.IsNotNull(addEVSE1Result2);
+                ClassicAssert.IsNotNull(addEVSE1Result2);
 
                 var evse2     = addEVSE1Result2.EVSE;
-                Assert.IsNotNull(evse2);
+                ClassicAssert.IsNotNull(evse2);
 
                 #endregion
 
@@ -792,10 +793,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                       );
 
-                Assert.IsNotNull(addEVSE1Result3);
+                ClassicAssert.IsNotNull(addEVSE1Result3);
 
                 var evse3     = addEVSE1Result3.EVSE;
-                Assert.IsNotNull(evse2);
+                ClassicAssert.IsNotNull(evse2);
 
                 #endregion
 
@@ -825,10 +826,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                       );
 
-                Assert.IsNotNull(addEVSE1Result4);
+                ClassicAssert.IsNotNull(addEVSE1Result4);
 
                 var evse4     = addEVSE1Result4.EVSE;
-                Assert.IsNotNull(evse4);
+                ClassicAssert.IsNotNull(evse4);
 
                 #endregion
 
@@ -840,29 +841,29 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                 #region Validate, that locations had been sent to the CPO OCPI module
 
                 var allLocations  = cpoAdapter.CommonAPI.GetLocations().ToArray();
-                Assert.IsNotNull(allLocations);
-                Assert.AreEqual (2, allLocations.Length);
+                ClassicAssert.IsNotNull(allLocations);
+                ClassicAssert.AreEqual (2, allLocations.Length);
 
                 #endregion
 
                 #region Validate, that EVSEs had been sent to the CPO OCPI module
 
                 var allEVSEs      = cpoAdapter.CommonAPI.GetLocations().SelectMany(location => location.EVSEs).ToArray();
-                Assert.IsNotNull(allEVSEs);
-                Assert.AreEqual (4, allEVSEs.Length);
+                ClassicAssert.IsNotNull(allEVSEs);
+                ClassicAssert.AreEqual (4, allEVSEs.Length);
 
                 #endregion
 
                 #region Validate, that both locations have EVSEs
 
                 if (cpoAdapter.CommonAPI.TryGetLocation(Location_Id.Parse(chargingPool1.Id.ToString()), out var location1) && location1 is not null)
-                    Assert.AreEqual(3, location1.EVSEs.Count());
+                    ClassicAssert.AreEqual(3, location1.EVSEs.Count());
                 else
                     Assert.Fail("location1 was not found!");
 
 
                 if (cpoAdapter.CommonAPI.TryGetLocation(Location_Id.Parse(chargingPool2.Id.ToString()), out var location2) && location2 is not null)
-                    Assert.AreEqual(1, location2.EVSEs.Count());
+                    ClassicAssert.AreEqual(1, location2.EVSEs.Count());
                 else
                     Assert.Fail("location2 was not found!");
 
@@ -1051,9 +1052,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                 chargingPool1!.Name.       Set(Languages.en, "Test pool #1 (updated)");
                 chargingPool1!.Description.Set(Languages.en, "GraphDefined charging pool for tests #1 (updated)");
 
-                Assert.AreEqual(8, updatedPoolProperties.Count);
-                Assert.AreEqual("Test pool #1 (updated)",                             graphDefinedCSO.GetChargingPoolById(chargingPool1!.Id)!.Name       [Languages.en]);
-                Assert.AreEqual("GraphDefined charging pool for tests #1 (updated)",  graphDefinedCSO.GetChargingPoolById(chargingPool1!.Id)!.Description[Languages.en]);
+                ClassicAssert.AreEqual(8, updatedPoolProperties.Count);
+                ClassicAssert.AreEqual("Test pool #1 (updated)",                             graphDefinedCSO.GetChargingPoolById(chargingPool1!.Id)!.Name       [Languages.en]);
+                ClassicAssert.AreEqual("GraphDefined charging pool for tests #1 (updated)",  graphDefinedCSO.GetChargingPoolById(chargingPool1!.Id)!.Description[Languages.en]);
 
 
                 //ToDo: There seems to be a timing issue!
@@ -1061,8 +1062,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
 
                 cpoAdapter.CommonAPI.TryGetLocation(Location_Id.Parse(chargingPool1!.Id.ToString()), out var location);
-                Assert.AreEqual("Test pool #1 (updated)",                             location.Name);
-                //Assert.AreEqual("GraphDefined Charging Pool für Tests #1",            location!.Name); // Not mapped to OCPI!
+                ClassicAssert.AreEqual("Test pool #1 (updated)",                             location.Name);
+                //ClassicAssert.AreEqual("GraphDefined Charging Pool für Tests #1",            location!.Name); // Not mapped to OCPI!
 
 
                 evse1.Name.Set(Languages.en, "Test EVSE #1A1 (updated)");
@@ -1104,10 +1105,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                 //                                                              );
 
-                //Assert.IsNotNull(addChargingPoolResult2);
+                //ClassicAssert.IsNotNull(addChargingPoolResult2);
 
                 //var chargingPool2  = addChargingPoolResult2.ChargingPool;
-                //Assert.IsNotNull(chargingPool2);
+                //ClassicAssert.IsNotNull(chargingPool2);
 
                 #endregion
 
@@ -1178,10 +1179,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                              );
 
-                Assert.IsNotNull(addChargingPoolResult1);
+                ClassicAssert.IsNotNull(addChargingPoolResult1);
 
                 var chargingPool1  = addChargingPoolResult1.ChargingPool;
-                Assert.IsNotNull(chargingPool1);
+                ClassicAssert.IsNotNull(chargingPool1);
 
                 #endregion
 
@@ -1222,10 +1223,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                              );
 
-                Assert.IsNotNull(addChargingPoolResult2);
+                ClassicAssert.IsNotNull(addChargingPoolResult2);
 
                 var chargingPool2  = addChargingPoolResult2.ChargingPool;
-                Assert.IsNotNull(chargingPool2);
+                ClassicAssert.IsNotNull(chargingPool2);
 
                 #endregion
 
@@ -1250,10 +1251,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                                 );
 
-                Assert.IsNotNull(addChargingStationResult1);
+                ClassicAssert.IsNotNull(addChargingStationResult1);
 
                 var chargingStation1  = addChargingStationResult1.ChargingStation;
-                Assert.IsNotNull(chargingStation1);
+                ClassicAssert.IsNotNull(chargingStation1);
 
                 #endregion
 
@@ -1275,10 +1276,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                                 );
 
-                Assert.IsNotNull(addChargingStationResult2);
+                ClassicAssert.IsNotNull(addChargingStationResult2);
 
                 var chargingStation2  = addChargingStationResult2.ChargingStation;
-                Assert.IsNotNull(chargingStation2);
+                ClassicAssert.IsNotNull(chargingStation2);
 
                 #endregion
 
@@ -1300,10 +1301,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                                 );
 
-                Assert.IsNotNull(addChargingStationResult3);
+                ClassicAssert.IsNotNull(addChargingStationResult3);
 
                 var chargingStation3  = addChargingStationResult3.ChargingStation;
-                Assert.IsNotNull(chargingStation3);
+                ClassicAssert.IsNotNull(chargingStation3);
 
                 #endregion
 
@@ -1334,10 +1335,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                       );
 
-                Assert.IsNotNull(addEVSE1Result1);
+                ClassicAssert.IsNotNull(addEVSE1Result1);
 
                 var evse1     = addEVSE1Result1.EVSE;
-                Assert.IsNotNull(evse1);
+                ClassicAssert.IsNotNull(evse1);
 
                 #endregion
 
@@ -1367,10 +1368,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                       );
 
-                Assert.IsNotNull(addEVSE1Result2);
+                ClassicAssert.IsNotNull(addEVSE1Result2);
 
                 var evse2     = addEVSE1Result2.EVSE;
-                Assert.IsNotNull(evse2);
+                ClassicAssert.IsNotNull(evse2);
 
                 #endregion
 
@@ -1400,10 +1401,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                       );
 
-                Assert.IsNotNull(addEVSE1Result3);
+                ClassicAssert.IsNotNull(addEVSE1Result3);
 
                 var evse3     = addEVSE1Result3.EVSE;
-                Assert.IsNotNull(evse2);
+                ClassicAssert.IsNotNull(evse2);
 
                 #endregion
 
@@ -1433,10 +1434,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                       );
 
-                Assert.IsNotNull(addEVSE1Result4);
+                ClassicAssert.IsNotNull(addEVSE1Result4);
 
                 var evse4     = addEVSE1Result4.EVSE;
-                Assert.IsNotNull(evse4);
+                ClassicAssert.IsNotNull(evse4);
 
                 #endregion
 
@@ -1448,29 +1449,29 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                 #region Validate, that locations had been sent to the CPO OCPI module
 
                 var allLocations  = cpoAdapter.CommonAPI.GetLocations().ToArray();
-                Assert.IsNotNull(allLocations);
-                Assert.AreEqual (2, allLocations.Length);
+                ClassicAssert.IsNotNull(allLocations);
+                ClassicAssert.AreEqual (2, allLocations.Length);
 
                 #endregion
 
                 #region Validate, that EVSEs had been sent to the CPO OCPI module
 
                 var allEVSEs      = cpoAdapter.CommonAPI.GetLocations().SelectMany(location => location.EVSEs).ToArray();
-                Assert.IsNotNull(allEVSEs);
-                Assert.AreEqual (4, allEVSEs.Length);
+                ClassicAssert.IsNotNull(allEVSEs);
+                ClassicAssert.AreEqual (4, allEVSEs.Length);
 
                 #endregion
 
                 #region Validate, that both locations have EVSEs
 
                 if (cpoAdapter.CommonAPI.TryGetLocation(Location_Id.Parse(chargingPool1.Id.ToString()), out var location1) && location1 is not null)
-                    Assert.AreEqual(3, location1.EVSEs.Count());
+                    ClassicAssert.AreEqual(3, location1.EVSEs.Count());
                 else
                     Assert.Fail("location1 was not found!");
 
 
                 if (cpoAdapter.CommonAPI.TryGetLocation(Location_Id.Parse(chargingPool2.Id.ToString()), out var location2) && location2 is not null)
-                    Assert.AreEqual(1, location2.EVSEs.Count());
+                    ClassicAssert.AreEqual(1, location2.EVSEs.Count());
                 else
                     Assert.Fail("location2 was not found!");
 
@@ -1479,7 +1480,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
 
                 var evse1_UId = evse1!.Id.ToOCPI_EVSEUId();
-                Assert.IsTrue(evse1_UId.HasValue);
+                ClassicAssert.IsTrue(evse1_UId.HasValue);
 
                 #region Subscribe WWCP EVSE events
 
@@ -1553,7 +1554,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                         cpoAdapter.CommonAPI.TryGetLocation(Location_Id.Parse(chargingPool1!.Id.Suffix), out var location) && location is not null &&
                         location.TryGetEVSE(evse1_UId.Value, out var ocpiEVSE) && ocpiEVSE is not null)
                     {
-                        Assert.AreEqual(StatusType.AVAILABLE, ocpiEVSE.Status);
+                        ClassicAssert.AreEqual(StatusType.AVAILABLE, ocpiEVSE.Status);
                     }
                 }
 
@@ -1566,17 +1567,17 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                 await Task.Delay(500);
 
 
-                Assert.AreEqual(3, updatedEVSEStatus.    Count);
-                Assert.AreEqual(2, updatedOCPIEVSEStatus.Count);
+                ClassicAssert.AreEqual(3, updatedEVSEStatus.    Count);
+                ClassicAssert.AreEqual(2, updatedOCPIEVSEStatus.Count);
 
-                Assert.AreEqual(EVSEStatusTypes.Charging,  graphDefinedCSO.GetEVSEById(evse1!.Id).Status.Value);
+                ClassicAssert.AreEqual(EVSEStatusTypes.Charging,  graphDefinedCSO.GetEVSEById(evse1!.Id).Status.Value);
 
                 {
                     if (evse1_UId.HasValue &&
                         cpoAdapter.CommonAPI.TryGetLocation(Location_Id.Parse(chargingPool1!.Id.Suffix), out var location) && location is not null &&
                         location.TryGetEVSE(evse1_UId.Value, out var ocpiEVSE) && ocpiEVSE is not null)
                     {
-                        Assert.AreEqual(StatusType.CHARGING, ocpiEVSE.Status);
+                        ClassicAssert.AreEqual(StatusType.CHARGING, ocpiEVSE.Status);
                     }
                 }
 
@@ -1653,10 +1654,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                              );
 
-                Assert.IsNotNull(addChargingPoolResult1);
+                ClassicAssert.IsNotNull(addChargingPoolResult1);
 
                 var chargingPool1  = addChargingPoolResult1.ChargingPool;
-                Assert.IsNotNull(chargingPool1);
+                ClassicAssert.IsNotNull(chargingPool1);
 
                 #endregion
 
@@ -1697,10 +1698,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                              );
 
-                Assert.IsNotNull(addChargingPoolResult2);
+                ClassicAssert.IsNotNull(addChargingPoolResult2);
 
                 var chargingPool2  = addChargingPoolResult2.ChargingPool;
-                Assert.IsNotNull(chargingPool2);
+                ClassicAssert.IsNotNull(chargingPool2);
 
                 #endregion
 
@@ -1725,10 +1726,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                                 );
 
-                Assert.IsNotNull(addChargingStationResult1);
+                ClassicAssert.IsNotNull(addChargingStationResult1);
 
                 var chargingStation1  = addChargingStationResult1.ChargingStation;
-                Assert.IsNotNull(chargingStation1);
+                ClassicAssert.IsNotNull(chargingStation1);
 
                 #endregion
 
@@ -1750,10 +1751,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                                 );
 
-                Assert.IsNotNull(addChargingStationResult2);
+                ClassicAssert.IsNotNull(addChargingStationResult2);
 
                 var chargingStation2  = addChargingStationResult2.ChargingStation;
-                Assert.IsNotNull(chargingStation2);
+                ClassicAssert.IsNotNull(chargingStation2);
 
                 #endregion
 
@@ -1775,10 +1776,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                                 );
 
-                Assert.IsNotNull(addChargingStationResult3);
+                ClassicAssert.IsNotNull(addChargingStationResult3);
 
                 var chargingStation3  = addChargingStationResult3.ChargingStation;
-                Assert.IsNotNull(chargingStation3);
+                ClassicAssert.IsNotNull(chargingStation3);
 
                 #endregion
 
@@ -1799,10 +1800,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                       );
 
-                Assert.IsNotNull(addEVSE1Result1);
+                ClassicAssert.IsNotNull(addEVSE1Result1);
 
                 var evse1     = addEVSE1Result1.EVSE;
-                Assert.IsNotNull(evse1);
+                ClassicAssert.IsNotNull(evse1);
 
                 #endregion
 
@@ -1822,10 +1823,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                       );
 
-                Assert.IsNotNull(addEVSE1Result2);
+                ClassicAssert.IsNotNull(addEVSE1Result2);
 
                 var evse2     = addEVSE1Result2.EVSE;
-                Assert.IsNotNull(evse2);
+                ClassicAssert.IsNotNull(evse2);
 
                 #endregion
 
@@ -1845,10 +1846,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                       );
 
-                Assert.IsNotNull(addEVSE1Result3);
+                ClassicAssert.IsNotNull(addEVSE1Result3);
 
                 var evse3     = addEVSE1Result3.EVSE;
-                Assert.IsNotNull(evse2);
+                ClassicAssert.IsNotNull(evse2);
 
                 #endregion
 
@@ -1868,10 +1869,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                       );
 
-                Assert.IsNotNull(addEVSE1Result4);
+                ClassicAssert.IsNotNull(addEVSE1Result4);
 
                 var evse4     = addEVSE1Result4.EVSE;
-                Assert.IsNotNull(evse4);
+                ClassicAssert.IsNotNull(evse4);
 
                 #endregion
 
@@ -1937,9 +1938,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                  ChargingProduct:     ChargingProduct.    FromId       (ChargingProduct_Id.Parse("AC1"))
                                              );
 
-                Assert.AreEqual(AuthStartResultTypes.NotAuthorized, authStartResult1.Result);
-                Assert.AreEqual(AuthStartResultTypes.Authorized,    authStartResult2.Result);
-                Assert.AreEqual(AuthStartResultTypes.Authorized,    authStartResult3.Result);
+                ClassicAssert.AreEqual(AuthStartResultTypes.NotAuthorized, authStartResult1.Result);
+                ClassicAssert.AreEqual(AuthStartResultTypes.Authorized,    authStartResult2.Result);
+                ClassicAssert.AreEqual(AuthStartResultTypes.Authorized,    authStartResult3.Result);
 
             }
             else
@@ -2010,10 +2011,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                              );
 
-                Assert.IsNotNull(addChargingPoolResult1);
+                ClassicAssert.IsNotNull(addChargingPoolResult1);
 
                 var chargingPool1  = addChargingPoolResult1.ChargingPool;
-                Assert.IsNotNull(chargingPool1);
+                ClassicAssert.IsNotNull(chargingPool1);
 
                 #endregion
 
@@ -2037,10 +2038,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                                 );
 
-                Assert.IsNotNull(addChargingStationResult1);
+                ClassicAssert.IsNotNull(addChargingStationResult1);
 
                 var chargingStation1  = addChargingStationResult1.ChargingStation;
-                Assert.IsNotNull(chargingStation1);
+                ClassicAssert.IsNotNull(chargingStation1);
 
                 #endregion
 
@@ -2066,10 +2067,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                       );
 
-                Assert.IsNotNull(addEVSE1Result1);
+                ClassicAssert.IsNotNull(addEVSE1Result1);
 
                 var evse1     = addEVSE1Result1.EVSE;
-                Assert.IsNotNull(evse1);
+                ClassicAssert.IsNotNull(evse1);
 
                 #endregion
 
@@ -2156,7 +2157,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                       Signatures:                   null));
 
 
-                    Assert.AreEqual(SendCDRsResultTypes.Success, sendCDRResult.Result);
+                    ClassicAssert.AreEqual(SendCDRsResultTypes.Success, sendCDRResult.Result);
 
                 }
 
@@ -2230,10 +2231,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                              );
 
-                Assert.IsNotNull(addChargingPoolResult1);
+                ClassicAssert.IsNotNull(addChargingPoolResult1);
 
                 var chargingPool1  = addChargingPoolResult1.ChargingPool;
-                Assert.IsNotNull(chargingPool1);
+                ClassicAssert.IsNotNull(chargingPool1);
 
                 #endregion
 
@@ -2257,10 +2258,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                                 );
 
-                Assert.IsNotNull(addChargingStationResult1);
+                ClassicAssert.IsNotNull(addChargingStationResult1);
 
                 var chargingStation1  = addChargingStationResult1.ChargingStation;
-                Assert.IsNotNull(chargingStation1);
+                ClassicAssert.IsNotNull(chargingStation1);
 
                 #endregion
 
@@ -2286,10 +2287,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                       );
 
-                Assert.IsNotNull(addEVSE1Result1);
+                ClassicAssert.IsNotNull(addEVSE1Result1);
 
                 var evse1     = addEVSE1Result1.EVSE;
-                Assert.IsNotNull(evse1);
+                ClassicAssert.IsNotNull(evse1);
 
                 #endregion
 
@@ -2351,7 +2352,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                      ChargingProduct:      chargingProduct
                                                  );
 
-                    Assert.AreEqual(AuthStartResultTypes.Authorized,  authStartResult.Result);
+                    ClassicAssert.AreEqual(AuthStartResultTypes.Authorized,  authStartResult.Result);
 
                     if (authStartResult           is not null &&
                         authStartResult.SessionId is not null)
@@ -2365,7 +2366,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                          LocalAuthentication:  LocalAuthentication.FromAuthToken(authTokenStop)
                                                      );
 
-                        Assert.AreEqual(AuthStopResultTypes.Authorized,  authStopResult.Result);
+                        ClassicAssert.AreEqual(AuthStopResultTypes.Authorized,  authStopResult.Result);
 
 
                         var startTS          = Timestamp.Now - TimeSpan.FromMinutes(5);
@@ -2445,7 +2446,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                              PublicKey:                   null,
                                                              Signatures:                  null));
 
-                        Assert.AreEqual(SendCDRsResultTypes.Success,  sendCDRResult.Result);
+                        ClassicAssert.AreEqual(SendCDRsResultTypes.Success,  sendCDRResult.Result);
 
                     }
                     else
@@ -2526,10 +2527,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                              );
 
-                Assert.IsNotNull(addChargingPoolResult1);
+                ClassicAssert.IsNotNull(addChargingPoolResult1);
 
                 var chargingPool1  = addChargingPoolResult1.ChargingPool;
-                Assert.IsNotNull(chargingPool1);
+                ClassicAssert.IsNotNull(chargingPool1);
 
                 #endregion
 
@@ -2553,10 +2554,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                                 );
 
-                Assert.IsNotNull(addChargingStationResult1);
+                ClassicAssert.IsNotNull(addChargingStationResult1);
 
                 var chargingStation1  = addChargingStationResult1.ChargingStation;
-                Assert.IsNotNull(chargingStation1);
+                ClassicAssert.IsNotNull(chargingStation1);
 
                 #endregion
 
@@ -2582,10 +2583,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                       );
 
-                Assert.IsNotNull(addEVSE1Result1);
+                ClassicAssert.IsNotNull(addEVSE1Result1);
 
                 var evse1     = addEVSE1Result1.EVSE;
-                Assert.IsNotNull(evse1);
+                ClassicAssert.IsNotNull(evse1);
 
                 #endregion
 
@@ -2624,7 +2625,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                //          RemoteAuthentication:   authenticationStart
                                                //      );
 
-                    Assert.AreEqual(RemoteStartResultTypes.AsyncOperation, remoteStartResult.Result);
+                    ClassicAssert.AreEqual(RemoteStartResultTypes.AsyncOperation, remoteStartResult.Result);
 
 
                     var ss1 = emp1RoamingNetwork.SessionsStore.ContainsKey(smartPhoneSessionId);
@@ -2729,7 +2730,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                              PublicKey:                   null,
                                                              Signatures:                  null));
 
-                        Assert.AreEqual(SendCDRsResultTypes.Success,  sendCDRResult.Result);
+                        ClassicAssert.AreEqual(SendCDRsResultTypes.Success,  sendCDRResult.Result);
 
 
                     }
