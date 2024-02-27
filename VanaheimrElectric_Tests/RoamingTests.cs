@@ -109,7 +109,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                              );
 
                 Assert.IsNotNull(addChargingPoolResult1);
-                Assert.IsTrue(addChargingPoolResult1.IsSuccess);
+                Assert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, addChargingPoolResult1.Result);
 
                 var chargingPool1 = addChargingPoolResult1.ChargingPool;
                 Assert.IsNotNull(chargingPool1);
@@ -183,7 +183,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                              );
 
                 Assert.IsNotNull(addChargingPoolResult2);
-                Assert.IsTrue(addChargingPoolResult2.IsSuccess);
+                Assert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, addChargingPoolResult2.Result);
 
                 var chargingPool2 = addChargingPoolResult2.ChargingPool;
                 Assert.IsNotNull(chargingPool2);
@@ -235,7 +235,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                 );
 
                 Assert.IsNotNull(addChargingStationResult1);
-                Assert.IsTrue(addChargingStationResult1.IsSuccess);
+                Assert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, addChargingStationResult1.Result);
 
                 var chargingStation1 = addChargingStationResult1.ChargingStation;
                 Assert.IsNotNull(chargingStation1);
@@ -262,7 +262,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                 );
 
                 Assert.IsNotNull(addChargingStationResult2);
-                Assert.IsTrue(addChargingStationResult2.IsSuccess);
+                Assert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, addChargingStationResult2.Result);
 
                 var chargingStation2 = addChargingStationResult2.ChargingStation;
                 Assert.IsNotNull(chargingStation2);
@@ -289,7 +289,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                 );
 
                 Assert.IsNotNull(addChargingStationResult3);
-                Assert.IsTrue(addChargingStationResult3.IsSuccess);
+                Assert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, addChargingStationResult3.Result);
 
                 var chargingStation3 = addChargingStationResult3.ChargingStation;
                 Assert.IsNotNull(chargingStation3);
@@ -325,7 +325,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                       );
 
                 Assert.IsNotNull(addEVSE1Result1);
-                Assert.IsTrue(addEVSE1Result1.IsSuccess);
+                Assert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, addEVSE1Result1.Result);
 
                 var evse1 = addEVSE1Result1.EVSE;
                 Assert.IsNotNull(evse1);
@@ -2103,8 +2103,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                     var sendCDRResult = await csoRoamingNetwork.SendChargeDetailRecord(
                                                   new ChargeDetailRecord(
-                                                      Id:                           ChargeDetailRecord_Id.NewRandom,
-                                                      SessionId:                    ChargingSession_Id.   NewRandom,
+                                                      Id:                           ChargeDetailRecord_Id.NewRandom(ChargingStationOperator_Id.Parse("DE*GEF")),
+                                                      SessionId:                    ChargingSession_Id.   NewRandom(ChargingStationOperator_Id.Parse("DE*GEF")),
                                                       SessionTime:                  new StartEndDateTime(
                                                                                         Timestamp.Now - TimeSpan.FromHours(2),
                                                                                         Timestamp.Now - TimeSpan.FromMinutes(2)
@@ -2131,8 +2131,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                       ProviderIdStart:              EMobilityProvider_Id.Parse("DE-GDF"),
                                                       ProviderIdStop:               EMobilityProvider_Id.Parse("DE-GD2"),
 
-                                                      EMPRoamingProvider:           null,
-                                                      EMPRoamingProviderId:         null,
+                                                      CSORoamingProvider:           null,
+                                                      CSORoamingProviderId:         null,
 
                                                       Reservation:                  null,
                                                       ReservationId:                null,
@@ -2373,7 +2373,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                         var sendCDRResult    = await csoRoamingNetwork.SendChargeDetailRecord(
                                                          new ChargeDetailRecord(
-                                                             Id:                          ChargeDetailRecord_Id.NewRandom,
+                                                             Id:                          ChargeDetailRecord_Id.NewRandom(ChargingStationOperator_Id.Parse("DE*GEF")),
                                                              SessionId:                   authStartResult.SessionId.Value,
                                                              SessionTime:                 new StartEndDateTime(
                                                                                               startTS,
@@ -2405,8 +2405,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                              ProviderIdStart:             authStartResult.ProviderId,
                                                              ProviderIdStop:              authStopResult. ProviderId,
 
-                                                             EMPRoamingProvider:          null,
-                                                             EMPRoamingProviderId:        null,
+                                                             CSORoamingProvider:          null,
+                                                             CSORoamingProviderId:        null,
 
                                                              Reservation:                 null,
                                                              ReservationId:               null,
@@ -2604,17 +2604,17 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                     evse1.Operator        is not null)
                 {
 
-                    var authenticationStart  = RemoteAuthentication.FromRemoteIdentification(EMobilityAccount_Id.Parse("DE-GDF-C12345678-X"));
-                    var smartPhoneSessionId  = ChargingSession_Id.NewRandom;
-                    var chargingProduct      = ChargingProduct.FromId(ChargingProduct_Id.Parse("AC1"));
+                    var authenticationStart  = RemoteAuthentication.FromRemoteIdentification(EMobilityAccount_Id. Parse("DE-GDF-C12345678-X"));
+                    var smartPhoneSessionId  = ChargingSession_Id.  NewRandom               (EMobilityProvider_Id.Parse("DE-GDF"));
+                    var chargingProduct      = ChargingProduct.     FromId                  (ChargingProduct_Id.  Parse("AC1"));
 
                     var remoteStartResult    = await ahzfPhone.RemoteStart(new WWCP.MobilityProvider.RemoteStartRequest(
-                                                                   ChargingLocation:       ChargingLocation.FromEVSEId(evse1.Id),
-                                                                   ChargingProduct:        chargingProduct,
-                                                                   ReservationId:          ChargingReservation_Id.Random(ChargingStationOperator_Id.Parse("DE*GEF")),
-                                                                   ChargingSessionId:      smartPhoneSessionId,
-                                                                   RemoteAuthentication:   authenticationStart)
-                                                               );
+                                                         ChargingLocation:       ChargingLocation.FromEVSEId(evse1.Id),
+                                                         ChargingProduct:        chargingProduct,
+                                                         ReservationId:          ChargingReservation_Id.NewRandom(ChargingStationOperator_Id.Parse("DE*GEF")),
+                                                         ChargingSessionId:      smartPhoneSessionId,
+                                                         RemoteAuthentication:   authenticationStart)
+                                                     );
 
                                                //await graphDefinedEMP1Local.RemoteStart(
                                                //          ChargingLocation:       ChargingLocation.FromEVSEId(evse1.Id),
@@ -2657,7 +2657,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                         var sendCDRResult    = await csoRoamingNetwork.SendChargeDetailRecord(
                                                          new ChargeDetailRecord(
-                                                             Id:                           ChargeDetailRecord_Id.NewRandom,
+                                                             Id:                           ChargeDetailRecord_Id.NewRandom(ChargingStationOperator_Id.Parse("DE*GEF")),
                                                              SessionId:                    remoteStartResult.ChargingSession.Id,
                                                              SessionTime:                  new StartEndDateTime(
                                                                                                Timestamp.Now - TimeSpan.FromMinutes(5),
@@ -2689,8 +2689,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                              ProviderIdStart:             graphDefinedEMP1Local.Id,
                                                              ProviderIdStop:              providerIdStop,
 
-                                                             EMPRoamingProvider:          null,
-                                                             EMPRoamingProviderId:        null,
+                                                             CSORoamingProvider:          null,
+                                                             CSORoamingProviderId:        null,
 
                                                              Reservation:                 null,
                                                              ReservationId:               null,

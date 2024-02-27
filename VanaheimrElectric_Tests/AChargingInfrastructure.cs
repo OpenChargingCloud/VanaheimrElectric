@@ -1325,8 +1325,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                     );
 
             emsp2HTTPAPI          = new HTTPAPI(
-                                       HTTPServerPort:  IPPort.Parse(3402),
-                                       AutoStart:       true
+                                        HTTPServerPort:  IPPort.Parse(3402),
+                                        AutoStart:       true
                                     );
 
             Assert.IsNotNull(cpoHTTPAPI);
@@ -1898,7 +1898,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                  InitialStatus:        ChargingStationOperatorStatusTypes.Available
                                                              );
 
-            Assert.IsTrue   (csoResult.IsSuccess);
+            Assert.IsNotNull(csoResult);
+            Assert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, csoResult.Result);
             Assert.IsNotNull(csoResult.ChargingStationOperator);
 
             graphDefinedCSO        = csoResult.ChargingStationOperator;
@@ -1920,7 +1921,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                                               );
 
-            Assert.IsTrue   (emp1result.IsSuccess);
+            Assert.IsNotNull(emp1result);
+            Assert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, emp1result.Result);
             Assert.IsNotNull(emp1result.EMobilityProvider);
 
             graphDefinedEMP1       = emp1result.EMobilityProvider;
@@ -1942,7 +1944,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                                               );
 
-            Assert.IsTrue   (emp2result.IsSuccess);
+            Assert.IsNotNull(emp2result);
+            Assert.AreEqual (org.GraphDefined.Vanaheimr.Illias.CommandResult.Success, emp2result.Result);
             Assert.IsNotNull(emp2result.EMobilityProvider);
 
             graphDefinedEMP2       = emp2result.EMobilityProvider;
@@ -1964,7 +1967,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                 cpoAdapter           = csoRoamingNetwork.CreateOCPIv2_1_1_CSOAdapter(
 
-                                           Id:                                  EMPRoamingProvider_Id.Parse("OCPIv2.1_CSO_" + this.csoRoamingNetwork.Id),
+                                           Id:                                  CSORoamingProvider_Id.Parse("OCPIv2.1_CSO_" + this.csoRoamingNetwork.Id),
                                            Name:                                I18NString.Create(Languages.de, "OCPI v2.1 CSO"),
                                            Description:                         I18NString.Create(Languages.de, "OCPI v2.1 CSO Roaming"),
 
@@ -1994,7 +1997,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                 emsp1Adapter          = emp1RoamingNetwork.CreateOCPIv2_1_EMPAdapter(
 
-                                           Id:                                  CSORoamingProvider_Id.Parse("OCPIv2.1_EMP1_" + this.emp1RoamingNetwork.Id),
+                                           Id:                                  EMPRoamingProvider_Id.Parse("OCPIv2.1_EMP1_" + this.emp1RoamingNetwork.Id),
                                            Name:                                I18NString.Create(Languages.de, "OCPI v2.1 EMP1"),
                                            Description:                         I18NString.Create(Languages.de, "OCPI v2.1 EMP1 Roaming"),
 
@@ -2024,7 +2027,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                 emsp2Adapter          = emp2RoamingNetwork.CreateOCPIv2_1_EMPAdapter(
 
-                                           Id:                                  CSORoamingProvider_Id.Parse("OCPIv2.1_EMP2_" + this.emp1RoamingNetwork.Id),
+                                           Id:                                  EMPRoamingProvider_Id.Parse("OCPIv2.1_EMP2_" + this.emp1RoamingNetwork.Id),
                                            Name:                                I18NString.Create(Languages.de, "OCPI v2.1 EMP2"),
                                            Description:                         I18NString.Create(Languages.de, "OCPI v2.1 EMP2 Roaming"),
 
