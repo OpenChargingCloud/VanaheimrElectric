@@ -2132,8 +2132,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                       ProviderIdStart:              EMobilityProvider_Id.Parse("DE-GDF"),
                                                       ProviderIdStop:               EMobilityProvider_Id.Parse("DE-GD2"),
 
-                                                      CSORoamingProvider:           null,
-                                                      CSORoamingProviderId:         null,
+                                                      //CSORoamingProvider:           null,
+                                                      //CSORoamingProviderId:         null,
 
                                                       Reservation:                  null,
                                                       ReservationId:                null,
@@ -2406,8 +2406,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                              ProviderIdStart:             authStartResult.ProviderId,
                                                              ProviderIdStop:              authStopResult. ProviderId,
 
-                                                             CSORoamingProvider:          null,
-                                                             CSORoamingProviderId:        null,
+                                                             //CSORoamingProvider:          null,
+                                                             //CSORoamingProviderId:        null,
 
                                                              Reservation:                 null,
                                                              ReservationId:               null,
@@ -2427,12 +2427,14 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                                               new EnergyMeteringValue(
                                                                                                   startTS,
                                                                                                   1334.034M,
+                                                                                                  EnergyMeteringValueTypes.Start,
                                                                                                   "1334.034",
                                                                                                   "..."
                                                                                               ),
                                                                                               new EnergyMeteringValue(
                                                                                                   stopTS,
                                                                                                   1451.241M,
+                                                                                                  EnergyMeteringValueTypes.Stop,
                                                                                                   "1451.241",
                                                                                                   "..."
                                                                                               )
@@ -2690,8 +2692,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                              ProviderIdStart:             graphDefinedEMP1Local.Id,
                                                              ProviderIdStop:              providerIdStop,
 
-                                                             CSORoamingProvider:          null,
-                                                             CSORoamingProviderId:        null,
+                                                             //CSORoamingProvider:          null,
+                                                             //CSORoamingProviderId:        null,
 
                                                              Reservation:                 null,
                                                              ReservationId:               null,
@@ -2711,12 +2713,14 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                                               new EnergyMeteringValue(
                                                                                                   startTS,
                                                                                                   1334.034M,
+                                                                                                  EnergyMeteringValueTypes.Start,
                                                                                                   "1334.034",
                                                                                                   "..."
                                                                                               ),
                                                                                               new EnergyMeteringValue(
                                                                                                   stopTS,
                                                                                                   1451.241M,
+                                                                                                  EnergyMeteringValueTypes.Stop,
                                                                                                   "1451.241",
                                                                                                   "..."
                                                                                               )

@@ -13,6 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\OCPPTests\libs\WWCP_OCPP\WWCP_OCPPv2.1_ChargingStation2\WWCP_OCPPv2.1_ChargingStation2.csproj" />
+    <ProjectReference Include="..\..\OCPPTests\libs\WWCP_OCPP\WWCP_OCPPv2.1_CSMS2\WWCP_OCPPv2.1_CSMS2.csproj" />
+    <ProjectReference Include="..\..\OCPPTests\libs\WWCP_OCPP\WWCP_OCPPv2.1_Gateway\WWCP_OCPPv2.1_Gateway.csproj" />
+    <ProjectReference Include="..\..\OCPPTests\libs\WWCP_OCPP\WWCP_OCPPv2.1_LocalController\WWCP_OCPPv2.1_LocalController.csproj" />
     <ProjectReference Include="..\libs\Hermod\Hermod\Hermod.csproj" />
     <ProjectReference Include="..\libs\OpenChargingCloudAPI\OpenChargingCloudAPI\OpenChargingCloudAPI.csproj" />
     <ProjectReference Include="..\libs\SMSAPI\SMSAPI\SMSAPI.csproj" />
@@ -42,7 +46,7 @@
     <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv2.1_Adapter\WWCP_OCPPv2.1_Adapter.csproj" />
     <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv2.1_ChargingStation\WWCP_OCPPv2.1_ChargingStation.csproj" />
     <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv2.1_CSMS\WWCP_OCPPv2.1_CSMS.csproj" />
-    <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv2.1_NetworkingNode\WWCP_OCPPv2.1_NetworkingNode.csproj" />
+    <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv2.1_Tests\WWCP_OCPPv2.1_Tests.csproj" />
     <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPP_Common\WWCP_OCPP_Common.csproj" />
     <ProjectReference Include="..\libs\WWCP_OICP\WWCP_OICPv2.3\WWCP_OICPv2.3.csproj" />
     <ProjectReference Include="..\libs\WWCP_OICP\WWCP_OICPv2.3_Adapter\WWCP_OICPv2.3_Adapter.csproj" />
