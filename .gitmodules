@@ -49,3 +49,6 @@
 [submodule "libs/WWCP_DCC"]
 	path = libs/WWCP_DCC
 	url = https://github.com/OpenChargingCloud/WWCP_DCC.git
+[submodule "libs/WWCP_EEBus"]
+	path = libs/WWCP_EEBus
+	url = ssh://git@git.graphdefined.com:5001/OpenChargingCloud/WWCP_EEBus.git

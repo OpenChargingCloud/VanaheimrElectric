@@ -2630,8 +2630,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                     ClassicAssert.AreEqual(RemoteStartResultTypes.AsyncOperation, remoteStartResult.Result);
 
 
-                    var ss1 = emp1RoamingNetwork.SessionsStore.ContainsKey(smartPhoneSessionId);
-                    var ss2 = emp1RoamingNetwork.ChargingStationOperators.First().Contains(smartPhoneSessionId);
+                    var ss1 = emp1RoamingNetwork.SessionsStore.                   ContainsKey              (smartPhoneSessionId);
+                    var ss2 = emp1RoamingNetwork.ChargingStationOperators.First().ContainsChargingSessionId(smartPhoneSessionId);
 
 
 
