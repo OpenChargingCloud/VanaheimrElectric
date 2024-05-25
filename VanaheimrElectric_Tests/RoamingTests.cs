@@ -2423,22 +2423,22 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                                              EnergyMeterId:               evse1.EnergyMeter?.Id,
                                                              EnergyMeter:                 evse1.EnergyMeter,
-                                                             EnergyMeteringValues:        new[] {
+                                                             EnergyMeteringValues:        [
                                                                                               new EnergyMeteringValue(
                                                                                                   startTS,
-                                                                                                  1334.034M,
+                                                                                                  WattHour.ParseKWh(1334.034M),
                                                                                                   EnergyMeteringValueTypes.Start,
                                                                                                   "1334.034",
                                                                                                   "..."
                                                                                               ),
                                                                                               new EnergyMeteringValue(
                                                                                                   stopTS,
-                                                                                                  1451.241M,
+                                                                                                  WattHour.ParseKWh(1451.241M),
                                                                                                   EnergyMeteringValueTypes.Stop,
                                                                                                   "1451.241",
                                                                                                   "..."
                                                                                               )
-                                                                                          },
+                                                                                          ],
                                                              ConsumedEnergy:              null,
                                                              ConsumedEnergyFee:           null,
 
@@ -2709,22 +2709,22 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                                              EnergyMeterId:               evse1.EnergyMeter?.Id,
                                                              EnergyMeter:                 evse1.EnergyMeter,
-                                                             EnergyMeteringValues:        new[] {
+                                                             EnergyMeteringValues:        [
                                                                                               new EnergyMeteringValue(
                                                                                                   startTS,
-                                                                                                  1334.034M,
+                                                                                                  WattHour.ParseKWh(1334.034M),
                                                                                                   EnergyMeteringValueTypes.Start,
                                                                                                   "1334.034",
                                                                                                   "..."
                                                                                               ),
                                                                                               new EnergyMeteringValue(
                                                                                                   stopTS,
-                                                                                                  1451.241M,
+                                                                                                  WattHour.ParseKWh(1451.241M),
                                                                                                   EnergyMeteringValueTypes.Stop,
                                                                                                   "1451.241",
                                                                                                   "..."
                                                                                               )
-                                                                                          },
+                                                                                          ],
                                                              ConsumedEnergy:              null,
                                                              ConsumedEnergyFee:           null,
 
