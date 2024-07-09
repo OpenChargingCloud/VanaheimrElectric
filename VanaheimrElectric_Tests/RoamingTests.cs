@@ -307,15 +307,15 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                           Name:                 I18NString.Create(Languages.en, "Test EVSE #1A1"),
                                           Description:          I18NString.Create(Languages.en, "GraphDefined EVSE for tests #1A1"),
 
-                                          ChargingConnectors:   new[] {
-                                                                      new ChargingConnector(
-                                                                          Id:             ChargingConnector_Id.Parse(1),
-                                                                          Plug:           ChargingPlugTypes.Type2Connector_CableAttached,
-                                                                          Lockable:       true,
-                                                                          CableAttached:  true,
-                                                                          CableLength:    Meter.Parse(3.0)
-                                                                      )
-                                                                  },
+                                          ChargingConnectors:   [
+                                                                    new ChargingConnector(
+                                                                        Id:             ChargingConnector_Id.Parse(1),
+                                                                        Plug:           ChargingPlugTypes.Type2Connector_CableAttached,
+                                                                        Lockable:       true,
+                                                                        CableAttached:  true,
+                                                                        CableLength:    Meter.ParseM(3.0)
+                                                                    )
+                                                                ],
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
                                           InitialStatus:        EVSEStatusTypes.Available,
@@ -361,15 +361,15 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                           Name:                 I18NString.Create(Languages.en, "Test EVSE #1A2"),
                                           Description:          I18NString.Create(Languages.en, "GraphDefined EVSE for tests #1A2"),
 
-                                          ChargingConnectors:   new[] {
-                                                                      new ChargingConnector(
-                                                                          Id:             ChargingConnector_Id.Parse(1),
-                                                                          Plug:           ChargingPlugTypes.Type2Connector_CableAttached,
-                                                                          Lockable:       true,
-                                                                          CableAttached:  true,
-                                                                          CableLength:    Meter.Parse(3.0)
-                                                                      )
-                                                                  },
+                                          ChargingConnectors:   [
+                                                                    new ChargingConnector(
+                                                                        Id:             ChargingConnector_Id.Parse(1),
+                                                                        Plug:           ChargingPlugTypes.Type2Connector_CableAttached,
+                                                                        Lockable:       true,
+                                                                        CableAttached:  true,
+                                                                        CableLength:    Meter.ParseM(3.0)
+                                                                    )
+                                                                ],
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
                                           InitialStatus:        EVSEStatusTypes.Available,
@@ -394,15 +394,15 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                           Name:                 I18NString.Create(Languages.en, "Test EVSE #1B1"),
                                           Description:          I18NString.Create(Languages.en, "GraphDefined EVSE for tests #1B1"),
 
-                                          ChargingConnectors:   new[] {
-                                                                      new ChargingConnector(
-                                                                          Id:             ChargingConnector_Id.Parse(1),
-                                                                          Plug:           ChargingPlugTypes.Type2Connector_CableAttached,
-                                                                          Lockable:       true,
-                                                                          CableAttached:  true,
-                                                                          CableLength:    Meter.Parse(3.0)
-                                                                      )
-                                                                  },
+                                          ChargingConnectors:   [
+                                                                    new ChargingConnector(
+                                                                        Id:             ChargingConnector_Id.Parse(1),
+                                                                        Plug:           ChargingPlugTypes.Type2Connector_CableAttached,
+                                                                        Lockable:       true,
+                                                                        CableAttached:  true,
+                                                                        CableLength:    Meter.ParseM(3.0)
+                                                                    )
+                                                                ],
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
                                           InitialStatus:        EVSEStatusTypes.Available,
@@ -427,15 +427,15 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                           Name:                 I18NString.Create(Languages.en, "Test EVSE #2A1"),
                                           Description:          I18NString.Create(Languages.en, "GraphDefined EVSE for tests #2A1"),
 
-                                          ChargingConnectors:   new[] {
-                                                                      new ChargingConnector(
-                                                                          Id:             ChargingConnector_Id.Parse(1),
-                                                                          Plug:           ChargingPlugTypes.Type2Connector_CableAttached,
-                                                                          Lockable:       true,
-                                                                          CableAttached:  true,
-                                                                          CableLength:    Meter.Parse(3.0)
-                                                                      )
-                                                                  },
+                                          ChargingConnectors:   [
+                                                                    new ChargingConnector(
+                                                                        Id:             ChargingConnector_Id.Parse(1),
+                                                                        Plug:           ChargingPlugTypes.Type2Connector_CableAttached,
+                                                                        Lockable:       true,
+                                                                        CableAttached:  true,
+                                                                        CableLength:    Meter.ParseM(3.0)
+                                                                    )
+                                                                ],
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
                                           InitialStatus:        EVSEStatusTypes.Available,
@@ -709,15 +709,15 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                           Name:                 I18NString.Create(Languages.en, "Test EVSE #1A1"),
                                           Description:          I18NString.Create(Languages.en, "GraphDefined EVSE for tests #1A1"),
 
-                                          ChargingConnectors:   new[] {
-                                                                      new ChargingConnector(
-                                                                          Id:             ChargingConnector_Id.Parse(1),
-                                                                          Plug:           ChargingPlugTypes.Type2Connector_CableAttached,
-                                                                          Lockable:       true,
-                                                                          CableAttached:  true,
-                                                                          CableLength:    Meter.Parse(3.0)
-                                                                      )
-                                                                  },
+                                          ChargingConnectors:   [
+                                                                    new ChargingConnector(
+                                                                        Id:             ChargingConnector_Id.Parse(1),
+                                                                        Plug:           ChargingPlugTypes.Type2Connector_CableAttached,
+                                                                        Lockable:       true,
+                                                                        CableAttached:  true,
+                                                                        CableLength:    Meter.ParseM(3.0)
+                                                                    )
+                                                                ],
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
                                           InitialStatus:        EVSEStatusTypes.Available,
@@ -742,15 +742,15 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                           Name:                 I18NString.Create(Languages.en, "Test EVSE #1A2"),
                                           Description:          I18NString.Create(Languages.en, "GraphDefined EVSE for tests #1A2"),
 
-                                          ChargingConnectors:   new[] {
-                                                                      new ChargingConnector(
-                                                                          Id:             ChargingConnector_Id.Parse(1),
-                                                                          Plug:           ChargingPlugTypes.Type2Connector_CableAttached,
-                                                                          Lockable:       true,
-                                                                          CableAttached:  true,
-                                                                          CableLength:    Meter.Parse(3.0)
-                                                                      )
-                                                                  },
+                                          ChargingConnectors:   [
+                                                                    new ChargingConnector(
+                                                                        Id:             ChargingConnector_Id.Parse(1),
+                                                                        Plug:           ChargingPlugTypes.Type2Connector_CableAttached,
+                                                                        Lockable:       true,
+                                                                        CableAttached:  true,
+                                                                        CableLength:    Meter.ParseM(3.0)
+                                                                    )
+                                                                ],
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
                                           InitialStatus:        EVSEStatusTypes.Available,
@@ -775,15 +775,15 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                           Name:                 I18NString.Create(Languages.en, "Test EVSE #1B1"),
                                           Description:          I18NString.Create(Languages.en, "GraphDefined EVSE for tests #1B1"),
 
-                                          ChargingConnectors:   new[] {
-                                                                      new ChargingConnector(
-                                                                          Id:             ChargingConnector_Id.Parse(1),
-                                                                          Plug:           ChargingPlugTypes.Type2Connector_CableAttached,
-                                                                          Lockable:       true,
-                                                                          CableAttached:  true,
-                                                                          CableLength:    Meter.Parse(3.0)
-                                                                      )
-                                                                  },
+                                          ChargingConnectors:   [
+                                                                    new ChargingConnector(
+                                                                        Id:             ChargingConnector_Id.Parse(1),
+                                                                        Plug:           ChargingPlugTypes.Type2Connector_CableAttached,
+                                                                        Lockable:       true,
+                                                                        CableAttached:  true,
+                                                                        CableLength:    Meter.ParseM(3.0)
+                                                                    )
+                                                                ],
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
                                           InitialStatus:        EVSEStatusTypes.Available,
@@ -808,15 +808,15 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                           Name:                 I18NString.Create(Languages.en, "Test EVSE #2A1"),
                                           Description:          I18NString.Create(Languages.en, "GraphDefined EVSE for tests #2A1"),
 
-                                          ChargingConnectors:   new[] {
-                                                                      new ChargingConnector(
-                                                                          Id:             ChargingConnector_Id.Parse(1),
-                                                                          Plug:           ChargingPlugTypes.Type2Connector_CableAttached,
-                                                                          Lockable:       true,
-                                                                          CableAttached:  true,
-                                                                          CableLength:    Meter.Parse(3.0)
-                                                                      )
-                                                                  },
+                                          ChargingConnectors:   [
+                                                                    new ChargingConnector(
+                                                                        Id:             ChargingConnector_Id.Parse(1),
+                                                                        Plug:           ChargingPlugTypes.Type2Connector_CableAttached,
+                                                                        Lockable:       true,
+                                                                        CableAttached:  true,
+                                                                        CableLength:    Meter.ParseM(3.0)
+                                                                    )
+                                                                ],
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
                                           InitialStatus:        EVSEStatusTypes.Available,
@@ -1317,15 +1317,15 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                           Name:                 I18NString.Create(Languages.en, "Test EVSE #1A1"),
                                           Description:          I18NString.Create(Languages.en, "GraphDefined EVSE for tests #1A1"),
 
-                                          ChargingConnectors:   new[] {
-                                                                      new ChargingConnector(
-                                                                          Id:             ChargingConnector_Id.Parse(1),
-                                                                          Plug:           ChargingPlugTypes.Type2Connector_CableAttached,
-                                                                          Lockable:       true,
-                                                                          CableAttached:  true,
-                                                                          CableLength:    Meter.Parse(3.0)
-                                                                      )
-                                                                  },
+                                          ChargingConnectors:   [
+                                                                    new ChargingConnector(
+                                                                        Id:             ChargingConnector_Id.Parse(1),
+                                                                        Plug:           ChargingPlugTypes.Type2Connector_CableAttached,
+                                                                        Lockable:       true,
+                                                                        CableAttached:  true,
+                                                                        CableLength:    Meter.ParseM(3.0)
+                                                                    )
+                                                                ],
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
                                           InitialStatus:        EVSEStatusTypes.Available,
@@ -1350,15 +1350,15 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                           Name:                 I18NString.Create(Languages.en, "Test EVSE #1A2"),
                                           Description:          I18NString.Create(Languages.en, "GraphDefined EVSE for tests #1A2"),
 
-                                          ChargingConnectors:   new[] {
-                                                                      new ChargingConnector(
-                                                                          Id:             ChargingConnector_Id.Parse(1),
-                                                                          Plug:           ChargingPlugTypes.Type2Connector_CableAttached,
-                                                                          Lockable:       true,
-                                                                          CableAttached:  true,
-                                                                          CableLength:    Meter.Parse(3.0)
-                                                                      )
-                                                                  },
+                                          ChargingConnectors:   [
+                                                                    new ChargingConnector(
+                                                                        Id:             ChargingConnector_Id.Parse(1),
+                                                                        Plug:           ChargingPlugTypes.Type2Connector_CableAttached,
+                                                                        Lockable:       true,
+                                                                        CableAttached:  true,
+                                                                        CableLength:    Meter.ParseM(3.0)
+                                                                    )
+                                                                ],
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
                                           InitialStatus:        EVSEStatusTypes.Available,
@@ -1383,15 +1383,15 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                           Name:                 I18NString.Create(Languages.en, "Test EVSE #1B1"),
                                           Description:          I18NString.Create(Languages.en, "GraphDefined EVSE for tests #1B1"),
 
-                                          ChargingConnectors:   new[] {
-                                                                      new ChargingConnector(
-                                                                          Id:             ChargingConnector_Id.Parse(1),
-                                                                          Plug:           ChargingPlugTypes.Type2Connector_CableAttached,
-                                                                          Lockable:       true,
-                                                                          CableAttached:  true,
-                                                                          CableLength:    Meter.Parse(3.0)
-                                                                      )
-                                                                  },
+                                          ChargingConnectors:   [
+                                                                    new ChargingConnector(
+                                                                        Id:             ChargingConnector_Id.Parse(1),
+                                                                        Plug:           ChargingPlugTypes.Type2Connector_CableAttached,
+                                                                        Lockable:       true,
+                                                                        CableAttached:  true,
+                                                                        CableLength:    Meter.ParseM(3.0)
+                                                                    )
+                                                                ],
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
                                           InitialStatus:        EVSEStatusTypes.Available,
@@ -1416,15 +1416,15 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                           Name:                 I18NString.Create(Languages.en, "Test EVSE #2A1"),
                                           Description:          I18NString.Create(Languages.en, "GraphDefined EVSE for tests #2A1"),
 
-                                          ChargingConnectors:   new[] {
-                                                                      new ChargingConnector(
-                                                                          Id:             ChargingConnector_Id.Parse(1),
-                                                                          Plug:           ChargingPlugTypes.Type2Connector_CableAttached,
-                                                                          Lockable:       true,
-                                                                          CableAttached:  true,
-                                                                          CableLength:    Meter.Parse(3.0)
-                                                                      )
-                                                                  },
+                                          ChargingConnectors:   [
+                                                                    new ChargingConnector(
+                                                                        Id:             ChargingConnector_Id.Parse(1),
+                                                                        Plug:           ChargingPlugTypes.Type2Connector_CableAttached,
+                                                                        Lockable:       true,
+                                                                        CableAttached:  true,
+                                                                        CableLength:    Meter.ParseM(3.0)
+                                                                    )
+                                                                ],
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
                                           InitialStatus:        EVSEStatusTypes.Available,
@@ -2056,14 +2056,14 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
                                           InitialStatus:        EVSEStatusTypes.Available,
 
-                                          ChargingConnectors:   new[] {
+                                          ChargingConnectors:   [
                                                                     new ChargingConnector(
                                                                         Plug:            ChargingPlugTypes.Type2Connector_CableAttached,
                                                                         Lockable:        true,
                                                                         CableAttached:   true,
-                                                                        CableLength:     Meter.Parse(4)
+                                                                        CableLength:     Meter.ParseM(4)
                                                                     )
-                                                                }
+                                                                ]
 
                                       );
 
@@ -2276,14 +2276,14 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
                                           InitialStatus:        EVSEStatusTypes.Available,
 
-                                          ChargingConnectors:   new[] {
+                                          ChargingConnectors:   [
                                                                     new ChargingConnector(
                                                                         Plug:            ChargingPlugTypes.Type2Connector_CableAttached,
                                                                         Lockable:        true,
                                                                         CableAttached:   true,
-                                                                        CableLength:     Meter.Parse(4)
+                                                                        CableLength:     Meter.ParseM(4)
                                                                     )
-                                                                }
+                                                                ]
 
                                       );
 
@@ -2574,14 +2574,14 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
                                           InitialStatus:        EVSEStatusTypes.Available,
 
-                                          ChargingConnectors:   new[] {
+                                          ChargingConnectors:   [
                                                                     new ChargingConnector(
                                                                         Plug:            ChargingPlugTypes.Type2Connector_CableAttached,
                                                                         Lockable:        true,
                                                                         CableAttached:   true,
-                                                                        CableLength:     Meter.Parse(4)
+                                                                        CableLength:     Meter.ParseM(4)
                                                                     )
-                                                                }
+                                                                ]
 
                                       );
 
