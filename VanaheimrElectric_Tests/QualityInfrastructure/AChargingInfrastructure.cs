@@ -193,39 +193,21 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
         public void SetupOnce()
         {
 
-            var OpenChargingCloudPKI_Node1_HTTPPort   = 3001;
-            var OpenChargingCloudPKI_Node2_HTTPPort   = 3002;
-            var OpenChargingCloudPKI_Node3_HTTPPort   = 3003;
-
-            var PTB_Node1_HTTPPort                    = 3101;
-            var VDE_Node1_HTTPPort                    = 3111;
-
-            var GraphDefinedSEM_Node1_HTTPPort        = 3201;
-
-            var GraphDefinedCSM_Node1_HTTPPort        = 3301;
-
-            var GraphDefinedCSO_Node1_HTTPPort        = 3401;
-
-            var GraphDefinedEMP_Node1_HTTPPort        = 3501;
-
-            var Hubject_Node1_HTTPPort                = 3601;
-            var Gireve_Node1_HTTPPort                 = 3611;
-
-            var Leitstelle_Node1_HTTPPort             = 3701;
-
-
             var notBefore = Timestamp.Now - TimeSpan.FromDays(1);
             var notAfter  = notBefore     + TimeSpan.FromDays(365);
-
 
             #region Open Charging Cloud PKI Service
 
             // Open Charging Cloud brings order to the galaxy ;)
 
+            var OpenChargingCloudPKI_Node1_HTTPPort  = 3001;
+            var OpenChargingCloudPKI_Node2_HTTPPort  = 3002;
+            var OpenChargingCloudPKI_Node3_HTTPPort  = 3003;
+
             OCCPKICA                    = new OpenChargingCloudPKI_CA(
                                               Name:             I18NString.Create(Languages.en, "OpenChargingCloud PKI Test CA"),
                                               Description:      I18NString.Create(Languages.en, "Open Charging Cloud Public Key Infrastructure Test Certification Authority"),
-                                              CryptoKeys:       new[] {
+                                              CryptoKeys:       [
                                                                     //ToDo: Create a "Quorum 2 of 3" certificate!
                                                                     new SecP521r1Keys(
                                                                         PublicKey:   "BAHJHVXPl5pM3uIvimkDvhEqQv3fQVfIvyEGwG9ER9qsuil2bKVEYTurJjH5c51kiOoM3F+zcgfjszCHyDMzoJ09bAHp4Wgow7gKlEJrug3DZk2lQURg82IFvcmVoS/PNci52L0Xlx6gLmKKaYXp8BpwwYDY+VrOdoeE+sbWOBg8nkiXQg==",
@@ -248,7 +230,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                         NotBefore:   notBefore,
                                                                         NotAfter:    notAfter
                                                                     )
-                                                                }
+                                                                ]
                                           );
 
             var registerNetworkingNodesKey = OCCPKICA.SignKey(new SecP521r1Keys(
@@ -289,7 +271,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             OpenChargingCloudPKI_Node1  = new ChargingNode(
                                               Name:             I18NString.Create(Languages.en, "OpenChargingCloudPKI_Node1"),
                                               Description:      I18NString.Create(Languages.en, "Open Charging Cloud Public Key Infrastructure - Node 1 of 3"),
-                                              Identities:       new[] {
+                                              Identities:       [
                                                                     new SecP521r1Keys(
                                                                         PublicKey:   "BAFZihMJdtrB5ixV7guNQAoVY46QO/AI7xF/7DOiZh8kANGOKI+EvcLxVYSs6wO/mhAj8SvwmltQ/Cs2iFuEuGQ4FQFRGBf16cG5dM4jfS0LewqfeATjtmT9AjQgyJu41EDiqf8g/vogBO0NHBq9wGzlseasWlnRlbGvqzGr6EoVmA1C7A==",
                                                                         PrivateKey:  "ATvTmppPVADEbTCujGnIiq5pu2viKXh4wuIqR/tyEcJrILc0tBhzUAUbGPZmUyVPq1RTaVQE12p5fJc7kIETxfLe",
@@ -297,8 +279,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                         NotBefore:   notBefore,
                                                                         NotAfter:    notAfter
                                                                     )
-                                                                },
-                                              IdentityGroups:   new[] {
+                                                                ],
+                                              IdentityGroups:   [
                                                                     new SecP521r1Keys(
                                                                         PublicKey:   "BACJyOXVYqYRHi0Tkt9PEcUR1UZj4NJGpxiv0d4ysOZhto/wrDa3Et9QNg+sTxDkhQZ0hiVN3n4O3Uz2Q+ijjL4dpQH0GsKj5siTcEtUnRUUihIYNhRn42x0iG5N96ObTCeMqM85TaBahGTySrxOEMRx0gWOJ0MBKnprJpsunmsdHvt9Kw==",
                                                                         PrivateKey:  "ASwnHt2QKA4JEyK9J8Pd25+icdoYuqJcABeGANFgXw/XmZcdnBtFGtEvQJfXFpsKiNaFYcZH6MSw8sTHqLbOPsOg",
@@ -306,7 +288,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                         NotBefore:   notBefore,
                                                                         NotAfter:    notAfter
                                                                     )
-                                                                },
+                                                                ],
                                               DefaultHTTPAPI:   new HTTPAPI(
                                                                     HTTPServerPort:  IPPort.Parse(OpenChargingCloudPKI_Node1_HTTPPort),
                                                                     DNSClient:       DNSClient,
@@ -323,7 +305,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             OpenChargingCloudPKI_Node2  = new ChargingNode(
                                              Name:             I18NString.Create(Languages.en, "OpenChargingCloudPKI_Node2"),
                                              Description:      I18NString.Create(Languages.en, "Open Charging Cloud Public Key Infrastructure - Node 2 of 3"),
-                                             Identities:       new[] {
+                                             Identities:       [
                                                                    new SecP521r1Keys(
                                                                        "BAEi3ZlHFUtzyav3FzbYpNzjHwnMGp2xCQPEK24hSlzYTl4AEkcxnPJzAGD/MQBnhCitsnLOKDACBWrwwGgbYwZxBwHB+dAD9NQgov/kAOphWP9ZzQXfyslPpRTZFHEu0ZJ4RSKDj8K53f1tUbMjdEZVMX2+HsAEeWr5E1Af7xWIUusd4g==",
                                                                        "ALX4MIq5wuUEKa0FoOgD0LyoTClxoYaFOBSoDGB88uok0uPmWXMxS+49A5sn5DuFghZRA6yfN17Qt6S/JZn8z2Hf",
@@ -331,8 +313,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                        notBefore,
                                                                        notAfter
                                                                    )
-                                                               },
-                                             IdentityGroups:   new[] {
+                                                               ],
+                                             IdentityGroups:   [
                                                                    new SecP521r1Keys(
                                                                        "BACJyOXVYqYRHi0Tkt9PEcUR1UZj4NJGpxiv0d4ysOZhto/wrDa3Et9QNg+sTxDkhQZ0hiVN3n4O3Uz2Q+ijjL4dpQH0GsKj5siTcEtUnRUUihIYNhRn42x0iG5N96ObTCeMqM85TaBahGTySrxOEMRx0gWOJ0MBKnprJpsunmsdHvt9Kw==",
                                                                        "ASwnHt2QKA4JEyK9J8Pd25+icdoYuqJcABeGANFgXw/XmZcdnBtFGtEvQJfXFpsKiNaFYcZH6MSw8sTHqLbOPsOg",
@@ -340,7 +322,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                        notBefore,
                                                                        notAfter
                                                                    )
-                                                               },
+                                                               ],
                                              DefaultHTTPAPI:   new HTTPAPI(
                                                                    HTTPServerPort:  IPPort.Parse(OpenChargingCloudPKI_Node2_HTTPPort),
                                                                    DNSClient:       DNSClient,
@@ -357,7 +339,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             OpenChargingCloudPKI_Node3  = new ChargingNode(
                                              Name:             I18NString.Create(Languages.en, "OpenChargingCloudPKI_Node3"),
                                              Description:      I18NString.Create(Languages.en, "Open Charging Cloud Public Key Infrastructure - Node 3 of 3"),
-                                             Identities:       new[] {
+                                             Identities:       [
                                                                    new SecP521r1Keys(
                                                                        "BAHg2Wzfj4Xm5DtJzCUIxu/niGxY2cO1hf3jh2azthT3Y+nip6BpcvWcPy+BR6Rj9h/qbgukAimfTqLNUsjDW709EgF+mtGy6JJAm3e1jxtRZcc//s+K7Q6Qw63zAnpnNIPJTHKgag6LY/VaP9a8hYJZOg5xwiCEH9Vkg9rIHziOYMHhiw==",
                                                                        "AcwWAmnwzfjsePCg9u02ustsaOR/916i8jrK6nv7mJmt9+t5gXg0XVm7UXIvGtoi8wB97LTY34RSK0q7vzSQPQVj",
@@ -365,8 +347,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                        notBefore,
                                                                        notAfter
                                                                    )
-                                                               },
-                                             IdentityGroups:   new[] {
+                                                               ],
+                                             IdentityGroups:   [
                                                                    new SecP521r1Keys(
                                                                        "BACJyOXVYqYRHi0Tkt9PEcUR1UZj4NJGpxiv0d4ysOZhto/wrDa3Et9QNg+sTxDkhQZ0hiVN3n4O3Uz2Q+ijjL4dpQH0GsKj5siTcEtUnRUUihIYNhRn42x0iG5N96ObTCeMqM85TaBahGTySrxOEMRx0gWOJ0MBKnprJpsunmsdHvt9Kw==",
                                                                        "ASwnHt2QKA4JEyK9J8Pd25+icdoYuqJcABeGANFgXw/XmZcdnBtFGtEvQJfXFpsKiNaFYcZH6MSw8sTHqLbOPsOg",
@@ -374,7 +356,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                        notBefore,
                                                                        notAfter
                                                                    )
-                                                               },
+                                                               ],
                                              DefaultHTTPAPI:   new HTTPAPI(
                                                                    HTTPServerPort:  IPPort.Parse(OpenChargingCloudPKI_Node3_HTTPPort),
                                                                    DNSClient:       DNSClient,
@@ -395,6 +377,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             // MCAs register their identity and their certificates within the Open Charging Cloud.
 
+            var PTB_Node1_HTTPPort  = 3101;
+            var VDE_Node1_HTTPPort  = 3111;
 
             #region PTB
 
@@ -402,7 +386,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                              Id:               MeteringCalibrationLawAgency_Id.Parse("PTB"),
                              Name:             I18NString.Create(Languages.de, "Physikalisch-Technische Bundesanstalt"),
                              Description:      I18NString.Create(Languages.de, "Die Physikalisch-Technische Bundesanstalt ist das nationale Metrologieinstitut der Bundesrepublik Deutschland"),
-                             CryptoKeys:       new[] {
+                             CryptoKeys:       [
                                                    new SecP521r1Keys(
                                                        "BABXbnt69Dr5+X9T04Y//nhP8UP7c97BSuCn+FX4ZlzwZ0fyMQTnTcZ9ulQ6v4u32XzWB4BFPD0w4oWQDlwOd5o93gFeNd5gmYh31vu2Tv7hqfMfg6H8D+tuU0TSL2d2AdxHnvGEFPBzPVYWmR25zKFeijYUQF998CHrywz/reMCgX++Vw==",
                                                        "AYE6HKxDNg1FSZj9zgCMmSnBZP6VWMCOOO2PTbd/g/LatCACPWRGqsOUv0IGzlOU5Pi+nGysnL/TnxgI+mt/MU7F",
@@ -438,13 +422,13 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                        notBefore,
                                                        notAfter
                                                    )
-                                               }
+                                               ]
                          );
 
             PTB_Node1  = new ChargingNode(
                              Name:             I18NString.Create(Languages.en, "PTB_Node1"),
                              Description:      I18NString.Create(Languages.de, "Physikalisch-Technische Bundesanstalt - Node 1 of 3"),
-                             Identities:       new[] {
+                             Identities:       [
                                                    new SecP521r1Keys(
                                                        "BAHyie2ntlBNEJaiY0kFyGkTXf3uBL0gyQIqKQZmgwLec550jmzztm52CPUBQLB1wtxwIUzGobcmtbwk7SsHdBFalgDrCE8UQY2G6rD7TocQWs+0UOAMuTktUUO04JQUs2Ea1CSZ5YvfjVi0ZXC/y+Ui1tqMKtfW5SOLHJ8AkfhPrdSN8A==",
                                                        "AUU/uHl2kQ7abGQgJmulyxBZeLpY2YK346Bn6dnTTQelr9oYs0lW3pOJwDTcV/iUdGNDPCgOcqfITUuukVQRLU6W",
@@ -452,8 +436,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                        notBefore,
                                                        notAfter
                                                    )
-                                               },
-                             IdentityGroups:   new[] {
+                                               ],
+                             IdentityGroups:   [
                                                    new SecP521r1Keys(
                                                        "BAFOQI8mUNfqgPp7SuKF5oQ1CJK/CjHPR3g+2cc8w4rtuESjAYD+uHlQdA67/IZnoamZY+EMWWQzaoQ5W52c7PM3xAH3nYfJkKKhS2oFjPkXZDaAR81tSkJ0YLgr25tce9m0KD8iYBlb83sG/S8dOd2L25il9Q8SSOIwUbmVN1jONTlfIQ==",
                                                        "I59i1RwKSncsy/FY1Rb3PV0Ev9pj0HBae9EeU9Uau6ee3AgtZPGpmKRLwgVS8o7HyZA2ORLvbVvk1HJxuLBjloo=",
@@ -461,7 +445,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                        notBefore,
                                                        notAfter
                                                    )
-                                               },
+                                               ],
                              DefaultHTTPAPI:   new HTTPAPI(
                                                    HTTPServerPort:  IPPort.Parse(PTB_Node1_HTTPPort),
                                                    DNSClient:       DNSClient,
@@ -478,7 +462,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                              Id:               MeteringCalibrationLawAgency_Id.Parse("VDE"),
                              Name:             I18NString.Create(Languages.de, "Verband der Elektrotechnik Elektronik Informationstechnik"),
                              Description:      I18NString.Create(Languages.de, "VDE Verband der Elektrotechnik Elektronik Informationstechnik e. V."),
-                             CryptoKeys:       new[] {
+                             CryptoKeys:       [
                                                    new SecP521r1Keys(
                                                        "BAArNbJfoQAo2gNPLp7dPFVW39pWs1+z3CG/BYcjTuCWocU6Mj6kdbTfe9fKvS5NzoD870NZWk4IEwhENnt7hvQRHQB75RuVdGOxXNhkfXUDHawlhjjuPwrssrP4OqaQgM+Ah0aZ+tztpK+cCluph8gMAdpyQuNVFYTV2NnGww/7B0wpWQ==",
                                                        "AaG3cKLbLJpFFt3+dnPVz6L7Hdw0GHpGianqAFCCFCimY4alqHGLN6allSoXW2LoW7uVjZMutK73zXLm0x3CQKTv",
@@ -514,13 +498,13 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                        notBefore,
                                                        notAfter
                                                    )
-                                               }
+                                               ]
                          );
 
             VDE_Node1  = new ChargingNode(
                              Name:             I18NString.Create(Languages.en, "VDE_Node1"),
                              Description:      I18NString.Create(Languages.de, "Verband der Elektrotechnik Elektronik Informationstechnik - Node 1 of 3"),
-                             Identities:       new[] {
+                             Identities:       [
                                                    new SecP521r1Keys(
                                                        "BAEjk2LHaXC3bHewphY2VtxEKmBuUd6FiW/6h52IKdra2vcPEjR7piR2CvActMppLGtaEaz29bXksutwYG6y2IsDHQC2BqesLANOtj0lj80zI1NC6JylHN7xm+mkVs+X4REltPhJG44Xp5z1vKvmPvyAR9o/9X/LKv3oXbE85m+MIAaIig==",
                                                        "AaTKr2YNbG0rOsmX/oSVfFZ1+MT1Ovad6CxcWkPwri3BvjXCFDa1qGmgOuPie2LiX8DL3fV56iLl22hK0559/6UK",
@@ -528,8 +512,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                        notBefore,
                                                        notAfter
                                                    )
-                                               },
-                             IdentityGroups:   new[] {
+                                               ],
+                             IdentityGroups:   [
                                                    new SecP521r1Keys(
                                                        "BAF8nLf89yliV7MlxnBw5btyzY/+dcKAvyeX4GTfD2k0QQI8qdMd+wlRVQ3DaYcJ9L7m6ZR05EPegUGz9otFB7GnNwGULhlImqBf5h7j0qvPXXcittez40EQsSL6pVW9Y4gyMz1ktlZIM1wHY+kochH7zf5Lc5SQKhPWnral9QdER6b1zg==",
                                                        "APsSJ++EGD7OECmxBsIeqXZp1QEP5aKmKHv1Kl1b8q3M2mBrQic6ZClQgqhOnca1N5mLXKF0/rSRdDVnTf33w1Uo",
@@ -537,7 +521,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                        notBefore,
                                                        notAfter
                                                    )
-                                               },
+                                               ],
                              DefaultHTTPAPI:   new HTTPAPI(
                                                    HTTPServerPort:  IPPort.Parse(VDE_Node1_HTTPPort),
                                                    DNSClient:       DNSClient,
@@ -548,10 +532,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             #endregion
 
-
-            #region Eichamt
-
             #endregion
+
+            #region Eichämter
 
             #endregion
 
@@ -575,12 +558,14 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             // SMMs register their identity and their certificates within the Open Charging Cloud.
 
+            var GraphDefinedSEM_Node1_HTTPPort = 3201;
+
             #region GraphDefined SEM
 
             GraphDefinedSEM          = new SmartMeterManufacturer(
                                            Id:               SmartMeterManufacturer_Id.Parse("GraphDefinedSEM"),
                                            Name:             I18NString.Create(Languages.en, "GraphDefined Smart Energy Metering"),
-                                           CryptoKeys:       new[] {
+                                           CryptoKeys:       [
                                                                  new SecP521r1Keys(
                                                                      "BAHFKMrHD0Gu8finZockYrUjC3sHWnnHzwBQoNWZYmriuyT+F33k+36vZP9ZqZjAvBMerJbcEeEM3ulVPAIt1CLFVAFaTqZm3JHpre2I1Rkneh/TVvf3pEo72rEaY4/D3KdE8i6kQnPGDnOdp6DAfDMRm0kRmCmGe9Dj/tKa4oqw/JndUw==",
                                                                      "aqOnZ+ucfOyF0/xPJiPSlFqEdS51Z21vTuimbU0PW8pi3pV23ThdP9Zms9JcX9mNqmC4vLcDoRJdzxOVH0GdCUE=",
@@ -595,7 +580,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                      notBefore,
                                                                      notAfter
                                                                  )
-                                                             }
+                                                             ]
                                        );
 
             GraphDefinedSEM_M1       = new SmartMeterModel(
@@ -606,7 +591,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             GraphDefinedSEM_M1_0001  = new SmartMeterDevice(
                                            Id:               SmartMeterDevice_Id.Parse("GraphDefinedSEM_M1_0001"),
                                            Name:             I18NString.Create(Languages.en, "GraphDefined Smart Energy Metering - Smart Meter M1 0001"),
-                                           Identities:       new CryptoKeyInfo[] {
+                                           Identities:       [
                                                                  new SecP521r1Keys(
                                                                      "BADwHOMkplbgGAzHAxmDHl600L2a4CYJ5S629DVYxAQy7ELVUvCCu4wMivwa3A+A2YNr32zF92NPd85LwyYO4Tb44AEH5NNbSMaWYpuHyC9pKZ8NjbDtPg5YcjO/7oLWXh0vcVeKFNeWdi0Rc370ucknSmsY71Sgj1TyFNIFHSXYqXAYbA==",
                                                                      "AJsJ8RtjQihyxVL/iRwyh8eWJhzByoF9xqc9eWG7cbdqtPB7TvtvnRlL4zDn8N4YFzyaNSyPTLFAXE48vBKTbaOY",
@@ -621,13 +606,13 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                      notBefore,
                                                                      notAfter
                                                                  )
-                                                             }
+                                                             ]
                                        );
 
             GraphDefinedSEM_Node1    = new ChargingNode(
                                            Name:             I18NString.Create(Languages.en, "GraphDefinedSEM_Node1"),
                                            Description:      I18NString.Create(Languages.de, "GraphDefined Smart Energy Metering - Node 1 of 3"),
-                                           Identities:       new[] {
+                                           Identities:       [
                                                                  new SecP521r1Keys(
                                                                      "BAClhSA92s1KInjXUqZ8L89Y2y80fJnaQSyuBPCknjxeYQhuc+hCD5dDED+uOd4Ccms+xr/sJEIIKSljLdiaAdxkWQEJNzMJbIKgfyKfNjEYNphNYBKt0udayF5c/ZqHTO+oWAYY304ojjs9WAbPWx0CSB7qjHIRCWLgV1BTKE/naVQgBA==",
                                                                      "VAL7TXDRnNy9Mc7ENCtbHQ3EDCCOUuSiNgfyP6NEcumeh7kPAguhibCFuFqb6jzjn5XK6/fPv4B5JgQcgxilDVc=",
@@ -635,8 +620,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                      notBefore,
                                                                      notAfter
                                                                  )
-                                                             },
-                                           IdentityGroups:   new[] {
+                                                             ],
+                                           IdentityGroups:   [
                                                                  new SecP521r1Keys(
                                                                      "BAF6HcyIwIstkj7u9KzZz9dYfMPfxMdhqZyXT2G9ZSZxqfzCDU+N2sRfD8a63/LTHheD5opC5I/1AjbTX2t9abLnhAHq1vUuYNkWpOzmVHJWel6cnRgKVcqsS4z8XTImU8D45LgLfny1lFaGqBqp0B9gyfoOyvFxX4NlpgYMjFb1jdsOig==",
                                                                      "AYSbfXi+895sYLiiAHsxWsButKu4JurjDoDkZSA7g31V+SMs3MD0homVHIqYqbZqP5dS24fjsZQUvDv0c8kcrsHP",
@@ -644,7 +629,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                      notBefore,
                                                                      notAfter
                                                                  )
-                                                             },
+                                                             ],
                                            DefaultHTTPAPI:   new HTTPAPI(
                                                                  HTTPServerPort:  IPPort.Parse(GraphDefinedSEM_Node1_HTTPPort),
                                                                  DNSClient:       DNSClient,
@@ -679,13 +664,14 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             // CSMs register their identity and their certificates within the Open Charging Cloud.
 
+            var GraphDefinedCSM_Node1_HTTPPort = 3301;
 
             #region GraphDefined CSM
 
             GraphDefinedCSM        = new ChargingStationManufacturer(
                                          Id:               ChargingStationManufacturer_Id.Parse("GraphDefinedCSM"),
                                          Name:             I18NString.Create(Languages.en, "GraphDefined Charging Station Manufacturing"),
-                                         CryptoKeys:       new[] {
+                                         CryptoKeys:       [
                                                                new SecP521r1Keys(
                                                                    "BAAStI+niDMflUP0x82HHlss6az/yAZ0Z/P3EQZjUvfCWvxlg69qDMmpgW1WovOTw9XZshB1JIf3dxikqEEAXfGyRAFQj6ofJFwbeVYzo8w0/0+IlPSlErQR6FDmWHvWR6ouuoP1R1m0BDdhpeCp9z1KlYl/qIDsivuB2Qzy682SUUnO8Q==",
                                                                    "AZ7Ef+Hqn1+TZtWilHB/d7jKTGtN6kx9IwA2946tLbal8kR95K2aBJ1iCw5MPMZzVdAO8oEARidtfFbDYcfqpZGe",
@@ -693,13 +679,13 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                    notBefore,
                                                                    notAfter
                                                                )
-                                                           }
+                                                           ]
                                      );
 
             GraphDefinedCSM_Node1  = new ChargingNode(
                                          Name:             I18NString.Create(Languages.en, "GraphDefinedCSM_Node1"),
                                          Description:      I18NString.Create(Languages.de, "GraphDefined Charging Station Manufacturing - Node 1 of 3"),
-                                         Identities:       new[] {
+                                         Identities:       [
                                                                new SecP521r1Keys(
                                                                    "BAB7om+G9sLoccGkXrc2ak3QKcobuDmPvfu/dzXsLbWbrm3RU/xoO8TB5HmuKsBxAwWH9IBIZNn6ndNZ93U0B+ViwQCpNq48nL1ZCpBWh/jaSNmdW9T1JSOhzHTWzc7CR9/7+Yn5HqQtS3Md0uPURbskX7rR7R3WS2PK9xqdVOyYKvgltQ==",
                                                                    "APvu7tPDN/XVNvQLR6ZCevFgvaOQl02KhfK3GkSPByJE6uqm0gmzd3CPS56mQBc9dlDjZlRUFT3gJX4UQUT2B6W3",
@@ -707,8 +693,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                    notBefore,
                                                                    notAfter
                                                                )
-                                                           },
-                                         IdentityGroups:   new[] {
+                                                           ],
+                                         IdentityGroups:   [
                                                                new SecP521r1Keys(
                                                                    "BACZW58CNfw/orPAY77TmYU+m346s6gWywQEU32co6LXryxRKY1owu9PrgHF2xDL305JBCul60ivagAduznmIWKrXQDjSk6KMwve1lOtp6Q/3rMUmhoWteRdwj8ZjLqlZh6mlhYg+cwxD2SHYZ6MMhniEofkMdJl3be1/KuC2lKuHpvF7A==",
                                                                    "AUT+bzHvlhMjnmsa+Qb6zPPD0J3lInMy80sb1vIdG5inEqYUGlOQ9ZIbRv60rJdTAPk7VhPgSeW4PJmIJcOQGgdD",
@@ -716,7 +702,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                    notBefore,
                                                                    notAfter
                                                                )
-                                                           },
+                                                           ],
                                          DefaultHTTPAPI:   new HTTPAPI(
                                                                HTTPServerPort:  IPPort.Parse(GraphDefinedCSM_Node1_HTTPPort),
                                                                DNSClient:       DNSClient,
@@ -728,6 +714,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             #endregion
 
             #endregion
+
+
+
 
             #region Charging Station Operators
 
@@ -742,12 +731,14 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             // CSOs may send (statistical) charging session data to national contact points.
             // CSOs send real-time authorization requests of RFID UIDs and ISO 15118 eMAIds (legacy, privacy problem).
 
+            var GraphDefinedCSO_Node1_HTTPPort = 3401;
+
             #region GraphDefined CSO
 
             GraphDefinedCSO_Node1 = new ChargingNode(
                                         Name:             I18NString.Create(Languages.en, "GraphDefinedCSO_Node1"),
                                         Description:      I18NString.Create(Languages.en, "GraphDefined Charging Station Operator - Node 1 of 3"),
-                                        Identities:       new[] {
+                                        Identities:       [
                                                               new SecP256r1Keys(
                                                                   "BLMl4daDO/n+kf3Qz0kcBwG0cGxoDCGQNz/H6W21VL8cAq3l+vgJeNWR50MhoSyVOvI+x8YZRpoBdMl5AzKebaE=",
                                                                   "APKdkn4o9ozmwJ+WFxEJ6qxnsWf6p6Tghcy7aQThJLqq",
@@ -755,8 +746,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                   notBefore,
                                                                   notAfter
                                                               )
-                                                          },
-                                        IdentityGroups:   new[] {
+                                                          ],
+                                        IdentityGroups:   [
                                                               new SecP256r1Keys(
                                                                   "BKDXmC6yyP1OMlDPgsE67fsfII90cskSVkd993EtW+1/1TY5KJAGSpEsQTGdGruKH4sKDztqNbxXpUYicfYUzQ4=",
                                                                   "AOawdrgs0v4cQWmg4vokRzp2cxq+1V2ftr4oVTB+A6we",
@@ -764,7 +755,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                   notBefore,
                                                                   notAfter
                                                               )
-                                                          },
+                                                          ],
                                         DefaultHTTPAPI:   new HTTPAPI(
                                                               HTTPServerPort:  IPPort.Parse(GraphDefinedCSO_Node1_HTTPPort),
                                                               DNSClient:       DNSClient,
@@ -864,13 +855,14 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             // EMPs send reservations and remote starts to CSOs or roaming hubs.
             // EMPs sign ev driver identity certificates and charging tickets (WWCP).
 
+            var GraphDefinedEMP_Node1_HTTPPort = 3501;
 
             #region GraphDefined EMP
 
             GraphDefinedEMP_Node1 = new ChargingNode(
                                         Name:             I18NString.Create(Languages.en, "GraphDefinedEMP_Node1"),
                                         Description:      I18NString.Create(Languages.en, "GraphDefined E-Mobility Provider - Node 1 of 3"),
-                                        Identities:       new[] {
+                                        Identities:       [
                                                               new SecP256r1Keys(
                                                                   "BCphDksQSmKHJKMVcbPv8ABAYwM4oPz+lW47A5mS0V986jhZpjRo+a4bhhnBDtbvbWgObe0t5Z4fC63IxXG/Y8k=",
                                                                   "PiE4dMglv6W5km72JIdPL2adDF3PdBuRaoitaX8+L8g=",
@@ -878,8 +870,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                   notBefore,
                                                                   notAfter
                                                               )
-                                                          },
-                                        IdentityGroups:   new[] {
+                                                          ],
+                                        IdentityGroups:   [
                                                               new SecP256r1Keys(
                                                                   "BEycchG1xCCAbgIii15U6s4P9D91u5TdS66T/Qf2bnBAi83jilLce56W8p9B6f6PwQyj2Rjw0b7z228ZElSTDtM=",
                                                                   "ALRCex+A7QwYU0rdlFrS6Q19vTXeccaGtzXkT66mt8Hh",
@@ -887,7 +879,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                   notBefore,
                                                                   notAfter
                                                               )
-                                                          },
+                                                          ],
                                         DefaultHTTPAPI:   new HTTPAPI(
                                                               HTTPServerPort:  IPPort.Parse(GraphDefinedEMP_Node1_HTTPPort),
                                                               DNSClient:       DNSClient,
@@ -984,13 +976,15 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             // EV Roaming Hubs register their identity and their server certificates within the Open Charging Cloud.
 
+            var Hubject_Node1_HTTPPort  = 3601;
+            var Gireve_Node1_HTTPPort   = 3611;
 
             #region Hubject (OICP)
 
             Hubject_Node1 = new ChargingNode(
                                 Name:             I18NString.Create(Languages.en, "Hubject_Node1"),
                                 Description:      I18NString.Create(Languages.en, "Hubject Central EV Roaming Hub - Node 1 of 3"),
-                                Identities:       new[] {
+                                Identities:       [
                                                       new SecP521r1Keys(
                                                           "BAD8/yuP2rfOhTasqruUkfjs9Q79HkClX3rfbZfXmo/GicuSPYdR0u7FghdgXzmT5/uPSG7IXreExRJbBJ6wHHZA1wBhi9ykAJ1iyKppWbfLTvWYuTlxXjfBLUABbB0eLgJQrM7v0TAPwSXSSbAOATQWLP3dX1bqeHk7GQVXZQYFSef34g==",
                                                           "ZN8c3h0ndlbs2kam8sYeZCfgX0JdUXJhZ7oOuSr3Xc/Z7+wWby6VXgLyJXlTFSXCnx/4X24VwOjYaY54wF1W2Ks=",
@@ -998,8 +992,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                           notBefore,
                                                           notAfter
                                                       )
-                                                  },
-                                IdentityGroups:   new[] {
+                                                  ],
+                                IdentityGroups:   [
                                                       new SecP521r1Keys(
                                                           "BACmzmoboAAvcjgXpamKZJF+mfJLbsT+StFa7IrcLgmaVflZ8sRltTxgc0hdnNDvvqlbJ3yCbsYDlsRkWrCqzXWP7AFvinp8W/KjR7+JlrabtwzqeHs97dRX/LXlpa+swSpGc9ThiE/HJwzjBvqt+adTRONQdUipUi2p5yiNqNo4zRDe/A==",
                                                           "Abei2hQuiz5Dd6guUfT5R4CUdCF2jJhpl1VJAd3kKRBhKy/WZPMA4zO8gjJ4te6pg1C3LoAG5ZwgW6sHVizajzwV",
@@ -1007,7 +1001,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                           notBefore,
                                                           notAfter
                                                       )
-                                                  },
+                                                  ],
                                 DefaultHTTPAPI:   new HTTPAPI(
                                                       HTTPServerPort:  IPPort.Parse(Hubject_Node1_HTTPPort),
                                                       DNSClient:       DNSClient,
@@ -1033,7 +1027,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             Gireve_Node1 = new ChargingNode(
                                Name:             I18NString.Create(Languages.en, "Gireve_Node1"),
                                Description:      I18NString.Create(Languages.en, "Gireve Central EV Roaming Hub - Node 1 of 3"),
-                               Identities:       new[] {
+                               Identities:       [
                                                      new SecP521r1Keys(
                                                          "BADdccXxF+XWPajp7EbLSJZ/LJY0kgBr3rKRpF8e5snWkjGHFKRLvIIUVzKRBOerPgucjIaq23dGkWJSgyG/2hG13AENa3IwGHrR6GbvpCim8JrKIcGdZOX7gaQRw4mZHu21EZvtl7vewlcO+7Hklm90++/4/TJRldGACZ2gLYL7gz0pFA==",
                                                          "AS9YuNgq0yY9rbO/z2fH6gEo+YBWCjwRMhWq0BomPoFS1rZf8lJG/NLAe+3gkcilz+4YoeELFoOHSTnR07qGeXuX",
@@ -1041,8 +1035,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                          notBefore,
                                                          notAfter
                                                      )
-                                                 },
-                               IdentityGroups:   new[] {
+                                                 ],
+                               IdentityGroups:   [
                                                      new SecP521r1Keys(
                                                          "BACI/FAAWdKEKOYlZAUEKNPV3y/QLSv3prerXMRoWiWAqq1ClzbUuGnPYIMr6Jy6Qpo0fpyU52HusQ5y0BqPWVdgUQAb+sswTGcu1M+A4ygB6sOOU0YWnGGjCEFRbWOMbb5KJn4r7o3UCItmOUov7In2PKAj54WKbpH8ZleDS6/wnjyHoQ==",
                                                          "FjoJyQD2e0cKrcv4qD+7jULWfgCKkJYYXL3KFkyEE4+COKCPdgwEQPjQy3narDHmmxzsgCxYRNMiMqet9rLbPIA=",
@@ -1050,7 +1044,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                          notBefore,
                                                          notAfter
                                                      )
-                                                 },
+                                                 ],
                                DefaultHTTPAPI:   new HTTPAPI(
                                                      HTTPServerPort:  IPPort.Parse(Gireve_Node1_HTTPPort),
                                                      DNSClient:       DNSClient,
@@ -1080,13 +1074,15 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             // NCPs register their identity and their server certificates within the Open Charging Cloud.
 
+            var Leitstelle_Node1_HTTPPort  = 3701;
+
             #region Leitstelle Elektromobilität
 
             Leitstelle        = new NationalContactPoint(
                                     Id:               NationalContactPoint_Id.Parse("DE"),
                                     Name:             I18NString.Create(Languages.en, "Leitstelle Elektromobilität"),
                                     Description:      I18NString.Create(Languages.en, "Leitstelle Elektromobilität Deutschland"),
-                                    CryptoKeys:       new[] {
+                                    CryptoKeys:       [
                                                           new SecP521r1Keys(
                                                               "BADBAkQtES7KC9pWzaQQZFgWINmYRDxUzYzwYCc5Qug6F9i7rXB+5dmNoJGV+ay9LM5nDPoF2kSB+4h96POldZb5/gFQH7R5T94WFQFGfeL2fBL9M7QYKYkBw4FwvyA7E1y/ag3XhgdK7A9eoQqOy4kTkEaxgUa9CdZh4rQO1kSup64kPQ==",
                                                               "AOQlqe8KsK8lEBb975TC3CujMHUY6F0R40EGuyElt8yih/1qo9gqqn2qsDVMGdxaIjcYmKTLPCXVjVVW7W20Uazy",
@@ -1094,13 +1090,13 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                               notBefore,
                                                               notAfter
                                                           )
-                                                      }
+                                                      ]
                                 );
 
             Leitstelle_Node1  = new ChargingNode(
                                     Name:             I18NString.Create(Languages.en, "LeitstelleElektromobilität_Node1"),
                                     Description:      I18NString.Create(Languages.en, "Leitstelle Elektromobilität Deutschland - Node 1 of 3"),
-                                    Identities:       new[] {
+                                    Identities:       [
                                                           new SecP521r1Keys(
                                                               "BAFqS+zv2Q/nhKWGMY06g9PGsLOu2v24riOvi3WaL5djnx4Y7QoY9foRPOQyBbbvM6v9dsDDILt93X4cHbQj2NE1KgAlvnwnvMEdMqJAv94iqwZvIN9Mqva/y8yntHktRmhMXC0UtsXH9gN8FOUAwrgaeZMCQEN1Lv8S15+L9PvlcOnq0w==",
                                                               "AYo7JRM88IACoKGnyendgFJbm1bPZlQfrksaR9UEEsXyXQR4DMiP96j4OIb6LnzgeK91KxVdSvAsePbDa3apVKao",
@@ -1108,8 +1104,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                               notBefore,
                                                               notAfter
                                                           )
-                                                      },
-                                    IdentityGroups:   new[] {
+                                                      ],
+                                    IdentityGroups:   [
                                                           new SecP521r1Keys(
                                                               "BAD2xjS3DzoZ59vdND49xOB1jobmHfztFWI1m1N1U1Jj4x+jcr093sG1lTZscZem49tg75AUsH7NfUFI15mzyPeN9wHWugHzRbCXx46zP9ybMlAFTL2/riRRykbp3ZD3c+EfHJ+ViEu7azxLu4XiXNs/OH9P0HTv2E8Sf3O46ZgieTlwzQ==",
                                                               "AeiVNgKk+kaWSdmMaPmFLyTmq8u+PpWm8DpbVttjffmERrFPJME1KbXWvav0kFWEOQr+xKePTamBM6UOWrVa2zwc",
@@ -1117,7 +1113,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                               notBefore,
                                                               notAfter
                                                           )
-                                                      },
+                                                      ],
                                     DefaultHTTPAPI:   new HTTPAPI(
                                                           HTTPServerPort:  IPPort.Parse(Leitstelle_Node1_HTTPPort),
                                                           DNSClient:       DNSClient,
@@ -1521,9 +1517,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                        WebAPIURLPathPrefix:                 HTTPPath.Parse("/ocpi/v2.1/webapi"),
                                        BasePath:                            HTTPPath.Parse("/ocpi/v2.1"),
                                        HTTPRealm:                           "GraphDefined OCPI CPO WebAPI",
-                                       HTTPLogins:                          new[] {
+                                       HTTPLogins:                          [
                                                                                 new KeyValuePair<String, String>("a", "b")
-                                                                            },
+                                                                            ],
                                        HTMLTemplate:                        null,
                                        RequestTimeout:                      null
                                    );
@@ -1535,9 +1531,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                        WebAPIURLPathPrefix:                 HTTPPath.Parse("/ocpi/v2.1/webapi"),
                                        BasePath:                            HTTPPath.Parse("/ocpi/v2.1"),
                                        HTTPRealm:                           "GraphDefined OCPI EMSP #1 WebAPI",
-                                       HTTPLogins:                          new[] {
+                                       HTTPLogins:                          [
                                                                                 new KeyValuePair<String, String>("c", "d")
-                                                                            },
+                                                                            ],
                                        HTMLTemplate:                        null,
                                        RequestTimeout:                      null
                                    );
@@ -1549,9 +1545,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                        WebAPIURLPathPrefix:                 HTTPPath.Parse("/ocpi/v2.1/webapi"),
                                        BasePath:                            HTTPPath.Parse("/ocpi/v2.1"),
                                        HTTPRealm:                           "GraphDefined OCPI EMSP #2 WebAPI",
-                                       HTTPLogins:                          new[] {
+                                       HTTPLogins:                          [
                                                                                 new KeyValuePair<String, String>("e", "f")
-                                                                            },
+                                                                            ],
                                        HTMLTemplate:                        null,
                                        RequestTimeout:                      null
                                    );
@@ -1681,7 +1677,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                                 RemoteAccessToken:           AccessToken.Parse(cpo_accessing_emsp1__token),
                                                 RemoteVersionsURL:           URL.Parse($"http://localhost:{emsp1HTTPAPI.HTTPServer.IPPorts.First()}/ocpi/v2.1/versions"),
-                                                RemoteVersionIds:            new[] { protocols.OCPIv2_2_1.Version.Id },
+                                                RemoteVersionIds:            [ protocols.OCPIv2_2_1.Version.Id ],
                                                 SelectedVersionId:           protocols.OCPIv2_2_1.Version.Id,
                                                 AccessTokenBase64Encoding:   false,
                                                 RemoteStatus:                RemoteAccessStatus.ONLINE,
@@ -1696,7 +1692,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                 AccessStatus:                AccessStatus.ALLOWED,
                                                 RemoteAccessToken:           AccessToken.Parse(cpo_accessing_emsp2__token),
                                                 RemoteVersionsURL:           URL.Parse($"http://localhost:{emsp2HTTPAPI.HTTPServer.IPPorts.First()}/ocpi/v2.1/versions"),
-                                                RemoteVersionIds:            new[] { protocols.OCPIv2_2_1.Version.Id },
+                                                RemoteVersionIds:            [ protocols.OCPIv2_2_1.Version.Id ],
                                                 SelectedVersionId:           protocols.OCPIv2_2_1.Version.Id,
                                                 AccessTokenBase64Encoding:   false,
                                                 RemoteStatus:                RemoteAccessStatus.ONLINE,
@@ -1714,7 +1710,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                                 RemoteAccessToken:           AccessToken.Parse(emsp1_accessing_cpo__token),
                                                 RemoteVersionsURL:           URL.Parse($"http://localhost:{cpoHTTPAPI.HTTPServer.IPPorts.First()}/ocpi/v2.1/versions"),
-                                                RemoteVersionIds:            new[] { protocols.OCPIv2_2_1.Version.Id },
+                                                RemoteVersionIds:            [ protocols.OCPIv2_2_1.Version.Id ],
                                                 SelectedVersionId:           protocols.OCPIv2_2_1.Version.Id,
                                                 AccessTokenBase64Encoding:   false,
                                                 RemoteStatus:                RemoteAccessStatus.ONLINE,
@@ -1732,7 +1728,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                                 RemoteAccessToken:           AccessToken.Parse(emsp2_accessing_cpo__token),
                                                 RemoteVersionsURL:           URL.Parse($"http://localhost:{cpoHTTPAPI.HTTPServer.IPPorts.First()}/ocpi/v2.1/versions"),
-                                                RemoteVersionIds:            new[] { protocols.OCPIv2_2_1.Version.Id },
+                                                RemoteVersionIds:            [ protocols.OCPIv2_2_1.Version.Id ],
                                                 SelectedVersionId:           protocols.OCPIv2_2_1.Version.Id,
                                                 AccessTokenBase64Encoding:   false,
                                                 RemoteStatus:                RemoteAccessStatus.ONLINE,
