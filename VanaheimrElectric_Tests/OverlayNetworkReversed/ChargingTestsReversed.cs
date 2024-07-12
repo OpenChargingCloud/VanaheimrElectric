@@ -66,13 +66,30 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             #endregion
 
 
+            #region 1. The BootNotification request leaves the Charging Station
+
+            var chargingStation1_BootNotificationRequestsSent  = new ConcurrentList<BootNotificationRequest>();
+            var chargingStation1_jsonRequestMessageSent        = new ConcurrentList<SendMessageResult>();
+
+            chargingStation1.OCPP.OUT.OnBootNotificationRequestSent += (timestamp, sender, bootNotificationRequest) => {
+                chargingStation1_BootNotificationRequestsSent.TryAdd(bootNotificationRequest);
+                return Task.CompletedTask;
+            };
+
+            chargingStation1.OCPP.OUT.OnJSONRequestMessageSent      += (timestamp, sender, requestMessage, sendMessageResult) => {
+                chargingStation1_jsonRequestMessageSent.      TryAdd(sendMessageResult);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
             #region 2. The OCPP Local Controller receives and forwards the BootNotification request
 
             var ocppLocalController_jsonRequestMessageReceived                   = new ConcurrentList<OCPP_JSONRequestMessage>();
             var ocppLocalController_BootNotificationRequestsReceived             = new ConcurrentList<BootNotificationRequest>();
             var ocppLocalController_BootNotificationRequestsForwardingDecisions  = new ConcurrentList<ForwardingDecision<BootNotificationRequest, BootNotificationResponse>>();
             var ocppLocalController_BootNotificationRequestsSent                 = new ConcurrentList<BootNotificationRequest>();
-            var ocppLocalController_jsonRequestMessageSent                       = new ConcurrentList<SendOCPPMessageResult>();
+            var ocppLocalController_jsonRequestMessageSent                       = new ConcurrentList<SendMessageResult>();
 
             ocppLocalController.OCPP.IN.     OnJSONMessageRequestReceived       += (timestamp, sender, requestMessage) => {
                 ocppLocalController_jsonRequestMessageReceived.                 TryAdd(requestMessage);
@@ -107,7 +124,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             var ocppGateway_BootNotificationRequestsReceived             = new ConcurrentList<BootNotificationRequest>();
             var ocppGateway_BootNotificationRequestsForwardingDecisions  = new ConcurrentList<ForwardingDecision<BootNotificationRequest, BootNotificationResponse>>();
             var ocppGateway_BootNotificationRequestsSent                 = new ConcurrentList<BootNotificationRequest>();
-            var ocppGateway_jsonRequestMessageSent                       = new ConcurrentList<SendOCPPMessageResult>();
+            var ocppGateway_jsonRequestMessageSent                       = new ConcurrentList<SendMessageResult>();
 
             ocppGateway.OCPP.IN.     OnJSONMessageRequestReceived       += (timestamp, sender, requestMessage) => {
                 ocppGateway_jsonRequestMessageReceived.                 TryAdd(requestMessage);
@@ -158,7 +175,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             #region 5. The CSMS responds the BootNotification request
 
             var csms_BootNotificationResponsesSent            = new ConcurrentList<BootNotificationResponse>();
-            var csms_jsonResponseMessageSent                  = new ConcurrentList<SendOCPPMessageResult>();
+            var csms_jsonResponseMessageSent                  = new ConcurrentList<SendMessageResult>();
 
             csms.OCPP.OUT.OnBootNotificationResponseSent  += (timestamp, sender, connection, request, response, runtime) => {
                 csms_BootNotificationResponsesSent.TryAdd(response);
@@ -170,7 +187,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             //    return Task.CompletedTask;
             //};
 
-            csms.OCPP.OUT.OnJSONMessageResponseSent       += (timestamp, sender, responseMessage, sendMessageResult) => {
+            csms.OCPP.OUT.OnJSONResponseMessageSent       += (timestamp, sender, responseMessage, sendMessageResult) => {
                 csms_jsonResponseMessageSent.      TryAdd(sendMessageResult);
 
                 if (responseMessage.DestinationId != chargingStation1.Id)
@@ -188,7 +205,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             var ocppGateway_OnJSONMessageResponseReceived                = new ConcurrentList<OCPP_JSONResponseMessage>();
             var ocppGateway_BootNotificationResponsesReceived            = new ConcurrentList<BootNotificationResponse>();
             var ocppGateway_BootNotificationResponsesSent                = new ConcurrentList<BootNotificationResponse>();
-            var ocppGateway_jsonResponseMessageSent                      = new ConcurrentList<SendOCPPMessageResult>();
+            var ocppGateway_jsonResponseMessageSent                      = new ConcurrentList<SendMessageResult>();
 
             ocppGateway.OCPP.IN.OnJSONMessageResponseReceived           += (timestamp, sender, responseMessage) => {
                 ocppGateway_OnJSONMessageResponseReceived.    TryAdd(responseMessage);
@@ -217,7 +234,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.OUT.OnJSONMessageResponseSent              += (timestamp, sender, responseMessage, sendMessageResult) => {
+            ocppGateway.OCPP.OUT.OnJSONResponseMessageSent              += (timestamp, sender, responseMessage, sendMessageResult) => {
                 ocppGateway_jsonResponseMessageSent.          TryAdd(sendMessageResult);
                 return Task.CompletedTask;
             };
@@ -229,7 +246,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             var ocppLocalController_OnJSONMessageResponseReceived                = new ConcurrentList<OCPP_JSONResponseMessage>();
             var ocppLocalController_BootNotificationResponsesReceived            = new ConcurrentList<BootNotificationResponse>();
             var ocppLocalController_BootNotificationResponsesSent                = new ConcurrentList<BootNotificationResponse>();
-            var ocppLocalController_jsonResponseMessageSent                      = new ConcurrentList<SendOCPPMessageResult>();
+            var ocppLocalController_jsonResponseMessageSent                      = new ConcurrentList<SendMessageResult>();
 
             ocppLocalController.OCPP.IN.OnJSONMessageResponseReceived           += (timestamp, sender, responseMessage) => {
                 ocppLocalController_OnJSONMessageResponseReceived.    TryAdd(responseMessage);
@@ -253,7 +270,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.OUT.OnJSONMessageResponseSent              += (timestamp, sender, responseMessage, sendMessageResult) => {
+            ocppLocalController.OCPP.OUT.OnJSONResponseMessageSent              += (timestamp, sender, responseMessage, sendMessageResult) => {
                 ocppLocalController_jsonResponseMessageSent.          TryAdd(sendMessageResult);
                 return Task.CompletedTask;
             };
