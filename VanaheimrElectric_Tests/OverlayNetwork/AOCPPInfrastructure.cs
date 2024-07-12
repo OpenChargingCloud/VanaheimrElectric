@@ -17,22 +17,19 @@
 
 #region Usings
 
-using System.Collections.Concurrent;
-
 using NUnit.Framework;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod;
 using org.GraphDefined.Vanaheimr.Hermod.DNS;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
-using org.GraphDefined.Vanaheimr.Hermod.Logging;
 
 using cloud.charging.open.protocols.OCPP;
-using cloud.charging.open.protocols.OCPPv2_1.NetworkingNode;
 using cloud.charging.open.protocols.OCPPv2_1.CS;
-using cloud.charging.open.protocols.OCPPv2_1.LocalController;
-using cloud.charging.open.protocols.OCPPv2_1.Gateway;
 using cloud.charging.open.protocols.OCPPv2_1.CSMS2;
+using cloud.charging.open.protocols.OCPPv2_1.Gateway;
+using cloud.charging.open.protocols.OCPPv2_1.NetworkingNode;
+using cloud.charging.open.protocols.OCPPv2_1.LocalController;
 
 #endregion
 
@@ -40,7 +37,22 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 {
 
     /// <summary>
-    /// The charging infrastructure test defaults for Vanaheimr Electric.
+    /// Charging infrastructure test defaults using an OCPP Overlay Network
+    /// consisting of a CSMS, an OCPP Gateway, an OCPP Local Controller and
+    /// three Charging Stations.
+    /// 
+    /// The HTTP Web Socket connections are initiated in "normal order" from
+    /// the Charging Stations to the Local Controller, to the Gateway and
+    /// finally to the CSMS.
+    /// 
+    /// Between the Charging Stations and the Local Controller the "normal"
+    /// OCPP transport JSON array is used. Between the Local Controller and
+    /// the Gateway and between the Gateway and the CSMS the OCPP Overlay
+    /// Network transport is used.
+    /// 
+    /// [cs1] ──⭨
+    /// [cs2] ───→ [lc] ━━━► [gw] ━━━► [csms]
+    /// [cs3] ──🡕
     /// </summary>
     public abstract class AOCPPInfrastructure
     {
@@ -579,6 +591,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             #endregion
 
+
+            //ToDo: Make use of the routing protocol vendor extensions!
 
             csms.       OCPP.AddStaticRouting(ocppLocalController.Id,  ocppGateway.Id);
             csms.       OCPP.AddStaticRouting(chargingStation1.Id,     ocppGateway.Id);
