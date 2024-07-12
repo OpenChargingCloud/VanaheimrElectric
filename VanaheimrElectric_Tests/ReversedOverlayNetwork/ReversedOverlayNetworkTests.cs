@@ -35,10 +35,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 {
 
     /// <summary>
-    /// OCPP v2.1 tests.
+    /// Reversed Overlay Network Tests.
     /// </summary>
     [TestFixture]
-    public class ChargingTests : AOCPPInfrastructure
+    public class ReversedOverlayNetworkTests : AReversedOverlayNetwork
     {
 
         #region SendBootNotification1()
@@ -91,7 +91,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             var ocppLocalController_BootNotificationRequestsSent                 = new ConcurrentList<BootNotificationRequest>();
             var ocppLocalController_jsonRequestMessageSent                       = new ConcurrentList<SendMessageResult>();
 
-            ocppLocalController.OCPP.IN.     OnJSONMessageRequestReceived       += (timestamp, sender, requestMessage) => {
+            ocppLocalController.OCPP.IN.     OnJSONRequestMessageReceived       += (timestamp, sender, requestMessage) => {
                 ocppLocalController_jsonRequestMessageReceived.                 TryAdd(requestMessage);
                 return Task.CompletedTask;
             };
@@ -126,7 +126,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             var ocppGateway_BootNotificationRequestsSent                 = new ConcurrentList<BootNotificationRequest>();
             var ocppGateway_jsonRequestMessageSent                       = new ConcurrentList<SendMessageResult>();
 
-            ocppGateway.OCPP.IN.     OnJSONMessageRequestReceived       += (timestamp, sender, requestMessage) => {
+            ocppGateway.OCPP.IN.     OnJSONRequestMessageReceived       += (timestamp, sender, requestMessage) => {
                 ocppGateway_jsonRequestMessageReceived.                 TryAdd(requestMessage);
                 return Task.CompletedTask;
             };
@@ -158,7 +158,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             var csms_jsonRequestMessageReceived               = new ConcurrentList<OCPP_JSONRequestMessage>();
             var csms_BootNotificationRequestsReceived         = new ConcurrentList<BootNotificationRequest>();
 
-            csms.OCPP.IN. OnJSONMessageRequestReceived       += (timestamp, sender, requestMessage) => {
+            csms.OCPP.IN. OnJSONRequestMessageReceived       += (timestamp, sender, requestMessage) => {
                 csms_jsonRequestMessageReceived.      TryAdd(requestMessage);
                 return Task.CompletedTask;
             };
@@ -207,7 +207,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             var ocppGateway_BootNotificationResponsesSent                = new ConcurrentList<BootNotificationResponse>();
             var ocppGateway_jsonResponseMessageSent                      = new ConcurrentList<SendMessageResult>();
 
-            ocppGateway.OCPP.IN.OnJSONMessageResponseReceived           += (timestamp, sender, responseMessage) => {
+            ocppGateway.OCPP.IN.OnJSONResponseMessageReceived           += (timestamp, sender, responseMessage) => {
                 ocppGateway_OnJSONMessageResponseReceived.    TryAdd(responseMessage);
                 return Task.CompletedTask;
             };
@@ -248,7 +248,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             var ocppLocalController_BootNotificationResponsesSent                = new ConcurrentList<BootNotificationResponse>();
             var ocppLocalController_jsonResponseMessageSent                      = new ConcurrentList<SendMessageResult>();
 
-            ocppLocalController.OCPP.IN.OnJSONMessageResponseReceived           += (timestamp, sender, responseMessage) => {
+            ocppLocalController.OCPP.IN.OnJSONResponseMessageReceived           += (timestamp, sender, responseMessage) => {
                 ocppLocalController_OnJSONMessageResponseReceived.    TryAdd(responseMessage);
                 return Task.CompletedTask;
             };
@@ -282,7 +282,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             var chargingStation1_OnJSONMessageResponseReceived           = new ConcurrentList<OCPP_JSONResponseMessage>();
             var chargingStation1_BootNotificationResponsesReceived       = new ConcurrentList<BootNotificationResponse>();
 
-            chargingStation1.OCPP.IN.OnJSONMessageResponseReceived      += (timestamp, sender, responseMessage) => {
+            chargingStation1.OCPP.IN.OnJSONResponseMessageReceived      += (timestamp, sender, responseMessage) => {
                 ocppGateway_OnJSONMessageResponseReceived.    TryAdd(responseMessage);
                 return Task.CompletedTask;
             };
@@ -320,58 +320,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             Assert.That(ocppLocalController_jsonRequestMessageReceived.Count, Is.EqualTo(1));
 
             Assert.That(response1.Status, Is.EqualTo(RegistrationStatus.Accepted));
-
-
-        }
-
-        #endregion
-
-        #region SendReset1()
-
-        /// <summary>
-        /// Send Reset test.
-        /// </summary>
-        [Test]
-        public async Task SendReset1()
-        {
-
-            #region Initial checks
-
-            if (csms                is null ||
-                ocppGateway         is null ||
-                ocppLocalController is null ||
-                chargingStation1    is null ||
-                chargingStation2    is null ||
-                chargingStation3    is null)
-            {
-                Assert.Fail("Failed precondition(s)!");
-                return;
-            }
-
-            #endregion
-
-
-            var response1 = await csms.Reset(
-
-                                      DestinationNodeId:   chargingStation1.Id,
-                                      ResetType:           ResetType.OnIdle,
-                                      CustomData:          null,
-
-                                      NetworkPath:         null,
-
-                                      SignKeys:            null,
-                                      SignInfos:           null,
-                                      Signatures:          null,
-
-                                      RequestId:           null,
-                                      RequestTimestamp:    null,
-                                      RequestTimeout:      null,
-                                      EventTrackingId:     null
-
-                                  );
-
-
-            Assert.That(response1.Status, Is.EqualTo(ResetStatus.Accepted));
 
 
         }

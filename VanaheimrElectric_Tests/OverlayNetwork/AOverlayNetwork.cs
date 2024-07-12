@@ -54,7 +54,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
     /// [cs2] ───→ [lc] ━━━► [gw] ━━━► [csms]
     /// [cs3] ──🡕
     /// </summary>
-    public abstract class AOCPPInfrastructure
+    public abstract class AOverlayNetwork
     {
 
         #region Data
@@ -82,7 +82,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
         #region Constructor(s)
 
-        public AOCPPInfrastructure()
+        public AOverlayNetwork()
         {
 
             this.DNSClient           = new();
