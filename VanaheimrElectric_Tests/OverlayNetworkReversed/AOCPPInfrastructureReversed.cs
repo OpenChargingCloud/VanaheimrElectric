@@ -293,7 +293,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             ocppLocalController                      = new TestLocalController(
 
-                                                           Id:                          NetworkingNode_Id.Parse("lc"),
+                                                           Id:                          NetworkingNode_Id.Parse("lc1"),
                                                            VendorName:                  "GraphDefined",
                                                            Model:                       "vlc1",
                                                            Description:                 I18NString.Create(Languages.en, "An OCPP Local Controller for testing"),
@@ -486,7 +486,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             ocppGateway                      = new TestGateway(
 
-                                                   Id:                          NetworkingNode_Id.Parse("gw"),
+                                                   Id:                          NetworkingNode_Id.Parse("gw1"),
                                                    Description:                 I18NString.Create(Languages.en, "An OCPP Gateway for testing"),
 
                                                    SignaturePolicy:             null,
@@ -583,7 +583,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             csms = new TestCSMS2(
 
-                       Id:                          NetworkingNode_Id.Parse("csms"),
+                       Id:                          NetworkingNode_Id.Parse("csms1"),
                        Description:                 I18NString.Create(Languages.en, "A Charging Station Management System for testing"),
 
                        SignaturePolicy:             null,
@@ -604,7 +604,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
 
             var csmsAuth           = ocppGateway_OCPPWebSocketServer.AddOrUpdateHTTPBasicAuth(
-                                         ocppGateway.Id,
+                                         csms.Id,
                                          "gw12345678"
                                      );
 
@@ -650,19 +650,24 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
 
 
+            // Towards the CSMS
+            chargingStation1.   OCPP.AddStaticRouting(NetworkingNode_Id.CSMS, ocppLocalController.Id);
+            ocppLocalController.OCPP.AddStaticRouting(NetworkingNode_Id.CSMS, ocppGateway.Id);
+            ocppGateway.        OCPP.AddStaticRouting(NetworkingNode_Id.CSMS, csms.Id);
+
+            // Towards the charging stations
+            csms.               OCPP.AddStaticRouting(ocppLocalController.Id,  ocppGateway.Id);
+            csms.               OCPP.AddStaticRouting(chargingStation1.Id,     ocppGateway.Id);
+            csms.               OCPP.AddStaticRouting(chargingStation2.Id,     ocppGateway.Id);
+            csms.               OCPP.AddStaticRouting(chargingStation3.Id,     ocppGateway.Id);
+
+            ocppGateway.        OCPP.AddStaticRouting(chargingStation1.Id,     ocppLocalController.Id);
+            ocppGateway.        OCPP.AddStaticRouting(chargingStation2.Id,     ocppLocalController.Id);
+            ocppGateway.        OCPP.AddStaticRouting(chargingStation3.Id,     ocppLocalController.Id);
 
 
+            csms.OCPP.IN.AnycastIds.Add(NetworkingNode_Id.CSMS);
 
-
-
-            //csms.       OCPP.AddStaticRouting(ocppLocalController.Id,  ocppGateway.Id);
-            //csms.       OCPP.AddStaticRouting(chargingStation1.Id,     ocppGateway.Id);
-            //csms.       OCPP.AddStaticRouting(chargingStation2.Id,     ocppGateway.Id);
-            //csms.       OCPP.AddStaticRouting(chargingStation3.Id,     ocppGateway.Id);
-
-            //ocppGateway.OCPP.AddStaticRouting(chargingStation1.Id,     ocppLocalController.Id);
-            //ocppGateway.OCPP.AddStaticRouting(chargingStation2.Id,     ocppLocalController.Id);
-            //ocppGateway.OCPP.AddStaticRouting(chargingStation3.Id,     ocppLocalController.Id);
 
         }
 
