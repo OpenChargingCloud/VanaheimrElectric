@@ -288,7 +288,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                  );
 
             Assert.That(bootNotificationResponse.Status,                                                     Is.EqualTo(RegistrationStatus.Accepted));
-            Assert.That(Timestamp.Now - bootNotificationResponse.CurrentTime < TimeSpan.FromMinutes(10),     Is.True);
+            Assert.That(Math.Abs((Timestamp.Now - bootNotificationResponse.CurrentTime).TotalMinutes) < 1,   Is.True);
             Assert.That(bootNotificationResponse.Interval                    > TimeSpan.Zero,                Is.True);
             //StatusInfo
 
