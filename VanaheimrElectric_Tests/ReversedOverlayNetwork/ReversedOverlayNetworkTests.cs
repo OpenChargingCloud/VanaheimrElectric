@@ -111,7 +111,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnJSONRequestMessageSent           += (timestamp, sender, requestMessage, sendMessageResult) => {
+            ocppLocalController.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, requestMessage, sendMessageResult) => {
                 ocppLocalController_jsonRequestMessageSent.                     TryAdd(sendMessageResult);
                 return Task.CompletedTask;
             };
@@ -146,7 +146,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnJSONRequestMessageSent           += (timestamp, sender, requestMessage, sendMessageResult) => {
+            ocppGateway.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, requestMessage, sendMessageResult) => {
                 ocppGateway_jsonRequestMessageSent.                     TryAdd(sendMessageResult);
                 return Task.CompletedTask;
             };
@@ -229,7 +229,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
 
 
-            ocppGateway.OCPP.FORWARD.OnJSONResponseMessageSent          += (timestamp, sender, responseMessage, sendMessageResult) => {
+            ocppGateway.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, responseMessage, sendMessageResult) => {
                 ocppGateway_jsonResponseMessageSent.          TryAdd(sendMessageResult);
                 return Task.CompletedTask;
             };
@@ -260,13 +260,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             ocppLocalController.OCPP.FORWARD.OnBootNotificationResponseReceived += (timestamp, sender, request, response, runtime) => {
                 ocppLocalController_BootNotificationResponsesReceived.TryAdd(response);
-                return Task.CompletedTask;
-            };
-
-
-
-            ocppLocalController.OCPP.FORWARD.OnJSONResponseMessageSent          += (timestamp, sender, responseMessage, sendMessageResult) => {
-                ocppLocalController_jsonResponseMessageSent.          TryAdd(sendMessageResult);
                 return Task.CompletedTask;
             };
 

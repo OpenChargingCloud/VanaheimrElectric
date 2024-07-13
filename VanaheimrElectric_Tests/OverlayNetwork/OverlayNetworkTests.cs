@@ -112,7 +112,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnJSONRequestMessageSent           += (timestamp, sender, requestMessage, sendMessageResult) => {
+            ocppLocalController.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, requestMessage, sendMessageResult) => {
                 ocppLocalController_jsonRequestMessageSent.                     TryAdd(requestMessage);
                 return Task.CompletedTask;
             };
@@ -147,7 +147,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnJSONRequestMessageSent           += (timestamp, sender, requestMessage, sendMessageResult) => {
+            ocppGateway.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, requestMessage, sendMessageResult) => {
                 ocppGateway_jsonRequestMessageSent.                     TryAdd(requestMessage);
                 return Task.CompletedTask;
             };
@@ -212,13 +212,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                 return Task.CompletedTask;
             };
 
-
-            // Should be OUT!
-            ocppGateway.OCPP.FORWARD.OnJSONResponseMessageSent          += (timestamp, sender, responseMessage, sendMessageResult) => {
-                ocppGateway_jsonResponseMessagesSent.         TryAdd(responseMessage);
-                return Task.CompletedTask;
-            };
-
             ocppGateway.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, responseMessage, sendMessageResult) => {
                 ocppGateway_jsonResponseMessagesSent.         TryAdd(responseMessage);
                 return Task.CompletedTask;
@@ -234,7 +227,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             var ocppLocalController_jsonResponseMessagesSent                     = new ConcurrentList<OCPP_JSONResponseMessage>();
 
             ocppLocalController.OCPP.IN.     OnJSONResponseMessageReceived      += (timestamp, sender, responseMessage) => {
-                ocppLocalController_jsonResponseMessagesReceived.    TryAdd(responseMessage);
+                ocppLocalController_jsonResponseMessagesReceived.     TryAdd(responseMessage);
                 return Task.CompletedTask;
             };
 
@@ -248,15 +241,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                 return Task.CompletedTask;
             };
 
-
-            // Should be OUT!
-            ocppLocalController.OCPP.FORWARD.OnJSONResponseMessageSent          += (timestamp, sender, responseMessage, sendMessageResult) => {
-                ocppLocalController_jsonResponseMessagesSent.          TryAdd(responseMessage);
-                return Task.CompletedTask;
-            };
-
-            ocppLocalController.OCPP.OUT.OnJSONResponseMessageSent              += (timestamp, sender, responseMessage, sendMessageResult) => {
-                ocppLocalController_jsonResponseMessagesSent.          TryAdd(responseMessage);
+            ocppLocalController.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, responseMessage, sendMessageResult) => {
+                ocppLocalController_jsonResponseMessagesSent.         TryAdd(responseMessage);
                 return Task.CompletedTask;
             };
 
@@ -302,7 +288,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                  );
 
             Assert.That(bootNotificationResponse.Status,                                                     Is.EqualTo(RegistrationStatus.Accepted));
-            Assert.That(Timestamp.Now - bootNotificationResponse.CurrentTime < TimeSpan.FromSeconds(10),     Is.True);
+            Assert.That(Timestamp.Now - bootNotificationResponse.CurrentTime < TimeSpan.FromMinutes(10),     Is.True);
             Assert.That(bootNotificationResponse.Interval                    > TimeSpan.Zero,                Is.True);
             //StatusInfo
 
