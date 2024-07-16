@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv2.1_ChargingStation2\WWCP_OCPPv2.1_ChargingStation2.csproj" />
-    <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv2.1_CSMS2\WWCP_OCPPv2.1_CSMS2.csproj" />
+    <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv2.1_CSMS\WWCP_OCPPv2.1_CSMS.csproj" />
     <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv2.1_Gateway\WWCP_OCPPv2.1_Gateway.csproj" />
     <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv2.1_LocalController\WWCP_OCPPv2.1_LocalController.csproj" />
     <ProjectReference Include="..\libs\Hermod\Hermod\Hermod.csproj" />
