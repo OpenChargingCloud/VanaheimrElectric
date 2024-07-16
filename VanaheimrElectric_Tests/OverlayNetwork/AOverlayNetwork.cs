@@ -1,4 +1,4 @@
-﻿﻿/*
+﻿using cloud.charging.open.protocols.OCPPv2_1;﻿/*
  * Copyright (c) 2015-2024 GraphDefined GmbH
  * This file is part of WWCP OCPI <https://github.com/OpenChargingCloud/WWCP_OCPI>
  *
@@ -24,9 +24,8 @@ using org.GraphDefined.Vanaheimr.Hermod;
 using org.GraphDefined.Vanaheimr.Hermod.DNS;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 
-using cloud.charging.open.protocols.OCPP;
 using cloud.charging.open.protocols.OCPPv2_1.CS;
-using cloud.charging.open.protocols.OCPPv2_1.CSMS2;
+using cloud.charging.open.protocols.OCPPv2_1.CSMS;
 using cloud.charging.open.protocols.OCPPv2_1.Gateway;
 using cloud.charging.open.protocols.OCPPv2_1.NetworkingNode;
 using cloud.charging.open.protocols.OCPPv2_1.LocalController;
@@ -107,6 +106,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             csms = new TestCSMS2(
 
                        Id:                          NetworkingNode_Id.Parse("csms"),
+                       VendorName:                  "GraphDefined",
+                       Model:                       "vcsms1",
                        Description:                 I18NString.Create(Languages.en, "A Charging Station Management System for testing"),
 
                        SignaturePolicy:             null,
@@ -115,7 +116,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                        HTTPUploadPort:              null,
                        HTTPDownloadPort:            null,
 
-                       DisableSendHeartbeats:       false,
+                       DisableSendHeartbeats:       true,
                        SendHeartbeatsEvery:         null,
                        DefaultRequestTimeout:       null,
 
@@ -163,12 +164,14 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             ocppGateway                      = new TestGateway(
 
                                                    Id:                          NetworkingNode_Id.Parse("gw"),
+                                                   VendorName:                  "GraphDefined",
+                                                   Model:                       "vgw1",
                                                    Description:                 I18NString.Create(Languages.en, "An OCPP Gateway for testing"),
 
                                                    SignaturePolicy:             null,
                                                    ForwardingSignaturePolicy:   null,
 
-                                                   DisableSendHeartbeats:       false,
+                                                   DisableSendHeartbeats:       true,
                                                    SendHeartbeatsEvery:         null,
                                                    DefaultRequestTimeout:       null,
 
@@ -202,7 +205,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                    InternalBufferSize:           null,
 
                                                    SecWebSocketProtocols:        null,
-                                                   NetworkingMode:               protocols.OCPP.WebSockets.NetworkingMode.OverlayNetwork,
+                                                   NetworkingMode:               NetworkingMode.OverlayNetwork,
 
                                                    DisableWebSocketPings:        false,
                                                    WebSocketPingEvery:           null,
@@ -262,10 +265,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                            Id:                          NetworkingNode_Id.Parse("lc"),
                                                            VendorName:                  "GraphDefined",
                                                            Model:                       "vlc1",
-                                                           Description:                 I18NString.Create(Languages.en, "An OCPP Local Controller for testing"),
                                                            SerialNumber:                null,
-                                                           FirmwareVersion:             null,
+                                                           SoftwareVersion:             null,
                                                            Modem:                       null,
+                                                           Description:                 I18NString.Create(Languages.en, "An OCPP Local Controller for testing"),
 
                                                            SignaturePolicy:             null,
                                                            ForwardingSignaturePolicy:   null,
@@ -273,7 +276,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                            HTTPUploadPort:              null,
                                                            HTTPDownloadPort:            null,
 
-                                                           DisableSendHeartbeats:       false,
+                                                           DisableSendHeartbeats:       true,
                                                            SendHeartbeatsEvery:         null,
                                                            DefaultRequestTimeout:       null,
 
@@ -307,7 +310,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                  InternalBufferSize:           null,
 
                                                                  SecWebSocketProtocols:        null,
-                                                                 NetworkingMode:               protocols.OCPP.WebSockets.NetworkingMode.OverlayNetwork,
+                                                                 NetworkingMode:               NetworkingMode.OverlayNetwork,
 
                                                                  DisableWebSocketPings:        false,
                                                                  WebSocketPingEvery:           null,
@@ -382,7 +385,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                         HTTPUploadPort:              null,
                                         HTTPDownloadPort:            null,
 
-                                        DisableSendHeartbeats:       false,
+                                        DisableSendHeartbeats:       true,
                                         SendHeartbeatsEvery:         null,
                                         DefaultRequestTimeout:       null,
 
@@ -459,7 +462,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                             HTTPUploadPort:              null,
                                             HTTPDownloadPort:            null,
 
-                                            DisableSendHeartbeats:       false,
+                                            DisableSendHeartbeats:       true,
                                             SendHeartbeatsEvery:         null,
                                             DefaultRequestTimeout:       null,
 
@@ -536,7 +539,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                             HTTPUploadPort:              null,
                                             HTTPDownloadPort:            null,
 
-                                            DisableSendHeartbeats:       false,
+                                            DisableSendHeartbeats:       true,
                                             SendHeartbeatsEvery:         null,
                                             DefaultRequestTimeout:       null,
 

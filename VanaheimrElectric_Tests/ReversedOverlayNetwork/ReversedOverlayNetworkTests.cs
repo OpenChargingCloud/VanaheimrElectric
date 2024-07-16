@@ -21,13 +21,11 @@ using NUnit.Framework;
 
 using org.GraphDefined.Vanaheimr.Illias;
 
-using cloud.charging.open.protocols.OCPP;
-using cloud.charging.open.protocols.OCPP.WebSockets;
 using cloud.charging.open.protocols.OCPPv2_1;
-using cloud.charging.open.protocols.OCPPv2_1.NN;
 using cloud.charging.open.protocols.OCPPv2_1.CS;
 using cloud.charging.open.protocols.OCPPv2_1.CSMS;
 using cloud.charging.open.protocols.OCPPv2_1.NetworkingNode;
+using cloud.charging.open.protocols.OCPPv2_1.WebSockets;
 
 #endregion
 
@@ -292,20 +290,17 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             var response1 = await chargingStation1.SendBootNotification(
 
-                                      BootReason:          BootReason.PowerUp,
-                                      CustomData:          null,
+                                      BootReason:         BootReason.PowerUp,
+                                      CustomData:         null,
 
-                                      DestinationNodeId:   null, // default: "CSMS"
-                                      NetworkPath:         null,
+                                      SignKeys:           null,
+                                      SignInfos:          null,
+                                      Signatures:         null,
 
-                                      SignKeys:            null,
-                                      SignInfos:           null,
-                                      Signatures:          null,
-
-                                      RequestId:           null,
-                                      RequestTimestamp:    null,
-                                      RequestTimeout:      null,
-                                      EventTrackingId:     null
+                                      RequestId:          null,
+                                      RequestTimestamp:   null,
+                                      RequestTimeout:     null,
+                                      EventTrackingId:    null
 
                                   );
 

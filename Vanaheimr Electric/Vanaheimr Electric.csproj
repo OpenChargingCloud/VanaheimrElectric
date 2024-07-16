@@ -38,14 +38,8 @@
     <ProjectReference Include="..\libs\WWCP_OCPI\WWCP_OCPIv2.2.1_Adapter\WWCP_OCPIv2.2.1_Adapter.csproj" />
     <ProjectReference Include="..\libs\WWCP_OCPI\WWCP_OCPIv2.2.1_WebAPI\WWCP_OCPIv2.2.1_WebAPI.csproj" />
     <ProjectReference Include="..\libs\WWCP_OCPI\WWCP_OCPI_Common\WWCP_OCPI_Common.csproj" />
-    <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv1.6\WWCP_OCPPv1.6.csproj" />
-    <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv1.6_Adapter\WWCP_OCPPv1.6_Adapter.csproj" />
-    <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv1.6_CentralSystem\WWCP_OCPPv1.6_CentralSystem.csproj" />
-    <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv1.6_ChargePoint\WWCP_OCPPv1.6_ChargePoint.csproj" />
     <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv2.1\WWCP_OCPPv2.1.csproj" />
     <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv2.1_Adapter\WWCP_OCPPv2.1_Adapter.csproj" />
-    <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv2.1_ChargingStation\WWCP_OCPPv2.1_ChargingStation.csproj" />
-    <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv2.1_CSMS\WWCP_OCPPv2.1_CSMS.csproj" />
     <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv2.1_Tests\WWCP_OCPPv2.1_Tests.csproj" />
     <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPP_Common\WWCP_OCPP_Common.csproj" />
     <ProjectReference Include="..\libs\WWCP_OICP\WWCP_OICPv2.3\WWCP_OICPv2.3.csproj" />

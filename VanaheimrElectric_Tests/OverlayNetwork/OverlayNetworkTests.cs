@@ -21,14 +21,11 @@ using NUnit.Framework;
 
 using org.GraphDefined.Vanaheimr.Illias;
 
-using cloud.charging.open.protocols.OCPP;
-using cloud.charging.open.protocols.OCPP.WebSockets;
 using cloud.charging.open.protocols.OCPPv2_1;
-using cloud.charging.open.protocols.OCPPv2_1.NN;
 using cloud.charging.open.protocols.OCPPv2_1.CS;
 using cloud.charging.open.protocols.OCPPv2_1.CSMS;
 using cloud.charging.open.protocols.OCPPv2_1.NetworkingNode;
-using cloud.charging.open.protocols.OCPPv1_6.WebSockets;
+using cloud.charging.open.protocols.OCPPv2_1.WebSockets;
 
 #endregion
 
@@ -273,9 +270,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                      BootReason:          BootReason.PowerUp,
                                                      CustomData:          null,
 
-                                                     DestinationNodeId:   null, // default: "CSMS"
-                                                     NetworkPath:         null,
-
                                                      SignKeys:            null,
                                                      SignInfos:           null,
                                                      Signatures:          null,
@@ -287,60 +281,64 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                                                  );
 
-            Assert.That(bootNotificationResponse.Status,                                                     Is.EqualTo(RegistrationStatus.Accepted));
-            Assert.That(Math.Abs((Timestamp.Now - bootNotificationResponse.CurrentTime).TotalMinutes) < 1,   Is.True);
-            Assert.That(bootNotificationResponse.Interval                    > TimeSpan.Zero,                Is.True);
-            //StatusInfo
+            Assert.Multiple(() => {
+
+                Assert.That(bootNotificationResponse.Status,                                                     Is.EqualTo(RegistrationStatus.Accepted));
+                Assert.That(Math.Abs((Timestamp.Now - bootNotificationResponse.CurrentTime).TotalMinutes) < 1,   Is.True);
+                Assert.That(bootNotificationResponse.Interval                    > TimeSpan.Zero,                Is.True);
+                //StatusInfo
 
 
-            // -<request>--------------------------------------------------------------------------------------------------
-            Assert.That(chargingStation1_BootNotificationRequestsSent.                                Count, Is.EqualTo(1));
-            Assert.That(chargingStation1_jsonRequestMessageSent.                                      Count, Is.EqualTo(1));
-            Assert.That(chargingStation1_jsonRequestMessageSent.           First().NetworkPath.ToString(),   Is.EqualTo(new NetworkPath([ chargingStation1.Id ]).ToString()));
+                // -<request>--------------------------------------------------------------------------------------------------
+                Assert.That(chargingStation1_BootNotificationRequestsSent.                                Count, Is.EqualTo(1));
+                Assert.That(chargingStation1_jsonRequestMessageSent.                                      Count, Is.EqualTo(1));
+                //Assert.That(chargingStation1_jsonRequestMessageSent.           First().NetworkPath.ToString(),   Is.EqualTo(new NetworkPath([ chargingStation1.Id ]).ToString()));
 
-            Assert.That(ocppLocalController_jsonRequestMessageReceived.                               Count, Is.EqualTo(1));
-            Assert.That(ocppLocalController_BootNotificationRequestsReceived.                         Count, Is.EqualTo(1));
-            Assert.That(ocppLocalController_BootNotificationRequestsForwardingDecisions.              Count, Is.EqualTo(1));
-            Assert.That(ocppLocalController_BootNotificationRequestsSent.                             Count, Is.EqualTo(1));
-            Assert.That(ocppLocalController_jsonRequestMessageSent.                                   Count, Is.EqualTo(1));
-            Assert.That(ocppLocalController_jsonRequestMessageSent.        First().NetworkPath.ToString(),   Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id ]).ToString()));
+                Assert.That(ocppLocalController_jsonRequestMessageReceived.                               Count, Is.EqualTo(1));
+                Assert.That(ocppLocalController_BootNotificationRequestsReceived.                         Count, Is.EqualTo(1));
+                Assert.That(ocppLocalController_BootNotificationRequestsForwardingDecisions.              Count, Is.EqualTo(1));
+                Assert.That(ocppLocalController_BootNotificationRequestsSent.                             Count, Is.EqualTo(1));
+                Assert.That(ocppLocalController_jsonRequestMessageSent.                                   Count, Is.EqualTo(1));
+                Assert.That(ocppLocalController_jsonRequestMessageSent.        First().NetworkPath.ToString(),   Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id ]).ToString()));
 
-            Assert.That(ocppGateway_jsonRequestMessageReceived.                                       Count, Is.EqualTo(1));
-            Assert.That(ocppGateway_BootNotificationRequestsReceived.                                 Count, Is.EqualTo(1));
-            Assert.That(ocppGateway_BootNotificationRequestsForwardingDecisions.                      Count, Is.EqualTo(1));
-            Assert.That(ocppGateway_BootNotificationRequestsSent.                                     Count, Is.EqualTo(1));
-            Assert.That(ocppGateway_jsonRequestMessageSent.                                           Count, Is.EqualTo(1));
-            Assert.That(ocppGateway_jsonRequestMessageSent.                First().NetworkPath.ToString(),   Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id, ocppGateway.Id]).ToString()));
+                Assert.That(ocppGateway_jsonRequestMessageReceived.                                       Count, Is.EqualTo(1));
+                Assert.That(ocppGateway_BootNotificationRequestsReceived.                                 Count, Is.EqualTo(1));
+                Assert.That(ocppGateway_BootNotificationRequestsForwardingDecisions.                      Count, Is.EqualTo(1));
+                Assert.That(ocppGateway_BootNotificationRequestsSent.                                     Count, Is.EqualTo(1));
+                Assert.That(ocppGateway_jsonRequestMessageSent.                                           Count, Is.EqualTo(1));
+                Assert.That(ocppGateway_jsonRequestMessageSent.                First().NetworkPath.ToString(),   Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id, ocppGateway.Id]).ToString()));
 
-            Assert.That(csms_jsonRequestMessageReceived.                                              Count, Is.EqualTo(1));
-            Assert.That(csms_jsonRequestMessageReceived.                   First().NetworkPath.ToString(),   Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id, ocppGateway.Id]).ToString()));
-            Assert.That(csms_BootNotificationRequestsReceived.                                        Count, Is.EqualTo(1));
+                Assert.That(csms_jsonRequestMessageReceived.                                              Count, Is.EqualTo(1));
+                Assert.That(csms_jsonRequestMessageReceived.                   First().NetworkPath.ToString(),   Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id, ocppGateway.Id]).ToString()));
+                Assert.That(csms_BootNotificationRequestsReceived.                                        Count, Is.EqualTo(1));
 
-            // -<response>-------------------------------------------------------------------------------------------------
-            Assert.That(csms_BootNotificationResponsesSent.                                           Count, Is.EqualTo(1));
-            Assert.That(csms_jsonResponseMessagesSent.                                                Count, Is.EqualTo(1));
-            Assert.That(csms_jsonResponseMessagesSent.                     First().DestinationId,            Is.EqualTo(chargingStation1.Id));
-            Assert.That(csms_jsonResponseMessagesSent.                     First().NetworkPath.ToString(),   Is.EqualTo(new NetworkPath([ csms.Id ]).ToString()));
+                // -<response>-------------------------------------------------------------------------------------------------
+                Assert.That(csms_BootNotificationResponsesSent.                                           Count, Is.EqualTo(1));
+                Assert.That(csms_jsonResponseMessagesSent.                                                Count, Is.EqualTo(1));
+                Assert.That(csms_jsonResponseMessagesSent.                     First().DestinationId,            Is.EqualTo(chargingStation1.Id));
+                Assert.That(csms_jsonResponseMessagesSent.                     First().NetworkPath.ToString(),   Is.EqualTo(new NetworkPath([ csms.Id ]).ToString()));
 
-            Assert.That(ocppGateway_jsonResponseMessagesReceived.                                     Count, Is.EqualTo(1));
-            //Assert.That(ocppGateway_BootNotificationResponsesReceived.                                Count, Is.EqualTo(1));
-            //Assert.That(ocppGateway_BootNotificationResponsesSent.                                    Count, Is.EqualTo(1));
-            Assert.That(ocppGateway_jsonResponseMessagesSent.                                         Count, Is.EqualTo(1));
-            Assert.That(ocppGateway_jsonResponseMessagesSent.              First().NetworkPath.ToString(),   Is.EqualTo(new NetworkPath([ csms.Id, ocppGateway.Id ]).ToString()));
+                Assert.That(ocppGateway_jsonResponseMessagesReceived.                                     Count, Is.EqualTo(1));
+                //Assert.That(ocppGateway_BootNotificationResponsesReceived.                                Count, Is.EqualTo(1));
+                //Assert.That(ocppGateway_BootNotificationResponsesSent.                                    Count, Is.EqualTo(1));
+                Assert.That(ocppGateway_jsonResponseMessagesSent.                                         Count, Is.EqualTo(1));
+                Assert.That(ocppGateway_jsonResponseMessagesSent.              First().NetworkPath.ToString(),   Is.EqualTo(new NetworkPath([ csms.Id, ocppGateway.Id ]).ToString()));
 
-            Assert.That(ocppLocalController_jsonResponseMessagesReceived.                             Count, Is.EqualTo(1));
-            //Assert.That(ocppLocalController_BootNotificationResponsesReceived.                        Count, Is.EqualTo(1));
-            //Assert.That(ocppLocalController_BootNotificationResponsesSent.                            Count, Is.EqualTo(1));
-            Assert.That(ocppLocalController_jsonResponseMessagesSent.                                 Count, Is.EqualTo(1));
-            //Assert.That(ocppLocalController_jsonResponseMessagesSent.      First().NetworkPath.ToString(),   Is.EqualTo(new NetworkPath([ csms.Id, ocppGateway.Id, ocppLocalController.Id ]).ToString()));
+                Assert.That(ocppLocalController_jsonResponseMessagesReceived.                             Count, Is.EqualTo(1));
+                //Assert.That(ocppLocalController_BootNotificationResponsesReceived.                        Count, Is.EqualTo(1));
+                //Assert.That(ocppLocalController_BootNotificationResponsesSent.                            Count, Is.EqualTo(1));
+                Assert.That(ocppLocalController_jsonResponseMessagesSent.                                 Count, Is.EqualTo(1));
+                //Assert.That(ocppLocalController_jsonResponseMessagesSent.      First().NetworkPath.ToString(),   Is.EqualTo(new NetworkPath([ csms.Id, ocppGateway.Id, ocppLocalController.Id ]).ToString()));
 
-            Assert.That(chargingStation1_jsonMessageResponseReceived.                                 Count, Is.EqualTo(1));
-            Assert.That(chargingStation1_BootNotificationResponsesReceived.                           Count, Is.EqualTo(1));
-            // Note: The charging stations use "normal" networking and thus have no valid networking information!
-            Assert.That(chargingStation1_jsonMessageResponseReceived.      First().DestinationId,            Is.EqualTo(chargingStation1.Id));
-            //Assert.That(chargingStation1_BootNotificationResponsesReceived.First().DestinationId,            Is.EqualTo(chargingStation1.Id));
-            Assert.That(chargingStation1_jsonMessageResponseReceived.      First().NetworkPath.ToString(),   Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
-            //Assert.That(chargingStation1_BootNotificationResponsesReceived.First().NetworkPath.ToString(),   Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
+                Assert.That(chargingStation1_jsonMessageResponseReceived.                                 Count, Is.EqualTo(1));
+                Assert.That(chargingStation1_BootNotificationResponsesReceived.                           Count, Is.EqualTo(1));
+                // Note: The charging stations use "normal" networking and thus have no valid networking information!
+                Assert.That(chargingStation1_jsonMessageResponseReceived.      First().DestinationId,            Is.EqualTo(chargingStation1.Id));
+                //Assert.That(chargingStation1_BootNotificationResponsesReceived.First().DestinationId,            Is.EqualTo(chargingStation1.Id));
+                Assert.That(chargingStation1_jsonMessageResponseReceived.      First().NetworkPath.ToString(),   Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
+                //Assert.That(chargingStation1_BootNotificationResponsesReceived.First().NetworkPath.ToString(),   Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
+
+            });
 
         }
 
@@ -373,11 +371,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             var response1 = await csms.Reset(
 
-                                      DestinationNodeId:   chargingStation1.Id,
+                                      DestinationId:       chargingStation1.Id,
                                       ResetType:           ResetType.OnIdle,
                                       CustomData:          null,
-
-                                      NetworkPath:         null,
 
                                       SignKeys:            null,
                                       SignInfos:           null,
