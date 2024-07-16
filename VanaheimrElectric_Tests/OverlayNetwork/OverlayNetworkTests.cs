@@ -263,8 +263,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             #endregion
 
 
-
-
             var bootNotificationResponse = await chargingStation1.SendBootNotification(
 
                                                      BootReason:          BootReason.PowerUp,
