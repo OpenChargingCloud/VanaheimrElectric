@@ -83,7 +83,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
         public IPPort                       ocppGateway_tcpPort                         = IPPort.Parse(6020);
         public OCPPWebSocketServer?         ocppGateway_OCPPWebSocketServer;
 
-        public TestCSMS2?                   csms;
+        public TestCSMS?                   csms;
 
         #endregion
 
@@ -595,7 +595,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             #region Setup Charging Station Management System
 
-            csms = new TestCSMS2(
+            csms = new TestCSMS(
 
                        Id:                          NetworkingNode_Id.Parse("csms1"),
                        VendorName:                  "GraphDefined",

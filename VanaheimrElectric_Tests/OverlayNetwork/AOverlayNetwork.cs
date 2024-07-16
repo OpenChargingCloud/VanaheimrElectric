@@ -60,7 +60,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
         public DNSClient                    DNSClient;
 
-        public TestCSMS2?                   csms;
+        public TestCSMS?                   csms;
         public IPPort                       csms_tcpPort                                = IPPort.Parse(5000);
         public OCPPWebSocketServer?         csms_OCPPWebSocketServer;
 
@@ -103,7 +103,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             #region Setup Charging Station Management System
 
-            csms = new TestCSMS2(
+            csms = new TestCSMS(
 
                        Id:                          NetworkingNode_Id.Parse("csms"),
                        VendorName:                  "GraphDefined",
