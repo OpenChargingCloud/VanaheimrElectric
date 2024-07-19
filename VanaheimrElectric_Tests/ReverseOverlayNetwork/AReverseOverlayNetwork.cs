@@ -32,7 +32,7 @@ using cloud.charging.open.protocols.OCPPv2_1.LocalController;
 
 #endregion
 
-namespace cloud.charging.open.vanaheimr.electric.UnitTests
+namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
 {
 
     /// <summary>
@@ -54,13 +54,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
     /// [cs2] ←──── [lc] ◄━━━ [gw] ◄━━━ [csms]
     /// [cs3] ←──/
     /// </summary>
-    public abstract class AReversedOverlayNetwork
+    public abstract class AReverseOverlayNetwork
     {
 
         #region Data
-
-        public DNSClient                    DNSClient;
-
 
         public TestChargingStation?         chargingStation1;
         public IPPort                       chargingStation1_tcpPort                    = IPPort.Parse(6001);
@@ -83,13 +80,15 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
         public IPPort                       ocppGateway_tcpPort                         = IPPort.Parse(6020);
         public OCPPWebSocketServer?         ocppGateway_OCPPWebSocketServer;
 
-        public TestCSMS?                   csms;
+        public TestCSMS?                    csms;
+
+        public DNSClient                    DNSClient;
 
         #endregion
 
         #region Constructor(s)
 
-        public AReversedOverlayNetwork()
+        public AReverseOverlayNetwork()
         {
 
             this.DNSClient           = new();

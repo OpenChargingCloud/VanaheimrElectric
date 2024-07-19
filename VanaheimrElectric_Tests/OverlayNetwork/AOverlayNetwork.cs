@@ -1,4 +1,4 @@
-﻿using cloud.charging.open.protocols.OCPPv2_1;﻿/*
+﻿﻿/*
  * Copyright (c) 2015-2024 GraphDefined GmbH
  * This file is part of WWCP OCPI <https://github.com/OpenChargingCloud/WWCP_OCPI>
  *
@@ -32,7 +32,7 @@ using cloud.charging.open.protocols.OCPPv2_1.LocalController;
 
 #endregion
 
-namespace cloud.charging.open.vanaheimr.electric.UnitTests
+namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 {
 
     /// <summary>
@@ -58,9 +58,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
         #region Data
 
-        public DNSClient                    DNSClient;
-
-        public TestCSMS?                   csms;
+        public TestCSMS?                    csms;
         public IPPort                       csms_tcpPort                                = IPPort.Parse(5000);
         public OCPPWebSocketServer?         csms_OCPPWebSocketServer;
 
@@ -76,6 +74,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
         public TestChargingStation?         chargingStation1;
         public TestChargingStation?         chargingStation2;
         public TestChargingStation?         chargingStation3;
+
+        public DNSClient                    DNSClient;
 
         #endregion
 

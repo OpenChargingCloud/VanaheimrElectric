@@ -17,6 +17,8 @@
 
 #region Usings
 
+using Newtonsoft.Json.Linq;
+
 using NUnit.Framework;
 
 using org.GraphDefined.Vanaheimr.Illias;
@@ -24,19 +26,20 @@ using org.GraphDefined.Vanaheimr.Illias;
 using cloud.charging.open.protocols.OCPPv2_1;
 using cloud.charging.open.protocols.OCPPv2_1.CS;
 using cloud.charging.open.protocols.OCPPv2_1.CSMS;
-using cloud.charging.open.protocols.OCPPv2_1.NetworkingNode;
 using cloud.charging.open.protocols.OCPPv2_1.WebSockets;
+using cloud.charging.open.protocols.OCPPv2_1.NetworkingNode;
 
 #endregion
 
-namespace cloud.charging.open.vanaheimr.electric.UnitTests
+namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 {
 
     /// <summary>
-    /// Overlay Network Tests.
+    /// Overlay Network Tests
+    /// Charging Station  --[LC]--[GW]-->  CSMS
     /// </summary>
     [TestFixture]
-    public class OverlayNetworkTests : AOverlayNetwork
+    public class ChargingStation_2_CSMS_Tests : AOverlayNetwork
     {
 
         #region SendBootNotification1()
@@ -342,13 +345,13 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
         #endregion
 
-        #region SendReset1()
+        #region SendDataTransfer1()
 
         /// <summary>
-        /// Send Reset test.
+        /// Send BootNotification test.
         /// </summary>
         [Test]
-        public async Task SendReset1()
+        public async Task SendDataTransfer1()
         {
 
             #region Initial checks
@@ -367,26 +370,185 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             #endregion
 
 
-            var response1 = await csms.Reset(
+            var dataTransferResponse1  = await chargingStation1.TransferData(
 
-                                      DestinationId:       chargingStation1.Id,
-                                      ResetType:           ResetType.OnIdle,
-                                      CustomData:          null,
+                                                   VendorId:            Vendor_Id. GraphDefined,
+                                                   MessageId:           Message_Id.GraphDefined_TestMessage,
+                                                   Data:                "TestData",
+                                                   CustomData:          null,
 
-                                      SignKeys:            null,
-                                      SignInfos:           null,
-                                      Signatures:          null,
+                                                   SignKeys:            null,
+                                                   SignInfos:           null,
+                                                   Signatures:          null,
 
-                                      RequestId:           null,
-                                      RequestTimestamp:    null,
-                                      RequestTimeout:      null,
-                                      EventTrackingId:     null
+                                                   RequestId:           null,
+                                                   RequestTimestamp:    null,
+                                                   RequestTimeout:      null,
+                                                   EventTrackingId:     null
 
-                                  );
+                                               );
+
+            var dataTransferResponse2  = await chargingStation1.TransferData(
+
+                                                   VendorId:            Vendor_Id. GraphDefined,
+                                                   MessageId:           Message_Id.GraphDefined_TestMessage,
+                                                   Data:                JSONObject.Create(new JProperty("test", "data")),
+                                                   CustomData:          null,
+
+                                                   SignKeys:            null,
+                                                   SignInfos:           null,
+                                                   Signatures:          null,
+
+                                                   RequestId:           null,
+                                                   RequestTimestamp:    null,
+                                                   RequestTimeout:      null,
+                                                   EventTrackingId:     null
+
+                                               );
+
+            var dataTransferResponse3  = await chargingStation1.TransferData(
+
+                                                   VendorId:            Vendor_Id. GraphDefined,
+                                                   MessageId:           Message_Id.GraphDefined_TestMessage,
+                                                   Data:                new JArray("test", "data"),
+                                                   CustomData:          null,
+
+                                                   SignKeys:            null,
+                                                   SignInfos:           null,
+                                                   Signatures:          null,
+
+                                                   RequestId:           null,
+                                                   RequestTimestamp:    null,
+                                                   RequestTimeout:      null,
+                                                   EventTrackingId:     null
+
+                                               );
 
 
-            Assert.That(response1.Status, Is.EqualTo(ResetStatus.Accepted));
+            Assert.Multiple(() => {
 
+                Assert.That(dataTransferResponse1.Status,                                            Is.EqualTo(DataTransferStatus.Accepted));
+                Assert.That(dataTransferResponse1.Data?.Type,                                        Is.EqualTo(JTokenType.String));
+                Assert.That(dataTransferResponse1.Data?.ToString(),                                  Is.EqualTo("ataDtseT"));
+                //StatusInfo
+
+                Assert.That(dataTransferResponse2.Status,                                            Is.EqualTo(DataTransferStatus.Accepted));
+                Assert.That(dataTransferResponse2.Data?.Type,                                        Is.EqualTo(JTokenType.Object));
+                Assert.That(dataTransferResponse2.Data?.ToString(Newtonsoft.Json.Formatting.None),   Is.EqualTo("{\"test\":\"atad\"}"));
+                //StatusInfo
+
+                Assert.That(dataTransferResponse3.Status,                                            Is.EqualTo(DataTransferStatus.Accepted));
+                Assert.That(dataTransferResponse3.Data?.Type,                                        Is.EqualTo(JTokenType.Array));
+                Assert.That(dataTransferResponse3.Data?.ToString(Newtonsoft.Json.Formatting.None),   Is.EqualTo("[\"tset\",\"atad\"]"));
+                //StatusInfo
+
+            });
+
+        }
+
+        #endregion
+
+        #region SendDataTransfer2()
+
+        /// <summary>
+        /// Send BootNotification test.
+        /// </summary>
+        [Test]
+        public async Task SendDataTransfer2()
+        {
+
+            #region Initial checks
+
+            if (csms                is null ||
+                ocppGateway         is null ||
+                ocppLocalController is null ||
+                chargingStation1    is null ||
+                chargingStation2    is null ||
+                chargingStation3    is null)
+            {
+                Assert.Fail("Failed precondition(s)!");
+                return;
+            }
+
+            #endregion
+
+
+            var dataTransferResponse1  = await chargingStation1.TransferData(
+
+                                                   DestinationId:       csms.Id,
+                                                   VendorId:            Vendor_Id. GraphDefined,
+                                                   MessageId:           Message_Id.GraphDefined_TestMessage,
+                                                   Data:                "TestData",
+                                                   CustomData:          null,
+
+                                                   SignKeys:            null,
+                                                   SignInfos:           null,
+                                                   Signatures:          null,
+
+                                                   RequestId:           null,
+                                                   RequestTimestamp:    null,
+                                                   RequestTimeout:      null,
+                                                   EventTrackingId:     null
+
+                                               );
+
+            var dataTransferResponse2  = await chargingStation1.TransferData(
+
+                                                   DestinationId:       csms.Id,
+                                                   VendorId:            Vendor_Id. GraphDefined,
+                                                   MessageId:           Message_Id.GraphDefined_TestMessage,
+                                                   Data:                JSONObject.Create(new JProperty("test", "data")),
+                                                   CustomData:          null,
+
+                                                   SignKeys:            null,
+                                                   SignInfos:           null,
+                                                   Signatures:          null,
+
+                                                   RequestId:           null,
+                                                   RequestTimestamp:    null,
+                                                   RequestTimeout:      null,
+                                                   EventTrackingId:     null
+
+                                               );
+
+            var dataTransferResponse3  = await chargingStation1.TransferData(
+
+                                                   DestinationId:       csms.Id,
+                                                   VendorId:            Vendor_Id. GraphDefined,
+                                                   MessageId:           Message_Id.GraphDefined_TestMessage,
+                                                   Data:                new JArray("test", "data"),
+                                                   CustomData:          null,
+
+                                                   SignKeys:            null,
+                                                   SignInfos:           null,
+                                                   Signatures:          null,
+
+                                                   RequestId:           null,
+                                                   RequestTimestamp:    null,
+                                                   RequestTimeout:      null,
+                                                   EventTrackingId:     null
+
+                                               );
+
+
+            Assert.Multiple(() => {
+
+                Assert.That(dataTransferResponse1.Status,                                            Is.EqualTo(DataTransferStatus.Accepted));
+                Assert.That(dataTransferResponse1.Data?.Type,                                        Is.EqualTo(JTokenType.String));
+                Assert.That(dataTransferResponse1.Data?.ToString(),                                  Is.EqualTo("ataDtseT"));
+                //StatusInfo
+
+                Assert.That(dataTransferResponse2.Status,                                            Is.EqualTo(DataTransferStatus.Accepted));
+                Assert.That(dataTransferResponse2.Data?.Type,                                        Is.EqualTo(JTokenType.Object));
+                Assert.That(dataTransferResponse2.Data?.ToString(Newtonsoft.Json.Formatting.None),   Is.EqualTo("{\"test\":\"atad\"}"));
+                //StatusInfo
+
+                Assert.That(dataTransferResponse3.Status,                                            Is.EqualTo(DataTransferStatus.Accepted));
+                Assert.That(dataTransferResponse3.Data?.Type,                                        Is.EqualTo(JTokenType.Array));
+                Assert.That(dataTransferResponse3.Data?.ToString(Newtonsoft.Json.Formatting.None),   Is.EqualTo("[\"tset\",\"atad\"]"));
+                //StatusInfo
+
+            });
 
         }
 

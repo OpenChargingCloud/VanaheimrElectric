@@ -29,14 +29,15 @@ using cloud.charging.open.protocols.OCPPv2_1.WebSockets;
 
 #endregion
 
-namespace cloud.charging.open.vanaheimr.electric.UnitTests
+namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
 {
 
     /// <summary>
-    /// Reversed Overlay Network Tests.
+    /// Reverse Overlay Network Tests
+    /// Charging Station  --[LC]--[GW]-->  CSMS
     /// </summary>
     [TestFixture]
-    public class ReversedOverlayNetworkTests : AReversedOverlayNetwork
+    public class ChargingStation_2_CSMS_Tests : AReverseOverlayNetwork
     {
 
         #region SendBootNotification1()
