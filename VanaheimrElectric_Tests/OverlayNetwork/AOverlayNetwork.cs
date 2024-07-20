@@ -432,7 +432,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                        VendorName:                  "GraphDefined",
                                                        Model:                       "vem1",
                                                        SerialNumber:                null,
-                                                       SoftwareVersion:             null,
+                                                       FirmwareVersion:             null,
                                                        Description:                 I18NString.Create(Languages.en, "An OCPP Energy Meter for testing"),
 
                                                        SignaturePolicy:             null,
@@ -455,7 +455,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var ocppEnergyMeterConnectResult     = await ocppEnergyMeter.ConnectWebSocketClient(
 
-                                                             NetworkingNodeId:             ocppLocalController.Id,
+                                                             NetworkingNodeId:             NetworkingNode_Id.CSMS,
                                                              RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppLocalController_tcpPort}"),
                                                              VirtualHostname:              null,
                                                              Description:                  null,
@@ -820,10 +820,12 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             //ToDo: Make use of the routing protocol vendor extensions!
 
             csms.       OCPP.AddStaticRouting(ocppLocalController.Id,  ocppGateway.Id);
+            csms.       OCPP.AddStaticRouting(ocppEnergyMeter.Id,      ocppGateway.Id);
             csms.       OCPP.AddStaticRouting(chargingStation1.Id,     ocppGateway.Id);
             csms.       OCPP.AddStaticRouting(chargingStation2.Id,     ocppGateway.Id);
             csms.       OCPP.AddStaticRouting(chargingStation3.Id,     ocppGateway.Id);
 
+            ocppGateway.OCPP.AddStaticRouting(ocppEnergyMeter.Id,      ocppLocalController.Id);
             ocppGateway.OCPP.AddStaticRouting(chargingStation1.Id,     ocppLocalController.Id);
             ocppGateway.OCPP.AddStaticRouting(chargingStation2.Id,     ocppLocalController.Id);
             ocppGateway.OCPP.AddStaticRouting(chargingStation3.Id,     ocppLocalController.Id);

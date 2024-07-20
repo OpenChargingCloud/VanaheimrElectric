@@ -324,7 +324,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
                                                        VendorName:                  "GraphDefined",
                                                        Model:                       "vem1",
                                                        SerialNumber:                null,
-                                                       SoftwareVersion:             null,
+                                                       FirmwareVersion:             null,
                                                        Description:                 I18NString.Create(Languages.en, "An OCPP Energy Meter for testing"),
 
                                                        SignaturePolicy:             null,
