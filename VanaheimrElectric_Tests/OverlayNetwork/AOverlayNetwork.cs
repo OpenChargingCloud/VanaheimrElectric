@@ -24,13 +24,15 @@ using org.GraphDefined.Vanaheimr.Hermod;
 using org.GraphDefined.Vanaheimr.Hermod.DNS;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 
+using cloud.charging.open.protocols.OCPP;
 using cloud.charging.open.protocols.OCPPv2_1;
 using cloud.charging.open.protocols.OCPPv2_1.CS;
 using cloud.charging.open.protocols.OCPPv2_1.CSMS;
 using cloud.charging.open.protocols.OCPPv2_1.Gateway;
+using cloud.charging.open.protocols.OCPPv2_1.EnergyMeter;
 using cloud.charging.open.protocols.OCPPv2_1.NetworkingNode;
 using cloud.charging.open.protocols.OCPPv2_1.LocalController;
-using cloud.charging.open.protocols.OCPP;
+using static cloud.charging.open.protocols.OCPP.JSONContext;
 
 #endregion
 
@@ -39,8 +41,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
     /// <summary>
     /// Charging infrastructure test defaults using an OCPP Overlay Network
-    /// consisting of a CSMS, an OCPP Gateway, an OCPP Local Controller and
-    /// three Charging Stations.
+    /// consisting of a CSMS, an OCPP Gateway, an OCPP Local Controller,
+    /// an Energy Meter at the grid connection point and three Charging Stations.
     /// 
     /// The HTTP Web Socket connections are initiated in "normal order" from
     /// the Charging Stations to the Local Controller, to the Gateway and
@@ -48,41 +50,46 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
     /// 
     /// Between the Charging Stations and the Local Controller the "normal"
     /// OCPP transport JSON array is used. Between the Local Controller and
-    /// the Gateway and between the Gateway and the CSMS the OCPP Overlay
-    /// Network transport is used.
+    /// the Gateway, between the Local Controller and the Energy Meter, and
+    /// between the Gateway and the CSMS the OCPP Overlay Network transport
+    /// is used.
     /// 
     /// [cs1] ──⭨
     /// [cs2] ───→ [lc] ━━━► [gw] ━━━► [csms]
-    /// [cs3] ──🡕
+    /// [cs3] ──🡕    🡔── [em]
     /// </summary>
     public abstract class AOverlayNetwork
     {
 
         #region Data
 
-        public TestCSMS?                    csms;
+        public TestCSMSNode?                csms;
         public IPPort                       csms_tcpPort                                = IPPort.Parse(5000);
         public OCPPWebSocketServer?         csms_OCPPWebSocketServer;
         public KeyPair?                     csms_keyPair;
 
-        public TestGateway?                 ocppGateway;
+        public TestGatewayNode?             ocppGateway;
         public IPPort                       ocppGateway_tcpPort                         = IPPort.Parse(5010);
         public OCPPWebSocketServer?         ocppGateway_OCPPWebSocketServer;
         public KeyPair?                     ocppGateway_keyPair;
 
-        public TestLocalController?         ocppLocalController;
+        public TestLocalControllerNode?     ocppLocalController;
         public IPPort                       ocppLocalController_tcpPort                 = IPPort.Parse(5020);
         public OCPPWebSocketServer?         ocppLocalController_OCPPWebSocketServer;
         public KeyPair?                     ocppLocalController_keyPair;
-        public protocols.WWCP.EnergyMeter?  upstreamEnergyMeter;
 
-        public TestChargingStation?         chargingStation1;
+        public TestEnergyMeterNode?         ocppEnergyMeter;
+        public IPPort                       ocppEnergyMeter_tcpPort                     = IPPort.Parse(5030);
+        public OCPPWebSocketServer?         ocppEnergyMeter_OCPPWebSocketServer;
+        public KeyPair?                     ocppEnergyMeter_keyPair;
+
+        public TestChargingStationNode?     chargingStation1;
         public KeyPair?                     chargingStation1_keyPair;
 
-        public TestChargingStation?         chargingStation2;
+        public TestChargingStationNode?     chargingStation2;
         public KeyPair?                     chargingStation2_keyPair;
 
-        public TestChargingStation?         chargingStation3;
+        public TestChargingStationNode?     chargingStation3;
         public KeyPair?                     chargingStation3_keyPair;
 
         public DNSClient                    DNSClient;
@@ -113,7 +120,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #region Setup Charging Station Management System
 
-            csms = new TestCSMS(
+            csms = new TestCSMSNode(
 
                        Id:                          NetworkingNode_Id.Parse("csms"),
                        VendorName:                  "GraphDefined",
@@ -173,7 +180,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             csms.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                           KeyPair:                csms_keyPair!,
                                                           UserIdGenerator:        (signableMessage) => "cs001",
-                                                          DescriptionGenerator:   (signableMessage) => I18NString.Create("Just a csms!"),
+                                                          DescriptionGenerator:   (signableMessage) => I18NString.Create("Just an OCPP Charging Station Management System!"),
                                                           TimestampGenerator:     (signableMessage) => Timestamp.Now);
 
             csms.OCPP.SignaturePolicy.AddVerificationRule(JSONContext.OCPP.Any,
@@ -184,9 +191,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             #endregion
 
 
-            #region Setup OCPP Gateway
+            #region Setup Gateway
 
-            ocppGateway                      = new TestGateway(
+            ocppGateway                      = new TestGatewayNode(
 
                                                    Id:                          NetworkingNode_Id.Parse("gw"),
                                                    VendorName:                  "GraphDefined",
@@ -287,7 +294,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             ocppGateway.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                                  KeyPair:                ocppGateway_keyPair!,
                                                                  UserIdGenerator:        (signableMessage) => "gw001",
-                                                                 DescriptionGenerator:   (signableMessage) => I18NString.Create("Just an OCPP gateway!"),
+                                                                 DescriptionGenerator:   (signableMessage) => I18NString.Create("Just an OCPP Gateway!"),
                                                                  TimestampGenerator:     (signableMessage) => Timestamp.Now);
 
             ocppGateway.OCPP.SignaturePolicy.AddVerificationRule(JSONContext.OCPP.Any,
@@ -298,9 +305,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             #endregion
 
 
-            #region Setup OCPP Local Controller
+            #region Setup Local Controller
 
-            ocppLocalController                      = new TestLocalController(
+            ocppLocalController                      = new TestLocalControllerNode(
 
                                                            Id:                          NetworkingNode_Id.Parse("lc"),
                                                            VendorName:                  "GraphDefined",
@@ -407,7 +414,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             ocppLocalController.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                                          KeyPair:                ocppLocalController_keyPair!,
                                                                          UserIdGenerator:        (signableMessage) => "lc001",
-                                                                         DescriptionGenerator:   (signableMessage) => I18NString.Create("Just an OCPP local controller!"),
+                                                                         DescriptionGenerator:   (signableMessage) => I18NString.Create("Just an OCPP Local Controller!"),
                                                                          TimestampGenerator:     (signableMessage) => Timestamp.Now);
 
             ocppLocalController.OCPP.SignaturePolicy.AddVerificationRule(JSONContext.OCPP.Any,
@@ -417,10 +424,125 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #endregion
 
+            #region Setup Energy Meter
+
+            ocppEnergyMeter                      = new TestEnergyMeterNode(
+
+                                                       Id:                          NetworkingNode_Id.Parse("em"),
+                                                       VendorName:                  "GraphDefined",
+                                                       Model:                       "vem1",
+                                                       SerialNumber:                null,
+                                                       SoftwareVersion:             null,
+                                                       Description:                 I18NString.Create(Languages.en, "An OCPP Energy Meter for testing"),
+
+                                                       SignaturePolicy:             null,
+                                                       ForwardingSignaturePolicy:   null,
+
+                                                       DisableSendHeartbeats:       true,
+                                                       SendHeartbeatsEvery:         null,
+                                                       DefaultRequestTimeout:       null,
+
+                                                       DisableMaintenanceTasks:     false,
+                                                       MaintenanceEvery:            null,
+                                                       DNSClient:                   DNSClient
+
+                                                   );
+
+            var ocppEnergyMeterAuth              = ocppLocalController_OCPPWebSocketServer.AddOrUpdateHTTPBasicAuth(
+                                                                                               ocppEnergyMeter.Id,
+                                                                                               "em12345678"
+                                                                                           );
+
+            var ocppEnergyMeterConnectResult     = await ocppEnergyMeter.ConnectWebSocketClient(
+
+                                                             NetworkingNodeId:             ocppLocalController.Id,
+                                                             RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppLocalController_tcpPort}"),
+                                                             VirtualHostname:              null,
+                                                             Description:                  null,
+                                                             PreferIPv4:                   null,
+                                                             RemoteCertificateValidator:   null,
+                                                             LocalCertificateSelector:     null,
+                                                             ClientCert:                   null,
+                                                             TLSProtocol:                  null,
+                                                             HTTPUserAgent:                null,
+                                                             HTTPAuthentication:           ocppEnergyMeterAuth,
+                                                             RequestTimeout:               null,
+                                                             TransmissionRetryDelay:       null,
+                                                             MaxNumberOfRetries:           3,
+                                                             InternalBufferSize:           null,
+
+                                                             SecWebSocketProtocols:        null,
+                                                             NetworkingMode:               NetworkingMode.OverlayNetwork,
+
+                                                             DisableWebSocketPings:        false,
+                                                             WebSocketPingEvery:           null,
+                                                             SlowNetworkSimulationDelay:   null,
+
+                                                             DisableMaintenanceTasks:      false,
+                                                             MaintenanceEvery:             null,
+
+                                                             LoggingPath:                  null,
+                                                             LoggingContext:               String.Empty,
+                                                             LogfileCreator:               null,
+                                                             HTTPLogger:                   null,
+                                                             DNSClient:                    null
+
+                                                         );
+
+            Assert.That(ocppEnergyMeterConnectResult.HTTPStatusCode.Code, Is.EqualTo(101), $"OCPP Energy Meter could not connect to OCPP Local Controller: {ocppEnergyMeterConnectResult.HTTPStatusCode}");
+
+
+            //ocppEnergyMeter_OCPPWebSocketServer  = ocppEnergyMeter.AttachWebSocketServer(
+
+            //                                              HTTPServiceName:              null,
+            //                                              IPAddress:                    null,
+            //                                              TCPPort:                      ocppEnergyMeter_tcpPort,
+            //                                              Description:                  null,
+
+            //                                              RequireAuthentication:        true,
+            //                                              DisableWebSocketPings:        false,
+            //                                              WebSocketPingEvery:           null,
+            //                                              SlowNetworkSimulationDelay:   null,
+
+            //                                              ServerCertificateSelector:    null,
+            //                                              ClientCertificateValidator:   null,
+            //                                              LocalCertificateSelector:     null,
+            //                                              AllowedTLSProtocols:          null,
+            //                                              ClientCertificateRequired:    null,
+            //                                              CheckCertificateRevocation:   null,
+
+            //                                              ServerThreadNameCreator:      null,
+            //                                              ServerThreadPrioritySetter:   null,
+            //                                              ServerThreadIsBackground:     null,
+            //                                              ConnectionIdBuilder:          null,
+            //                                              ConnectionTimeout:            null,
+            //                                              MaxClientConnections:         null,
+
+            //                                              AutoStart:                    true
+
+            //                                          );
+
+            #region Define signature policy
+
+            ocppEnergyMeter_keyPair = KeyPair.GenerateKeys()!;
+
+            ocppEnergyMeter.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
+                                                                     KeyPair:                ocppEnergyMeter_keyPair!,
+                                                                     UserIdGenerator:        (signableMessage) => "em001",
+                                                                     DescriptionGenerator:   (signableMessage) => I18NString.Create("Just an OCPP Energy Meter!"),
+                                                                     TimestampGenerator:     (signableMessage) => Timestamp.Now);
+
+            ocppEnergyMeter.OCPP.SignaturePolicy.AddVerificationRule(JSONContext.OCPP.Any,
+                                                                     VerificationRuleActions.VerifyAll);
+
+            #endregion
+
+            #endregion
+
 
             #region Setup chargingStation1
 
-            chargingStation1      = new TestChargingStation(
+            chargingStation1      = new TestChargingStationNode(
 
                                         Id:                         NetworkingNode_Id.Parse("cs1"),
                                         VendorName:                 "GraphDefined",
@@ -500,7 +622,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             chargingStation1.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                                       KeyPair:                chargingStation1_keyPair!,
                                                                       UserIdGenerator:        (signableMessage) => "cs001",
-                                                                      DescriptionGenerator:   (signableMessage) => I18NString.Create("Just the 1st charging station!"),
+                                                                      DescriptionGenerator:   (signableMessage) => I18NString.Create("Just the 1st OCPP Charging Station!"),
                                                                       TimestampGenerator:     (signableMessage) => Timestamp.Now);
 
             chargingStation1.OCPP.SignaturePolicy.AddVerificationRule(JSONContext.OCPP.Any,
@@ -512,7 +634,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #region Setup chargingStation2
 
-            chargingStation2      = new TestChargingStation(
+            chargingStation2      = new TestChargingStationNode(
 
                                             Id:                         NetworkingNode_Id.Parse("cs2"),
                                             VendorName:                 "GraphDefined",
@@ -592,7 +714,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             chargingStation2.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                                       KeyPair:                chargingStation2_keyPair!,
                                                                       UserIdGenerator:        (signableMessage) => "cs002",
-                                                                      DescriptionGenerator:   (signableMessage) => I18NString.Create("Just the 2st charging station!"),
+                                                                      DescriptionGenerator:   (signableMessage) => I18NString.Create("Just the 2st OCPP Charging Station!"),
                                                                       TimestampGenerator:     (signableMessage) => Timestamp.Now);
 
             chargingStation2.OCPP.SignaturePolicy.AddVerificationRule(JSONContext.OCPP.Any,
@@ -604,7 +726,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #region Setup chargingStation3
 
-            chargingStation3      = new TestChargingStation(
+            chargingStation3      = new TestChargingStationNode(
 
                                             Id:                         NetworkingNode_Id.Parse("cs3"),
                                             VendorName:                 "GraphDefined",
@@ -684,7 +806,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             chargingStation3.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                                       KeyPair:                chargingStation3_keyPair!,
                                                                       UserIdGenerator:        (signableMessage) => "cs003",
-                                                                      DescriptionGenerator:   (signableMessage) => I18NString.Create("Just the 3st charging station!"),
+                                                                      DescriptionGenerator:   (signableMessage) => I18NString.Create("Just the 3st OCPP Charging Station!"),
                                                                       TimestampGenerator:     (signableMessage) => Timestamp.Now);
 
             chargingStation3.OCPP.SignaturePolicy.AddVerificationRule(JSONContext.OCPP.Any,

@@ -24,10 +24,12 @@ using org.GraphDefined.Vanaheimr.Hermod;
 using org.GraphDefined.Vanaheimr.Hermod.DNS;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 
+using cloud.charging.open.protocols.OCPP;
 using cloud.charging.open.protocols.OCPPv2_1;
 using cloud.charging.open.protocols.OCPPv2_1.CS;
 using cloud.charging.open.protocols.OCPPv2_1.CSMS;
 using cloud.charging.open.protocols.OCPPv2_1.Gateway;
+using cloud.charging.open.protocols.OCPPv2_1.EnergyMeter;
 using cloud.charging.open.protocols.OCPPv2_1.NetworkingNode;
 using cloud.charging.open.protocols.OCPPv2_1.LocalController;
 
@@ -38,8 +40,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
 
     /// <summary>
     /// Charging infrastructure test defaults using an OCPP Overlay Network
-    /// consisting of a CSMS, an OCPP Gateway, an OCPP Local Controller and
-    /// three Charging Stations.
+    /// consisting of a CSMS, an OCPP Gateway, an OCPP Local Controller,
+    /// an Energy Meter at the grid connection point and three Charging Stations.
     /// 
     /// The HTTP Web Socket connections are initiated in "reversed order" from
     /// the CSMS to the Gateway, to the Local Controller and finally to the
@@ -48,45 +50,51 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
     /// 
     /// Between the Charging Stations and the Local Controller the "normal"
     /// OCPP transport JSON array is used. Between the Local Controller and
-    /// the Gateway and between the Gateway and the CSMS the OCPP Overlay
-    /// Network transport is used.
+    /// the Gateway, between the Local Controller and the Energy Meter, and
+    /// between the Gateway and the CSMS the OCPP Overlay Network transport
+    /// is used.
     /// 
     /// [cs1] ←──\
     /// [cs2] ←──── [lc] ◄━━━ [gw] ◄━━━ [csms]
-    /// [cs3] ←──/
+    /// [cs3] ←──/    \─→ [em]
     /// </summary>
     public abstract class AReverseOverlayNetwork
     {
 
         #region Data
 
-        public TestChargingStation?         chargingStation1;
+        public TestChargingStationNode?     chargingStation1;
         public IPPort                       chargingStation1_tcpPort                    = IPPort.Parse(6001);
         public OCPPWebSocketServer?         chargingStation1_OCPPWebSocketServer;
         public KeyPair?                     chargingStation1_keyPair;
 
-        public TestChargingStation?         chargingStation2;
+        public TestChargingStationNode?     chargingStation2;
         public IPPort                       chargingStation2_tcpPort                    = IPPort.Parse(6002);
         public OCPPWebSocketServer?         chargingStation2_OCPPWebSocketServer;
         public KeyPair?                     chargingStation2_keyPair;
 
-        public TestChargingStation?         chargingStation3;
+        public TestChargingStationNode?     chargingStation3;
         public IPPort                       chargingStation3_tcpPort                    = IPPort.Parse(6003);
         public OCPPWebSocketServer?         chargingStation3_OCPPWebSocketServer;
         public KeyPair?                     chargingStation3_keyPair;
 
-        public TestLocalController?         ocppLocalController;
-        public IPPort                       ocppLocalController_tcpPort                 = IPPort.Parse(6010);
+        public TestEnergyMeterNode?         ocppEnergyMeter;
+        public IPPort                       ocppEnergyMeter_tcpPort                     = IPPort.Parse(6010);
+        public OCPPWebSocketServer?         ocppEnergyMeter_OCPPWebSocketServer;
+        public KeyPair?                     ocppEnergyMeter_keyPair;
+
+        public TestLocalControllerNode?     ocppLocalController;
+        public IPPort                       ocppLocalController_tcpPort                 = IPPort.Parse(6020);
         public OCPPWebSocketServer?         ocppLocalController_OCPPWebSocketServer;
         public protocols.WWCP.EnergyMeter?  upstreamEnergyMeter;
         public KeyPair?                     ocppLocalController_keyPair;
 
-        public TestGateway?                 ocppGateway;
-        public IPPort                       ocppGateway_tcpPort                         = IPPort.Parse(6020);
+        public TestGatewayNode?             ocppGateway;
+        public IPPort                       ocppGateway_tcpPort                         = IPPort.Parse(6030);
         public OCPPWebSocketServer?         ocppGateway_OCPPWebSocketServer;
         public KeyPair?                     ocppGateway_keyPair;
 
-        public TestCSMS?                    csms;
+        public TestCSMSNode?                csms;
         public KeyPair?                     csms_keyPair;
 
         public DNSClient                    DNSClient;
@@ -116,7 +124,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
 
             #region Setup chargingStation1
 
-            chargingStation1                      = new TestChargingStation(
+            chargingStation1                      = new TestChargingStationNode(
 
                                                         Id:                         NetworkingNode_Id.Parse("cs1"),
                                                         VendorName:                 "GraphDefined",
@@ -180,7 +188,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
 
             #region Setup chargingStation2
 
-            chargingStation2                      = new TestChargingStation(
+            chargingStation2                      = new TestChargingStationNode(
 
                                                         Id:                         NetworkingNode_Id.Parse("cs2"),
                                                         VendorName:                 "GraphDefined",
@@ -244,7 +252,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
 
             #region Setup chargingStation3
 
-            chargingStation3                      = new TestChargingStation(
+            chargingStation3                      = new TestChargingStationNode(
 
                                                         Id:                         NetworkingNode_Id.Parse("cs3"),
                                                         VendorName:                 "GraphDefined",
@@ -307,9 +315,80 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
             #endregion
 
 
-            #region Setup OCPP Local Controller
+            #region Setup Energy Meter
 
-            ocppLocalController                      = new TestLocalController(
+            ocppEnergyMeter                      = new TestEnergyMeterNode(
+
+                                                       Id:                          NetworkingNode_Id.Parse("em"),
+                                                       VendorName:                  "GraphDefined",
+                                                       Model:                       "vem1",
+                                                       SerialNumber:                null,
+                                                       SoftwareVersion:             null,
+                                                       Description:                 I18NString.Create(Languages.en, "An OCPP Energy Meter for testing"),
+
+                                                       SignaturePolicy:             null,
+                                                       ForwardingSignaturePolicy:   null,
+
+                                                       DisableSendHeartbeats:       true,
+                                                       SendHeartbeatsEvery:         null,
+                                                       DefaultRequestTimeout:       null,
+
+                                                       DisableMaintenanceTasks:     false,
+                                                       MaintenanceEvery:            null,
+                                                       DNSClient:                   DNSClient
+
+                                                   );
+
+            ocppEnergyMeter_OCPPWebSocketServer  = ocppEnergyMeter.AttachWebSocketServer(
+
+                                                       HTTPServiceName:              null,
+                                                       IPAddress:                    null,
+                                                       TCPPort:                      ocppEnergyMeter_tcpPort,
+                                                       Description:                  null,
+
+                                                       RequireAuthentication:        true,
+                                                       DisableWebSocketPings:        false,
+                                                       WebSocketPingEvery:           null,
+                                                       SlowNetworkSimulationDelay:   null,
+
+                                                       ServerCertificateSelector:    null,
+                                                       ClientCertificateValidator:   null,
+                                                       LocalCertificateSelector:     null,
+                                                       AllowedTLSProtocols:          null,
+                                                       ClientCertificateRequired:    null,
+                                                       CheckCertificateRevocation:   null,
+
+                                                       ServerThreadNameCreator:      null,
+                                                       ServerThreadPrioritySetter:   null,
+                                                       ServerThreadIsBackground:     null,
+                                                       ConnectionIdBuilder:          null,
+                                                       ConnectionTimeout:            null,
+                                                       MaxClientConnections:         null,
+
+                                                       AutoStart:                    true
+
+                                                   );
+
+            #region Define signature policy
+
+            ocppEnergyMeter_keyPair = KeyPair.GenerateKeys()!;
+
+            ocppEnergyMeter.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
+                                                                     KeyPair:                ocppEnergyMeter_keyPair!,
+                                                                     UserIdGenerator:        (signableMessage) => "em001",
+                                                                     DescriptionGenerator:   (signableMessage) => I18NString.Create("Just an OCPP Energy Meter!"),
+                                                                     TimestampGenerator:     (signableMessage) => Timestamp.Now);
+
+            ocppEnergyMeter.OCPP.SignaturePolicy.AddVerificationRule(JSONContext.OCPP.Any,
+                                                                     VerificationRuleActions.VerifyAll);
+
+            #endregion
+
+            #endregion
+
+            #region Setup Local Controller
+
+            ocppLocalController                      = new TestLocalControllerNode(
 
                                                            Id:                          NetworkingNode_Id.Parse("lc1"),
                                                            VendorName:                  "GraphDefined",
@@ -334,6 +413,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
                                                            DNSClient:                   DNSClient
 
                                                        );
+
+            #region Connect to charging station 1
 
             var cs1Auth                            = chargingStation1_OCPPWebSocketServer.AddOrUpdateHTTPBasicAuth(
                                                          ocppLocalController.Id,
@@ -378,6 +459,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
 
             Assert.That(ocppLocalControllerConnectResult1.HTTPStatusCode.Code, Is.EqualTo(101), $"OCPP Local Controller could not connect to Charging Station #1: {ocppLocalControllerConnectResult1.HTTPStatusCode}");
 
+            #endregion
+
+            #region Connect to charging station 2
 
             var cs2Auth                            = chargingStation2_OCPPWebSocketServer.AddOrUpdateHTTPBasicAuth(
                                                          ocppLocalController.Id,
@@ -422,6 +506,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
 
             Assert.That(ocppLocalControllerConnectResult2.HTTPStatusCode.Code, Is.EqualTo(101), $"OCPP Local Controller could not connect to Charging Station #2: {ocppLocalControllerConnectResult2.HTTPStatusCode}");
 
+            #endregion
+
+            #region Connect to charging station 3
 
             var cs3Auth                            = chargingStation3_OCPPWebSocketServer.AddOrUpdateHTTPBasicAuth(
                                                          ocppLocalController.Id,
@@ -466,8 +553,59 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
 
             Assert.That(ocppLocalControllerConnectResult3.HTTPStatusCode.Code, Is.EqualTo(101), $"OCPP Local Controller could not connect to Charging Station #3: {ocppLocalControllerConnectResult3.HTTPStatusCode}");
 
+            #endregion
 
-            ocppLocalController_OCPPWebSocketServer  = ocppLocalController.AttachWebSocketServer(
+            #region Connect to energy meter
+
+            var emAuth                             = ocppEnergyMeter_OCPPWebSocketServer.AddOrUpdateHTTPBasicAuth(
+                                                         ocppLocalController.Id,
+                                                         "lc_em_12345678"
+                                                     );
+
+            var ocppLocalControllerConnectResult4  = await ocppLocalController.ConnectWebSocketClient(
+
+                                                         NetworkingNodeId:             ocppEnergyMeter.Id,
+                                                         RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppEnergyMeter_tcpPort}"),
+                                                         VirtualHostname:              null,
+                                                         Description:                  null,
+                                                         PreferIPv4:                   null,
+                                                         RemoteCertificateValidator:   null,
+                                                         LocalCertificateSelector:     null,
+                                                         ClientCert:                   null,
+                                                         TLSProtocol:                  null,
+                                                         HTTPUserAgent:                null,
+                                                         HTTPAuthentication:           emAuth,
+                                                         RequestTimeout:               null,
+                                                         TransmissionRetryDelay:       null,
+                                                         MaxNumberOfRetries:           3,
+                                                         InternalBufferSize:           null,
+
+                                                         SecWebSocketProtocols:        null,
+                                                         NetworkingMode:               NetworkingMode.OverlayNetwork,
+
+                                                         DisableWebSocketPings:        false,
+                                                         WebSocketPingEvery:           null,
+                                                         SlowNetworkSimulationDelay:   null,
+
+                                                         DisableMaintenanceTasks:      false,
+                                                         MaintenanceEvery:             null,
+
+                                                         LoggingPath:                  null,
+                                                         LoggingContext:               String.Empty,
+                                                         LogfileCreator:               null,
+                                                         HTTPLogger:                   null,
+                                                         DNSClient:                    null
+
+                                                     );
+
+            Assert.That(ocppLocalControllerConnectResult4.HTTPStatusCode.Code, Is.EqualTo(101), $"OCPP Local Controller could not connect to the Energy Meter: {ocppLocalControllerConnectResult4.HTTPStatusCode}");
+
+            #endregion
+
+            // -----------------------------------------------------------------------------
+
+
+            ocppLocalController_OCPPWebSocketServer = ocppLocalController.AttachWebSocketServer(
 
                                                           HTTPServiceName:              null,
                                                           IPAddress:                    null,
@@ -500,9 +638,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
             #endregion
 
 
-            #region Setup OCPP Gateway
+            #region Setup Gateway
 
-            ocppGateway                      = new TestGateway(
+            ocppGateway                      = new TestGatewayNode(
 
                                                    Id:                          NetworkingNode_Id.Parse("gw1"),
                                                    VendorName:                  "GraphDefined",
@@ -601,7 +739,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
 
             #region Setup Charging Station Management System
 
-            csms = new TestCSMS(
+            csms = new TestCSMSNode(
 
                        Id:                          NetworkingNode_Id.Parse("csms1"),
                        VendorName:                  "GraphDefined",
