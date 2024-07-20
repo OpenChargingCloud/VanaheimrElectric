@@ -24,6 +24,7 @@ using org.GraphDefined.Vanaheimr.Hermod;
 using org.GraphDefined.Vanaheimr.Hermod.DNS;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 
+using cloud.charging.open.protocols.OCPPv2_1;
 using cloud.charging.open.protocols.OCPPv2_1.CS;
 using cloud.charging.open.protocols.OCPPv2_1.CSMS;
 using cloud.charging.open.protocols.OCPPv2_1.Gateway;
@@ -62,25 +63,31 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
         public TestChargingStation?         chargingStation1;
         public IPPort                       chargingStation1_tcpPort                    = IPPort.Parse(6001);
         public OCPPWebSocketServer?         chargingStation1_OCPPWebSocketServer;
+        public KeyPair?                     chargingStation1_keyPair;
 
         public TestChargingStation?         chargingStation2;
         public IPPort                       chargingStation2_tcpPort                    = IPPort.Parse(6002);
         public OCPPWebSocketServer?         chargingStation2_OCPPWebSocketServer;
+        public KeyPair?                     chargingStation2_keyPair;
 
         public TestChargingStation?         chargingStation3;
         public IPPort                       chargingStation3_tcpPort                    = IPPort.Parse(6003);
         public OCPPWebSocketServer?         chargingStation3_OCPPWebSocketServer;
+        public KeyPair?                     chargingStation3_keyPair;
 
         public TestLocalController?         ocppLocalController;
         public IPPort                       ocppLocalController_tcpPort                 = IPPort.Parse(6010);
         public OCPPWebSocketServer?         ocppLocalController_OCPPWebSocketServer;
         public protocols.WWCP.EnergyMeter?  upstreamEnergyMeter;
+        public KeyPair?                     ocppLocalController_keyPair;
 
         public TestGateway?                 ocppGateway;
         public IPPort                       ocppGateway_tcpPort                         = IPPort.Parse(6020);
         public OCPPWebSocketServer?         ocppGateway_OCPPWebSocketServer;
+        public KeyPair?                     ocppGateway_keyPair;
 
         public TestCSMS?                    csms;
+        public KeyPair?                     csms_keyPair;
 
         public DNSClient                    DNSClient;
 
@@ -91,7 +98,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
         public AReverseOverlayNetwork()
         {
 
-            this.DNSClient           = new();
+            this.DNSClient = new();
 
         }
 
@@ -117,7 +124,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
                                                         Description:                I18NString.Create(Languages.en, "The first charging station for testing"),
                                                         SerialNumber:               "cs#1",
                                                         FirmwareVersion:            "cs-fw v1.0",
-                                                        Modem:                       new protocols.OCPPv2_1.Modem(
+                                                        Modem:                       new Modem(
                                                                                          ICCID:       "ICCID#1",
                                                                                          IMSI:        "IMSI#1",
                                                                                          CustomData:   null
@@ -181,7 +188,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
                                                         Description:                I18NString.Create(Languages.en, "The second charging station for testing"),
                                                         SerialNumber:               "cs#2",
                                                         FirmwareVersion:            "cs-fw v2.0",
-                                                        Modem:                       new protocols.OCPPv2_1.Modem(
+                                                        Modem:                       new Modem(
                                                                                          ICCID:       "ICCID#2",
                                                                                          IMSI:        "IMSI#2",
                                                                                          CustomData:   null
@@ -245,7 +252,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
                                                         Description:                I18NString.Create(Languages.en, "The third charging station for testing"),
                                                         SerialNumber:               "cs#3",
                                                         FirmwareVersion:            "cs-fw v3.0",
-                                                        Modem:                       new protocols.OCPPv2_1.Modem(
+                                                        Modem:                       new Modem(
                                                                                          ICCID:       "ICCID#3",
                                                                                          IMSI:        "IMSI#3",
                                                                                          CustomData:   null

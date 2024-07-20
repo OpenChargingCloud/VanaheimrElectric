@@ -24,11 +24,13 @@ using org.GraphDefined.Vanaheimr.Hermod;
 using org.GraphDefined.Vanaheimr.Hermod.DNS;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 
+using cloud.charging.open.protocols.OCPPv2_1;
 using cloud.charging.open.protocols.OCPPv2_1.CS;
 using cloud.charging.open.protocols.OCPPv2_1.CSMS;
 using cloud.charging.open.protocols.OCPPv2_1.Gateway;
 using cloud.charging.open.protocols.OCPPv2_1.NetworkingNode;
 using cloud.charging.open.protocols.OCPPv2_1.LocalController;
+using cloud.charging.open.protocols.OCPP;
 
 #endregion
 
@@ -61,19 +63,27 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
         public TestCSMS?                    csms;
         public IPPort                       csms_tcpPort                                = IPPort.Parse(5000);
         public OCPPWebSocketServer?         csms_OCPPWebSocketServer;
+        public KeyPair?                     csms_keyPair;
 
         public TestGateway?                 ocppGateway;
         public IPPort                       ocppGateway_tcpPort                         = IPPort.Parse(5010);
         public OCPPWebSocketServer?         ocppGateway_OCPPWebSocketServer;
+        public KeyPair?                     ocppGateway_keyPair;
 
         public TestLocalController?         ocppLocalController;
         public IPPort                       ocppLocalController_tcpPort                 = IPPort.Parse(5020);
         public OCPPWebSocketServer?         ocppLocalController_OCPPWebSocketServer;
+        public KeyPair?                     ocppLocalController_keyPair;
         public protocols.WWCP.EnergyMeter?  upstreamEnergyMeter;
 
         public TestChargingStation?         chargingStation1;
+        public KeyPair?                     chargingStation1_keyPair;
+
         public TestChargingStation?         chargingStation2;
+        public KeyPair?                     chargingStation2_keyPair;
+
         public TestChargingStation?         chargingStation3;
+        public KeyPair?                     chargingStation3_keyPair;
 
         public DNSClient                    DNSClient;
 
@@ -155,6 +165,21 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                            AutoStart:                    true
 
                                        );
+
+            #region Define signature policy
+
+            csms_keyPair = KeyPair.GenerateKeys()!;
+
+            csms.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
+                                                          KeyPair:                csms_keyPair!,
+                                                          UserIdGenerator:        (signableMessage) => "cs001",
+                                                          DescriptionGenerator:   (signableMessage) => I18NString.Create("Just a csms!"),
+                                                          TimestampGenerator:     (signableMessage) => Timestamp.Now);
+
+            csms.OCPP.SignaturePolicy.AddVerificationRule(JSONContext.OCPP.Any,
+                                                          VerificationRuleActions.VerifyAll);
+
+            #endregion
 
             #endregion
 
@@ -254,6 +279,21 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                    AutoStart:                    true
 
                                                );
+
+            #region Define signature policy
+
+            ocppGateway_keyPair = KeyPair.GenerateKeys()!;
+
+            ocppGateway.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
+                                                                 KeyPair:                ocppGateway_keyPair!,
+                                                                 UserIdGenerator:        (signableMessage) => "gw001",
+                                                                 DescriptionGenerator:   (signableMessage) => I18NString.Create("Just an OCPP gateway!"),
+                                                                 TimestampGenerator:     (signableMessage) => Timestamp.Now);
+
+            ocppGateway.OCPP.SignaturePolicy.AddVerificationRule(JSONContext.OCPP.Any,
+                                                                 VerificationRuleActions.VerifyAll);
+
+            #endregion
 
             #endregion
 
@@ -360,6 +400,21 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                                                       );
 
+            #region Define signature policy
+
+            ocppLocalController_keyPair = KeyPair.GenerateKeys()!;
+
+            ocppLocalController.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
+                                                                         KeyPair:                ocppLocalController_keyPair!,
+                                                                         UserIdGenerator:        (signableMessage) => "lc001",
+                                                                         DescriptionGenerator:   (signableMessage) => I18NString.Create("Just an OCPP local controller!"),
+                                                                         TimestampGenerator:     (signableMessage) => Timestamp.Now);
+
+            ocppLocalController.OCPP.SignaturePolicy.AddVerificationRule(JSONContext.OCPP.Any,
+                                                                         VerificationRuleActions.VerifyAll);
+
+            #endregion
+
             #endregion
 
 
@@ -373,7 +428,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                         Description:                I18NString.Create(Languages.en, "The first charging station for testing"),
                                         SerialNumber:               "cs#1",
                                         FirmwareVersion:            "cs-fw v1.0",
-                                        Modem:                       new protocols.OCPPv2_1.Modem(
+                                        Modem:                       new Modem(
                                                                          ICCID:       "ICCID#1",
                                                                          IMSI:        "IMSI#1",
                                                                          CustomData:   null
@@ -438,6 +493,21 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             Assert.That(cs1ConnectResult.HTTPStatusCode.Code, Is.EqualTo(101), $"Charging Station #1 could not connect to OCPP Local Controller: {cs1ConnectResult.HTTPStatusCode}");
 
+            #region Define signature policy
+
+            chargingStation1_keyPair = KeyPair.GenerateKeys()!;
+
+            chargingStation1.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
+                                                                      KeyPair:                chargingStation1_keyPair!,
+                                                                      UserIdGenerator:        (signableMessage) => "cs001",
+                                                                      DescriptionGenerator:   (signableMessage) => I18NString.Create("Just the 1st charging station!"),
+                                                                      TimestampGenerator:     (signableMessage) => Timestamp.Now);
+
+            chargingStation1.OCPP.SignaturePolicy.AddVerificationRule(JSONContext.OCPP.Any,
+                                                                      VerificationRuleActions.VerifyAll);
+
+            #endregion
+
             #endregion
 
             #region Setup chargingStation2
@@ -450,7 +520,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                             Description:                I18NString.Create(Languages.en, "The second charging station for testing"),
                                             SerialNumber:               "cs#2",
                                             FirmwareVersion:            "cs-fw v2.0",
-                                            Modem:                       new protocols.OCPPv2_1.Modem(
+                                            Modem:                       new Modem(
                                                                              ICCID:       "ICCID#2",
                                                                              IMSI:        "IMSI#2",
                                                                              CustomData:   null
@@ -515,6 +585,21 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             Assert.That(cs2ConnectResult.HTTPStatusCode.Code, Is.EqualTo(101), $"Charging Station #2 could not connect to OCPP Local Controller: {cs2ConnectResult.HTTPStatusCode}");
 
+            #region Define signature policy
+
+            chargingStation2_keyPair = KeyPair.GenerateKeys()!;
+
+            chargingStation2.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
+                                                                      KeyPair:                chargingStation2_keyPair!,
+                                                                      UserIdGenerator:        (signableMessage) => "cs002",
+                                                                      DescriptionGenerator:   (signableMessage) => I18NString.Create("Just the 2st charging station!"),
+                                                                      TimestampGenerator:     (signableMessage) => Timestamp.Now);
+
+            chargingStation2.OCPP.SignaturePolicy.AddVerificationRule(JSONContext.OCPP.Any,
+                                                                      VerificationRuleActions.VerifyAll);
+
+            #endregion
+
             #endregion
 
             #region Setup chargingStation3
@@ -527,7 +612,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                             Description:                I18NString.Create(Languages.en, "The third charging station for testing"),
                                             SerialNumber:               "cs#3",
                                             FirmwareVersion:            "cs-fw v3.0",
-                                            Modem:                       new protocols.OCPPv2_1.Modem(
+                                            Modem:                       new Modem(
                                                                              ICCID:       "ICCID#3",
                                                                              IMSI:        "IMSI#3",
                                                                              CustomData:   null
@@ -591,6 +676,21 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                           );
 
             Assert.That(cs3ConnectResult.HTTPStatusCode.Code, Is.EqualTo(101), $"Charging Station #3 could not connect to OCPP Local Controller: {cs3ConnectResult.HTTPStatusCode}");
+
+            #region Define signature policy
+
+            chargingStation3_keyPair = KeyPair.GenerateKeys()!;
+
+            chargingStation3.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
+                                                                      KeyPair:                chargingStation3_keyPair!,
+                                                                      UserIdGenerator:        (signableMessage) => "cs003",
+                                                                      DescriptionGenerator:   (signableMessage) => I18NString.Create("Just the 3st charging station!"),
+                                                                      TimestampGenerator:     (signableMessage) => Timestamp.Now);
+
+            chargingStation3.OCPP.SignaturePolicy.AddVerificationRule(JSONContext.OCPP.Any,
+                                                                      VerificationRuleActions.VerifyAll);
+
+            #endregion
 
             #endregion
 
