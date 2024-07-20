@@ -32,7 +32,7 @@ using cloud.charging.open.protocols.OCPPv2_1.Gateway;
 using cloud.charging.open.protocols.OCPPv2_1.EnergyMeter;
 using cloud.charging.open.protocols.OCPPv2_1.NetworkingNode;
 using cloud.charging.open.protocols.OCPPv2_1.LocalController;
-using static cloud.charging.open.protocols.OCPP.JSONContext;
+using cloud.charging.open.protocols.OCPPv2_1.WebSockets;
 
 #endregion
 
@@ -56,7 +56,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
     /// 
     /// [cs1] ──⭨
     /// [cs2] ───→ [lc] ━━━► [gw] ━━━► [csms]
-    /// [cs3] ──🡕    🡔── [em]
+    /// [cs3] ──🡕    🡴━ [em]
     /// </summary>
     public abstract class AOverlayNetwork
     {
