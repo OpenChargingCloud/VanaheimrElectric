@@ -60,11 +60,35 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 chargingStation2    is null ||
                 chargingStation3    is null)
             {
-                Assert.Fail("Failed precondition(s)!");
+
+                Assert.Multiple(() => {
+
+                    if (csms                is null)
+                        Assert.Fail("The csms must not be null!");
+
+                    if (ocppGateway         is null)
+                        Assert.Fail("The gateway must not be null!");
+
+                    if (ocppLocalController is null)
+                        Assert.Fail("The local controller must not be null!");
+
+                    if (chargingStation1    is null)
+                        Assert.Fail("The charging station 1 must not be null!");
+
+                    if (chargingStation2    is null)
+                        Assert.Fail("The charging station 2 must not be null!");
+
+                    if (chargingStation3    is null)
+                        Assert.Fail("The charging station 3 must not be null!");
+
+                });
+
                 return;
+
             }
 
             #endregion
+
 
 
             #region 1. The BootNotification request leaves the Charging Station
@@ -366,8 +390,31 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 chargingStation2    is null ||
                 chargingStation3    is null)
             {
-                Assert.Fail("Failed precondition(s)!");
+
+                Assert.Multiple(() => {
+
+                    if (csms                is null)
+                        Assert.Fail("The csms must not be null!");
+
+                    if (ocppGateway         is null)
+                        Assert.Fail("The gateway must not be null!");
+
+                    if (ocppLocalController is null)
+                        Assert.Fail("The local controller must not be null!");
+
+                    if (chargingStation1    is null)
+                        Assert.Fail("The charging station 1 must not be null!");
+
+                    if (chargingStation2    is null)
+                        Assert.Fail("The charging station 2 must not be null!");
+
+                    if (chargingStation3    is null)
+                        Assert.Fail("The charging station 3 must not be null!");
+
+                });
+
                 return;
+
             }
 
             #endregion
@@ -491,8 +538,31 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 chargingStation2    is null ||
                 chargingStation3    is null)
             {
-                Assert.Fail("Failed precondition(s)!");
+
+                Assert.Multiple(() => {
+
+                    if (csms                is null)
+                        Assert.Fail("The csms must not be null!");
+
+                    if (ocppGateway         is null)
+                        Assert.Fail("The gateway must not be null!");
+
+                    if (ocppLocalController is null)
+                        Assert.Fail("The local controller must not be null!");
+
+                    if (chargingStation1    is null)
+                        Assert.Fail("The charging station 1 must not be null!");
+
+                    if (chargingStation2    is null)
+                        Assert.Fail("The charging station 2 must not be null!");
+
+                    if (chargingStation3    is null)
+                        Assert.Fail("The charging station 3 must not be null!");
+
+                });
+
                 return;
+
             }
 
             #endregion
@@ -593,6 +663,285 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 Assert.That(dataTransferResponse3.Data?.ToString(Newtonsoft.Json.Formatting.None),     Is.EqualTo("[\"tset\",\"atad\"]"));
                 //StatusInfo
                 Assert.That(chargingStation1_DataTransferRequestsSent.ElementAt(2).Signatures.Count,   Is.EqualTo(1));
+
+            });
+
+        }
+
+        #endregion
+
+
+        #region SendBinaryDataTransfer1()
+
+        /// <summary>
+        /// Send BootNotification test.
+        /// </summary>
+        [Test]
+        public async Task SendBinaryDataTransfer1()
+        {
+
+            #region Initial checks
+
+            if (csms                is null ||
+                ocppGateway         is null ||
+                ocppLocalController is null ||
+                chargingStation1    is null ||
+                chargingStation2    is null ||
+                chargingStation3    is null)
+            {
+
+                Assert.Multiple(() => {
+
+                    if (csms                is null)
+                        Assert.Fail("The csms must not be null!");
+
+                    if (ocppGateway         is null)
+                        Assert.Fail("The gateway must not be null!");
+
+                    if (ocppLocalController is null)
+                        Assert.Fail("The local controller must not be null!");
+
+                    if (chargingStation1    is null)
+                        Assert.Fail("The charging station 1 must not be null!");
+
+                    if (chargingStation2    is null)
+                        Assert.Fail("The charging station 2 must not be null!");
+
+                    if (chargingStation3    is null)
+                        Assert.Fail("The charging station 3 must not be null!");
+
+                });
+
+                return;
+
+            }
+
+            #endregion
+
+
+            #region 1. The BinaryDataTransfer request leaves the Energy Meter
+
+            var chargingStation1_BinaryDataTransferRequestsSent        = new ConcurrentList<BinaryDataTransferRequest>();
+            var chargingStation1_BinaryRequestMessageSent              = new ConcurrentList<OCPP_BinaryRequestMessage>();
+
+            chargingStation1.OCPP.OUT.OnBinaryDataTransferRequestSent += (timestamp, sender, dataTransferRequest) => {
+                chargingStation1_BinaryDataTransferRequestsSent.TryAdd(dataTransferRequest);
+                return Task.CompletedTask;
+            };
+
+            chargingStation1.OCPP.OUT.OnBinaryRequestMessageSent      += (timestamp, sender, requestMessage, sendMessageResult) => {
+                chargingStation1_BinaryRequestMessageSent.        TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 2. The OCPP Local Controller receives and forwards the BinaryDataTransfer request
+
+            var ocppLocalController_BinaryRequestMessageReceived                   = new ConcurrentList<OCPP_BinaryRequestMessage>();
+            var ocppLocalController_BinaryDataTransferRequestsReceived             = new ConcurrentList<BinaryDataTransferRequest>();
+            var ocppLocalController_BinaryDataTransferRequestsForwardingDecisions  = new ConcurrentList<ForwardingDecision<BinaryDataTransferRequest, BinaryDataTransferResponse>>();
+            var ocppLocalController_BinaryDataTransferRequestsSent                 = new ConcurrentList<BinaryDataTransferRequest>();
+            var ocppLocalController_BinaryRequestMessageSent                       = new ConcurrentList<OCPP_BinaryRequestMessage>();
+
+            ocppLocalController.OCPP.IN.     OnBinaryRequestMessageReceived       += (timestamp, sender, requestMessage) => {
+                ocppLocalController_BinaryRequestMessageReceived.                   TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnBinaryDataTransferRequestReceived  += (timestamp, sender, connection, binaryDataTransferRequestBinaryDataTransferRequest) => {
+                ocppLocalController_BinaryDataTransferRequestsReceived.           TryAdd(binaryDataTransferRequestBinaryDataTransferRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnBinaryDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequestBinaryDataTransferRequest, forwardingDecision) => {
+                ocppLocalController_BinaryDataTransferRequestsForwardingDecisions.TryAdd(forwardingDecision);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnBinaryDataTransferRequestSent      += (timestamp, sender, binaryDataTransferRequestBinaryDataTransferRequest) => {
+                ocppLocalController_BinaryDataTransferRequestsSent.               TryAdd(binaryDataTransferRequestBinaryDataTransferRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.OUT.    OnBinaryRequestMessageSent           += (timestamp, sender, requestMessage, sendMessageResult) => {
+                ocppLocalController_BinaryRequestMessageSent.                       TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 3. The OCPP Gateway receives and forwards the BinaryDataTransfer request
+
+            var ocppGateway_binaryRequestMessageReceived                   = new ConcurrentList<OCPP_BinaryRequestMessage>();
+            var ocppGateway_BinaryDataTransferRequestsReceived             = new ConcurrentList<BinaryDataTransferRequest>();
+            var ocppGateway_BinaryDataTransferRequestsForwardingDecisions  = new ConcurrentList<ForwardingDecision<BinaryDataTransferRequest, BinaryDataTransferResponse>>();
+            var ocppGateway_BinaryDataTransferRequestsSent                 = new ConcurrentList<BinaryDataTransferRequest>();
+            var ocppGateway_binaryRequestMessageSent                       = new ConcurrentList<OCPP_BinaryRequestMessage>();
+
+            ocppGateway.OCPP.IN.     OnBinaryRequestMessageReceived       += (timestamp, sender, requestMessage) => {
+                ocppGateway_binaryRequestMessageReceived.                   TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnBinaryDataTransferRequestReceived  += (timestamp, sender, connection, binaryDataTransferRequestBinaryDataTransferRequest) => {
+                ocppGateway_BinaryDataTransferRequestsReceived.           TryAdd(binaryDataTransferRequestBinaryDataTransferRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnBinaryDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequestBinaryDataTransferRequest, forwardingDecision) => {
+                ocppGateway_BinaryDataTransferRequestsForwardingDecisions.TryAdd(forwardingDecision);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnBinaryDataTransferRequestSent      += (timestamp, sender, binaryDataTransferRequestBinaryDataTransferRequest) => {
+                ocppGateway_BinaryDataTransferRequestsSent.               TryAdd(binaryDataTransferRequestBinaryDataTransferRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.OUT.    OnBinaryRequestMessageSent           += (timestamp, sender, requestMessage, sendMessageResult) => {
+                ocppGateway_binaryRequestMessageSent.                       TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 4. The CSMS receives the BinaryDataTransfer request
+
+            var csms_BinaryRequestMessageReceived              = new ConcurrentList<OCPP_BinaryRequestMessage>();
+            var csms_BinaryDataTransferRequestsReceived        = new ConcurrentList<BinaryDataTransferRequest>();
+
+            csms.OCPP.IN. OnBinaryRequestMessageReceived      += (timestamp, sender, requestMessage) => {
+                csms_BinaryRequestMessageReceived.      TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            csms.OCPP.IN. OnBinaryDataTransferRequestReceived += (timestamp, sender, connection, request) => {
+                csms_BinaryDataTransferRequestsReceived.TryAdd(request);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            // processing...
+
+            #region 5. The CSMS responds the BinaryDataTransfer request
+
+            var csms_BinaryDataTransferResponsesSent        = new ConcurrentList<BinaryDataTransferResponse>();
+            var csms_BinaryResponseMessagesSent             = new ConcurrentList<OCPP_BinaryResponseMessage>();
+
+            csms.OCPP.OUT.OnBinaryDataTransferResponseSent += (timestamp, sender, connection, request, response, runtime) => {
+                csms_BinaryDataTransferResponsesSent.TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            csms.OCPP.OUT.OnBinaryResponseMessageSent      += (timestamp, sender, responseMessage, sendMessageResult) => {
+                csms_BinaryResponseMessagesSent.     TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 6. The OCPP Local Controller receives and forwards the BinaryDataTransfer response
+
+            var ocppGateway_binaryResponseMessagesReceived                 = new ConcurrentList<OCPP_BinaryResponseMessage>();
+            var ocppGateway_BinaryDataTransferResponsesReceived            = new ConcurrentList<BinaryDataTransferResponse>();
+            var ocppGateway_BinaryDataTransferResponsesSent                = new ConcurrentList<BinaryDataTransferResponse>();
+            var ocppGateway_binaryResponseMessagesSent                     = new ConcurrentList<OCPP_BinaryResponseMessage>();
+
+            ocppGateway.OCPP.IN.     OnBinaryResponseMessageReceived      += (timestamp, sender, responseMessage) => {
+                ocppGateway_binaryResponseMessagesReceived.     TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnBinaryDataTransferResponseReceived += (timestamp, sender, request, response, runtime) => {
+                ocppGateway_BinaryDataTransferResponsesReceived.TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnBinaryDataTransferResponseSent     += (timestamp, sender, connection, request, response, runtime) => {
+                ocppGateway_BinaryDataTransferResponsesSent.    TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.OUT.    OnBinaryResponseMessageSent          += (timestamp, sender, responseMessage, sendMessageResult) => {
+                ocppGateway_binaryResponseMessagesSent.         TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 7. The OCPP Local Controller receives and forwards the BinaryDataTransfer response
+
+            var ocppLocalController_BinaryResponseMessagesReceived                 = new ConcurrentList<OCPP_BinaryResponseMessage>();
+            var ocppLocalController_BinaryDataTransferResponsesReceived            = new ConcurrentList<BinaryDataTransferResponse>();
+            var ocppLocalController_BinaryDataTransferResponsesSent                = new ConcurrentList<BinaryDataTransferResponse>();
+            var ocppLocalController_BinaryResponseMessagesSent                     = new ConcurrentList<OCPP_BinaryResponseMessage>();
+
+            ocppLocalController.OCPP.IN.     OnBinaryResponseMessageReceived      += (timestamp, sender, responseMessage) => {
+                ocppLocalController_BinaryResponseMessagesReceived.     TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnBinaryDataTransferResponseSent     += (timestamp, sender, connection, request, response, runtime) => {
+                ocppLocalController_BinaryDataTransferResponsesReceived.TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnBinaryDataTransferResponseReceived += (timestamp, sender, request, response, runtime) => {
+                ocppLocalController_BinaryDataTransferResponsesReceived.TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.OUT.    OnBinaryResponseMessageSent          += (timestamp, sender, responseMessage, sendMessageResult) => {
+                ocppLocalController_BinaryResponseMessagesSent.         TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 8. The Energy Meter receives the BinaryDataTransfer response
+
+            var chargingStation1_BinaryMessageResponseReceived             = new ConcurrentList<OCPP_BinaryResponseMessage>();
+            var chargingStation1_BinaryDataTransferResponsesReceived       = new ConcurrentList<BinaryDataTransferResponse>();
+
+            chargingStation1.OCPP.IN.OnBinaryResponseMessageReceived      += (timestamp, sender, responseMessage) => {
+                chargingStation1_BinaryMessageResponseReceived.      TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            chargingStation1.OCPP.IN.OnBinaryDataTransferResponseReceived += (timestamp, sender, request, response, runtime) => {
+                chargingStation1_BinaryDataTransferResponsesReceived.TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+
+            var binaryDataTransferResponse  = await chargingStation1.TransferBinaryData(
+
+                                                        VendorId:           Vendor_Id. GraphDefined,
+                                                        MessageId:          Message_Id.GraphDefined_TestMessage,
+                                                        Data:               "TestData".ToUTF8Bytes(),
+
+                                                        SignKeys:           null,
+                                                        SignInfos:          null,
+                                                        Signatures:         null,
+
+                                                        RequestId:          null,
+                                                        RequestTimestamp:   null,
+                                                        RequestTimeout:     null,
+                                                        EventTrackingId:    null
+
+                                                    );
+
+
+            Assert.Multiple(() => {
+
+                Assert.That(binaryDataTransferResponse.Status,                                             Is.EqualTo(BinaryDataTransferStatus.Accepted));
+                Assert.That(binaryDataTransferResponse.Data?.ToUTF8String(),                               Is.EqualTo("ataDtseT"));
+                //StatusInfo
+                //Assert.That(chargingStation1_BinaryDataTransferRequestsSent.ElementAt(0).Signatures.Count,   Is.EqualTo(1));
 
             });
 

@@ -60,8 +60,31 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 chargingStation2    is null ||
                 chargingStation3    is null)
             {
-                Assert.Fail("Failed precondition(s)!");
+
+                Assert.Multiple(() => {
+
+                    if (csms                is null)
+                        Assert.Fail("The csms must not be null!");
+
+                    if (ocppGateway         is null)
+                        Assert.Fail("The gateway must not be null!");
+
+                    if (ocppLocalController is null)
+                        Assert.Fail("The local controller must not be null!");
+
+                    if (chargingStation1    is null)
+                        Assert.Fail("The charging station 1 must not be null!");
+
+                    if (chargingStation2    is null)
+                        Assert.Fail("The charging station 2 must not be null!");
+
+                    if (chargingStation3    is null)
+                        Assert.Fail("The charging station 3 must not be null!");
+
+                });
+
                 return;
+
             }
 
             #endregion
@@ -110,8 +133,31 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 chargingStation2    is null ||
                 chargingStation3    is null)
             {
-                Assert.Fail("Failed precondition(s)!");
+
+                Assert.Multiple(() => {
+
+                    if (csms                is null)
+                        Assert.Fail("The csms must not be null!");
+
+                    if (ocppGateway         is null)
+                        Assert.Fail("The gateway must not be null!");
+
+                    if (ocppLocalController is null)
+                        Assert.Fail("The local controller must not be null!");
+
+                    if (chargingStation1    is null)
+                        Assert.Fail("The charging station 1 must not be null!");
+
+                    if (chargingStation2    is null)
+                        Assert.Fail("The charging station 2 must not be null!");
+
+                    if (chargingStation3    is null)
+                        Assert.Fail("The charging station 3 must not be null!");
+
+                });
+
                 return;
+
             }
 
             #endregion
