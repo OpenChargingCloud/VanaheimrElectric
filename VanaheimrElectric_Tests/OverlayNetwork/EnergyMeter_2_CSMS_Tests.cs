@@ -71,7 +71,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppEnergyMeter_BootNotificationRequestsSent  = new ConcurrentList<BootNotificationRequest>();
             var ocppEnergyMeter_jsonRequestMessageSent        = new ConcurrentList<OCPP_JSONRequestMessage>();
 
-            ocppEnergyMeter.OCPP.OUT.OnBootNotificationRequestSent += (timestamp, sender, bootNotificationRequest) => {
+            ocppEnergyMeter.OCPP.OUT.OnBootNotificationRequestSent += (timestamp, sender, bootNotificationRequest, sendMessageResult) => {
                 ocppEnergyMeter_BootNotificationRequestsSent.TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
@@ -106,7 +106,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, bootNotificationRequest) => {
+            ocppLocalController.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, bootNotificationRequest, sendMessageResult) => {
                 ocppLocalController_BootNotificationRequestsSent.               TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
@@ -141,7 +141,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, bootNotificationRequest) => {
+            ocppGateway.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, bootNotificationRequest, sendMessageResult) => {
                 ocppGateway_BootNotificationRequestsSent.               TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
@@ -392,7 +392,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppEnergyMeter_DataTransferRequestsSent  = new ConcurrentList<DataTransferRequest>();
             var ocppEnergyMeter_jsonRequestMessageSent    = new ConcurrentList<OCPP_JSONRequestMessage>();
 
-            ocppEnergyMeter.OCPP.OUT.OnDataTransferRequestSent += (timestamp, sender, dataTransferRequest) => {
+            ocppEnergyMeter.OCPP.OUT.OnDataTransferRequestSent += (timestamp, sender, dataTransferRequest, sendMessageResult) => {
                 ocppEnergyMeter_DataTransferRequestsSent.TryAdd(dataTransferRequest);
                 return Task.CompletedTask;
             };
@@ -417,18 +417,18 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnDataTransferRequestReceived  += (timestamp, sender, connection, dataTransferRequestBinaryDataTransferRequest) => {
-                ocppLocalController_DataTransferRequestsReceived.           TryAdd(dataTransferRequestBinaryDataTransferRequest);
+            ocppLocalController.OCPP.FORWARD.OnDataTransferRequestReceived  += (timestamp, sender, connection, dataTransferRequest) => {
+                ocppLocalController_DataTransferRequestsReceived.           TryAdd(dataTransferRequest);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnDataTransferRequestFiltered  += (timestamp, sender, connection, dataTransferRequestBinaryDataTransferRequest, forwardingDecision) => {
+            ocppLocalController.OCPP.FORWARD.OnDataTransferRequestFiltered  += (timestamp, sender, connection, dataTransferRequest, forwardingDecision) => {
                 ocppLocalController_DataTransferRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnDataTransferRequestSent      += (timestamp, sender, dataTransferRequestBinaryDataTransferRequest) => {
-                ocppLocalController_DataTransferRequestsSent.               TryAdd(dataTransferRequestBinaryDataTransferRequest);
+            ocppLocalController.OCPP.FORWARD.OnDataTransferRequestSent      += (timestamp, sender, dataTransferRequest, sendMessageResult) => {
+                ocppLocalController_DataTransferRequestsSent.               TryAdd(dataTransferRequest);
                 return Task.CompletedTask;
             };
 
@@ -452,18 +452,18 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnDataTransferRequestReceived  += (timestamp, sender, connection, dataTransferRequestBinaryDataTransferRequest) => {
-                ocppGateway_DataTransferRequestsReceived.           TryAdd(dataTransferRequestBinaryDataTransferRequest);
+            ocppGateway.OCPP.FORWARD.OnDataTransferRequestReceived  += (timestamp, sender, connection, dataTransferRequest) => {
+                ocppGateway_DataTransferRequestsReceived.           TryAdd(dataTransferRequest);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnDataTransferRequestFiltered  += (timestamp, sender, connection, dataTransferRequestBinaryDataTransferRequest, forwardingDecision) => {
+            ocppGateway.OCPP.FORWARD.OnDataTransferRequestFiltered  += (timestamp, sender, connection, dataTransferRequest, forwardingDecision) => {
                 ocppGateway_DataTransferRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnDataTransferRequestSent      += (timestamp, sender, dataTransferRequestBinaryDataTransferRequest) => {
-                ocppGateway_DataTransferRequestsSent.               TryAdd(dataTransferRequestBinaryDataTransferRequest);
+            ocppGateway.OCPP.FORWARD.OnDataTransferRequestSent      += (timestamp, sender, dataTransferRequest, sendMessageResult) => {
+                ocppGateway_DataTransferRequestsSent.               TryAdd(dataTransferRequest);
                 return Task.CompletedTask;
             };
 
@@ -712,7 +712,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppEnergyMeter_DataTransferRequestsSent  = new ConcurrentList<DataTransferRequest>();
             var ocppEnergyMeter_jsonRequestMessageSent    = new ConcurrentList<OCPP_JSONRequestMessage>();
 
-            ocppEnergyMeter.OCPP.OUT.OnDataTransferRequestSent += (timestamp, sender, dataTransferRequest) => {
+            ocppEnergyMeter.OCPP.OUT.OnDataTransferRequestSent += (timestamp, sender, dataTransferRequest, sendMessageResult) => {
                 ocppEnergyMeter_DataTransferRequestsSent.TryAdd(dataTransferRequest);
                 return Task.CompletedTask;
             };
@@ -737,18 +737,18 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnDataTransferRequestReceived  += (timestamp, sender, connection, dataTransferRequestBinaryDataTransferRequest) => {
-                ocppLocalController_DataTransferRequestsReceived.           TryAdd(dataTransferRequestBinaryDataTransferRequest);
+            ocppLocalController.OCPP.FORWARD.OnDataTransferRequestReceived  += (timestamp, sender, connection, dataTransferRequest) => {
+                ocppLocalController_DataTransferRequestsReceived.           TryAdd(dataTransferRequest);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnDataTransferRequestFiltered  += (timestamp, sender, connection, dataTransferRequestBinaryDataTransferRequest, forwardingDecision) => {
+            ocppLocalController.OCPP.FORWARD.OnDataTransferRequestFiltered  += (timestamp, sender, connection, dataTransferRequest, forwardingDecision) => {
                 ocppLocalController_DataTransferRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnDataTransferRequestSent      += (timestamp, sender, dataTransferRequestBinaryDataTransferRequest) => {
-                ocppLocalController_DataTransferRequestsSent.               TryAdd(dataTransferRequestBinaryDataTransferRequest);
+            ocppLocalController.OCPP.FORWARD.OnDataTransferRequestSent      += (timestamp, sender, dataTransferRequest, sendMessageResult) => {
+                ocppLocalController_DataTransferRequestsSent.               TryAdd(dataTransferRequest);
                 return Task.CompletedTask;
             };
 
@@ -772,18 +772,18 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnDataTransferRequestReceived  += (timestamp, sender, connection, dataTransferRequestBinaryDataTransferRequest) => {
-                ocppGateway_DataTransferRequestsReceived.           TryAdd(dataTransferRequestBinaryDataTransferRequest);
+            ocppGateway.OCPP.FORWARD.OnDataTransferRequestReceived  += (timestamp, sender, connection, dataTransferRequest) => {
+                ocppGateway_DataTransferRequestsReceived.           TryAdd(dataTransferRequest);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnDataTransferRequestFiltered  += (timestamp, sender, connection, dataTransferRequestBinaryDataTransferRequest, forwardingDecision) => {
+            ocppGateway.OCPP.FORWARD.OnDataTransferRequestFiltered  += (timestamp, sender, connection, dataTransferRequest, forwardingDecision) => {
                 ocppGateway_DataTransferRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnDataTransferRequestSent      += (timestamp, sender, dataTransferRequestBinaryDataTransferRequest) => {
-                ocppGateway_DataTransferRequestsSent.               TryAdd(dataTransferRequestBinaryDataTransferRequest);
+            ocppGateway.OCPP.FORWARD.OnDataTransferRequestSent      += (timestamp, sender, dataTransferRequest, sendMessageResult) => {
+                ocppGateway_DataTransferRequestsSent.               TryAdd(dataTransferRequest);
                 return Task.CompletedTask;
             };
 
@@ -1036,7 +1036,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppEnergyMeter_BinaryDataTransferRequestsSent        = new ConcurrentList<BinaryDataTransferRequest>();
             var ocppEnergyMeter_BinaryRequestMessageSent              = new ConcurrentList<OCPP_BinaryRequestMessage>();
 
-            ocppEnergyMeter.OCPP.OUT.OnBinaryDataTransferRequestSent += (timestamp, sender, dataTransferRequest) => {
+            ocppEnergyMeter.OCPP.OUT.OnBinaryDataTransferRequestSent += (timestamp, sender, dataTransferRequest, sendMessageResult) => {
                 ocppEnergyMeter_BinaryDataTransferRequestsSent.TryAdd(dataTransferRequest);
                 return Task.CompletedTask;
             };
@@ -1061,18 +1061,18 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBinaryDataTransferRequestReceived  += (timestamp, sender, connection, binaryDataTransferRequestBinaryDataTransferRequest) => {
-                ocppLocalController_BinaryDataTransferRequestsReceived.           TryAdd(binaryDataTransferRequestBinaryDataTransferRequest);
+            ocppLocalController.OCPP.FORWARD.OnBinaryDataTransferRequestReceived  += (timestamp, sender, connection, binaryDataTransferRequest) => {
+                ocppLocalController_BinaryDataTransferRequestsReceived.           TryAdd(binaryDataTransferRequest);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBinaryDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequestBinaryDataTransferRequest, forwardingDecision) => {
+            ocppLocalController.OCPP.FORWARD.OnBinaryDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequest, forwardingDecision) => {
                 ocppLocalController_BinaryDataTransferRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBinaryDataTransferRequestSent      += (timestamp, sender, binaryDataTransferRequestBinaryDataTransferRequest) => {
-                ocppLocalController_BinaryDataTransferRequestsSent.               TryAdd(binaryDataTransferRequestBinaryDataTransferRequest);
+            ocppLocalController.OCPP.FORWARD.OnBinaryDataTransferRequestSent      += (timestamp, sender, binaryDataTransferRequest, sendMessageResult) => {
+                ocppLocalController_BinaryDataTransferRequestsSent.               TryAdd(binaryDataTransferRequest);
                 return Task.CompletedTask;
             };
 
@@ -1096,18 +1096,18 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBinaryDataTransferRequestReceived  += (timestamp, sender, connection, binaryDataTransferRequestBinaryDataTransferRequest) => {
-                ocppGateway_BinaryDataTransferRequestsReceived.           TryAdd(binaryDataTransferRequestBinaryDataTransferRequest);
+            ocppGateway.OCPP.FORWARD.OnBinaryDataTransferRequestReceived  += (timestamp, sender, connection, binaryDataTransferRequest) => {
+                ocppGateway_BinaryDataTransferRequestsReceived.           TryAdd(binaryDataTransferRequest);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBinaryDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequestBinaryDataTransferRequest, forwardingDecision) => {
+            ocppGateway.OCPP.FORWARD.OnBinaryDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequest, forwardingDecision) => {
                 ocppGateway_BinaryDataTransferRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBinaryDataTransferRequestSent      += (timestamp, sender, binaryDataTransferRequestBinaryDataTransferRequest) => {
-                ocppGateway_BinaryDataTransferRequestsSent.               TryAdd(binaryDataTransferRequestBinaryDataTransferRequest);
+            ocppGateway.OCPP.FORWARD.OnBinaryDataTransferRequestSent      += (timestamp, sender, binaryDataTransferRequest, sendMessageResult) => {
+                ocppGateway_BinaryDataTransferRequestsSent.               TryAdd(binaryDataTransferRequest);
                 return Task.CompletedTask;
             };
 

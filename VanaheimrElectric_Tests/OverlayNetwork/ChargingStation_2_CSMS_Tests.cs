@@ -90,13 +90,12 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             #endregion
 
 
-
             #region 1. The BootNotification request leaves the Charging Station
 
             var chargingStation1_BootNotificationRequestsSent  = new ConcurrentList<BootNotificationRequest>();
             var chargingStation1_jsonRequestMessageSent        = new ConcurrentList<OCPP_JSONRequestMessage>();
 
-            chargingStation1.OCPP.OUT.OnBootNotificationRequestSent += (timestamp, sender, bootNotificationRequest) => {
+            chargingStation1.OCPP.OUT.OnBootNotificationRequestSent += (timestamp, sender, bootNotificationRequest, sendMessageResult) => {
                 chargingStation1_BootNotificationRequestsSent.TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
@@ -131,7 +130,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, bootNotificationRequest) => {
+            ocppLocalController.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, bootNotificationRequest, sendMessageResult) => {
                 ocppLocalController_BootNotificationRequestsSent.               TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
@@ -166,7 +165,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, bootNotificationRequest) => {
+            ocppGateway.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, bootNotificationRequest, sendMessageResult) => {
                 ocppGateway_BootNotificationRequestsSent.               TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
@@ -214,7 +213,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #endregion
 
-            #region 6. The OCPP Local Controller receives and forwards the BootNotification response
+            #region 6. The OCPP Gateway receives and forwards the BootNotification response
 
             var ocppGateway_jsonResponseMessagesReceived                 = new ConcurrentList<OCPP_JSONResponseMessage>();
             var ocppGateway_BootNotificationResponsesReceived            = new ConcurrentList<BootNotificationResponse>();
@@ -420,23 +419,203 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             #endregion
 
 
-            #region 1. The DataTransfer request leaves the Charging Station
+            #region 1. The DataTransfer request leaves the Energy Meter
 
-            var chargingStation1_DataTransferRequestsSent  = new ConcurrentList<DataTransferRequest>();
-            var chargingStation1_jsonRequestMessageSent    = new ConcurrentList<OCPP_JSONRequestMessage>();
+            var chargingStation1_DataTransferRequestsSent        = new ConcurrentList<DataTransferRequest>();
+            var chargingStation1_BinaryRequestMessageSent        = new ConcurrentList<OCPP_JSONRequestMessage>();
 
-            chargingStation1.OCPP.OUT.OnDataTransferRequestSent += (timestamp, sender, dataTransferRequest) => {
+            chargingStation1.OCPP.OUT.OnDataTransferRequestSent += (timestamp, sender, dataTransferRequest, sendMessageResult) => {
                 chargingStation1_DataTransferRequestsSent.TryAdd(dataTransferRequest);
                 return Task.CompletedTask;
             };
 
             chargingStation1.OCPP.OUT.OnJSONRequestMessageSent  += (timestamp, sender, requestMessage, sendMessageResult) => {
-                chargingStation1_jsonRequestMessageSent.  TryAdd(requestMessage);
+                chargingStation1_BinaryRequestMessageSent.        TryAdd(requestMessage);
                 return Task.CompletedTask;
             };
 
             #endregion
 
+            #region 2. The OCPP Local Controller receives and forwards the DataTransfer request
+
+            var ocppLocalController_BinaryRequestMessageReceived             = new ConcurrentList<OCPP_JSONRequestMessage>();
+            var ocppLocalController_DataTransferRequestsReceived             = new ConcurrentList<DataTransferRequest>();
+            var ocppLocalController_DataTransferRequestsForwardingDecisions  = new ConcurrentList<ForwardingDecision<DataTransferRequest, DataTransferResponse>>();
+            var ocppLocalController_DataTransferRequestsSent                 = new ConcurrentList<DataTransferRequest>();
+            var ocppLocalController_BinaryRequestMessageSent                 = new ConcurrentList<OCPP_JSONRequestMessage>();
+
+            ocppLocalController.OCPP.IN.     OnJSONRequestMessageReceived   += (timestamp, sender, requestMessage) => {
+                ocppLocalController_BinaryRequestMessageReceived.                   TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnDataTransferRequestReceived  += (timestamp, sender, connection, binaryDataTransferRequest) => {
+                ocppLocalController_DataTransferRequestsReceived.           TryAdd(binaryDataTransferRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequest, forwardingDecision) => {
+                ocppLocalController_DataTransferRequestsForwardingDecisions.TryAdd(forwardingDecision);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnDataTransferRequestSent      += (timestamp, sender, binaryDataTransferRequest, sendMessageResult) => {
+                ocppLocalController_DataTransferRequestsSent.               TryAdd(binaryDataTransferRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.OUT.    OnJSONRequestMessageSent       += (timestamp, sender, requestMessage, sendMessageResult) => {
+                ocppLocalController_BinaryRequestMessageSent.                       TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 3. The OCPP Gateway receives and forwards the DataTransfer request
+
+            var ocppGateway_binaryRequestMessageReceived             = new ConcurrentList<OCPP_JSONRequestMessage>();
+            var ocppGateway_DataTransferRequestsReceived             = new ConcurrentList<DataTransferRequest>();
+            var ocppGateway_DataTransferRequestsForwardingDecisions  = new ConcurrentList<ForwardingDecision<DataTransferRequest, DataTransferResponse>>();
+            var ocppGateway_DataTransferRequestsSent                 = new ConcurrentList<DataTransferRequest>();
+            var ocppGateway_binaryRequestMessageSent                 = new ConcurrentList<OCPP_JSONRequestMessage>();
+
+            ocppGateway.OCPP.IN.     OnJSONRequestMessageReceived   += (timestamp, sender, requestMessage) => {
+                ocppGateway_binaryRequestMessageReceived.                   TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnDataTransferRequestReceived  += (timestamp, sender, connection, binaryDataTransferRequest) => {
+                ocppGateway_DataTransferRequestsReceived.           TryAdd(binaryDataTransferRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequest, forwardingDecision) => {
+                ocppGateway_DataTransferRequestsForwardingDecisions.TryAdd(forwardingDecision);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnDataTransferRequestSent      += (timestamp, sender, binaryDataTransferRequest, sendMessageResult) => {
+                ocppGateway_DataTransferRequestsSent.               TryAdd(binaryDataTransferRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.OUT.    OnJSONRequestMessageSent       += (timestamp, sender, requestMessage, sendMessageResult) => {
+                ocppGateway_binaryRequestMessageSent.                       TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 4. The CSMS receives the DataTransfer request
+
+            var csms_BinaryRequestMessageReceived        = new ConcurrentList<OCPP_JSONRequestMessage>();
+            var csms_DataTransferRequestsReceived        = new ConcurrentList<DataTransferRequest>();
+
+            csms.OCPP.IN. OnJSONRequestMessageReceived  += (timestamp, sender, requestMessage) => {
+                csms_BinaryRequestMessageReceived.      TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            csms.OCPP.IN. OnDataTransferRequestReceived += (timestamp, sender, connection, request) => {
+                csms_DataTransferRequestsReceived.TryAdd(request);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            // processing...
+
+            #region 5. The CSMS responds the DataTransfer request
+
+            var csms_DataTransferResponsesSent        = new ConcurrentList<DataTransferResponse>();
+            var csms_BinaryResponseMessagesSent       = new ConcurrentList<OCPP_JSONResponseMessage>();
+
+            csms.OCPP.OUT.OnDataTransferResponseSent += (timestamp, sender, connection, request, response, runtime) => {
+                csms_DataTransferResponsesSent.TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            csms.OCPP.OUT.OnJSONResponseMessageSent  += (timestamp, sender, responseMessage, sendMessageResult) => {
+                csms_BinaryResponseMessagesSent.     TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 6. The OCPP Gateway receives and forwards the DataTransfer response
+
+            var ocppGateway_binaryResponseMessagesReceived           = new ConcurrentList<OCPP_JSONResponseMessage>();
+            var ocppGateway_DataTransferResponsesReceived            = new ConcurrentList<DataTransferResponse>();
+            var ocppGateway_DataTransferResponsesSent                = new ConcurrentList<DataTransferResponse>();
+            var ocppGateway_binaryResponseMessagesSent               = new ConcurrentList<OCPP_JSONResponseMessage>();
+
+            ocppGateway.OCPP.IN.     OnJSONResponseMessageReceived  += (timestamp, sender, responseMessage) => {
+                ocppGateway_binaryResponseMessagesReceived.     TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnDataTransferResponseReceived += (timestamp, sender, request, response, runtime) => {
+                ocppGateway_DataTransferResponsesReceived.TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnDataTransferResponseSent     += (timestamp, sender, connection, request, response, runtime) => {
+                ocppGateway_DataTransferResponsesSent.    TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.OUT.    OnJSONResponseMessageSent      += (timestamp, sender, responseMessage, sendMessageResult) => {
+                ocppGateway_binaryResponseMessagesSent.         TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 7. The OCPP Local Controller receives and forwards the DataTransfer response
+
+            var ocppLocalController_BinaryResponseMessagesReceived           = new ConcurrentList<OCPP_JSONResponseMessage>();
+            var ocppLocalController_DataTransferResponsesReceived            = new ConcurrentList<DataTransferResponse>();
+            var ocppLocalController_DataTransferResponsesSent                = new ConcurrentList<DataTransferResponse>();
+            var ocppLocalController_BinaryResponseMessagesSent               = new ConcurrentList<OCPP_JSONResponseMessage>();
+
+            ocppLocalController.OCPP.IN.     OnJSONResponseMessageReceived  += (timestamp, sender, responseMessage) => {
+                ocppLocalController_BinaryResponseMessagesReceived.     TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnDataTransferResponseSent     += (timestamp, sender, connection, request, response, runtime) => {
+                ocppLocalController_DataTransferResponsesReceived.TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnDataTransferResponseReceived += (timestamp, sender, request, response, runtime) => {
+                ocppLocalController_DataTransferResponsesReceived.TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.OUT.    OnJSONResponseMessageSent      += (timestamp, sender, responseMessage, sendMessageResult) => {
+                ocppLocalController_BinaryResponseMessagesSent.         TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 8. The Energy Meter receives the DataTransfer response
+
+            var chargingStation1_BinaryMessageResponseReceived       = new ConcurrentList<OCPP_JSONResponseMessage>();
+            var chargingStation1_DataTransferResponsesReceived       = new ConcurrentList<DataTransferResponse>();
+
+            chargingStation1.OCPP.IN.OnJSONResponseMessageReceived  += (timestamp, sender, responseMessage) => {
+                chargingStation1_BinaryMessageResponseReceived.      TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            chargingStation1.OCPP.IN.OnDataTransferResponseReceived += (timestamp, sender, request, response, runtime) => {
+                chargingStation1_DataTransferResponsesReceived.TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            #endregion
 
 
             var dataTransferResponse1  = await chargingStation1.TransferData(
@@ -568,18 +747,199 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             #endregion
 
 
-            #region 1. The DataTransfer request leaves the Charging Station
+            #region 1. The DataTransfer request leaves the Energy Meter
 
-            var chargingStation1_DataTransferRequestsSent  = new ConcurrentList<DataTransferRequest>();
-            var chargingStation1_jsonRequestMessageSent    = new ConcurrentList<OCPP_JSONRequestMessage>();
+            var chargingStation1_DataTransferRequestsSent        = new ConcurrentList<DataTransferRequest>();
+            var chargingStation1_BinaryRequestMessageSent        = new ConcurrentList<OCPP_JSONRequestMessage>();
 
-            chargingStation1.OCPP.OUT.OnDataTransferRequestSent += (timestamp, sender, dataTransferRequest) => {
+            chargingStation1.OCPP.OUT.OnDataTransferRequestSent += (timestamp, sender, dataTransferRequest, sendMessageResult) => {
                 chargingStation1_DataTransferRequestsSent.TryAdd(dataTransferRequest);
                 return Task.CompletedTask;
             };
 
             chargingStation1.OCPP.OUT.OnJSONRequestMessageSent  += (timestamp, sender, requestMessage, sendMessageResult) => {
-                chargingStation1_jsonRequestMessageSent.  TryAdd(requestMessage);
+                chargingStation1_BinaryRequestMessageSent.        TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 2. The OCPP Local Controller receives and forwards the DataTransfer request
+
+            var ocppLocalController_BinaryRequestMessageReceived             = new ConcurrentList<OCPP_JSONRequestMessage>();
+            var ocppLocalController_DataTransferRequestsReceived             = new ConcurrentList<DataTransferRequest>();
+            var ocppLocalController_DataTransferRequestsForwardingDecisions  = new ConcurrentList<ForwardingDecision<DataTransferRequest, DataTransferResponse>>();
+            var ocppLocalController_DataTransferRequestsSent                 = new ConcurrentList<DataTransferRequest>();
+            var ocppLocalController_BinaryRequestMessageSent                 = new ConcurrentList<OCPP_JSONRequestMessage>();
+
+            ocppLocalController.OCPP.IN.     OnJSONRequestMessageReceived   += (timestamp, sender, requestMessage) => {
+                ocppLocalController_BinaryRequestMessageReceived.                   TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnDataTransferRequestReceived  += (timestamp, sender, connection, binaryDataTransferRequest) => {
+                ocppLocalController_DataTransferRequestsReceived.           TryAdd(binaryDataTransferRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequest, forwardingDecision) => {
+                ocppLocalController_DataTransferRequestsForwardingDecisions.TryAdd(forwardingDecision);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnDataTransferRequestSent      += (timestamp, sender, binaryDataTransferRequest, sendMessageResult) => {
+                ocppLocalController_DataTransferRequestsSent.               TryAdd(binaryDataTransferRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.OUT.    OnJSONRequestMessageSent       += (timestamp, sender, requestMessage, sendMessageResult) => {
+                ocppLocalController_BinaryRequestMessageSent.                       TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 3. The OCPP Gateway receives and forwards the DataTransfer request
+
+            var ocppGateway_binaryRequestMessageReceived             = new ConcurrentList<OCPP_JSONRequestMessage>();
+            var ocppGateway_DataTransferRequestsReceived             = new ConcurrentList<DataTransferRequest>();
+            var ocppGateway_DataTransferRequestsForwardingDecisions  = new ConcurrentList<ForwardingDecision<DataTransferRequest, DataTransferResponse>>();
+            var ocppGateway_DataTransferRequestsSent                 = new ConcurrentList<DataTransferRequest>();
+            var ocppGateway_binaryRequestMessageSent                 = new ConcurrentList<OCPP_JSONRequestMessage>();
+
+            ocppGateway.OCPP.IN.     OnJSONRequestMessageReceived   += (timestamp, sender, requestMessage) => {
+                ocppGateway_binaryRequestMessageReceived.                   TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnDataTransferRequestReceived  += (timestamp, sender, connection, binaryDataTransferRequest) => {
+                ocppGateway_DataTransferRequestsReceived.           TryAdd(binaryDataTransferRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequest, forwardingDecision) => {
+                ocppGateway_DataTransferRequestsForwardingDecisions.TryAdd(forwardingDecision);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnDataTransferRequestSent      += (timestamp, sender, binaryDataTransferRequest, sendMessageResult) => {
+                ocppGateway_DataTransferRequestsSent.               TryAdd(binaryDataTransferRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.OUT.    OnJSONRequestMessageSent       += (timestamp, sender, requestMessage, sendMessageResult) => {
+                ocppGateway_binaryRequestMessageSent.                       TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 4. The CSMS receives the DataTransfer request
+
+            var csms_BinaryRequestMessageReceived        = new ConcurrentList<OCPP_JSONRequestMessage>();
+            var csms_DataTransferRequestsReceived        = new ConcurrentList<DataTransferRequest>();
+
+            csms.OCPP.IN. OnJSONRequestMessageReceived  += (timestamp, sender, requestMessage) => {
+                csms_BinaryRequestMessageReceived.      TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            csms.OCPP.IN. OnDataTransferRequestReceived += (timestamp, sender, connection, request) => {
+                csms_DataTransferRequestsReceived.TryAdd(request);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            // processing...
+
+            #region 5. The CSMS responds the DataTransfer request
+
+            var csms_DataTransferResponsesSent        = new ConcurrentList<DataTransferResponse>();
+            var csms_BinaryResponseMessagesSent       = new ConcurrentList<OCPP_JSONResponseMessage>();
+
+            csms.OCPP.OUT.OnDataTransferResponseSent += (timestamp, sender, connection, request, response, runtime) => {
+                csms_DataTransferResponsesSent.TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            csms.OCPP.OUT.OnJSONResponseMessageSent  += (timestamp, sender, responseMessage, sendMessageResult) => {
+                csms_BinaryResponseMessagesSent.     TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 6. The OCPP Gateway receives and forwards the DataTransfer response
+
+            var ocppGateway_binaryResponseMessagesReceived           = new ConcurrentList<OCPP_JSONResponseMessage>();
+            var ocppGateway_DataTransferResponsesReceived            = new ConcurrentList<DataTransferResponse>();
+            var ocppGateway_DataTransferResponsesSent                = new ConcurrentList<DataTransferResponse>();
+            var ocppGateway_binaryResponseMessagesSent               = new ConcurrentList<OCPP_JSONResponseMessage>();
+
+            ocppGateway.OCPP.IN.     OnJSONResponseMessageReceived  += (timestamp, sender, responseMessage) => {
+                ocppGateway_binaryResponseMessagesReceived.     TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnDataTransferResponseReceived += (timestamp, sender, request, response, runtime) => {
+                ocppGateway_DataTransferResponsesReceived.TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnDataTransferResponseSent     += (timestamp, sender, connection, request, response, runtime) => {
+                ocppGateway_DataTransferResponsesSent.    TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.OUT.    OnJSONResponseMessageSent      += (timestamp, sender, responseMessage, sendMessageResult) => {
+                ocppGateway_binaryResponseMessagesSent.         TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 7. The OCPP Local Controller receives and forwards the DataTransfer response
+
+            var ocppLocalController_BinaryResponseMessagesReceived           = new ConcurrentList<OCPP_JSONResponseMessage>();
+            var ocppLocalController_DataTransferResponsesReceived            = new ConcurrentList<DataTransferResponse>();
+            var ocppLocalController_DataTransferResponsesSent                = new ConcurrentList<DataTransferResponse>();
+            var ocppLocalController_BinaryResponseMessagesSent               = new ConcurrentList<OCPP_JSONResponseMessage>();
+
+            ocppLocalController.OCPP.IN.     OnJSONResponseMessageReceived  += (timestamp, sender, responseMessage) => {
+                ocppLocalController_BinaryResponseMessagesReceived.     TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnDataTransferResponseSent     += (timestamp, sender, connection, request, response, runtime) => {
+                ocppLocalController_DataTransferResponsesReceived.TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnDataTransferResponseReceived += (timestamp, sender, request, response, runtime) => {
+                ocppLocalController_DataTransferResponsesReceived.TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.OUT.    OnJSONResponseMessageSent      += (timestamp, sender, responseMessage, sendMessageResult) => {
+                ocppLocalController_BinaryResponseMessagesSent.         TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 8. The Energy Meter receives the DataTransfer response
+
+            var chargingStation1_BinaryMessageResponseReceived       = new ConcurrentList<OCPP_JSONResponseMessage>();
+            var chargingStation1_DataTransferResponsesReceived       = new ConcurrentList<DataTransferResponse>();
+
+            chargingStation1.OCPP.IN.OnJSONResponseMessageReceived  += (timestamp, sender, responseMessage) => {
+                chargingStation1_BinaryMessageResponseReceived.      TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            chargingStation1.OCPP.IN.OnDataTransferResponseReceived += (timestamp, sender, request, response, runtime) => {
+                chargingStation1_DataTransferResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
@@ -670,7 +1030,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
         #endregion
 
-
         #region SendBinaryDataTransfer1()
 
         /// <summary>
@@ -724,7 +1083,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var chargingStation1_BinaryDataTransferRequestsSent        = new ConcurrentList<BinaryDataTransferRequest>();
             var chargingStation1_BinaryRequestMessageSent              = new ConcurrentList<OCPP_BinaryRequestMessage>();
 
-            chargingStation1.OCPP.OUT.OnBinaryDataTransferRequestSent += (timestamp, sender, dataTransferRequest) => {
+            chargingStation1.OCPP.OUT.OnBinaryDataTransferRequestSent += (timestamp, sender, dataTransferRequest, sendMessageResult) => {
                 chargingStation1_BinaryDataTransferRequestsSent.TryAdd(dataTransferRequest);
                 return Task.CompletedTask;
             };
@@ -749,18 +1108,18 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBinaryDataTransferRequestReceived  += (timestamp, sender, connection, binaryDataTransferRequestBinaryDataTransferRequest) => {
-                ocppLocalController_BinaryDataTransferRequestsReceived.           TryAdd(binaryDataTransferRequestBinaryDataTransferRequest);
+            ocppLocalController.OCPP.FORWARD.OnBinaryDataTransferRequestReceived  += (timestamp, sender, connection, binaryDataTransferRequest) => {
+                ocppLocalController_BinaryDataTransferRequestsReceived.           TryAdd(binaryDataTransferRequest);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBinaryDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequestBinaryDataTransferRequest, forwardingDecision) => {
+            ocppLocalController.OCPP.FORWARD.OnBinaryDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequest, forwardingDecision) => {
                 ocppLocalController_BinaryDataTransferRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBinaryDataTransferRequestSent      += (timestamp, sender, binaryDataTransferRequestBinaryDataTransferRequest) => {
-                ocppLocalController_BinaryDataTransferRequestsSent.               TryAdd(binaryDataTransferRequestBinaryDataTransferRequest);
+            ocppLocalController.OCPP.FORWARD.OnBinaryDataTransferRequestSent      += (timestamp, sender, binaryDataTransferRequest, sendMessageResult) => {
+                ocppLocalController_BinaryDataTransferRequestsSent.               TryAdd(binaryDataTransferRequest);
                 return Task.CompletedTask;
             };
 
@@ -784,18 +1143,18 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBinaryDataTransferRequestReceived  += (timestamp, sender, connection, binaryDataTransferRequestBinaryDataTransferRequest) => {
-                ocppGateway_BinaryDataTransferRequestsReceived.           TryAdd(binaryDataTransferRequestBinaryDataTransferRequest);
+            ocppGateway.OCPP.FORWARD.OnBinaryDataTransferRequestReceived  += (timestamp, sender, connection, binaryDataTransferRequest) => {
+                ocppGateway_BinaryDataTransferRequestsReceived.           TryAdd(binaryDataTransferRequest);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBinaryDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequestBinaryDataTransferRequest, forwardingDecision) => {
+            ocppGateway.OCPP.FORWARD.OnBinaryDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequest, forwardingDecision) => {
                 ocppGateway_BinaryDataTransferRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBinaryDataTransferRequestSent      += (timestamp, sender, binaryDataTransferRequestBinaryDataTransferRequest) => {
-                ocppGateway_BinaryDataTransferRequestsSent.               TryAdd(binaryDataTransferRequestBinaryDataTransferRequest);
+            ocppGateway.OCPP.FORWARD.OnBinaryDataTransferRequestSent      += (timestamp, sender, binaryDataTransferRequest, sendMessageResult) => {
+                ocppGateway_BinaryDataTransferRequestsSent.               TryAdd(binaryDataTransferRequest);
                 return Task.CompletedTask;
             };
 
@@ -842,7 +1201,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #endregion
 
-            #region 6. The OCPP Local Controller receives and forwards the BinaryDataTransfer response
+            #region 6. The OCPP Gateway receives and forwards the BinaryDataTransfer response
 
             var ocppGateway_binaryResponseMessagesReceived                 = new ConcurrentList<OCPP_BinaryResponseMessage>();
             var ocppGateway_BinaryDataTransferResponsesReceived            = new ConcurrentList<BinaryDataTransferResponse>();
@@ -948,6 +1307,341 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
         }
 
         #endregion
+
+
+
+        #region SendAuthorize1()
+
+        /// <summary>
+        /// Send Authorize test.
+        /// </summary>
+        [Test]
+        public async Task SendAuthorize1()
+        {
+
+            #region Initial checks
+
+            if (csms                is null ||
+                ocppGateway         is null ||
+                ocppLocalController is null ||
+                chargingStation1    is null ||
+                chargingStation2    is null ||
+                chargingStation3    is null)
+            {
+
+                Assert.Multiple(() => {
+
+                    if (csms                is null)
+                        Assert.Fail("The csms must not be null!");
+
+                    if (ocppGateway         is null)
+                        Assert.Fail("The gateway must not be null!");
+
+                    if (ocppLocalController is null)
+                        Assert.Fail("The local controller must not be null!");
+
+                    if (chargingStation1    is null)
+                        Assert.Fail("The charging station 1 must not be null!");
+
+                    if (chargingStation2    is null)
+                        Assert.Fail("The charging station 2 must not be null!");
+
+                    if (chargingStation3    is null)
+                        Assert.Fail("The charging station 3 must not be null!");
+
+                });
+
+                return;
+
+            }
+
+            #endregion
+
+
+
+            #region 1. The Authorize request leaves the Charging Station
+
+            var chargingStation1_AuthorizeRequestsSent          = new ConcurrentList<AuthorizeRequest>();
+            var chargingStation1_jsonRequestMessageSent         = new ConcurrentList<OCPP_JSONRequestMessage>();
+
+            chargingStation1.OCPP.OUT.OnAuthorizeRequestSent   += (timestamp, sender, authorizeRequest, sendMessageResult) => {
+                chargingStation1_AuthorizeRequestsSent. TryAdd(authorizeRequest);
+                return Task.CompletedTask;
+            };
+
+            chargingStation1.OCPP.OUT.OnJSONRequestMessageSent += (timestamp, sender, requestMessage, sendMessageResult) => {
+                chargingStation1_jsonRequestMessageSent.TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 2. The OCPP Local Controller receives and forwards the Authorize request
+
+            var ocppLocalController_jsonRequestMessageReceived             = new ConcurrentList<OCPP_JSONRequestMessage>();
+            var ocppLocalController_AuthorizeRequestsReceived              = new ConcurrentList<AuthorizeRequest>();
+            var ocppLocalController_AuthorizeRequestsForwardingDecisions   = new ConcurrentList<ForwardingDecision<AuthorizeRequest, AuthorizeResponse>>();
+            var ocppLocalController_AuthorizeRequestsSent                  = new ConcurrentList<AuthorizeRequest>();
+            var ocppLocalController_jsonRequestMessageSent                 = new ConcurrentList<OCPP_JSONRequestMessage>();
+
+            ocppLocalController.OCPP.IN.     OnJSONRequestMessageReceived += (timestamp, sender, requestMessage) => {
+                ocppLocalController_jsonRequestMessageReceived.          TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnAuthorizeRequestReceived   += (timestamp, sender, connection, authorizeRequest) => {
+                ocppLocalController_AuthorizeRequestsReceived.           TryAdd(authorizeRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnAuthorizeRequestFiltered   += (timestamp, sender, connection, authorizeRequest, forwardingDecision) => {
+                ocppLocalController_AuthorizeRequestsForwardingDecisions.TryAdd(forwardingDecision);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnAuthorizeRequestSent       += (timestamp, sender, authorizeRequest, sendMessageResult) => {
+                ocppLocalController_AuthorizeRequestsSent.               TryAdd(authorizeRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.OUT.    OnJSONRequestMessageSent     += (timestamp, sender, requestMessage, sendMessageResult) => {
+                ocppLocalController_jsonRequestMessageSent.              TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 3. The OCPP Gateway receives and forwards the Authorize request
+
+            var ocppGateway_jsonRequestMessageReceived             = new ConcurrentList<OCPP_JSONRequestMessage>();
+            var ocppGateway_AuthorizeRequestsReceived              = new ConcurrentList<AuthorizeRequest>();
+            var ocppGateway_AuthorizeRequestsForwardingDecisions   = new ConcurrentList<ForwardingDecision<AuthorizeRequest, AuthorizeResponse>>();
+            var ocppGateway_AuthorizeRequestsSent                  = new ConcurrentList<AuthorizeRequest>();
+            var ocppGateway_jsonRequestMessageSent                 = new ConcurrentList<OCPP_JSONRequestMessage>();
+
+            ocppGateway.OCPP.IN.     OnJSONRequestMessageReceived += (timestamp, sender, requestMessage) => {
+                ocppGateway_jsonRequestMessageReceived.          TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnAuthorizeRequestReceived   += (timestamp, sender, connection, authorizeRequest) => {
+                ocppGateway_AuthorizeRequestsReceived.           TryAdd(authorizeRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnAuthorizeRequestFiltered   += (timestamp, sender, connection, authorizeRequest, forwardingDecision) => {
+                ocppGateway_AuthorizeRequestsForwardingDecisions.TryAdd(forwardingDecision);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnAuthorizeRequestSent       += (timestamp, sender, authorizeRequest, sendMessageResult) => {
+                ocppGateway_AuthorizeRequestsSent.               TryAdd(authorizeRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.OUT.    OnJSONRequestMessageSent     += (timestamp, sender, requestMessage, sendMessageResult) => {
+                ocppGateway_jsonRequestMessageSent.              TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 4. The CSMS receives the Authorize request
+
+            var csms_jsonRequestMessageReceived         = new ConcurrentList<OCPP_JSONRequestMessage>();
+            var csms_AuthorizeRequestsReceived          = new ConcurrentList<AuthorizeRequest>();
+
+            csms.OCPP.IN. OnJSONRequestMessageReceived += (timestamp, sender, requestMessage) => {
+                csms_jsonRequestMessageReceived.TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            csms.OCPP.IN. OnAuthorizeRequestReceived   += (timestamp, sender, connection, request) => {
+                csms_AuthorizeRequestsReceived. TryAdd(request);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            // processing...
+
+            #region 5. The CSMS responds the Authorize request
+
+            var csms_AuthorizeResponsesSent          = new ConcurrentList<AuthorizeResponse>();
+            var csms_jsonResponseMessagesSent        = new ConcurrentList<OCPP_JSONResponseMessage>();
+
+            csms.OCPP.OUT.OnAuthorizeResponseSent   += (timestamp, sender, connection, request, response, runtime) => {
+                csms_AuthorizeResponsesSent.  TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            csms.OCPP.OUT.OnJSONResponseMessageSent += (timestamp, sender, responseMessage, sendMessageResult) => {
+                csms_jsonResponseMessagesSent.TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 6. The OCPP Gateway receives and forwards the Authorize response
+
+            var ocppGateway_jsonResponseMessagesReceived            = new ConcurrentList<OCPP_JSONResponseMessage>();
+            var ocppGateway_AuthorizeResponsesReceived              = new ConcurrentList<AuthorizeResponse>();
+            var ocppGateway_AuthorizeResponsesSent                  = new ConcurrentList<AuthorizeResponse>();
+            var ocppGateway_jsonResponseMessagesSent                = new ConcurrentList<OCPP_JSONResponseMessage>();
+
+            ocppGateway.OCPP.IN.     OnJSONResponseMessageReceived += (timestamp, sender, responseMessage) => {
+                ocppGateway_jsonResponseMessagesReceived.TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnAuthorizeResponseReceived   += (timestamp, sender, request, response, runtime) => {
+                ocppGateway_AuthorizeResponsesReceived.  TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnAuthorizeResponseSent       += (timestamp, sender, connection, request, response, runtime) => {
+                ocppGateway_AuthorizeResponsesSent.      TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.OUT.    OnJSONResponseMessageSent     += (timestamp, sender, responseMessage, sendMessageResult) => {
+                ocppGateway_jsonResponseMessagesSent.    TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 7. The OCPP Local Controller receives and forwards the Authorize response
+
+            var ocppLocalController_jsonResponseMessagesReceived            = new ConcurrentList<OCPP_JSONResponseMessage>();
+            var ocppLocalController_AuthorizeResponsesReceived              = new ConcurrentList<AuthorizeResponse>();
+            var ocppLocalController_AuthorizeResponsesSent                  = new ConcurrentList<AuthorizeResponse>();
+            var ocppLocalController_jsonResponseMessagesSent                = new ConcurrentList<OCPP_JSONResponseMessage>();
+
+            ocppLocalController.OCPP.IN.     OnJSONResponseMessageReceived += (timestamp, sender, responseMessage) => {
+                ocppLocalController_jsonResponseMessagesReceived.TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnAuthorizeResponseSent       += (timestamp, sender, connection, request, response, runtime) => {
+                ocppLocalController_AuthorizeResponsesReceived.  TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnAuthorizeResponseReceived   += (timestamp, sender, request, response, runtime) => {
+                ocppLocalController_AuthorizeResponsesReceived.  TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.OUT.    OnJSONResponseMessageSent     += (timestamp, sender, responseMessage, sendMessageResult) => {
+                ocppLocalController_jsonResponseMessagesSent.    TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 8. The Charging Station receives the Authorize response
+
+            var chargingStation1_jsonMessageResponseReceived        = new ConcurrentList<OCPP_JSONResponseMessage>();
+            var chargingStation1_AuthorizeResponsesReceived         = new ConcurrentList<AuthorizeResponse>();
+
+            chargingStation1.OCPP.IN.OnJSONResponseMessageReceived += (timestamp, sender, responseMessage) => {
+                chargingStation1_jsonMessageResponseReceived.TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            chargingStation1.OCPP.IN.OnAuthorizeResponseReceived   += (timestamp, sender, request, response, runtime) => {
+                chargingStation1_AuthorizeResponsesReceived. TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+
+            var authorizeResponse = await chargingStation1.Authorize(
+
+                                              IdToken:                       IdToken.TryParseRFID("1234567890")!,
+                                              Certificate:                   null,
+                                              ISO15118CertificateHashData:   null,
+                                              CustomData:                    null,
+
+                                              SignKeys:                      null,
+                                              SignInfos:                     null,
+                                              Signatures:                    null,
+
+                                              RequestId:                     null,
+                                              RequestTimestamp:              null,
+                                              RequestTimeout:                null,
+                                              EventTrackingId:               null
+
+                                          );
+
+            Assert.Multiple(() => {
+
+                Assert.That(authorizeResponse.IdTokenInfo.Status,                                           Is.EqualTo(AuthorizationStatus.Accepted));
+
+
+                // -<request>--------------------------------------------------------------------------------------------------
+                Assert.That(chargingStation1_AuthorizeRequestsSent.                                Count,   Is.EqualTo(1));
+                Assert.That(chargingStation1_AuthorizeRequestsSent.First().Signatures.             Count,   Is.EqualTo(1));
+                Assert.That(chargingStation1_jsonRequestMessageSent.                                      Count,   Is.EqualTo(1));
+                //Assert.That(chargingStation1_jsonRequestMessageSent.           First().NetworkPath.ToString(),   Is.EqualTo(new NetworkPath([ chargingStation1.Id ]).ToString()));
+                Assert.That(chargingStation1_jsonRequestMessageSent.First().Payload["signatures"]?.       Count(), Is.EqualTo(1));
+
+                Assert.That(ocppLocalController_jsonRequestMessageReceived.                               Count,   Is.EqualTo(1));
+                Assert.That(ocppLocalController_AuthorizeRequestsReceived.                         Count,   Is.EqualTo(1));
+                Assert.That(ocppLocalController_AuthorizeRequestsForwardingDecisions.              Count,   Is.EqualTo(1));
+                Assert.That(ocppLocalController_AuthorizeRequestsSent.                             Count,   Is.EqualTo(1));
+                Assert.That(ocppLocalController_jsonRequestMessageSent.                                   Count,   Is.EqualTo(1));
+                Assert.That(ocppLocalController_jsonRequestMessageSent.        First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id ]).ToString()));
+
+                Assert.That(ocppGateway_jsonRequestMessageReceived.                                       Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_AuthorizeRequestsReceived.                                 Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_AuthorizeRequestsForwardingDecisions.                      Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_AuthorizeRequestsSent.                                     Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_jsonRequestMessageSent.                                           Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_jsonRequestMessageSent.                First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id, ocppGateway.Id]).ToString()));
+
+                Assert.That(csms_jsonRequestMessageReceived.                                              Count,   Is.EqualTo(1));
+                Assert.That(csms_jsonRequestMessageReceived.                   First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id, ocppGateway.Id]).ToString()));
+                Assert.That(csms_AuthorizeRequestsReceived.                                        Count,   Is.EqualTo(1));
+
+                // -<response>-------------------------------------------------------------------------------------------------
+                Assert.That(csms_AuthorizeResponsesSent.                                           Count,   Is.EqualTo(1));
+                Assert.That(csms_jsonResponseMessagesSent.                                                Count,   Is.EqualTo(1));
+                Assert.That(csms_jsonResponseMessagesSent.                     First().DestinationId,              Is.EqualTo(chargingStation1.Id));
+                Assert.That(csms_jsonResponseMessagesSent.                     First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms.Id ]).ToString()));
+
+                Assert.That(ocppGateway_jsonResponseMessagesReceived.                                     Count,   Is.EqualTo(1));
+                //Assert.That(ocppGateway_AuthorizeResponsesReceived.                                Count,   Is.EqualTo(1));
+                //Assert.That(ocppGateway_AuthorizeResponsesSent.                                    Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_jsonResponseMessagesSent.                                         Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_jsonResponseMessagesSent.              First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms.Id, ocppGateway.Id ]).ToString()));
+
+                Assert.That(ocppLocalController_jsonResponseMessagesReceived.                             Count,   Is.EqualTo(1));
+                //Assert.That(ocppLocalController_AuthorizeResponsesReceived.                        Count,   Is.EqualTo(1));
+                //Assert.That(ocppLocalController_AuthorizeResponsesSent.                            Count,   Is.EqualTo(1));
+                Assert.That(ocppLocalController_jsonResponseMessagesSent.                                 Count,   Is.EqualTo(1));
+                //Assert.That(ocppLocalController_jsonResponseMessagesSent.      First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms.Id, ocppGateway.Id, ocppLocalController.Id ]).ToString()));
+
+                Assert.That(chargingStation1_jsonMessageResponseReceived.                                 Count,   Is.EqualTo(1));
+                Assert.That(chargingStation1_AuthorizeResponsesReceived.                           Count,   Is.EqualTo(1));
+                Assert.That(chargingStation1_AuthorizeResponsesReceived.First().Signatures.        Count,   Is.EqualTo(1));
+                // Note: The charging stations use "normal" networking and thus have no valid networking information!
+                Assert.That(chargingStation1_jsonMessageResponseReceived.      First().DestinationId,              Is.EqualTo(chargingStation1.Id));
+                //Assert.That(chargingStation1_AuthorizeResponsesReceived.First().DestinationId,              Is.EqualTo(chargingStation1.Id));
+                Assert.That(chargingStation1_jsonMessageResponseReceived.      First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
+                //Assert.That(chargingStation1_AuthorizeResponsesReceived.First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
+
+            });
+
+        }
+
+        #endregion
+
+
+
+
 
 
     }

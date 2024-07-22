@@ -70,7 +70,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
             var chargingStation1_BootNotificationRequestsSent  = new ConcurrentList<BootNotificationRequest>();
             var chargingStation1_jsonRequestMessageSent        = new ConcurrentList<SendMessageResult>();
 
-            chargingStation1.OCPP.OUT.OnBootNotificationRequestSent += (timestamp, sender, bootNotificationRequest) => {
+            chargingStation1.OCPP.OUT.OnBootNotificationRequestSent += (timestamp, sender, bootNotificationRequest, sendMessageResult) => {
                 chargingStation1_BootNotificationRequestsSent.TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
@@ -105,7 +105,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, bootNotificationRequest) => {
+            ocppLocalController.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, bootNotificationRequest, sendMessageResult) => {
                 ocppLocalController_BootNotificationRequestsSent.               TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
@@ -140,7 +140,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, bootNotificationRequest) => {
+            ocppGateway.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, bootNotificationRequest, sendMessageResult) => {
                 ocppGateway_BootNotificationRequestsSent.               TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
@@ -199,7 +199,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
 
             #endregion
 
-            #region 6. The OCPP Local Controller receives and forwards the BootNotification response
+            #region 6. The OCPP Gateway receives and forwards the BootNotification response
 
             var ocppGateway_OnJSONMessageResponseReceived                = new ConcurrentList<OCPP_JSONResponseMessage>();
             var ocppGateway_BootNotificationResponsesReceived            = new ConcurrentList<BootNotificationResponse>();
