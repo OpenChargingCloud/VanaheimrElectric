@@ -1310,13 +1310,13 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
 
 
-        #region SendAuthorize1()
+        #region Authorize1()
 
         /// <summary>
-        /// Send Authorize test.
+        /// Authorize test.
         /// </summary>
         [Test]
-        public async Task SendAuthorize1()
+        public async Task Authorize1()
         {
 
             #region Initial checks
@@ -1639,6 +1639,350 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
         #endregion
 
+        #region SendMeterValues1()
+
+        /// <summary>
+        /// Send MeterValues test.
+        /// </summary>
+        [Test]
+        public async Task SendMeterValues1()
+        {
+
+            #region Initial checks
+
+            if (csms                is null ||
+                ocppGateway         is null ||
+                ocppLocalController is null ||
+                chargingStation1    is null ||
+                chargingStation2    is null ||
+                chargingStation3    is null)
+            {
+
+                Assert.Multiple(() => {
+
+                    if (csms                is null)
+                        Assert.Fail("The csms must not be null!");
+
+                    if (ocppGateway         is null)
+                        Assert.Fail("The gateway must not be null!");
+
+                    if (ocppLocalController is null)
+                        Assert.Fail("The local controller must not be null!");
+
+                    if (chargingStation1    is null)
+                        Assert.Fail("The charging station 1 must not be null!");
+
+                    if (chargingStation2    is null)
+                        Assert.Fail("The charging station 2 must not be null!");
+
+                    if (chargingStation3    is null)
+                        Assert.Fail("The charging station 3 must not be null!");
+
+                });
+
+                return;
+
+            }
+
+            #endregion
+
+
+
+            #region 1. The MeterValues request leaves the Charging Station
+
+            var chargingStation1_MeterValuesRequestsSent        = new ConcurrentList<MeterValuesRequest>();
+            var chargingStation1_jsonRequestMessageSent         = new ConcurrentList<OCPP_JSONRequestMessage>();
+
+            chargingStation1.OCPP.OUT.OnMeterValuesRequestSent += (timestamp, sender, meterValuesRequest, sendMessageResult) => {
+                chargingStation1_MeterValuesRequestsSent.TryAdd(meterValuesRequest);
+                return Task.CompletedTask;
+            };
+
+            chargingStation1.OCPP.OUT.OnJSONRequestMessageSent += (timestamp, sender, requestMessage, sendMessageResult) => {
+                chargingStation1_jsonRequestMessageSent. TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 2. The OCPP Local Controller receives and forwards the MeterValues request
+
+            var ocppLocalController_jsonRequestMessageReceived             = new ConcurrentList<OCPP_JSONRequestMessage>();
+            var ocppLocalController_MeterValuesRequestsReceived            = new ConcurrentList<MeterValuesRequest>();
+            var ocppLocalController_MeterValuesRequestsForwardingDecisions = new ConcurrentList<ForwardingDecision<MeterValuesRequest, MeterValuesResponse>>();
+            var ocppLocalController_MeterValuesRequestsSent                = new ConcurrentList<MeterValuesRequest>();
+            var ocppLocalController_jsonRequestMessageSent                 = new ConcurrentList<OCPP_JSONRequestMessage>();
+
+            ocppLocalController.OCPP.IN.     OnJSONRequestMessageReceived += (timestamp, sender, requestMessage) => {
+                ocppLocalController_jsonRequestMessageReceived.            TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnMeterValuesRequestReceived += (timestamp, sender, connection, meterValuesRequest) => {
+                ocppLocalController_MeterValuesRequestsReceived.           TryAdd(meterValuesRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnMeterValuesRequestFiltered += (timestamp, sender, connection, meterValuesRequest, forwardingDecision) => {
+                ocppLocalController_MeterValuesRequestsForwardingDecisions.TryAdd(forwardingDecision);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnMeterValuesRequestSent     += (timestamp, sender, meterValuesRequest, sendMessageResult) => {
+                ocppLocalController_MeterValuesRequestsSent.               TryAdd(meterValuesRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.OUT.    OnJSONRequestMessageSent     += (timestamp, sender, requestMessage, sendMessageResult) => {
+                ocppLocalController_jsonRequestMessageSent.                TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 3. The OCPP Gateway receives and forwards the MeterValues request
+
+            var ocppGateway_jsonRequestMessageReceived             = new ConcurrentList<OCPP_JSONRequestMessage>();
+            var ocppGateway_MeterValuesRequestsReceived            = new ConcurrentList<MeterValuesRequest>();
+            var ocppGateway_MeterValuesRequestsForwardingDecisions = new ConcurrentList<ForwardingDecision<MeterValuesRequest, MeterValuesResponse>>();
+            var ocppGateway_MeterValuesRequestsSent                = new ConcurrentList<MeterValuesRequest>();
+            var ocppGateway_jsonRequestMessageSent                 = new ConcurrentList<OCPP_JSONRequestMessage>();
+
+            ocppGateway.OCPP.IN.     OnJSONRequestMessageReceived += (timestamp, sender, requestMessage) => {
+                ocppGateway_jsonRequestMessageReceived.            TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnMeterValuesRequestReceived   += (timestamp, sender, connection, meterValuesRequest) => {
+                ocppGateway_MeterValuesRequestsReceived.           TryAdd(meterValuesRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnMeterValuesRequestFiltered   += (timestamp, sender, connection, meterValuesRequest, forwardingDecision) => {
+                ocppGateway_MeterValuesRequestsForwardingDecisions.TryAdd(forwardingDecision);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnMeterValuesRequestSent       += (timestamp, sender, meterValuesRequest, sendMessageResult) => {
+                ocppGateway_MeterValuesRequestsSent.               TryAdd(meterValuesRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.OUT.    OnJSONRequestMessageSent     += (timestamp, sender, requestMessage, sendMessageResult) => {
+                ocppGateway_jsonRequestMessageSent.                TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 4. The CSMS receives the MeterValues request
+
+            var csms_jsonRequestMessageReceived         = new ConcurrentList<OCPP_JSONRequestMessage>();
+            var csms_MeterValuesRequestsReceived        = new ConcurrentList<MeterValuesRequest>();
+
+            csms.OCPP.IN. OnJSONRequestMessageReceived += (timestamp, sender, requestMessage) => {
+                csms_jsonRequestMessageReceived.TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            csms.OCPP.IN. OnMeterValuesRequestReceived += (timestamp, sender, connection, request) => {
+                csms_MeterValuesRequestsReceived. TryAdd(request);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            // processing...
+
+            #region 5. The CSMS responds the MeterValues request
+
+            var csms_MeterValuesResponsesSent        = new ConcurrentList<MeterValuesResponse>();
+            var csms_jsonResponseMessagesSent        = new ConcurrentList<OCPP_JSONResponseMessage>();
+
+            csms.OCPP.OUT.OnMeterValuesResponseSent += (timestamp, sender, connection, request, response, runtime) => {
+                csms_MeterValuesResponsesSent.  TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            csms.OCPP.OUT.OnJSONResponseMessageSent += (timestamp, sender, responseMessage, sendMessageResult) => {
+                csms_jsonResponseMessagesSent.TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 6. The OCPP Gateway receives and forwards the MeterValues response
+
+            var ocppGateway_jsonResponseMessagesReceived            = new ConcurrentList<OCPP_JSONResponseMessage>();
+            var ocppGateway_MeterValuesResponsesReceived            = new ConcurrentList<MeterValuesResponse>();
+            var ocppGateway_MeterValuesResponsesSent                = new ConcurrentList<MeterValuesResponse>();
+            var ocppGateway_jsonResponseMessagesSent                = new ConcurrentList<OCPP_JSONResponseMessage>();
+
+            ocppGateway.OCPP.IN.     OnJSONResponseMessageReceived += (timestamp, sender, responseMessage) => {
+                ocppGateway_jsonResponseMessagesReceived.TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnMeterValuesResponseReceived += (timestamp, sender, request, response, runtime) => {
+                ocppGateway_MeterValuesResponsesReceived.  TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnMeterValuesResponseSent     += (timestamp, sender, connection, request, response, runtime) => {
+                ocppGateway_MeterValuesResponsesSent.      TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.OUT.    OnJSONResponseMessageSent     += (timestamp, sender, responseMessage, sendMessageResult) => {
+                ocppGateway_jsonResponseMessagesSent.    TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 7. The OCPP Local Controller receives and forwards the MeterValues response
+
+            var ocppLocalController_jsonResponseMessagesReceived            = new ConcurrentList<OCPP_JSONResponseMessage>();
+            var ocppLocalController_MeterValuesResponsesReceived            = new ConcurrentList<MeterValuesResponse>();
+            var ocppLocalController_MeterValuesResponsesSent                = new ConcurrentList<MeterValuesResponse>();
+            var ocppLocalController_jsonResponseMessagesSent                = new ConcurrentList<OCPP_JSONResponseMessage>();
+
+            ocppLocalController.OCPP.IN.     OnJSONResponseMessageReceived += (timestamp, sender, responseMessage) => {
+                ocppLocalController_jsonResponseMessagesReceived.TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnMeterValuesResponseSent     += (timestamp, sender, connection, request, response, runtime) => {
+                ocppLocalController_MeterValuesResponsesReceived.  TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnMeterValuesResponseReceived += (timestamp, sender, request, response, runtime) => {
+                ocppLocalController_MeterValuesResponsesReceived.  TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.OUT.    OnJSONResponseMessageSent     += (timestamp, sender, responseMessage, sendMessageResult) => {
+                ocppLocalController_jsonResponseMessagesSent.    TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 8. The Charging Station receives the MeterValues response
+
+            var chargingStation1_jsonMessageResponseReceived        = new ConcurrentList<OCPP_JSONResponseMessage>();
+            var chargingStation1_MeterValuesResponsesReceived       = new ConcurrentList<MeterValuesResponse>();
+
+            chargingStation1.OCPP.IN.OnJSONResponseMessageReceived += (timestamp, sender, responseMessage) => {
+                chargingStation1_jsonMessageResponseReceived. TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            chargingStation1.OCPP.IN.OnMeterValuesResponseReceived += (timestamp, sender, request, response, runtime) => {
+                chargingStation1_MeterValuesResponsesReceived.TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+
+            var meterValuesResponse = await chargingStation1.SendMeterValues(
+
+                                              EVSEId:             EVSE_Id.Parse(0),
+                                              MeterValues:        [
+                                                                      new MeterValue(
+                                                                          Timestamp:       Timestamp.Now,
+                                                                          SampledValues:   [
+                                                                                               new SampledValue(
+                                                                                                   Value:                 13.3M,
+                                                                                                   Context:               ReadingContext.TransactionBegin,
+                                                                                                   Measurand:             Measurand.Energy_Active_Export_Register,
+                                                                                                   //Phase:                 3,
+                                                                                                   MeasurementLocation:   MeasurementLocation.Outlet,
+                                                                                                   SignedMeterValue:      null,
+                                                                                                   UnitOfMeasure:         UnitsOfMeasure.kWh(),
+                                                                                                   CustomData:            null
+                                                                                               )
+                                                                                           ],
+                                                                          CustomData:      null
+                                                                      )
+                                                                  ],
+                                              CustomData:         null,
+
+                                              SignKeys:           null,
+                                              SignInfos:          null,
+                                              Signatures:         null,
+
+                                              RequestId:          null,
+                                              RequestTimestamp:   null,
+                                              RequestTimeout:     null,
+                                              EventTrackingId:    null
+
+                                          );
+
+            Assert.Multiple(() => {
+
+                Assert.That(meterValuesResponse.Result.ResultCode,                                            Is.EqualTo(ResultCode.OK));
+
+
+                // -<request>--------------------------------------------------------------------------------------------------
+                Assert.That(chargingStation1_MeterValuesRequestsSent.                                Count,   Is.EqualTo(1));
+                Assert.That(chargingStation1_MeterValuesRequestsSent.First().Signatures.             Count,   Is.EqualTo(1));
+                Assert.That(chargingStation1_jsonRequestMessageSent.                                      Count,   Is.EqualTo(1));
+                //Assert.That(chargingStation1_jsonRequestMessageSent.           First().NetworkPath.ToString(),   Is.EqualTo(new NetworkPath([ chargingStation1.Id ]).ToString()));
+                Assert.That(chargingStation1_jsonRequestMessageSent.First().Payload["signatures"]?.       Count(), Is.EqualTo(1));
+
+                Assert.That(ocppLocalController_jsonRequestMessageReceived.                               Count,   Is.EqualTo(1));
+                Assert.That(ocppLocalController_MeterValuesRequestsReceived.                         Count,   Is.EqualTo(1));
+                Assert.That(ocppLocalController_MeterValuesRequestsForwardingDecisions.              Count,   Is.EqualTo(1));
+                Assert.That(ocppLocalController_MeterValuesRequestsSent.                             Count,   Is.EqualTo(1));
+                Assert.That(ocppLocalController_jsonRequestMessageSent.                                   Count,   Is.EqualTo(1));
+                Assert.That(ocppLocalController_jsonRequestMessageSent.        First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id ]).ToString()));
+
+                Assert.That(ocppGateway_jsonRequestMessageReceived.                                       Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_MeterValuesRequestsReceived.                                 Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_MeterValuesRequestsForwardingDecisions.                      Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_MeterValuesRequestsSent.                                     Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_jsonRequestMessageSent.                                           Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_jsonRequestMessageSent.                First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id, ocppGateway.Id]).ToString()));
+
+                Assert.That(csms_jsonRequestMessageReceived.                                              Count,   Is.EqualTo(1));
+                Assert.That(csms_jsonRequestMessageReceived.                   First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id, ocppGateway.Id]).ToString()));
+                Assert.That(csms_MeterValuesRequestsReceived.                                        Count,   Is.EqualTo(1));
+
+                // -<response>-------------------------------------------------------------------------------------------------
+                Assert.That(csms_MeterValuesResponsesSent.                                           Count,   Is.EqualTo(1));
+                Assert.That(csms_jsonResponseMessagesSent.                                                Count,   Is.EqualTo(1));
+                Assert.That(csms_jsonResponseMessagesSent.                     First().DestinationId,              Is.EqualTo(chargingStation1.Id));
+                Assert.That(csms_jsonResponseMessagesSent.                     First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms.Id ]).ToString()));
+
+                Assert.That(ocppGateway_jsonResponseMessagesReceived.                                     Count,   Is.EqualTo(1));
+                //Assert.That(ocppGateway_MeterValuesResponsesReceived.                                Count,   Is.EqualTo(1));
+                //Assert.That(ocppGateway_MeterValuesResponsesSent.                                    Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_jsonResponseMessagesSent.                                         Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_jsonResponseMessagesSent.              First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms.Id, ocppGateway.Id ]).ToString()));
+
+                Assert.That(ocppLocalController_jsonResponseMessagesReceived.                             Count,   Is.EqualTo(1));
+                //Assert.That(ocppLocalController_MeterValuesResponsesReceived.                        Count,   Is.EqualTo(1));
+                //Assert.That(ocppLocalController_MeterValuesResponsesSent.                            Count,   Is.EqualTo(1));
+                Assert.That(ocppLocalController_jsonResponseMessagesSent.                                 Count,   Is.EqualTo(1));
+                //Assert.That(ocppLocalController_jsonResponseMessagesSent.      First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms.Id, ocppGateway.Id, ocppLocalController.Id ]).ToString()));
+
+                Assert.That(chargingStation1_jsonMessageResponseReceived.                                 Count,   Is.EqualTo(1));
+                Assert.That(chargingStation1_MeterValuesResponsesReceived.                           Count,   Is.EqualTo(1));
+                Assert.That(chargingStation1_MeterValuesResponsesReceived.First().Signatures.        Count,   Is.EqualTo(1));
+                // Note: The charging stations use "normal" networking and thus have no valid networking information!
+                Assert.That(chargingStation1_jsonMessageResponseReceived.      First().DestinationId,              Is.EqualTo(chargingStation1.Id));
+                //Assert.That(chargingStation1_MeterValuesResponsesReceived.First().DestinationId,              Is.EqualTo(chargingStation1.Id));
+                Assert.That(chargingStation1_jsonMessageResponseReceived.      First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
+                //Assert.That(chargingStation1_MeterValuesResponsesReceived.First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
+
+            });
+
+        }
+
+        #endregion
 
 
 

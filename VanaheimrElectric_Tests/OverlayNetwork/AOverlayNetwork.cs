@@ -572,6 +572,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                                     );
 
+            ocppLocalController.AllowedChargingStations.Add(chargingStation1.Id);
+
             var cs1Auth           = ocppLocalController_OCPPWebSocketServer.AddOrUpdateHTTPBasicAuth(
                                                                                 chargingStation1.Id,
                                                                                 "cs1_12345678"
@@ -664,6 +666,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                                         );
 
+            ocppLocalController.AllowedChargingStations.Add(chargingStation2.Id);
+
             var cs2Auth           = ocppLocalController_OCPPWebSocketServer.AddOrUpdateHTTPBasicAuth(
                                                                                 chargingStation2.Id,
                                                                                 "cs2_12345678"
@@ -755,6 +759,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                             DNSClient:                   DNSClient
 
                                         );
+
+            ocppLocalController.AllowedChargingStations.Add(chargingStation3.Id);
 
             var cs3Auth           = ocppLocalController_OCPPWebSocketServer.AddOrUpdateHTTPBasicAuth(
                                                                                 chargingStation3.Id,

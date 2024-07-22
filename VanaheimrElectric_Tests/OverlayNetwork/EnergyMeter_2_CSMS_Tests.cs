@@ -296,8 +296,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 //Assert.That(ocppEnergyMeter_jsonRequestMessageSent.           First().NetworkPath.ToString(),   Is.EqualTo(new NetworkPath([ ocppEnergyMeter.Id ]).ToString()));
                 Assert.That(ocppEnergyMeter_jsonRequestMessageSent.First().Payload["signatures"]?.       Count(), Is.EqualTo(1));
 
-                Assert.That(ocppLocalController_jsonRequestMessageReceived.                               Count,   Is.EqualTo(1));
-                Assert.That(ocppLocalController_BootNotificationRequestsReceived.                         Count,   Is.EqualTo(1));
+                Assert.That(ocppLocalController_jsonRequestMessageReceived.Count,                                          Is.EqualTo(1));
+                Assert.That(ocppLocalController_BootNotificationRequestsReceived.Count,                                    Is.EqualTo(1));
+
                 Assert.That(ocppLocalController_BootNotificationRequestsForwardingDecisions.              Count,   Is.EqualTo(1));
                 Assert.That(ocppLocalController_BootNotificationRequestsSent.                             Count,   Is.EqualTo(1));
                 Assert.That(ocppLocalController_jsonRequestMessageSent.                                   Count,   Is.EqualTo(1));
@@ -330,16 +331,17 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 //Assert.That(ocppLocalController_BootNotificationResponsesReceived.                        Count,   Is.EqualTo(1));
                 //Assert.That(ocppLocalController_BootNotificationResponsesSent.                            Count,   Is.EqualTo(1));
                 Assert.That(ocppLocalController_jsonResponseMessagesSent.                                 Count,   Is.EqualTo(1));
-                //Assert.That(ocppLocalController_jsonResponseMessagesSent.      First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms.Id, ocppGateway.Id, ocppLocalController.Id ]).ToString()));
+                Assert.That(ocppLocalController_jsonResponseMessagesSent.      First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms.Id, ocppGateway.Id, ocppLocalController.Id ]).ToString()));
 
-                Assert.That(ocppEnergyMeter_jsonMessageResponseReceived.                                 Count,   Is.EqualTo(1));
-                Assert.That(ocppEnergyMeter_BootNotificationResponsesReceived.                           Count,   Is.EqualTo(1));
-                Assert.That(ocppEnergyMeter_BootNotificationResponsesReceived.First().Signatures.        Count,   Is.EqualTo(1));
-                // Note: The charging stations use "normal" networking and thus have no valid networking information!
-                Assert.That(ocppEnergyMeter_jsonMessageResponseReceived.      First().DestinationId,              Is.EqualTo(ocppEnergyMeter.Id));
-                //Assert.That(ocppEnergyMeter_BootNotificationResponsesReceived.First().DestinationId,              Is.EqualTo(ocppEnergyMeter.Id));
-                Assert.That(ocppEnergyMeter_jsonMessageResponseReceived.      First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
-                //Assert.That(ocppEnergyMeter_BootNotificationResponsesReceived.First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
+                Assert.That(ocppEnergyMeter_jsonMessageResponseReceived.Count,                                          Is.EqualTo(1));
+                Assert.That(ocppEnergyMeter_jsonMessageResponseReceived.First().NetworkingMode,                         Is.EqualTo(NetworkingMode.OverlayNetwork));
+                Assert.That(ocppEnergyMeter_jsonMessageResponseReceived.First().DestinationId,                          Is.EqualTo(ocppEnergyMeter.Id));
+                Assert.That(ocppEnergyMeter_jsonMessageResponseReceived.First().NetworkPath.ToString(),                 Is.EqualTo(new NetworkPath([ csms.Id, ocppGateway.Id, ocppLocalController.Id ]).ToString()));
+                Assert.That(ocppEnergyMeter_BootNotificationResponsesReceived.Count,                                    Is.EqualTo(1));
+                Assert.That(ocppEnergyMeter_BootNotificationResponsesReceived.First().DestinationId,                    Is.EqualTo(ocppEnergyMeter.Id));
+                Assert.That(ocppEnergyMeter_BootNotificationResponsesReceived.First().NetworkPath.ToString(),           Is.EqualTo(new NetworkPath([ csms.Id, ocppGateway.Id, ocppLocalController.Id ]).ToString()));
+                Assert.That(ocppEnergyMeter_BootNotificationResponsesReceived.First().Signatures.Count,                 Is.EqualTo(1));
+                Assert.That(ocppEnergyMeter_BootNotificationResponsesReceived.ElementAt(0).Signatures.First().Status,   Is.EqualTo(VerificationStatus.ValidSignature));
 
             });
 
@@ -643,23 +645,23 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             Assert.Multiple(() => {
 
-                Assert.That(dataTransferResponse1.Status,                                              Is.EqualTo(DataTransferStatus.Accepted));
-                Assert.That(dataTransferResponse1.Data?.Type,                                          Is.EqualTo(JTokenType.String));
-                Assert.That(dataTransferResponse1.Data?.ToString(),                                    Is.EqualTo("ataDtseT"));
+                Assert.That(dataTransferResponse1.Status,                                                      Is.EqualTo(DataTransferStatus.Accepted));
+                Assert.That(dataTransferResponse1.Data?.Type,                                                  Is.EqualTo(JTokenType.String));
+                Assert.That(dataTransferResponse1.Data?.ToString(),                                            Is.EqualTo("ataDtseT"));
                 //StatusInfo
-                Assert.That(ocppEnergyMeter_DataTransferRequestsSent.ElementAt(0).Signatures.Count,   Is.EqualTo(1));
+                Assert.That(ocppEnergyMeter_DataTransferRequestsSent.ElementAt(0).Signatures.Count,            Is.EqualTo(1));
 
-                Assert.That(dataTransferResponse2.Status,                                              Is.EqualTo(DataTransferStatus.Accepted));
-                Assert.That(dataTransferResponse2.Data?.Type,                                          Is.EqualTo(JTokenType.Object));
-                Assert.That(dataTransferResponse2.Data?.ToString(Newtonsoft.Json.Formatting.None),     Is.EqualTo("{\"test\":\"atad\"}"));
+                Assert.That(dataTransferResponse2.Status,                                                      Is.EqualTo(DataTransferStatus.Accepted));
+                Assert.That(dataTransferResponse2.Data?.Type,                                                  Is.EqualTo(JTokenType.Object));
+                Assert.That(dataTransferResponse2.Data?.ToString(Newtonsoft.Json.Formatting.None),             Is.EqualTo("{\"test\":\"atad\"}"));
                 //StatusInfo
-                Assert.That(ocppEnergyMeter_DataTransferRequestsSent.ElementAt(1).Signatures.Count,   Is.EqualTo(1));
+                Assert.That(ocppEnergyMeter_DataTransferRequestsSent.ElementAt(1).Signatures.Count,            Is.EqualTo(1));
 
-                Assert.That(dataTransferResponse3.Status,                                              Is.EqualTo(DataTransferStatus.Accepted));
-                Assert.That(dataTransferResponse3.Data?.Type,                                          Is.EqualTo(JTokenType.Array));
-                Assert.That(dataTransferResponse3.Data?.ToString(Newtonsoft.Json.Formatting.None),     Is.EqualTo("[\"tset\",\"atad\"]"));
+                Assert.That(dataTransferResponse3.Status,                                                      Is.EqualTo(DataTransferStatus.Accepted));
+                Assert.That(dataTransferResponse3.Data?.Type,                                                  Is.EqualTo(JTokenType.Array));
+                Assert.That(dataTransferResponse3.Data?.ToString(Newtonsoft.Json.Formatting.None),             Is.EqualTo("[\"tset\",\"atad\"]"));
                 //StatusInfo
-                Assert.That(ocppEnergyMeter_DataTransferRequestsSent.ElementAt(2).Signatures.Count,   Is.EqualTo(1));
+                Assert.That(ocppEnergyMeter_DataTransferRequestsSent.ElementAt(2).Signatures.Count,            Is.EqualTo(1));
 
             });
 
@@ -1254,6 +1256,184 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 Assert.That(binaryDataTransferResponse.Data?.ToUTF8String(),                               Is.EqualTo("ataDtseT"));
                 //StatusInfo
                 //Assert.That(ocppEnergyMeter_BinaryDataTransferRequestsSent.ElementAt(0).Signatures.Count,   Is.EqualTo(1));
+
+            });
+
+        }
+
+        #endregion
+
+
+        #region Authorize_RejectedByLC_1()
+
+        /// <summary>
+        /// An Authorize test, that should fail, as the Energy Meter is not allowed to send any Authorize requests!
+        /// Thus this request will be rejected by the OCPP Local Controller and a RequestErrorMessage
+        /// will be sent back to the Energy Meter.
+        /// </summary>
+        [Test]
+        public async Task Authorize_RejectedByLC_1()
+        {
+
+            #region Initial checks
+
+            if (csms                is null ||
+                ocppGateway         is null ||
+                ocppLocalController is null ||
+                ocppEnergyMeter     is null)
+            {
+
+                Assert.Multiple(() => {
+
+                    if (csms                is null)
+                        Assert.Fail("The csms must not be null!");
+
+                    if (ocppGateway         is null)
+                        Assert.Fail("The gateway must not be null!");
+
+                    if (ocppLocalController is null)
+                        Assert.Fail("The local controller must not be null!");
+
+                    if (ocppEnergyMeter     is null)
+                        Assert.Fail("The energy meter must not be null!");
+
+                });
+
+                return;
+
+            }
+
+            #endregion
+
+
+            #region 1. The Authorize request leaves the Energy Meter
+
+            var ocppEnergyMeter_AuthorizeRequestsSent          = new ConcurrentList<AuthorizeRequest>();
+            var ocppEnergyMeter_jsonRequestMessageSent         = new ConcurrentList<OCPP_JSONRequestMessage>();
+
+            ocppEnergyMeter.OCPP.OUT.OnAuthorizeRequestSent   += (timestamp, sender, authorizeRequest, sendMessageResult) => {
+                ocppEnergyMeter_AuthorizeRequestsSent. TryAdd(authorizeRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppEnergyMeter.OCPP.OUT.OnJSONRequestMessageSent += (timestamp, sender, requestMessage, sendMessageResult) => {
+                ocppEnergyMeter_jsonRequestMessageSent.TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 2. The OCPP Local Controller receives and rejects the Authorize request
+
+            var ocppLocalController_jsonRequestMessageReceived              = new ConcurrentList<OCPP_JSONRequestMessage>();
+            var ocppLocalController_AuthorizeRequestsReceived               = new ConcurrentList<AuthorizeRequest>();
+            var ocppLocalController_AuthorizeRequestsForwardingDecisions    = new ConcurrentList<ForwardingDecision<AuthorizeRequest, AuthorizeResponse>>();
+            var ocppLocalController_AuthorizeResponsesSent                  = new ConcurrentList<AuthorizeResponse>();
+            var ocppLocalController_jsonRequestErrorMessageSent             = new ConcurrentList<OCPP_JSONRequestErrorMessage>();
+
+            ocppLocalController.OCPP.IN.     OnJSONRequestMessageReceived  += (timestamp, sender, requestMessage) => {
+                ocppLocalController_jsonRequestMessageReceived.          TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnAuthorizeRequestReceived    += (timestamp, sender, connection, authorizeRequest) => {
+                ocppLocalController_AuthorizeRequestsReceived.           TryAdd(authorizeRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnAuthorizeRequestFiltered    += (timestamp, sender, connection, authorizeRequest, forwardingDecision) => {
+                ocppLocalController_AuthorizeRequestsForwardingDecisions.TryAdd(forwardingDecision);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnAuthorizeResponseSent       += (timestamp, sender, connection, authorizeRequest, authorizeResponse, runtime) => {
+                ocppLocalController_AuthorizeResponsesSent.              TryAdd(authorizeResponse);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.OUT.    OnJSONRequestErrorMessageSent += (timestamp, sender, requestErrorMessage, sendMessageResult) => {
+                ocppLocalController_jsonRequestErrorMessageSent.         TryAdd(requestErrorMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            // -----------------------------
+
+            #region 8. The Charging Station receives the Authorize response
+
+            var ocppEnergyMeter_jsonRequestErrorMessageResponseReceived  = new ConcurrentList<OCPP_JSONRequestErrorMessage>();
+            var ocppEnergyMeter_AuthorizeResponsesReceived               = new ConcurrentList<AuthorizeResponse>();
+
+            ocppEnergyMeter.OCPP.IN.OnJSONRequestErrorMessageReceived   += (timestamp, sender, requestErrorMessage) => {
+                ocppEnergyMeter_jsonRequestErrorMessageResponseReceived.TryAdd(requestErrorMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppEnergyMeter.OCPP.IN.OnAuthorizeResponseReceived         += (timestamp, sender, request, response, runtime) => {
+                ocppEnergyMeter_AuthorizeResponsesReceived.             TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+
+                                          // There is no "Authorize" extension, as this request is not legal for energy meters!
+            var authorizeResponse = await ocppEnergyMeter.OCPP.OUT.Authorize(
+                                              new AuthorizeRequest(
+
+                                                  DestinationId:                 NetworkingNode_Id.CSMS,
+
+                                                  IdToken:                       IdToken.TryParseRFID("1234567890")!,
+                                                  Certificate:                   null,
+                                                  ISO15118CertificateHashData:   null,
+                                                  CustomData:                    null,
+
+                                                  SignKeys:                      null,
+                                                  SignInfos:                     null,
+                                                  Signatures:                    null,
+
+                                                  RequestId:                     null,
+                                                  RequestTimestamp:              null,
+                                                  RequestTimeout:                null,
+                                                  EventTrackingId:               null,
+
+                                                  NetworkPath:                   NetworkPath.From(ocppEnergyMeter.Id)
+
+                                              )
+                                          );
+
+            Assert.Multiple(() => {
+
+                Assert.That(authorizeResponse.IdTokenInfo.Status,                                           Is.EqualTo(AuthorizationStatus.RequestError));
+
+
+                // -<request>--------------------------------------------------------------------------------------------------
+                Assert.That(ocppEnergyMeter_AuthorizeRequestsSent.                                           Count,   Is.EqualTo(1));
+                Assert.That(ocppEnergyMeter_AuthorizeRequestsSent.First().Signatures.                        Count,   Is.EqualTo(1));
+                Assert.That(ocppEnergyMeter_jsonRequestMessageSent.                                          Count,   Is.EqualTo(1));
+                Assert.That(ocppEnergyMeter_jsonRequestMessageSent.First().NetworkPath.ToString(),           Is.EqualTo(new NetworkPath([ ocppEnergyMeter.Id ]).ToString()));
+                Assert.That(ocppEnergyMeter_jsonRequestMessageSent.First().Payload["signatures"]?.           Count(), Is.EqualTo(1));
+
+                Assert.That(ocppLocalController_jsonRequestMessageReceived.                                  Count,   Is.EqualTo(1));
+                Assert.That(ocppLocalController_AuthorizeRequestsReceived.                                   Count,   Is.EqualTo(1));
+                Assert.That(ocppLocalController_AuthorizeRequestsForwardingDecisions.                        Count,   Is.EqualTo(1));
+                //Assert.That(ocppLocalController_AuthorizeResponsesSent.                                      Count,   Is.EqualTo(1));
+                //Assert.That(ocppLocalController_AuthorizeResponsesSent.First().DestinationId,                         Is.EqualTo(ocppEnergyMeter.Id));
+                //Assert.That(ocppLocalController_AuthorizeResponsesSent.First().NetworkPath.ToString(),                Is.EqualTo(new NetworkPath([ ocppLocalController.Id ]).ToString()));
+                Assert.That(ocppLocalController_jsonRequestErrorMessageSent.                                 Count,   Is.EqualTo(1));
+                Assert.That(ocppLocalController_jsonRequestErrorMessageSent.First().DestinationId,                    Is.EqualTo(ocppEnergyMeter.Id));
+                Assert.That(ocppLocalController_jsonRequestErrorMessageSent.First().NetworkPath.ToString(),           Is.EqualTo(new NetworkPath([ ocppLocalController.Id ]).ToString()));
+
+                // ----------------------
+
+                Assert.That(ocppEnergyMeter_jsonRequestErrorMessageResponseReceived.                         Count,   Is.EqualTo(1));
+                Assert.That(ocppEnergyMeter_jsonRequestErrorMessageResponseReceived.First().DestinationId,            Is.EqualTo(ocppEnergyMeter.Id));
+                Assert.That(ocppEnergyMeter_jsonRequestErrorMessageResponseReceived.First().NetworkPath.ToString(),   Is.EqualTo(new NetworkPath([ ocppLocalController.Id ]).ToString()));
+                Assert.That(ocppEnergyMeter_AuthorizeResponsesReceived.                                      Count,   Is.EqualTo(1));
+                //Assert.That(ocppEnergyMeter_AuthorizeResponsesReceived.First().Signatures.                   Count,   Is.EqualTo(1));
+                Assert.That(ocppEnergyMeter_AuthorizeResponsesReceived.First().DestinationId,                         Is.EqualTo(ocppEnergyMeter.Id));
+                Assert.That(ocppEnergyMeter_AuthorizeResponsesReceived.First().NetworkPath.ToString(),                Is.EqualTo(new NetworkPath([ ocppLocalController.Id ]).ToString()));
 
             });
 

@@ -417,6 +417,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
 
             #region Connect to charging station 1
 
+            ocppLocalController.AllowedChargingStations.Add(chargingStation1.Id);
+
             var cs1Auth                            = chargingStation1_OCPPWebSocketServer.AddOrUpdateHTTPBasicAuth(
                                                          ocppLocalController.Id,
                                                          "lc_cs1_12345678"
@@ -464,6 +466,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
 
             #region Connect to charging station 2
 
+            ocppLocalController.AllowedChargingStations.Add(chargingStation2.Id);
+
             var cs2Auth                            = chargingStation2_OCPPWebSocketServer.AddOrUpdateHTTPBasicAuth(
                                                          ocppLocalController.Id,
                                                          "lc_cs2_12345678"
@@ -510,6 +514,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
             #endregion
 
             #region Connect to charging station 3
+
+            ocppLocalController.AllowedChargingStations.Add(chargingStation3.Id);
 
             var cs3Auth                            = chargingStation3_OCPPWebSocketServer.AddOrUpdateHTTPBasicAuth(
                                                          ocppLocalController.Id,
