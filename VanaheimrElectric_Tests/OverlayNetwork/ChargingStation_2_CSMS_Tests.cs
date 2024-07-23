@@ -1687,7 +1687,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             #endregion
 
 
-
             #region 1. The MeterValues request leaves the Charging Station
 
             var chargingStation1_MeterValuesRequestsSent        = new ConcurrentList<MeterValuesRequest>();
