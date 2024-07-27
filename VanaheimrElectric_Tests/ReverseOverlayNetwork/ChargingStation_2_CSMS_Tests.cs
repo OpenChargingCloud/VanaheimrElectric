@@ -68,14 +68,14 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
             #region 1. The BootNotification request leaves the Charging Station
 
             var chargingStation1_BootNotificationRequestsSent  = new ConcurrentList<BootNotificationRequest>();
-            var chargingStation1_jsonRequestMessageSent        = new ConcurrentList<SendMessageResult>();
+            var chargingStation1_jsonRequestMessageSent        = new ConcurrentList<SentMessageResults>();
 
-            chargingStation1.OCPP.OUT.OnBootNotificationRequestSent += (timestamp, sender, bootNotificationRequest, sendMessageResult) => {
+            chargingStation1.OCPP.OUT.OnBootNotificationRequestSent += (timestamp, sender, connection, bootNotificationRequest, sendMessageResult) => {
                 chargingStation1_BootNotificationRequestsSent.TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
 
-            chargingStation1.OCPP.OUT.OnJSONRequestMessageSent      += (timestamp, sender, requestMessage, sendMessageResult) => {
+            chargingStation1.OCPP.OUT.OnJSONRequestMessageSent      += (timestamp, sender, connection, requestMessage, sendMessageResult) => {
                 chargingStation1_jsonRequestMessageSent.      TryAdd(sendMessageResult);
                 return Task.CompletedTask;
             };
@@ -88,7 +88,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
             var ocppLocalController_BootNotificationRequestsReceived             = new ConcurrentList<BootNotificationRequest>();
             var ocppLocalController_BootNotificationRequestsForwardingDecisions  = new ConcurrentList<ForwardingDecision<BootNotificationRequest, BootNotificationResponse>>();
             var ocppLocalController_BootNotificationRequestsSent                 = new ConcurrentList<BootNotificationRequest>();
-            var ocppLocalController_jsonRequestMessageSent                       = new ConcurrentList<SendMessageResult>();
+            var ocppLocalController_jsonRequestMessageSent                       = new ConcurrentList<SentMessageResults>();
 
             ocppLocalController.OCPP.IN.     OnJSONRequestMessageReceived       += (timestamp, sender, requestMessage) => {
                 ocppLocalController_jsonRequestMessageReceived.                 TryAdd(requestMessage);
@@ -105,12 +105,12 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, bootNotificationRequest, sendMessageResult) => {
+            ocppLocalController.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, connection, bootNotificationRequest, sendMessageResult) => {
                 ocppLocalController_BootNotificationRequestsSent.               TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, requestMessage, sendMessageResult) => {
+            ocppLocalController.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, connection, requestMessage, sendMessageResult) => {
                 ocppLocalController_jsonRequestMessageSent.                     TryAdd(sendMessageResult);
                 return Task.CompletedTask;
             };
@@ -123,7 +123,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
             var ocppGateway_BootNotificationRequestsReceived             = new ConcurrentList<BootNotificationRequest>();
             var ocppGateway_BootNotificationRequestsForwardingDecisions  = new ConcurrentList<ForwardingDecision<BootNotificationRequest, BootNotificationResponse>>();
             var ocppGateway_BootNotificationRequestsSent                 = new ConcurrentList<BootNotificationRequest>();
-            var ocppGateway_jsonRequestMessageSent                       = new ConcurrentList<SendMessageResult>();
+            var ocppGateway_jsonRequestMessageSent                       = new ConcurrentList<SentMessageResults>();
 
             ocppGateway.OCPP.IN.     OnJSONRequestMessageReceived       += (timestamp, sender, requestMessage) => {
                 ocppGateway_jsonRequestMessageReceived.                 TryAdd(requestMessage);
@@ -140,12 +140,12 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, bootNotificationRequest, sendMessageResult) => {
+            ocppGateway.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, connection, bootNotificationRequest, sendMessageResult) => {
                 ocppGateway_BootNotificationRequestsSent.               TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, requestMessage, sendMessageResult) => {
+            ocppGateway.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, connection, requestMessage, sendMessageResult) => {
                 ocppGateway_jsonRequestMessageSent.                     TryAdd(sendMessageResult);
                 return Task.CompletedTask;
             };
@@ -174,19 +174,19 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
             #region 5. The CSMS responds the BootNotification request
 
             var csms_BootNotificationResponsesSent            = new ConcurrentList<BootNotificationResponse>();
-            var csms_jsonResponseMessageSent                  = new ConcurrentList<SendMessageResult>();
+            var csms_jsonResponseMessageSent                  = new ConcurrentList<SentMessageResults>();
 
             csms.OCPP.OUT.OnBootNotificationResponseSent  += (timestamp, sender, connection, request, response, runtime) => {
                 csms_BootNotificationResponsesSent.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            //csms.OCPP.FORWARD.OnJSONResponseMessageSent      += (timestamp, sender, responseMessage, sendMessageResult) => {
+            //csms.OCPP.FORWARD.OnJSONResponseMessageSent      += (timestamp, sender, connection, responseMessage, sendMessageResult) => {
             //    csms_jsonResponseMessageSent.         TryAdd(sendMessageResult);
             //    return Task.CompletedTask;
             //};
 
-            csms.OCPP.OUT.OnJSONResponseMessageSent       += (timestamp, sender, responseMessage, sendMessageResult) => {
+            csms.OCPP.OUT.OnJSONResponseMessageSent       += (timestamp, sender, connection, responseMessage, sendMessageResult) => {
                 csms_jsonResponseMessageSent.      TryAdd(sendMessageResult);
 
                 if (responseMessage.DestinationId != chargingStation1.Id)
@@ -204,7 +204,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
             var ocppGateway_OnJSONMessageResponseReceived                = new ConcurrentList<OCPP_JSONResponseMessage>();
             var ocppGateway_BootNotificationResponsesReceived            = new ConcurrentList<BootNotificationResponse>();
             var ocppGateway_BootNotificationResponsesSent                = new ConcurrentList<BootNotificationResponse>();
-            var ocppGateway_jsonResponseMessageSent                      = new ConcurrentList<SendMessageResult>();
+            var ocppGateway_jsonResponseMessageSent                      = new ConcurrentList<SentMessageResults>();
 
             ocppGateway.OCPP.IN.OnJSONResponseMessageReceived           += (timestamp, sender, responseMessage) => {
                 ocppGateway_OnJSONMessageResponseReceived.    TryAdd(responseMessage);
@@ -228,12 +228,12 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
 
 
 
-            ocppGateway.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, responseMessage, sendMessageResult) => {
+            ocppGateway.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, connection, responseMessage, sendMessageResult) => {
                 ocppGateway_jsonResponseMessageSent.          TryAdd(sendMessageResult);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.OUT.OnJSONResponseMessageSent              += (timestamp, sender, responseMessage, sendMessageResult) => {
+            ocppGateway.OCPP.OUT.OnJSONResponseMessageSent              += (timestamp, sender, connection, responseMessage, sendMessageResult) => {
                 ocppGateway_jsonResponseMessageSent.          TryAdd(sendMessageResult);
                 return Task.CompletedTask;
             };
@@ -245,7 +245,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
             var ocppLocalController_OnJSONMessageResponseReceived                = new ConcurrentList<OCPP_JSONResponseMessage>();
             var ocppLocalController_BootNotificationResponsesReceived            = new ConcurrentList<BootNotificationResponse>();
             var ocppLocalController_BootNotificationResponsesSent                = new ConcurrentList<BootNotificationResponse>();
-            var ocppLocalController_jsonResponseMessageSent                      = new ConcurrentList<SendMessageResult>();
+            var ocppLocalController_jsonResponseMessageSent                      = new ConcurrentList<SentMessageResults>();
 
             ocppLocalController.OCPP.IN.OnJSONResponseMessageReceived           += (timestamp, sender, responseMessage) => {
                 ocppLocalController_OnJSONMessageResponseReceived.    TryAdd(responseMessage);
@@ -262,7 +262,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.OUT.OnJSONResponseMessageSent              += (timestamp, sender, responseMessage, sendMessageResult) => {
+            ocppLocalController.OCPP.OUT.OnJSONResponseMessageSent              += (timestamp, sender, connection, responseMessage, sendMessageResult) => {
                 ocppLocalController_jsonResponseMessageSent.          TryAdd(sendMessageResult);
                 return Task.CompletedTask;
             };

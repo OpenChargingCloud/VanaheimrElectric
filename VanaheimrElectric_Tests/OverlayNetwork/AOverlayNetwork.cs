@@ -41,8 +41,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
     /// <summary>
     /// Charging infrastructure test defaults using an OCPP Overlay Network
-    /// consisting of a CSMS, an OCPP Gateway, an OCPP Local Controller,
-    /// an Energy Meter at the grid connection point and three Charging Stations.
+    /// consisting of three Charging Stations, an OCPP Local Controller, an
+    /// Energy Meter at the shared grid connection point, an OCPP Gateway
+    /// and two Charging Station Management Systems.
     /// 
     /// The HTTP Web Socket connections are initiated in "normal order" from
     /// the Charging Stations to the Local Controller, to the Gateway and
@@ -54,8 +55,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
     /// between the Gateway and the CSMS the OCPP Overlay Network transport
     /// is used.
     /// 
-    /// [cs1] ──⭨
-    /// [cs2] ───→ [lc] ━━━► [gw] ━━━► [csms]
+    /// [cs1] ──⭨                   🡵 [csms1]
+    /// [cs2] ───→ [lc] ━━━► [gw] ━━━► [csms2]
     /// [cs3] ──🡕    🡴━ [em]
     /// </summary>
     public abstract class AOverlayNetwork
@@ -63,23 +64,28 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
         #region Data
 
-        public TestCSMSNode?                csms;
-        public IPPort                       csms_tcpPort                                = IPPort.Parse(5000);
-        public OCPPWebSocketServer?         csms_OCPPWebSocketServer;
-        public KeyPair?                     csms_keyPair;
+        public TestCSMSNode?                csms1;
+        public IPPort                       csms1_tcpPort                               = IPPort.Parse(5001);
+        public OCPPWebSocketServer?         csms1_OCPPWebSocketServer;
+        public KeyPair?                     csms1_keyPair;
+
+        public TestCSMSNode?                csms2;
+        public IPPort                       csms2_tcpPort                               = IPPort.Parse(5002);
+        public OCPPWebSocketServer?         csms2_OCPPWebSocketServer;
+        public KeyPair?                     csms2_keyPair;
 
         public TestGatewayNode?             ocppGateway;
-        public IPPort                       ocppGateway_tcpPort                         = IPPort.Parse(5010);
+        public IPPort                       ocppGateway_tcpPort                         = IPPort.Parse(5011);
         public OCPPWebSocketServer?         ocppGateway_OCPPWebSocketServer;
         public KeyPair?                     ocppGateway_keyPair;
 
         public TestLocalControllerNode?     ocppLocalController;
-        public IPPort                       ocppLocalController_tcpPort                 = IPPort.Parse(5020);
+        public IPPort                       ocppLocalController_tcpPort                 = IPPort.Parse(5021);
         public OCPPWebSocketServer?         ocppLocalController_OCPPWebSocketServer;
         public KeyPair?                     ocppLocalController_keyPair;
 
         public TestEnergyMeterNode?         ocppEnergyMeter;
-        public IPPort                       ocppEnergyMeter_tcpPort                     = IPPort.Parse(5030);
+        public IPPort                       ocppEnergyMeter_tcpPort                     = IPPort.Parse(5031);
         public OCPPWebSocketServer?         ocppEnergyMeter_OCPPWebSocketServer;
         public KeyPair?                     ocppEnergyMeter_keyPair;
 
@@ -117,74 +123,145 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var notBefore = Timestamp.Now - TimeSpan.FromDays(1);
             var notAfter  = notBefore     + TimeSpan.FromDays(365);
 
+            #region Setup Charging Station Management System 1
 
-            #region Setup Charging Station Management System
+            csms1 = new TestCSMSNode(
 
-            csms = new TestCSMSNode(
+                        Id:                          NetworkingNode_Id.Parse("csms1"),
+                        VendorName:                  "GraphDefined",
+                        Model:                       "vcsms1",
+                        Description:                 I18NString.Create(Languages.en, "Charging Station Management System #1 for testing"),
 
-                       Id:                          NetworkingNode_Id.Parse("csms"),
-                       VendorName:                  "GraphDefined",
-                       Model:                       "vcsms1",
-                       Description:                 I18NString.Create(Languages.en, "A Charging Station Management System for testing"),
+                        SignaturePolicy:             null,
+                        ForwardingSignaturePolicy:   null,
 
-                       SignaturePolicy:             null,
-                       ForwardingSignaturePolicy:   null,
+                        HTTPUploadPort:              null,
+                        HTTPDownloadPort:            null,
 
-                       HTTPUploadPort:              null,
-                       HTTPDownloadPort:            null,
+                        DisableSendHeartbeats:       true,
+                        SendHeartbeatsEvery:         null,
+                        DefaultRequestTimeout:       null,
 
-                       DisableSendHeartbeats:       true,
-                       SendHeartbeatsEvery:         null,
-                       DefaultRequestTimeout:       null,
+                        DisableMaintenanceTasks:     false,
+                        MaintenanceEvery:            null,
+                        DNSClient:                   DNSClient
 
-                       DisableMaintenanceTasks:     false,
-                       MaintenanceEvery:            null,
-                       DNSClient:                   DNSClient
+                    );
 
-                   );
+            csms1_OCPPWebSocketServer = csms1.AttachWebSocketServer(
 
-            csms_OCPPWebSocketServer = csms.AttachWebSocketServer(
+                                            HTTPServiceName:              null,
+                                            IPAddress:                    null,
+                                            TCPPort:                      csms1_tcpPort,
+                                            Description:                  null,
 
-                                           HTTPServiceName:              null,
-                                           IPAddress:                    null,
-                                           TCPPort:                      csms_tcpPort,
-                                           Description:                  null,
+                                            RequireAuthentication:        true,
+                                            DisableWebSocketPings:        false,
+                                            WebSocketPingEvery:           null,
+                                            SlowNetworkSimulationDelay:   null,
 
-                                           RequireAuthentication:        true,
-                                           DisableWebSocketPings:        false,
-                                           WebSocketPingEvery:           null,
-                                           SlowNetworkSimulationDelay:   null,
+                                            ServerCertificateSelector:    null,
+                                            ClientCertificateValidator:   null,
+                                            LocalCertificateSelector:     null,
+                                            AllowedTLSProtocols:          null,
+                                            ClientCertificateRequired:    null,
+                                            CheckCertificateRevocation:   null,
 
-                                           ServerCertificateSelector:    null,
-                                           ClientCertificateValidator:   null,
-                                           LocalCertificateSelector:     null,
-                                           AllowedTLSProtocols:          null,
-                                           ClientCertificateRequired:    null,
-                                           CheckCertificateRevocation:   null,
+                                            ServerThreadNameCreator:      null,
+                                            ServerThreadPrioritySetter:   null,
+                                            ServerThreadIsBackground:     null,
+                                            ConnectionIdBuilder:          null,
+                                            ConnectionTimeout:            null,
+                                            MaxClientConnections:         null,
 
-                                           ServerThreadNameCreator:      null,
-                                           ServerThreadPrioritySetter:   null,
-                                           ServerThreadIsBackground:     null,
-                                           ConnectionIdBuilder:          null,
-                                           ConnectionTimeout:            null,
-                                           MaxClientConnections:         null,
+                                            AutoStart:                    true
 
-                                           AutoStart:                    true
-
-                                       );
+                                        );
 
             #region Define signature policy
 
-            csms_keyPair = KeyPair.GenerateKeys()!;
+            csms1_keyPair = KeyPair.GenerateKeys()!;
 
-            csms.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
-                                                          KeyPair:                csms_keyPair!,
-                                                          UserIdGenerator:        (signableMessage) => "cs001",
-                                                          DescriptionGenerator:   (signableMessage) => I18NString.Create("Just an OCPP Charging Station Management System!"),
-                                                          TimestampGenerator:     (signableMessage) => Timestamp.Now);
+            csms1.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
+                                                           KeyPair:                csms1_keyPair!,
+                                                           UserIdGenerator:        (signableMessage) => "cs001",
+                                                           DescriptionGenerator:   (signableMessage) => I18NString.Create("Just an OCPP Charging Station Management System #1!"),
+                                                           TimestampGenerator:     (signableMessage) => Timestamp.Now);
 
-            csms.OCPP.SignaturePolicy.AddVerificationRule(JSONContext.OCPP.Any,
-                                                          VerificationRuleActions.VerifyAll);
+            csms1.OCPP.SignaturePolicy.AddVerificationRule(JSONContext.OCPP.Any,
+                                                           VerificationRuleActions.VerifyAll);
+
+            #endregion
+
+            #endregion
+
+            #region Setup Charging Station Management System 2
+
+            csms2 = new TestCSMSNode(
+
+                        Id:                          NetworkingNode_Id.Parse("csms2"),
+                        VendorName:                  "GraphDefined",
+                        Model:                       "vcsms21",
+                        Description:                 I18NString.Create(Languages.en, "Charging Station Management System #2 for testing"),
+
+                        SignaturePolicy:             null,
+                        ForwardingSignaturePolicy:   null,
+
+                        HTTPUploadPort:              null,
+                        HTTPDownloadPort:            null,
+
+                        DisableSendHeartbeats:       true,
+                        SendHeartbeatsEvery:         null,
+                        DefaultRequestTimeout:       null,
+
+                        DisableMaintenanceTasks:     false,
+                        MaintenanceEvery:            null,
+                        DNSClient:                   DNSClient
+
+                    );
+
+            csms2_OCPPWebSocketServer = csms2.AttachWebSocketServer(
+
+                                            HTTPServiceName:              null,
+                                            IPAddress:                    null,
+                                            TCPPort:                      csms2_tcpPort,
+                                            Description:                  null,
+
+                                            RequireAuthentication:        true,
+                                            DisableWebSocketPings:        false,
+                                            WebSocketPingEvery:           null,
+                                            SlowNetworkSimulationDelay:   null,
+
+                                            ServerCertificateSelector:    null,
+                                            ClientCertificateValidator:   null,
+                                            LocalCertificateSelector:     null,
+                                            AllowedTLSProtocols:          null,
+                                            ClientCertificateRequired:    null,
+                                            CheckCertificateRevocation:   null,
+
+                                            ServerThreadNameCreator:      null,
+                                            ServerThreadPrioritySetter:   null,
+                                            ServerThreadIsBackground:     null,
+                                            ConnectionIdBuilder:          null,
+                                            ConnectionTimeout:            null,
+                                            MaxClientConnections:         null,
+
+                                            AutoStart:                    true
+
+                                        );
+
+            #region Define signature policy
+
+            csms2_keyPair = KeyPair.GenerateKeys()!;
+
+            csms2.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
+                                                           KeyPair:                csms2_keyPair!,
+                                                           UserIdGenerator:        (signableMessage) => "cs002",
+                                                           DescriptionGenerator:   (signableMessage) => I18NString.Create("Just an OCPP Charging Station Management System #2!"),
+                                                           TimestampGenerator:     (signableMessage) => Timestamp.Now);
+
+            csms2.OCPP.SignaturePolicy.AddVerificationRule(JSONContext.OCPP.Any,
+                                                           VerificationRuleActions.VerifyAll);
 
             #endregion
 
@@ -213,15 +290,17 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                                                );
 
-            var ocppGatewayAuth              = csms_OCPPWebSocketServer.AddOrUpdateHTTPBasicAuth(
-                                                                            ocppGateway.Id,
-                                                                            "gw12345678"
-                                                                        );
+            #region Connect to CSMS1
 
-            var ocppGatewayConnectResult     = await ocppGateway.ConnectWebSocketClient(
+            var ocppGatewayAuth1             = csms1_OCPPWebSocketServer.AddOrUpdateHTTPBasicAuth(
+                                                                             ocppGateway.Id,
+                                                                             "gw2csms1_12345678"
+                                                                         );
 
-                                                   NetworkingNodeId:             NetworkingNode_Id.CSMS,
-                                                   RemoteURL:                    URL.Parse($"ws://127.0.0.1:{csms_tcpPort}"),
+            var ocppGatewayConnectResult1    = await ocppGateway.ConnectWebSocketClient(
+
+                                                   NetworkingNodeId:             csms1.Id,
+                                                   RemoteURL:                    URL.Parse($"ws://127.0.0.1:{csms1_tcpPort}"),
                                                    VirtualHostname:              null,
                                                    Description:                  null,
                                                    PreferIPv4:                   null,
@@ -230,7 +309,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                    ClientCert:                   null,
                                                    TLSProtocol:                  null,
                                                    HTTPUserAgent:                null,
-                                                   HTTPAuthentication:           ocppGatewayAuth,
+                                                   HTTPAuthentication:           ocppGatewayAuth1,
                                                    RequestTimeout:               null,
                                                    TransmissionRetryDelay:       null,
                                                    MaxNumberOfRetries:           3,
@@ -254,7 +333,56 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                                                );
 
-            Assert.That(ocppGatewayConnectResult.HTTPStatusCode.Code, Is.EqualTo(101), $"OCPP Gateway could not connect to CSMS: {ocppGatewayConnectResult.HTTPStatusCode}");
+            Assert.That(ocppGatewayConnectResult1.HTTPStatusCode.Code, Is.EqualTo(101), $"OCPP Gateway could not connect to CSMS #1: {ocppGatewayConnectResult1.HTTPStatusCode}");
+
+            #endregion
+
+            #region Connect to CSMS2
+
+            var ocppGatewayAuth2             = csms2_OCPPWebSocketServer.AddOrUpdateHTTPBasicAuth(
+                                                                             ocppGateway.Id,
+                                                                             "gw2csms2_12345678"
+                                                                         );
+
+            var ocppGatewayConnectResult2    = await ocppGateway.ConnectWebSocketClient(
+
+                                                   NetworkingNodeId:             csms2.Id,
+                                                   RemoteURL:                    URL.Parse($"ws://127.0.0.1:{csms2_tcpPort}"),
+                                                   VirtualHostname:              null,
+                                                   Description:                  null,
+                                                   PreferIPv4:                   null,
+                                                   RemoteCertificateValidator:   null,
+                                                   LocalCertificateSelector:     null,
+                                                   ClientCert:                   null,
+                                                   TLSProtocol:                  null,
+                                                   HTTPUserAgent:                null,
+                                                   HTTPAuthentication:           ocppGatewayAuth2,
+                                                   RequestTimeout:               null,
+                                                   TransmissionRetryDelay:       null,
+                                                   MaxNumberOfRetries:           3,
+                                                   InternalBufferSize:           null,
+
+                                                   SecWebSocketProtocols:        null,
+                                                   NetworkingMode:               NetworkingMode.OverlayNetwork,
+
+                                                   DisableWebSocketPings:        false,
+                                                   WebSocketPingEvery:           null,
+                                                   SlowNetworkSimulationDelay:   null,
+
+                                                   DisableMaintenanceTasks:      false,
+                                                   MaintenanceEvery:             null,
+
+                                                   LoggingPath:                  null,
+                                                   LoggingContext:               String.Empty,
+                                                   LogfileCreator:               null,
+                                                   HTTPLogger:                   null,
+                                                   DNSClient:                    null
+
+                                               );
+
+            Assert.That(ocppGatewayConnectResult2.HTTPStatusCode.Code, Is.EqualTo(101), $"OCPP Gateway could not connect to CSMS #2: {ocppGatewayConnectResult2.HTTPStatusCode}");
+
+            #endregion
 
 
             ocppGateway_OCPPWebSocketServer  = ocppGateway.AttachWebSocketServer(
@@ -825,16 +953,40 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             //ToDo: Make use of the routing protocol vendor extensions!
 
-            csms.       OCPP.AddStaticRouting(ocppLocalController.Id,  ocppGateway.Id);
-            csms.       OCPP.AddStaticRouting(ocppEnergyMeter.Id,      ocppGateway.Id);
-            csms.       OCPP.AddStaticRouting(chargingStation1.Id,     ocppGateway.Id);
-            csms.       OCPP.AddStaticRouting(chargingStation2.Id,     ocppGateway.Id);
-            csms.       OCPP.AddStaticRouting(chargingStation3.Id,     ocppGateway.Id);
+            csms1.      OCPP.AddStaticRouting(ocppLocalController.Id,  ocppGateway.Id);
+            csms1.      OCPP.AddStaticRouting(ocppEnergyMeter.Id,      ocppGateway.Id);
+            csms1.      OCPP.AddStaticRouting(chargingStation1.Id,     ocppGateway.Id);
+            csms1.      OCPP.AddStaticRouting(chargingStation2.Id,     ocppGateway.Id);
+            csms1.      OCPP.AddStaticRouting(chargingStation3.Id,     ocppGateway.Id);
 
+            csms2.      OCPP.AddStaticRouting(ocppLocalController.Id,  ocppGateway.Id);
+            csms2.      OCPP.AddStaticRouting(ocppEnergyMeter.Id,      ocppGateway.Id);
+            csms2.      OCPP.AddStaticRouting(chargingStation1.Id,     ocppGateway.Id);
+            csms2.      OCPP.AddStaticRouting(chargingStation2.Id,     ocppGateway.Id);
+            csms2.      OCPP.AddStaticRouting(chargingStation3.Id,     ocppGateway.Id);
+
+            ocppGateway.OCPP.AddStaticRouting(NetworkingNode_Id.CSMS,  csms1.Id);  // The default CSMS!
             ocppGateway.OCPP.AddStaticRouting(ocppEnergyMeter.Id,      ocppLocalController.Id);
             ocppGateway.OCPP.AddStaticRouting(chargingStation1.Id,     ocppLocalController.Id);
             ocppGateway.OCPP.AddStaticRouting(chargingStation2.Id,     ocppLocalController.Id);
             ocppGateway.OCPP.AddStaticRouting(chargingStation3.Id,     ocppLocalController.Id);
+
+
+            #region OnBootNotification
+
+            ocppGateway.OCPP.FORWARD.OnBootNotificationRequestFilter += (timestamp,
+                                                                         sender,
+                                                                         connection,
+                                                                         request,
+                                                                         cancellationToken) =>
+
+                Task.FromResult(
+                    request.NetworkPath.Source == chargingStation3.Id
+                        ? ForwardingDecision<BootNotificationRequest, BootNotificationResponse>.FORWARD(request, csms2.Id)
+                        : ForwardingDecision<BootNotificationRequest, BootNotificationResponse>.FORWARD(request)
+                );
+
+            #endregion
 
         }
 

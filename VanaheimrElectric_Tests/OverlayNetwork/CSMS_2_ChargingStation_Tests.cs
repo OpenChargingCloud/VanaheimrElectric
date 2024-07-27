@@ -53,7 +53,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #region Initial checks
 
-            if (csms                is null ||
+            if (csms1               is null ||
+                csms2               is null ||
                 ocppGateway         is null ||
                 ocppLocalController is null ||
                 chargingStation1    is null ||
@@ -63,8 +64,11 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                 Assert.Multiple(() => {
 
-                    if (csms                is null)
-                        Assert.Fail("The csms must not be null!");
+                    if (csms1               is null)
+                        Assert.Fail("The csms 1 must not be null!");
+
+                    if (csms2               is null)
+                        Assert.Fail("The csms 2 must not be null!");
 
                     if (ocppGateway         is null)
                         Assert.Fail("The gateway must not be null!");
@@ -90,7 +94,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             #endregion
 
 
-            var response1 = await csms.Reset(
+            var response1 = await csms1.Reset(
 
                                       DestinationId:       chargingStation1.Id,
                                       ResetType:           ResetType.OnIdle,
@@ -126,7 +130,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #region Initial checks
 
-            if (csms                is null ||
+            if (csms1               is null ||
+                csms2               is null ||
                 ocppGateway         is null ||
                 ocppLocalController is null ||
                 chargingStation1    is null ||
@@ -136,8 +141,11 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                 Assert.Multiple(() => {
 
-                    if (csms                is null)
-                        Assert.Fail("The csms must not be null!");
+                    if (csms1               is null)
+                        Assert.Fail("The csms 1 must not be null!");
+
+                    if (csms2               is null)
+                        Assert.Fail("The csms 2 must not be null!");
 
                     if (ocppGateway         is null)
                         Assert.Fail("The gateway must not be null!");
@@ -163,7 +171,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             #endregion
 
 
-            var dataTransferResponse1  = await csms.TransferData(
+            var dataTransferResponse1  = await csms1.TransferData(
 
                                                    DestinationId:       chargingStation1.Id,
                                                    VendorId:            Vendor_Id. GraphDefined,
@@ -182,7 +190,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                                                );
 
-            var dataTransferResponse2  = await csms.TransferData(
+            var dataTransferResponse2  = await csms1.TransferData(
 
                                                    DestinationId:       chargingStation1.Id,
                                                    VendorId:            Vendor_Id. GraphDefined,
@@ -201,7 +209,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                                                );
 
-            var dataTransferResponse3  = await csms.TransferData(
+            var dataTransferResponse3  = await csms1.TransferData(
 
                                                    DestinationId:       chargingStation1.Id,
                                                    VendorId:            Vendor_Id. GraphDefined,
