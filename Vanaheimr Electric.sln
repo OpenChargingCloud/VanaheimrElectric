@@ -145,7 +145,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WWCP_EEBus_SPINE", "libs\WW
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WWCP_EEBus_SPINE_Tests", "libs\WWCP_EEBus\WWCP_EEBus_SPINE_Tests\WWCP_EEBus_SPINE_Tests.csproj", "{A83CBA88-0440-4ACD-A8DD-6462B7A2F988}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WWCP_OCPPv2.1_EnergyMeter", "libs\WWCP_OCPP\WWCP_OCPPv2.1_EnergyMeter\WWCP_OCPPv2.1_EnergyMeter.csproj", "{6CBD2177-4728-4FA9-8E11-70394A377E5C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WWCP_OCPPv2.1_EnergyMeter", "libs\WWCP_OCPP\WWCP_OCPPv2.1_EnergyMeter\WWCP_OCPPv2.1_EnergyMeter.csproj", "{6CBD2177-4728-4FA9-8E11-70394A377E5C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

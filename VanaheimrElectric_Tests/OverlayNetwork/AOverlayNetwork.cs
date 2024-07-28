@@ -972,12 +972,25 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             ocppGateway.OCPP.AddStaticRouting(chargingStation3.Id,     ocppLocalController.Id);
 
 
+            ocppGateway.OCPP.FORWARD.OnAnyJSONRequestFilter += (timestamp,
+                                                                sender,
+                                                                connection,
+                                                                request,
+                                                                cancellationToken) =>
+
+                Task.FromResult(
+                    request.NetworkPath.Source == chargingStation3.Id
+                        ? ForwardingDecision.FORWARD(request, csms2.Id)
+                        : ForwardingDecision.NEXT   (request)
+                );
+
             #region OnBootNotification
 
             ocppGateway.OCPP.FORWARD.OnBootNotificationRequestFilter += (timestamp,
                                                                          sender,
                                                                          connection,
                                                                          request,
+                                                                         previousFilterStep,
                                                                          cancellationToken) =>
 
                 Task.FromResult(

@@ -818,9 +818,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             #region 3. The OCPP Gateway receives and forwards the BootNotification request
 
             var ocppGateway_jsonRequestMessageReceived                   = new ConcurrentList<OCPP_JSONRequestMessage>();
-            var ocppGateway_BootNotificationRequestsReceived             = new ConcurrentList<BootNotificationRequest>();
-            var ocppGateway_BootNotificationRequestsForwardingDecisions  = new ConcurrentList<ForwardingDecision<BootNotificationRequest, BootNotificationResponse>>();
-            var ocppGateway_BootNotificationRequestsSent                 = new ConcurrentList<BootNotificationRequest>();
+         //   var ocppGateway_BootNotificationRequestsReceived             = new ConcurrentList<BootNotificationRequest>();
+         //   var ocppGateway_BootNotificationRequestsForwardingDecisions  = new ConcurrentList<ForwardingDecision<BootNotificationRequest, BootNotificationResponse>>();
+         //   var ocppGateway_BootNotificationRequestsSent                 = new ConcurrentList<BootNotificationRequest>();
+            var ocppGateway_JSONRequestsForwardingDecisions              = new ConcurrentList<ForwardingDecision>();
             var ocppGateway_jsonRequestMessageSent                       = new ConcurrentList<OCPP_JSONRequestMessage>();
 
             ocppGateway.OCPP.IN.     OnJSONRequestMessageReceived       += (timestamp, sender, requestMessage) => {
@@ -828,18 +829,23 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationRequestReceived  += (timestamp, sender, connection, bootNotificationRequest) => {
-                ocppGateway_BootNotificationRequestsReceived.           TryAdd(bootNotificationRequest);
-                return Task.CompletedTask;
-            };
+            //ocppGateway.OCPP.FORWARD.OnBootNotificationRequestReceived  += (timestamp, sender, connection, bootNotificationRequest) => {
+            //    ocppGateway_BootNotificationRequestsReceived.           TryAdd(bootNotificationRequest);
+            //    return Task.CompletedTask;
+            //};
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationRequestFiltered   += (timestamp, sender, connection, bootNotificationRequest, forwardingDecision) => {
-                ocppGateway_BootNotificationRequestsForwardingDecisions.TryAdd(forwardingDecision);
-                return Task.CompletedTask;
-            };
+            //ocppGateway.OCPP.FORWARD.OnBootNotificationRequestFiltered   += (timestamp, sender, connection, bootNotificationRequest, forwardingDecision) => {
+            //    ocppGateway_BootNotificationRequestsForwardingDecisions.TryAdd(forwardingDecision);
+            //    return Task.CompletedTask;
+            //};
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, connection, bootNotificationRequest, sendMessageResult) => {
-                ocppGateway_BootNotificationRequestsSent.               TryAdd(bootNotificationRequest);
+            //ocppGateway.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, connection, bootNotificationRequest, sendMessageResult) => {
+            //    ocppGateway_BootNotificationRequestsSent.               TryAdd(bootNotificationRequest);
+            //    return Task.CompletedTask;
+            //};
+
+            ocppGateway.OCPP.FORWARD.OnAnyJSONRequestFiltered           += (timestamp, sender, connection, jsonRequest, forwardingDecision, ct) => {
+                ocppGateway_JSONRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
@@ -1001,9 +1007,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 Assert.That(ocppLocalController_jsonRequestMessageSent.        First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation3.Id, ocppLocalController.Id ]).ToString()));
 
                 Assert.That(ocppGateway_jsonRequestMessageReceived.                                       Count,   Is.EqualTo(1));
-                Assert.That(ocppGateway_BootNotificationRequestsReceived.                                 Count,   Is.EqualTo(1));
-                Assert.That(ocppGateway_BootNotificationRequestsForwardingDecisions.                      Count,   Is.EqualTo(1));
-                Assert.That(ocppGateway_BootNotificationRequestsSent.                                     Count,   Is.EqualTo(1));
+                //Assert.That(ocppGateway_BootNotificationRequestsReceived.                                 Count,   Is.EqualTo(1));
+                //Assert.That(ocppGateway_BootNotificationRequestsForwardingDecisions.                      Count,   Is.EqualTo(1));
+                //Assert.That(ocppGateway_BootNotificationRequestsSent.                                     Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_JSONRequestsForwardingDecisions.                                  Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_jsonRequestMessageSent.                                           Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_jsonRequestMessageSent.                First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation3.Id, ocppLocalController.Id, ocppGateway.Id]).ToString()));
 
@@ -1048,7 +1055,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
         #region SendDataTransfer1()
 
         /// <summary>
-        /// Send BootNotification test.
+        /// Send a SendDataTransfer *implicitly* to the CSMS.
         /// </summary>
         [Test]
         public async Task SendDataTransfer1()
@@ -1132,7 +1139,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequest, forwardingDecision) => {
+            ocppLocalController.OCPP.FORWARD.OnDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequest, forwardingDecision, ct) => {
                 ocppLocalController_DataTransferRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
@@ -1167,7 +1174,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequest, forwardingDecision) => {
+            ocppGateway.OCPP.FORWARD.OnDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequest, forwardingDecision, ct) => {
                 ocppGateway_DataTransferRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
@@ -1380,7 +1387,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
         #region SendDataTransfer2()
 
         /// <summary>
-        /// Send BootNotification test.
+        /// Send a SendDataTransfer *explicitly* to the CSMS.
         /// </summary>
         [Test]
         public async Task SendDataTransfer2()
@@ -1464,7 +1471,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequest, forwardingDecision) => {
+            ocppLocalController.OCPP.FORWARD.OnDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequest, forwardingDecision, ct) => {
                 ocppLocalController_DataTransferRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
@@ -1499,7 +1506,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequest, forwardingDecision) => {
+            ocppGateway.OCPP.FORWARD.OnDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequest, forwardingDecision, ct) => {
                 ocppGateway_DataTransferRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
@@ -1630,7 +1637,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var dataTransferResponse1  = await chargingStation1.TransferData(
 
-                                                   DestinationId:       csms1.Id,
+                                                   DestinationId:       NetworkingNode_Id.CSMS,
                                                    VendorId:            Vendor_Id. GraphDefined,
                                                    MessageId:           Message_Id.GraphDefined_TestMessage,
                                                    Data:                "TestData",
@@ -1649,7 +1656,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var dataTransferResponse2  = await chargingStation1.TransferData(
 
-                                                   DestinationId:       csms1.Id,
+                                                   DestinationId:       NetworkingNode_Id.CSMS,
                                                    VendorId:            Vendor_Id. GraphDefined,
                                                    MessageId:           Message_Id.GraphDefined_TestMessage,
                                                    Data:                JSONObject.Create(new JProperty("test", "data")),
@@ -1668,7 +1675,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var dataTransferResponse3  = await chargingStation1.TransferData(
 
-                                                   DestinationId:       csms1.Id,
+                                                   DestinationId:       NetworkingNode_Id.CSMS,
                                                    VendorId:            Vendor_Id. GraphDefined,
                                                    MessageId:           Message_Id.GraphDefined_TestMessage,
                                                    Data:                new JArray("test", "data"),
@@ -1715,7 +1722,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
         #region SendBinaryDataTransfer1()
 
         /// <summary>
-        /// Send BootNotification test.
+        /// Send a SendBinaryDataTransfer *implicitly* to the CSMS.
         /// </summary>
         [Test]
         public async Task SendBinaryDataTransfer1()
@@ -1799,7 +1806,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBinaryDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequest, forwardingDecision) => {
+            ocppLocalController.OCPP.FORWARD.OnBinaryDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequest, forwardingDecision, ct) => {
                 ocppLocalController_BinaryDataTransferRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
@@ -1834,7 +1841,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBinaryDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequest, forwardingDecision) => {
+            ocppGateway.OCPP.FORWARD.OnBinaryDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequest, forwardingDecision, ct) => {
                 ocppGateway_BinaryDataTransferRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
