@@ -34,6 +34,9 @@ using cloud.charging.open.protocols.OCPPv2_1.NetworkingNode;
 using cloud.charging.open.protocols.OCPPv2_1.LocalController;
 using cloud.charging.open.protocols.OCPPv2_1.WebSockets;
 
+using cloud.charging.open.protocols.WWCP;
+using cloud.charging.open.protocols.WWCP.EMP;
+
 #endregion
 
 namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
@@ -55,8 +58,11 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
     /// between the Gateway and the CSMS the OCPP Overlay Network transport
     /// is used.
     /// 
-    /// [cs1] ──⭨                   🡵 [csms1]
-    /// [cs2] ───→ [lc] ━━━► [gw] ━━━► [csms2]
+    /// Both CSMSs have an internal WWCP Roaming Network and an internal
+    /// E-Mobility Service Provider (iEMP).
+    /// 
+    /// [cs1] ──⭨                   🡵 [csms1, RN1] ━━━► [iEMP1]
+    /// [cs2] ───→ [lc] ━━━► [gw] ━━━► [csms2, RN2] ━━━► [iEMP2]
     /// [cs3] ──🡕    🡴━ [em]
     /// </summary>
     public abstract class AOverlayNetwork
@@ -64,15 +70,25 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
         #region Data
 
+        public String                       RFIDUID1  = "11-22-33-44-55-66-77";
+        public String                       RFIDUID2  = "AA-BB-CC-55-DD-EE-FF";
+
         public TestCSMSNode?                csms1;
         public IPPort                       csms1_tcpPort                               = IPPort.Parse(5001);
         public OCPPWebSocketServer?         csms1_OCPPWebSocketServer;
         public KeyPair?                     csms1_keyPair;
+        public RoamingNetwork?              csms1_roamingNetwork;
+        public IChargingStationOperator?    csms1_cso;
+        public IEMobilityProvider?          csms1_emp;
+        public EMobilityServiceProvider?    csms1_remoteEMP;
 
         public TestCSMSNode?                csms2;
         public IPPort                       csms2_tcpPort                               = IPPort.Parse(5002);
         public OCPPWebSocketServer?         csms2_OCPPWebSocketServer;
         public KeyPair?                     csms2_keyPair;
+        public RoamingNetwork?              csms2_roamingNetwork;
+        public IChargingStationOperator?    csms2_cso;
+        public EMobilityServiceProvider?    csms2_emp;
 
         public TestGatewayNode?             ocppGateway;
         public IPPort                       ocppGateway_tcpPort                         = IPPort.Parse(5011);
@@ -91,6 +107,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
         public TestChargingStationNode?     chargingStation1;
         public KeyPair?                     chargingStation1_keyPair;
+        public IChargingPool                p1;
+        public IChargingStation             s1;
+        public IEVSE?                       e1;
 
         public TestChargingStationNode?     chargingStation2;
         public KeyPair?                     chargingStation2_keyPair;
@@ -193,6 +212,129 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #endregion
 
+            csms1_roamingNetwork          = new RoamingNetwork(
+                                                RoamingNetwork_Id.Parse("PROD"),
+                                                I18NString.Create("Default EV Roaming Network")
+                                            );
+
+            var csms1_addCSOResult        = await csms1_roamingNetwork.CreateChargingStationOperator(
+                                                      Id:                                     ChargingStationOperator_Id.Parse("DE*GEF"),
+                                                      Name:                                   I18NString.Create("GraphDefined CSO"),
+                                                      Description:                            I18NString.Create("GraphDefined CSO Node 1"),
+                                                      RemoteChargingStationOperatorCreator:   cso => new ChargingStationOperatorAdapter(csms1, cso)
+                                                  );
+
+            csms1_cso = csms1_addCSOResult.Entity!;
+
+
+
+
+
+            csms1.OCPP.IN.RemoveAllEventHandlers(nameof(csms1.OCPP.IN.OnAuthorize));
+
+            csms1.OCPP.IN.OnAuthorize += async (timestamp, sender, connection, authorizeRequest, ct) => {
+
+                var cs               = authorizeRequest.NetworkPath.Source;
+
+                var authStartResult  = await csms1_roamingNetwork.AuthorizeStart(
+                                                 LocalAuthentication:   LocalAuthentication.FromAuthToken(
+                                                                            AuthenticationToken.Parse(
+                                                                                authorizeRequest.IdToken.Value
+                                                                            )
+                                                                        ),
+                                                 ChargingLocation:      null,
+                                                 ChargingProduct:       null,
+                                                 SessionId:             null,
+                                                 CPOPartnerSessionId:   null,
+                                                 OperatorId:            csms1_cso.Id,
+
+                                                 RequestTimestamp:             timestamp,
+                                                 EventTrackingId:       authorizeRequest.EventTrackingId,
+                                                 RequestTimeout:        null,
+                                                 CancellationToken:     ct
+                                             );
+
+                return authStartResult.Result switch {
+
+                    #region Authorized
+
+                    AuthStartResultTypes.Authorized
+                        => new AuthorizeResponse(
+                               Request:                 authorizeRequest,
+                               IdTokenInfo:             new IdTokenInfo(
+                                                            Status:                AuthorizationStatus.Accepted,
+                                                            ChargingPriority:      null,
+                                                            CacheExpiryDateTime:   null,
+                                                            ValidEVSEIds:          null,
+                                                            HasChargingTariff:     null,
+                                                            GroupIdToken:          null,
+                                                            Language1:             null,
+                                                            Language2:             null,
+                                                            PersonalMessage:       null,
+                                                            CustomData:            null
+                                                        ),
+                               CertificateStatus:       null,
+                               AllowedEnergyTransfer:   null,
+                               TransactionLimits:       null,
+                               ResponseTimestamp:       authStartResult.ResponseTimestamp,
+
+                               DestinationId:           authorizeRequest.NetworkPath.Source,
+                               NetworkPath:             NetworkPath.Empty,
+
+                               SignKeys:                null,
+                               SignInfos:               null,
+                               Signatures:              null,
+
+                               CustomData:              null
+                           ),
+
+                    #endregion
+
+                    #region default
+
+                    _ => new AuthorizeResponse(
+                             Request:                   authorizeRequest,
+                             IdTokenInfo:               new IdTokenInfo(
+                                                            AuthorizationStatus.Invalid
+                                                        ),
+                             CertificateStatus:         null,
+                             AllowedEnergyTransfer:     null,
+                             TransactionLimits:         null,
+                             ResponseTimestamp:         authStartResult.ResponseTimestamp,
+
+                             DestinationId:             authorizeRequest.NetworkPath.Source,
+                             NetworkPath:               NetworkPath.Empty,
+
+                             SignKeys:                  null,
+                             SignInfos:                 null,
+                             Signatures:                null,
+
+                             CustomData:                null
+                         )
+
+                    #endregion
+
+                };
+
+            };
+
+
+            var csms1_addEMPResult1   = await csms1_roamingNetwork.CreateEMobilityServiceProvider(
+                                                  Id:            EMobilityProvider_Id.Parse("DE-GDF"),
+                                                  Name:          I18NString.Create("GraphDefined EMP"),
+                                                  Description:   I18NString.Create("GraphDefined EMP Node 1")
+                                              );
+
+            csms1_emp                 = csms1_addEMPResult1.Entity!;
+            csms1_remoteEMP           = csms1_emp.RemoteEMobilityProvider as EMobilityServiceProvider;
+
+            csms1_remoteEMP?.AddToken(
+                LocalAuthentication.FromAuthToken(
+                    AuthenticationToken.ParseHEX(RFIDUID1)
+                ),
+                TokenAuthorizationResultType.Authorized
+            );
+
             #endregion
 
             #region Setup Charging Station Management System 2
@@ -264,6 +406,19 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                            VerificationRuleActions.VerifyAll);
 
             #endregion
+
+            csms2_roamingNetwork      = new RoamingNetwork(
+                                            RoamingNetwork_Id.Parse("PROD"),
+                                            I18NString.Create("Default EV Roaming Network")
+                                        );
+
+            var csms2_addCSOResult    = await csms2_roamingNetwork.CreateChargingStationOperator(
+                                                  ChargingStationOperator_Id.Parse("DE*GEF"),
+                                                  I18NString.Create("GraphDefined CSO"),
+                                                  I18NString.Create("GraphDefined CSO Node 2")
+                                              );
+
+            csms2_cso = csms2_addCSOResult.Entity;
 
             #endregion
 
@@ -759,6 +914,167 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                                       VerificationRuleActions.VerifyAll);
 
             #endregion
+
+
+
+            var csms1_addLocation1Result  = await csms1_cso.AddChargingPool(
+
+                                                      Id:                             protocols.WWCP.ChargingPool_Id.Parse("DE*GEF*P123"),
+                                                      Name:                           I18NString.Create(Languages.en, "ChargingPool DE*GEF 123"),
+                                                      Description:                    I18NString.Create(Languages.en, "Pool #1"),
+                                                      //RemoteChargingPoolCreator:      cp => new LocalControllerAdapter(csms1, cp, ocppLocalController),
+
+                                                      Address:                        null,
+                                                      GeoLocation:                    null,
+                                                      TimeZone:                       null,
+                                                      OpeningTimes:                   null,
+                                                      ChargingWhenClosed:             null,
+                                                      Accessibility:                  null,
+                                                      LocationLanguage:               null,
+                                                      HotlinePhoneNumber:             null,
+
+                                                      Brands:                         null,
+                                                      MobilityRootCAs:                null,
+
+                                                      InitialAdminStatus:             null,
+                                                      InitialStatus:                  null,
+                                                      MaxAdminStatusScheduleSize:     null,
+                                                      MaxStatusScheduleSize:          null
+
+                                                      //DataSource:                     null,
+                                                      //LastChange:                     null,
+
+                                                      //CustomData:                     null,
+                                                      //InternalData:                   null,
+
+                                                      //Configurator:                   null,
+                                                      //RemoteChargingPoolCreator:      null,
+
+                                                      //OnSuccess:                      null,
+                                                      //OnError:                        null,
+
+                                                      //SkipAddedNotifications:         null,
+                                                      //AllowInconsistentOperatorIds:   null,
+                                                      //EventTrackingId:                null,
+                                                      //CurrentUserId:                  null
+
+                                                  );
+
+            p1 = csms1_addLocation1Result.Entity!;
+
+            var csms1_addStation1Result   = await p1.AddChargingStation(
+
+                                                      Id:                             protocols.WWCP.ChargingStation_Id.Parse("DE*GEF*S123*456"),
+                                                      Name:                           I18NString.Create(Languages.en, "ChargingStation DE*GEF 123*456"),
+                                                      Description:                    I18NString.Create(Languages.en, "Pool #1, Station #1"),
+                                                      //RemoteChargingStationCreator:   cs => new ChargingStationAdapter(csms1, cs, chargingStation1),
+
+                                                      Address:                        null,
+                                                      GeoLocation:                    null,
+                                                      OpeningTimes:                   null,
+                                                      ChargingWhenClosed:             null,
+                                                      Accessibility:                  null,
+                                                      LocationLanguage:               null,
+                                                      PhysicalReference:              null,
+                                                      HotlinePhoneNumber:             null,
+
+                                                      AuthenticationModes:            null,
+                                                      PaymentOptions:                 null,
+                                                      Features:                       null,
+
+                                                      ServiceIdentification:          null,
+                                                      ModelCode:                      null,
+
+                                                      Published:                      null,
+                                                      Disabled:                       null,
+
+                                                      Brands:                         null,
+                                                      MobilityRootCAs:                null,
+
+                                                      InitialAdminStatus:             null,
+                                                      InitialStatus:                  null,
+                                                      MaxAdminStatusScheduleSize:     null,
+                                                      MaxStatusScheduleSize:          null
+
+                                                      //DataSource:                     null,
+                                                      //LastChange:                     null,
+
+                                                      //CustomData:                     null,
+                                                      //InternalData:                   null,
+
+                                                      //Configurator:                   null,
+                                                      //RemoteChargingStationCreator:   null,
+
+                                                      //OnSuccess:                      null,
+                                                      //OnError:                        null,
+
+                                                      //SkipAddedNotifications:         null,
+                                                      //AllowInconsistentOperatorIds:   null,
+                                                      //EventTrackingId:                null,
+                                                      //CurrentUserId:                  null
+
+                                                  );
+
+            s1 = csms1_addStation1Result.Entity!;
+
+            var csms1_addEVSE1Result      = await s1.AddEVSE(
+                                                      Id:                             protocols.WWCP.EVSE_Id.Parse("DE*GEF*E123*456*1"),
+                                                      Name:                           I18NString.Create(Languages.en, "EVSE DE*GEF 123*456*1"),
+                                                      Description:                    I18NString.Create(Languages.en, "Pool #1, Station #1, EVSE #1"),
+
+                                                      PhotoURLs:                      null,
+                                                      Brands:                         null,
+                                                      MobilityRootCAs:                null,
+                                                      OpenDataLicenses:               null,
+                                                      ChargingModes:                  null,
+                                                      ChargingTariffs:                null,
+                                                      CurrentType:                    protocols.WWCP.CurrentTypes.DC,
+                                                      AverageVoltage:                 Volt.  ParseV (600),
+                                                      AverageVoltageRealTime:         null,
+                                                      AverageVoltagePrognoses:        null,
+                                                      MaxCurrent:                     Ampere.ParseA (500),
+                                                      MaxCurrentRealTime:             null,
+                                                      MaxCurrentPrognoses:            null,
+                                                      MaxPower:                       Watt.  ParseKW(300),
+                                                      MaxPowerRealTime:               null,
+                                                      MaxPowerPrognoses:              null,
+                                                      MaxCapacity:                    null,
+                                                      MaxCapacityRealTime:            null,
+                                                      MaxCapacityPrognoses:           null,
+                                                      EnergyMix:                      null,
+                                                      EnergyMixRealTime:              null,
+                                                      EnergyMixPrognoses:             null,
+                                                      EnergyMeter:                    null,
+                                                      IsFreeOfCharge:                 null,
+                                                      ChargingConnectors:             null,
+                                                      ChargingSession:                null,
+
+                                                      InitialAdminStatus:             null,
+                                                      InitialStatus:                  null,
+                                                      MaxAdminStatusScheduleSize:     null,
+                                                      MaxStatusScheduleSize:          null,
+                                                      LastStatusUpdate:               null
+
+                                                      //DataSource:                     null,
+                                                      //LastChange:                     null,
+                                                      //
+                                                      //CustomData:                     null,
+                                                      //InternalData:                   null,
+                                                      //
+                                                      //Configurator:                   null,
+                                                      //RemoteEVSECreator:              null,
+                                                      //
+                                                      //OnSuccess:                      null,
+                                                      //OnError:                        null,
+                                                      //
+                                                      //SkipAddedNotifications:         null,
+                                                      //AllowInconsistentOperatorIds:   null,
+                                                      //EventTrackingId:                null,
+                                                      //CurrentUserId:                  null
+
+                                                  );
+
+            e1 = csms1_addEVSE1Result.Entity!;
 
             #endregion
 

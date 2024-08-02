@@ -15,8 +15,11 @@ the Gateway, between the Local Controller and the Energy Meter, and
 between the Gateway and the CSMS the OCPP Overlay Network transport
 is used.
 
+Both CSMSs have an internal WWCP Roaming Network and an internal
+E-Mobility Service Provider (iEMP).
+
 ```
-[cs1] ──⭨                   🡵 [csms1]
-[cs2] ───→ [lc] ━━━► [gw] ━━━► [csms2]
+[cs1] ──⭨                   🡵 [csms1, RN1] ━━━► [iEMP1]
+[cs2] ───→ [lc] ━━━► [gw] ━━━► [csms2, RN1] ━━━► [iEMP2]
 [cs3] ──🡕    🡴━ [em]
 ```

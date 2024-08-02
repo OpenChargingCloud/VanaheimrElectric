@@ -1407,7 +1407,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppEnergyMeter.OCPP.IN.OnAuthorizeResponseReceived         += (timestamp, sender, request, response, runtime) => {
+            ocppEnergyMeter.OCPP.IN.OnAuthorizeResponseReceived         += (timestamp, sender, connection, request, response, runtime) => {
                 ocppEnergyMeter_AuthorizeResponsesReceived.             TryAdd(response);
                 return Task.CompletedTask;
             };

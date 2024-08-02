@@ -28,6 +28,7 @@ using cloud.charging.open.protocols.OCPPv2_1.CS;
 using cloud.charging.open.protocols.OCPPv2_1.CSMS;
 using cloud.charging.open.protocols.OCPPv2_1.WebSockets;
 using cloud.charging.open.protocols.OCPPv2_1.NetworkingNode;
+using cloud.charging.open.protocols.WWCP;
 
 #endregion
 
@@ -2190,7 +2191,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnAuthorizeResponseReceived   += (timestamp, sender, request, response, runtime) => {
+            ocppGateway.OCPP.FORWARD.OnAuthorizeResponseReceived   += (timestamp, sender, connection, request, response, runtime) => {
                 ocppGateway_AuthorizeResponsesReceived.  TryAdd(response);
                 return Task.CompletedTask;
             };
@@ -2224,7 +2225,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnAuthorizeResponseReceived   += (timestamp, sender, request, response, runtime) => {
+            ocppLocalController.OCPP.FORWARD.OnAuthorizeResponseReceived   += (timestamp, sender, connection, request, response, runtime) => {
                 ocppLocalController_AuthorizeResponsesReceived.  TryAdd(response);
                 return Task.CompletedTask;
             };
@@ -2246,7 +2247,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            chargingStation1.OCPP.IN.OnAuthorizeResponseReceived   += (timestamp, sender, request, response, runtime) => {
+            chargingStation1.OCPP.IN.OnAuthorizeResponseReceived   += (timestamp, sender, connection, request, response, runtime) => {
                 chargingStation1_AuthorizeResponsesReceived. TryAdd(response);
                 return Task.CompletedTask;
             };
@@ -2256,7 +2257,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var authorizeResponse = await chargingStation1.Authorize(
 
-                                              IdToken:                       IdToken.TryParseRFID("1234567890")!,
+                                              IdToken:                       IdToken.TryParseRFID(RFIDUID1)!,
                                               Certificate:                   null,
                                               ISO15118CertificateHashData:   null,
                                               CustomData:                    null,
@@ -2588,7 +2589,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var meterValuesResponse = await chargingStation1.SendMeterValues(
 
-                                              EVSEId:             EVSE_Id.Parse(0),
+                                              EVSEId:             protocols.OCPPv2_1.EVSE_Id.Parse(0),
                                               MeterValues:        [
                                                                       new MeterValue(
                                                                           Timestamp:       Timestamp.Now,
@@ -2676,6 +2677,385 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 //Assert.That(chargingStation1_MeterValuesResponsesReceived.First().DestinationId,              Is.EqualTo(chargingStation1.Id));
                 Assert.That(chargingStation1_jsonMessageResponseReceived.      First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
                 //Assert.That(chargingStation1_MeterValuesResponsesReceived.First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
+
+            });
+
+        }
+
+        #endregion
+
+
+
+        #region SendRemoteStart_viaEMP_Test1()
+
+        /// <summary>
+        /// Send SendRemoteStart via EMP test 1
+        /// </summary>
+        [Test]
+        public async Task SendRemoteStart_viaEMP_Test1()
+        {
+
+            #region Initial checks
+
+            if (csms1               is null ||
+                csms1_cso           is null ||
+                csms1_emp           is null ||
+                csms1_remoteEMP     is null ||
+                csms2               is null ||
+                ocppGateway         is null ||
+                ocppLocalController is null ||
+                chargingStation1    is null ||
+                e1                  is null ||
+                chargingStation2    is null ||
+                chargingStation3    is null)
+            {
+
+                Assert.Multiple(() => {
+
+                    if (csms1               is null)
+                        Assert.Fail("The csms 1 must not be null!");
+
+                    if (csms1_cso           is null)
+                        Assert.Fail("The csms CSO must not be null!");
+
+                    if (csms1_emp           is null)
+                        Assert.Fail("The csms EMP must not be null!");
+
+                    if (csms1_remoteEMP     is null)
+                        Assert.Fail("The csms remote EMP must not be null!");
+
+                    if (csms2               is null)
+                        Assert.Fail("The csms 2 must not be null!");
+
+                    if (ocppGateway         is null)
+                        Assert.Fail("The gateway must not be null!");
+
+                    if (ocppLocalController is null)
+                        Assert.Fail("The local controller must not be null!");
+
+                    if (chargingStation1    is null)
+                        Assert.Fail("The charging station 1 must not be null!");
+
+                    if (e1                  is null)
+                        Assert.Fail("The EVSE 1 of charging station 1 must not be null!");
+
+                    if (chargingStation2    is null)
+                        Assert.Fail("The charging station 2 must not be null!");
+
+                    if (chargingStation3    is null)
+                        Assert.Fail("The charging station 3 must not be null!");
+
+                });
+
+                return;
+
+            }
+
+            #endregion
+
+
+            var csms1_remoteEMP_OnRemoteStartRequest = 0;
+
+            csms1_remoteEMP.OnRemoteStartRequest += (logTimestamp,
+                                                     requestTimestamp,
+                                                     sender,
+                                                     eventTrackingId,
+                                                     roamingNetworkId,
+                                                     chargingLocation,
+                                                     remoteAuthentication,
+                                                     sessionId,
+                                                     reservationId,
+                                                     chargingProduct,
+                                                     empRoamingProviderId,
+                                                     csoRoamingProviderId,
+                                                     providerId,
+                                                     requestTimeout) => {
+                csms1_remoteEMP_OnRemoteStartRequest++;
+                return Task.CompletedTask;
+            };
+
+            var roamingNetwork_OnRemoteStartRequest = 0;
+
+            csms1_remoteEMP.RoamingNetwork.OnRemoteStartRequest += (logTimestamp,
+                                                                    requestTimestamp,
+                                                                    sender,
+                                                                    eventTrackingId,
+                                                                    roamingNetworkId,
+                                                                    chargingLocation,
+                                                                    remoteAuthentication,
+                                                                    sessionId,
+                                                                    reservationId,
+                                                                    chargingProduct,
+                                                                    empRoamingProviderId,
+                                                                    csoRoamingProviderId,
+                                                                    providerId,
+                                                                    requestTimeout) => {
+                roamingNetwork_OnRemoteStartRequest++;
+                return Task.CompletedTask;
+            };
+
+            var csms1_cso_OnRemoteStartRequest = 0;
+
+            csms1_cso.OnRemoteStartRequest += (logTimestamp,
+                                               requestTimestamp,
+                                               sender,
+                                               eventTrackingId,
+                                               roamingNetworkId,
+                                               chargingLocation,
+                                               remoteAuthentication,
+                                               sessionId,
+                                               reservationId,
+                                               chargingProduct,
+                                               empRoamingProviderId,
+                                               csoRoamingProviderId,
+                                               providerId,
+                                               requestTimeout) => {
+                csms1_cso_OnRemoteStartRequest++;
+                return Task.CompletedTask;
+            };
+
+
+            var p1_OnRemoteStartRequest = 0;
+
+            p1.OnRemoteStartRequest += (logTimestamp,
+                                        requestTimestamp,
+                                        sender,
+                                        eventTrackingId,
+                                        roamingNetworkId,
+                                        chargingLocation,
+                                        remoteAuthentication,
+                                        sessionId,
+                                        reservationId,
+                                        chargingProduct,
+                                        empRoamingProviderId,
+                                        csoRoamingProviderId,
+                                        providerId,
+                                        requestTimeout) => {
+                p1_OnRemoteStartRequest++;
+                return Task.CompletedTask;
+            };
+
+
+            var s1_OnRemoteStartRequest = 0;
+
+            s1.OnRemoteStartRequest += (logTimestamp,
+                                        requestTimestamp,
+                                        sender,
+                                        eventTrackingId,
+                                        roamingNetworkId,
+                                        chargingLocation,
+                                        remoteAuthentication,
+                                        sessionId,
+                                        reservationId,
+                                        chargingProduct,
+                                        empRoamingProviderId,
+                                        csoRoamingProviderId,
+                                        providerId,
+                                        requestTimeout) => {
+                s1_OnRemoteStartRequest++;
+                return Task.CompletedTask;
+            };
+
+
+            var e1_OnRemoteStartRequest = 0;
+
+            e1.OnRemoteStartRequest += (logTimestamp,
+                                        requestTimestamp,
+                                        sender,
+                                        eventTrackingId,
+                                        roamingNetworkId,
+                                        chargingLocation,
+                                        remoteAuthentication,
+                                        sessionId,
+                                        reservationId,
+                                        chargingProduct,
+                                        empRoamingProviderId,
+                                        csoRoamingProviderId,
+                                        providerId,
+                                        requestTimeout) => {
+                e1_OnRemoteStartRequest++;
+                return Task.CompletedTask;
+            };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            var e1_OnRemoteStartResponse = 0;
+
+            e1.OnRemoteStartResponse += (logTimestamp,
+                                         requestTimestamp,
+                                         sender,
+                                         eventTrackingId,
+                                         roamingNetworkId,
+                                         chargingLocation,
+                                         remoteAuthentication,
+                                         sessionId,
+                                         reservationId,
+                                         chargingProduct,
+                                         empRoamingProviderId,
+                                         csoRoamingProviderId,
+                                         providerId,
+                                         requestTimeout,
+                                         result,
+                                         runtime) => {
+                e1_OnRemoteStartResponse++;
+                return Task.CompletedTask;
+            };
+
+
+            var s1_OnRemoteStartResponse = 0;
+
+            s1.OnRemoteStartResponse += (logTimestamp,
+                                         requestTimestamp,
+                                         sender,
+                                         eventTrackingId,
+                                         roamingNetworkId,
+                                         chargingLocation,
+                                         remoteAuthentication,
+                                         sessionId,
+                                         reservationId,
+                                         chargingProduct,
+                                         empRoamingProviderId,
+                                         csoRoamingProviderId,
+                                         providerId,
+                                         requestTimeout,
+                                         result,
+                                         runtime) => {
+                s1_OnRemoteStartResponse++;
+                return Task.CompletedTask;
+            };
+
+
+            var p1_OnRemoteStartResponse = 0;
+
+            p1.OnRemoteStartResponse += (logTimestamp,
+                                         requestTimestamp,
+                                         sender,
+                                         eventTrackingId,
+                                         roamingNetworkId,
+                                         chargingLocation,
+                                         remoteAuthentication,
+                                         sessionId,
+                                         reservationId,
+                                         chargingProduct,
+                                         empRoamingProviderId,
+                                         csoRoamingProviderId,
+                                         providerId,
+                                         requestTimeout,
+                                         result,
+                                         runtime) => {
+                p1_OnRemoteStartResponse++;
+                return Task.CompletedTask;
+            };
+
+
+            var csms1_cso_OnRemoteStartResponse = 0;
+
+            csms1_cso.OnRemoteStartResponse += (logTimestamp,
+                                                requestTimestamp,
+                                                sender,
+                                                eventTrackingId,
+                                                roamingNetworkId,
+                                                chargingLocation,
+                                                remoteAuthentication,
+                                                sessionId,
+                                                reservationId,
+                                                chargingProduct,
+                                                empRoamingProviderId,
+                                                csoRoamingProviderId,
+                                                providerId,
+                                                requestTimeout,
+                                                result,
+                                                runtime) => {
+                csms1_cso_OnRemoteStartResponse++;
+                return Task.CompletedTask;
+            };
+
+
+            var roamingNetwork_OnRemoteStartResponse = 0;
+
+            csms1_remoteEMP.RoamingNetwork.OnRemoteStartResponse += (logTimestamp,
+                                                                     requestTimestamp,
+                                                                     sender,
+                                                                     eventTrackingId,
+                                                                     roamingNetworkId,
+                                                                     chargingLocation,
+                                                                     remoteAuthentication,
+                                                                     sessionId,
+                                                                     reservationId,
+                                                                     chargingProduct,
+                                                                     empRoamingProviderId,
+                                                                     csoRoamingProviderId,
+                                                                     providerId,
+                                                                     requestTimeout,
+                                                                     result,
+                                                                     runtime) => {
+                roamingNetwork_OnRemoteStartResponse++;
+                return Task.CompletedTask;
+            };
+
+
+            var csms1_remoteEMP_OnRemoteStartResponse = 0;
+
+            csms1_remoteEMP.OnRemoteStartResponse += (logTimestamp,
+                                                      requestTimestamp,
+                                                      sender,
+                                                      eventTrackingId,
+                                                      roamingNetworkId,
+                                                      chargingLocation,
+                                                      remoteAuthentication,
+                                                      sessionId,
+                                                      reservationId,
+                                                      chargingProduct,
+                                                      empRoamingProviderId,
+                                                      csoRoamingProviderId,
+                                                      providerId,
+                                                      requestTimeout,
+                                                      result,
+                                                      runtime) => {
+                csms1_remoteEMP_OnRemoteStartResponse++;
+                return Task.CompletedTask;
+            };
+
+
+            var remoteStartResult = await csms1_remoteEMP.RemoteStart(
+
+                                              ChargingLocation:         ChargingLocation.FromEVSEId(e1.Id),
+                                              ChargingProduct:          null,
+                                              ReservationId:            null,
+                                              SessionId:                null,
+                                              RemoteAuthentication:     RemoteAuthentication.FromRemoteIdentification(
+                                                                            EMobilityAccount_Id.Parse("DE-GDF-C12345678-X")
+                                                                        ),
+                                              AdditionalSessionInfos:   null,
+                                              AuthenticationPath:       null,
+
+                                              RequestTimestamp:         null,
+                                              EventTrackingId:          null,
+                                              RequestTimeout:           null
+
+                                          );
+
+            Assert.Multiple(() => {
+
+                Assert.That(remoteStartResult.Result,   Is.EqualTo(RemoteStartResultTypes.Success));
 
             });
 
