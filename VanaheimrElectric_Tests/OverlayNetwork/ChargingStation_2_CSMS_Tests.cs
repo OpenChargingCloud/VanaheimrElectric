@@ -2754,6 +2754,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             #endregion
 
 
+            // EV Roaming
+
+            #region .1. CE-Mobility Provider Request
+
             var csms1_remoteEMP_OnRemoteStartRequest = 0;
 
             csms1_remoteEMP.OnRemoteStartRequest += (logTimestamp,
@@ -2773,6 +2777,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 csms1_remoteEMP_OnRemoteStartRequest++;
                 return Task.CompletedTask;
             };
+
+            #endregion
+
+            #region .2. RoamingNetwork Request
 
             var roamingNetwork_OnRemoteStartRequest = 0;
 
@@ -2794,6 +2802,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
+            #endregion
+
+            #region .3. Charging Station Operator Request
+
             var csms1_cso_OnRemoteStartRequest = 0;
 
             csms1_cso.OnRemoteStartRequest += (logTimestamp,
@@ -2814,6 +2826,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
+            #endregion
+
+            #region .4. Charging Pool Request
 
             var p1_OnRemoteStartRequest = 0;
 
@@ -2835,6 +2850,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
+            #endregion
+
+            #region .5. Charging Station Request
 
             var s1_OnRemoteStartRequest = 0;
 
@@ -2856,6 +2874,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
+            #endregion
+
+            #region .6. EVSE Request
 
             var e1_OnRemoteStartRequest = 0;
 
@@ -2877,6 +2898,212 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
+            #endregion
+
+
+            // OCPP
+
+            #region  .7. The OCPP RequestStartTransaction request leaves the CSMS
+
+            var chargingStation1_RequestStartTransactionRequestSent  = new ConcurrentList<RequestStartTransactionRequest>();
+            var chargingStation1_jsonRequestMessageSent              = new ConcurrentList<OCPP_JSONRequestMessage>();
+
+            csms1.OCPP.OUT.OnRequestStartTransactionRequestSent     += (timestamp, sender, connection, requestStartTransactionRequest, sendMessageResult) => {
+                chargingStation1_RequestStartTransactionRequestSent.TryAdd(requestStartTransactionRequest);
+                return Task.CompletedTask;
+            };
+
+            csms1.OCPP.OUT.OnJSONRequestMessageSent                 += (timestamp, sender, connection, requestMessage, sendMessageResult) => {
+                chargingStation1_jsonRequestMessageSent. TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region .8. The OCPP Gateway receives and forwards the OCPP RequestStartTransaction request
+
+            var ocppGateway_jsonRequestMessageReceived                          = new ConcurrentList<OCPP_JSONRequestMessage>();
+            var ocppGateway_RequestStartTransactionRequestsReceived             = new ConcurrentList<RequestStartTransactionRequest>();
+            var ocppGateway_RequestStartTransactionRequestsForwardingDecisions  = new ConcurrentList<ForwardingDecision<RequestStartTransactionRequest, RequestStartTransactionResponse>>();
+            var ocppGateway_RequestStartTransactionRequestsSent                 = new ConcurrentList<RequestStartTransactionRequest>();
+            var ocppGateway_jsonRequestMessageSent                              = new ConcurrentList<OCPP_JSONRequestMessage>();
+
+            ocppGateway.OCPP.IN.     OnJSONRequestMessageReceived              += (timestamp, sender, requestMessage) => {
+                ocppGateway_jsonRequestMessageReceived.                        TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnRequestStartTransactionRequestReceived  += (timestamp, sender, connection, RequestStartTransactionRequest) => {
+                ocppGateway_RequestStartTransactionRequestsReceived.           TryAdd(RequestStartTransactionRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnRequestStartTransactionRequestFiltered  += (timestamp, sender, connection, RequestStartTransactionRequest, forwardingDecision) => {
+                ocppGateway_RequestStartTransactionRequestsForwardingDecisions.TryAdd(forwardingDecision);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnRequestStartTransactionRequestSent      += (timestamp, sender, connection, RequestStartTransactionRequest, sendMessageResult) => {
+                ocppGateway_RequestStartTransactionRequestsSent.               TryAdd(RequestStartTransactionRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.OUT.    OnJSONRequestMessageSent                  += (timestamp, sender, connection, requestMessage, sendMessageResult) => {
+                ocppGateway_jsonRequestMessageSent.                            TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region .9. The OCPP Local Controller receives and forwards the OCPP RequestStartTransaction request
+
+            var ocppLocalController_jsonRequestMessageReceived                          = new ConcurrentList<OCPP_JSONRequestMessage>();
+            var ocppLocalController_RequestStartTransactionRequestsReceived             = new ConcurrentList<RequestStartTransactionRequest>();
+            var ocppLocalController_RequestStartTransactionRequestsForwardingDecisions  = new ConcurrentList<ForwardingDecision<RequestStartTransactionRequest, RequestStartTransactionResponse>>();
+            var ocppLocalController_RequestStartTransactionRequestsSent                 = new ConcurrentList<RequestStartTransactionRequest>();
+            var ocppLocalController_jsonRequestMessageSent                              = new ConcurrentList<OCPP_JSONRequestMessage>();
+
+            ocppLocalController.OCPP.IN.     OnJSONRequestMessageReceived              += (timestamp, sender, requestMessage) => {
+                ocppLocalController_jsonRequestMessageReceived.                        TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnRequestStartTransactionRequestReceived  += (timestamp, sender, connection, RequestStartTransactionRequest) => {
+                ocppLocalController_RequestStartTransactionRequestsReceived.           TryAdd(RequestStartTransactionRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnRequestStartTransactionRequestFiltered  += (timestamp, sender, connection, RequestStartTransactionRequest, forwardingDecision) => {
+                ocppLocalController_RequestStartTransactionRequestsForwardingDecisions.TryAdd(forwardingDecision);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnRequestStartTransactionRequestSent      += (timestamp, sender, connection, RequestStartTransactionRequest, sendMessageResult) => {
+                ocppLocalController_RequestStartTransactionRequestsSent.               TryAdd(RequestStartTransactionRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.OUT.    OnJSONRequestMessageSent                  += (timestamp, sender, connection, requestMessage, sendMessageResult) => {
+                ocppLocalController_jsonRequestMessageSent.                            TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 10. The Charging Station receives the OCPP RequestStartTransaction request
+
+            var chargingStation1_jsonRequestMessageReceived                    = new ConcurrentList<OCPP_JSONRequestMessage>();
+            var chargingStation1_RequestStartTransactionRequestsReceived       = new ConcurrentList<RequestStartTransactionRequest>();
+
+            chargingStation1.OCPP.IN.OnJSONRequestMessageReceived             += (timestamp, sender, requestMessage) => {
+                chargingStation1_jsonRequestMessageReceived.             TryAdd(requestMessage);
+                return Task.CompletedTask;
+            };
+
+            chargingStation1.OCPP.IN.OnRequestStartTransactionRequestReceived += (timestamp, sender, connection, RequestStartTransactionRequest) => {
+                chargingStation1_RequestStartTransactionRequestsReceived.TryAdd(RequestStartTransactionRequest);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+
+            // processing...
+
+
+            // OCPP
+
+            #region 11. The Charging Station responds the OCPP RequestStartTransaction request
+
+            var chargingStation1_RequestStartTransactionResponsesSent        = new ConcurrentList<RequestStartTransactionResponse>();
+            var chargingStation1_jsonResponseMessagesSent                    = new ConcurrentList<OCPP_JSONResponseMessage>();
+
+            chargingStation1.OCPP.OUT.OnRequestStartTransactionResponseSent += (timestamp, sender, connection, request, response, runtime) => {
+                chargingStation1_RequestStartTransactionResponsesSent.TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            chargingStation1.OCPP.OUT.OnJSONResponseMessageSent             += (timestamp, sender, connection, responseMessage, sendMessageResult) => {
+                chargingStation1_jsonResponseMessagesSent.            TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 12. The OCPP Gateway receives and forwards the BootNotification response
+
+            var ocppLocalController_jsonResponseMessagesReceived                        = new ConcurrentList<OCPP_JSONResponseMessage>();
+            var ocppLocalController_RequestStartTransactionResponsesReceived            = new ConcurrentList<RequestStartTransactionResponse>();
+            var ocppLocalController_RequestStartTransactionResponsesSent                = new ConcurrentList<RequestStartTransactionResponse>();
+            var ocppLocalController_jsonResponseMessagesSent                            = new ConcurrentList<OCPP_JSONResponseMessage>();
+
+            ocppLocalController.OCPP.IN.     OnJSONResponseMessageReceived             += (timestamp, sender, responseMessage) => {
+                ocppLocalController_jsonResponseMessagesReceived.            TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnRequestStartTransactionResponseSent     += (timestamp, sender, connection, request, response, runtime) => {
+                ocppLocalController_RequestStartTransactionResponsesReceived.TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnRequestStartTransactionResponseReceived += (timestamp, sender, request, response, runtime) => {
+                ocppLocalController_RequestStartTransactionResponsesReceived.TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.OUT.    OnJSONResponseMessageSent                 += (timestamp, sender, connection, responseMessage, sendMessageResult) => {
+                ocppLocalController_jsonResponseMessagesSent.                TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 13. The OCPP Local Controller receives and forwards the BootNotification response
+
+            var ocppGateway_jsonResponseMessagesReceived                        = new ConcurrentList<OCPP_JSONResponseMessage>();
+            var ocppGateway_RequestStartTransactionResponsesReceived            = new ConcurrentList<RequestStartTransactionResponse>();
+            var ocppGateway_RequestStartTransactionResponsesSent                = new ConcurrentList<RequestStartTransactionResponse>();
+            var ocppGateway_jsonResponseMessagesSent                            = new ConcurrentList<OCPP_JSONResponseMessage>();
+
+            ocppGateway.OCPP.IN.     OnJSONResponseMessageReceived             += (timestamp, sender, responseMessage) => {
+                ocppGateway_jsonResponseMessagesReceived.            TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnRequestStartTransactionResponseReceived += (timestamp, sender, request, response, runtime) => {
+                ocppGateway_RequestStartTransactionResponsesReceived.TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnRequestStartTransactionResponseSent     += (timestamp, sender, connection, request, response, runtime) => {
+                ocppGateway_RequestStartTransactionResponsesSent.    TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.OUT.    OnJSONResponseMessageSent                 += (timestamp, sender, connection, responseMessage, sendMessageResult) => {
+                ocppGateway_jsonResponseMessagesSent.                TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 14. The Charging Station receives the BootNotification response
+
+            var csms1_jsonMessageResponseReceived                    = new ConcurrentList<OCPP_JSONResponseMessage>();
+            var csms1_RequestStartTransactionResponsesReceived       = new ConcurrentList<RequestStartTransactionResponse>();
+
+            csms1.OCPP.IN.OnJSONResponseMessageReceived             += (timestamp, sender, responseMessage) => {
+                csms1_jsonMessageResponseReceived.             TryAdd(responseMessage);
+                return Task.CompletedTask;
+            };
+
+            csms1.OCPP.IN.OnRequestStartTransactionResponseReceived += (timestamp, sender, request, response, runtime) => {
+                csms1_RequestStartTransactionResponsesReceived.TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            #endregion
 
 
 
@@ -2887,15 +3114,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
 
 
+            // EV Roaming
 
-
-
-
-
-
-
-
-
+            #region EVSE Response
 
             var e1_OnRemoteStartResponse = 0;
 
@@ -2919,6 +3140,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
+            #endregion
+
+            #region Charging Station Response
 
             var s1_OnRemoteStartResponse = 0;
 
@@ -2942,6 +3166,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
+            #endregion
+
+            #region Charging Pool Response
 
             var p1_OnRemoteStartResponse = 0;
 
@@ -2965,6 +3192,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
+            #endregion
+
+            #region Charging Station Operator Response
 
             var csms1_cso_OnRemoteStartResponse = 0;
 
@@ -2988,6 +3218,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
+            #endregion
+
+            #region Roaming Network Response
 
             var roamingNetwork_OnRemoteStartResponse = 0;
 
@@ -3011,6 +3244,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
+            #endregion
+
+            #region E-Mobility Provider Response
 
             var csms1_remoteEMP_OnRemoteStartResponse = 0;
 
@@ -3034,6 +3270,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
+            #endregion
+
 
             var remoteStartResult = await csms1_remoteEMP.RemoteStart(
 
@@ -3056,6 +3294,20 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             Assert.Multiple(() => {
 
                 Assert.That(remoteStartResult.Result,   Is.EqualTo(RemoteStartResultTypes.Success));
+
+                Assert.That(csms1_remoteEMP_OnRemoteStartRequest,   Is.EqualTo(1));
+                Assert.That(roamingNetwork_OnRemoteStartRequest,    Is.EqualTo(1));
+                Assert.That(csms1_cso_OnRemoteStartRequest,         Is.EqualTo(1));
+                Assert.That(p1_OnRemoteStartRequest,                Is.EqualTo(1));
+                Assert.That(s1_OnRemoteStartRequest,                Is.EqualTo(1));
+                Assert.That(e1_OnRemoteStartRequest,                Is.EqualTo(1));
+
+                Assert.That(e1_OnRemoteStartResponse,               Is.EqualTo(1));
+                Assert.That(s1_OnRemoteStartResponse,               Is.EqualTo(1));
+                Assert.That(p1_OnRemoteStartResponse,               Is.EqualTo(1));
+                Assert.That(csms1_cso_OnRemoteStartResponse,        Is.EqualTo(1));
+                Assert.That(roamingNetwork_OnRemoteStartResponse,   Is.EqualTo(1));
+                Assert.That(csms1_remoteEMP_OnRemoteStartResponse,  Is.EqualTo(1));
 
             });
 

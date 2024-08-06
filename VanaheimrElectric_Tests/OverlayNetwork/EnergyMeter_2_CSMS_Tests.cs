@@ -1421,7 +1421,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                                                   DestinationId:                 NetworkingNode_Id.CSMS,
 
-                                                  IdToken:                       IdToken.TryParseRFID("1234567890")!,
+                                                  IdToken:                       IdToken.TryParseRFID("01-23-45-67-89-AB-CD")!,
                                                   Certificate:                   null,
                                                   ISO15118CertificateHashData:   null,
                                                   CustomData:                    null,

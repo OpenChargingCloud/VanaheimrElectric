@@ -107,8 +107,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
         public TestChargingStationNode?     chargingStation1;
         public KeyPair?                     chargingStation1_keyPair;
-        public IChargingPool                p1;
-        public IChargingStation             s1;
+        public IChargingPool?               p1;
+        public IChargingStation?            s1;
         public IEVSE?                       e1;
 
         public TestChargingStationNode?     chargingStation2;
@@ -220,8 +220,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var csms1_addCSOResult        = await csms1_roamingNetwork.CreateChargingStationOperator(
                                                       Id:                                     ChargingStationOperator_Id.Parse("DE*GEF"),
                                                       Name:                                   I18NString.Create("GraphDefined CSO"),
-                                                      Description:                            I18NString.Create("GraphDefined CSO Node 1"),
-                                                      RemoteChargingStationOperatorCreator:   cso => new ChargingStationOperatorAdapter(csms1, cso)
+                                                      Description:                            I18NString.Create("GraphDefined CSO Node 1")
+                                                      //RemoteChargingStationOperatorCreator:   cso => new ChargingStationOperatorAdapter(csms1, cso)
                                                   );
 
             csms1_cso = csms1_addCSOResult.Entity!;
@@ -248,7 +248,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                  CPOPartnerSessionId:   null,
                                                  OperatorId:            csms1_cso.Id,
 
-                                                 RequestTimestamp:             timestamp,
+                                                 RequestTimestamp:      timestamp,
                                                  EventTrackingId:       authorizeRequest.EventTrackingId,
                                                  RequestTimeout:        null,
                                                  CancellationToken:     ct
@@ -454,7 +454,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var ocppGatewayConnectResult1    = await ocppGateway.ConnectWebSocketClient(
 
-                                                   NetworkingNodeId:             csms1.Id,
                                                    RemoteURL:                    URL.Parse($"ws://127.0.0.1:{csms1_tcpPort}"),
                                                    VirtualHostname:              null,
                                                    Description:                  null,
@@ -472,6 +471,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                                                    SecWebSocketProtocols:        null,
                                                    NetworkingMode:               NetworkingMode.OverlayNetwork,
+                                                   NextHopNetworkingNodeId:      csms1.Id,
 
                                                    DisableWebSocketPings:        false,
                                                    WebSocketPingEvery:           null,
@@ -501,7 +501,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var ocppGatewayConnectResult2    = await ocppGateway.ConnectWebSocketClient(
 
-                                                   NetworkingNodeId:             csms2.Id,
                                                    RemoteURL:                    URL.Parse($"ws://127.0.0.1:{csms2_tcpPort}"),
                                                    VirtualHostname:              null,
                                                    Description:                  null,
@@ -519,6 +518,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                                                    SecWebSocketProtocols:        null,
                                                    NetworkingMode:               NetworkingMode.OverlayNetwork,
+                                                   NextHopNetworkingNodeId:      csms2.Id,
 
                                                    DisableWebSocketPings:        false,
                                                    WebSocketPingEvery:           null,
@@ -623,7 +623,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var ocppLocalControllerConnectResult     = await ocppLocalController.ConnectWebSocketClient(
 
-                                                                 NetworkingNodeId:             NetworkingNode_Id.CSMS,
                                                                  RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppGateway_tcpPort}"),
                                                                  VirtualHostname:              null,
                                                                  Description:                  null,
@@ -641,6 +640,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                                                                  SecWebSocketProtocols:        null,
                                                                  NetworkingMode:               NetworkingMode.OverlayNetwork,
+                                                                 NextHopNetworkingNodeId:      ocppGateway.Id,
+                                                                 RoutingNetworkingNodeIds:     [ NetworkingNode_Id.CSMS ],
 
                                                                  DisableWebSocketPings:        false,
                                                                  WebSocketPingEvery:           null,
@@ -738,7 +739,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var ocppEnergyMeterConnectResult     = await ocppEnergyMeter.ConnectWebSocketClient(
 
-                                                             NetworkingNodeId:             NetworkingNode_Id.CSMS,
                                                              RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppLocalController_tcpPort}"),
                                                              VirtualHostname:              null,
                                                              Description:                  null,
@@ -756,6 +756,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                                                              SecWebSocketProtocols:        null,
                                                              NetworkingMode:               NetworkingMode.OverlayNetwork,
+                                                             NextHopNetworkingNodeId:      ocppLocalController.Id,
+                                                             RoutingNetworkingNodeIds:     [ NetworkingNode_Id.CSMS ],
 
                                                              DisableWebSocketPings:        false,
                                                              WebSocketPingEvery:           null,
@@ -864,7 +866,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var cs1ConnectResult  = await chargingStation1.ConnectWebSocketClient(
 
-                                              NetworkingNodeId:             NetworkingNode_Id.CSMS,
                                               RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppLocalController_tcpPort}"),
                                               VirtualHostname:              null,
                                               Description:                  null,
@@ -882,6 +883,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                                               SecWebSocketProtocols:        null,
                                               NetworkingMode:               null,
+                                              //NextHopNetworkingNodeId:      ocppLocalController.Id,
+                                              //RoutingNetworkingNodeIds:     [ NetworkingNode_Id.CSMS ],
 
                                               DisableWebSocketPings:        false,
                                               WebSocketPingEvery:           null,
@@ -967,7 +970,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                       Id:                             protocols.WWCP.ChargingStation_Id.Parse("DE*GEF*S123*456"),
                                                       Name:                           I18NString.Create(Languages.en, "ChargingStation DE*GEF 123*456"),
                                                       Description:                    I18NString.Create(Languages.en, "Pool #1, Station #1"),
-                                                      //RemoteChargingStationCreator:   cs => new ChargingStationAdapter(csms1, cs, chargingStation1),
+                                                      RemoteChargingStationCreator:   cs => new ChargingStationAdapter(csms1, cs, chargingStation1),
 
                                                       Address:                        null,
                                                       GeoLocation:                    null,
@@ -1119,7 +1122,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var cs2ConnectResult  = await chargingStation2.ConnectWebSocketClient(
 
-                                              NetworkingNodeId:             NetworkingNode_Id.CSMS,
                                               RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppLocalController_tcpPort}"),
                                               VirtualHostname:              null,
                                               Description:                  null,
@@ -1137,6 +1139,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                                               SecWebSocketProtocols:        null,
                                               NetworkingMode:               null,
+                                              //NextHopNetworkingNodeId:      ocppLocalController.Id,
+                                              //RoutingNetworkingNodeIds:     [ NetworkingNode_Id.CSMS ],
 
                                               DisableWebSocketPings:        false,
                                               WebSocketPingEvery:           null,
@@ -1213,7 +1217,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var cs3ConnectResult  = await chargingStation3.ConnectWebSocketClient(
 
-                                              NetworkingNodeId:             NetworkingNode_Id.CSMS,
                                               RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppLocalController_tcpPort}"),
                                               VirtualHostname:              null,
                                               Description:                  null,
@@ -1231,6 +1234,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                                               SecWebSocketProtocols:        null,
                                               NetworkingMode:               null,
+                                              //NextHopNetworkingNodeId:      ocppLocalController.Id,
+                                              //RoutingNetworkingNodeIds:     [ NetworkingNode_Id.CSMS ],
 
                                               DisableWebSocketPings:        false,
                                               WebSocketPingEvery:           null,
@@ -1269,30 +1274,33 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             //ToDo: Make use of the routing protocol vendor extensions!
 
-            csms1.      OCPP.AddStaticRouting(ocppLocalController.Id,  ocppGateway.Id);
-            csms1.      OCPP.AddStaticRouting(ocppEnergyMeter.Id,      ocppGateway.Id);
-            csms1.      OCPP.AddStaticRouting(chargingStation1.Id,     ocppGateway.Id);
-            csms1.      OCPP.AddStaticRouting(chargingStation2.Id,     ocppGateway.Id);
-            csms1.      OCPP.AddStaticRouting(chargingStation3.Id,     ocppGateway.Id);
+            csms1.              OCPP.AddStaticRouting(ocppLocalController.Id,  ocppGateway.Id);
+            csms1.              OCPP.AddStaticRouting(ocppEnergyMeter.Id,      ocppGateway.Id);
+            csms1.              OCPP.AddStaticRouting(chargingStation1.Id,     ocppGateway.Id);
+            csms1.              OCPP.AddStaticRouting(chargingStation2.Id,     ocppGateway.Id);
+            csms1.              OCPP.AddStaticRouting(chargingStation3.Id,     ocppGateway.Id);
 
-            csms2.      OCPP.AddStaticRouting(ocppLocalController.Id,  ocppGateway.Id);
-            csms2.      OCPP.AddStaticRouting(ocppEnergyMeter.Id,      ocppGateway.Id);
-            csms2.      OCPP.AddStaticRouting(chargingStation1.Id,     ocppGateway.Id);
-            csms2.      OCPP.AddStaticRouting(chargingStation2.Id,     ocppGateway.Id);
-            csms2.      OCPP.AddStaticRouting(chargingStation3.Id,     ocppGateway.Id);
+            csms2.              OCPP.AddStaticRouting(ocppLocalController.Id,  ocppGateway.Id);
+            csms2.              OCPP.AddStaticRouting(ocppEnergyMeter.Id,      ocppGateway.Id);
+            csms2.              OCPP.AddStaticRouting(chargingStation1.Id,     ocppGateway.Id);
+            csms2.              OCPP.AddStaticRouting(chargingStation2.Id,     ocppGateway.Id);
+            csms2.              OCPP.AddStaticRouting(chargingStation3.Id,     ocppGateway.Id);
 
-            ocppGateway.OCPP.AddStaticRouting(NetworkingNode_Id.CSMS,  csms1.Id);  // The default CSMS!
-            ocppGateway.OCPP.AddStaticRouting(ocppEnergyMeter.Id,      ocppLocalController.Id);
-            ocppGateway.OCPP.AddStaticRouting(chargingStation1.Id,     ocppLocalController.Id);
-            ocppGateway.OCPP.AddStaticRouting(chargingStation2.Id,     ocppLocalController.Id);
-            ocppGateway.OCPP.AddStaticRouting(chargingStation3.Id,     ocppLocalController.Id);
+            ocppGateway.        OCPP.AddStaticRouting(NetworkingNode_Id.CSMS,  csms1.Id);  // The default CSMS!
+            ocppGateway.        OCPP.AddStaticRouting(ocppEnergyMeter.Id,      ocppLocalController.Id);
+            ocppGateway.        OCPP.AddStaticRouting(chargingStation1.Id,     ocppLocalController.Id);
+            ocppGateway.        OCPP.AddStaticRouting(chargingStation2.Id,     ocppLocalController.Id);
+            ocppGateway.        OCPP.AddStaticRouting(chargingStation3.Id,     ocppLocalController.Id);
+
+            ocppLocalController.OCPP.AddStaticRouting(csms1.Id,                ocppGateway.Id);
+            ocppLocalController.OCPP.AddStaticRouting(csms2.Id,                ocppGateway.Id);
 
 
-            ocppGateway.OCPP.FORWARD.OnAnyJSONRequestFilter += (timestamp,
-                                                                sender,
-                                                                connection,
-                                                                request,
-                                                                cancellationToken) =>
+            ocppGateway.        OCPP.FORWARD.OnAnyJSONRequestFilter += (timestamp,
+                                                                        sender,
+                                                                        connection,
+                                                                        request,
+                                                                        cancellationToken) =>
 
                 Task.FromResult(
                     request.NetworkPath.Source == chargingStation3.Id

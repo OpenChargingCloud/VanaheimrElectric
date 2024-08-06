@@ -426,7 +426,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
 
             var ocppLocalControllerConnectResult1  = await ocppLocalController.ConnectWebSocketClient(
 
-                                                         NetworkingNodeId:             chargingStation1.Id,
                                                          RemoteURL:                    URL.Parse($"ws://127.0.0.1:{chargingStation1_tcpPort}"),
                                                          VirtualHostname:              null,
                                                          Description:                  null,
@@ -444,6 +443,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
 
                                                          SecWebSocketProtocols:        null,
                                                          NetworkingMode:               NetworkingMode.Standard,
+                                                         NextHopNetworkingNodeId:      chargingStation1.Id,
 
                                                          DisableWebSocketPings:        false,
                                                          WebSocketPingEvery:           null,
@@ -475,7 +475,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
 
             var ocppLocalControllerConnectResult2  = await ocppLocalController.ConnectWebSocketClient(
 
-                                                         NetworkingNodeId:             chargingStation2.Id,
                                                          RemoteURL:                    URL.Parse($"ws://127.0.0.1:{chargingStation2_tcpPort}"),
                                                          VirtualHostname:              null,
                                                          Description:                  null,
@@ -493,6 +492,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
 
                                                          SecWebSocketProtocols:        null,
                                                          NetworkingMode:               NetworkingMode.Standard,
+                                                         NextHopNetworkingNodeId:      chargingStation2.Id,
 
                                                          DisableWebSocketPings:        false,
                                                          WebSocketPingEvery:           null,
@@ -524,7 +524,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
 
             var ocppLocalControllerConnectResult3  = await ocppLocalController.ConnectWebSocketClient(
 
-                                                         NetworkingNodeId:             chargingStation3.Id,
                                                          RemoteURL:                    URL.Parse($"ws://127.0.0.1:{chargingStation3_tcpPort}"),
                                                          VirtualHostname:              null,
                                                          Description:                  null,
@@ -542,6 +541,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
 
                                                          SecWebSocketProtocols:        null,
                                                          NetworkingMode:               NetworkingMode.Standard,
+                                                         NextHopNetworkingNodeId:      chargingStation3.Id,
 
                                                          DisableWebSocketPings:        false,
                                                          WebSocketPingEvery:           null,
@@ -571,7 +571,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
 
             var ocppLocalControllerConnectResult4  = await ocppLocalController.ConnectWebSocketClient(
 
-                                                         NetworkingNodeId:             ocppEnergyMeter.Id,
                                                          RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppEnergyMeter_tcpPort}"),
                                                          VirtualHostname:              null,
                                                          Description:                  null,
@@ -589,6 +588,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
 
                                                          SecWebSocketProtocols:        null,
                                                          NetworkingMode:               NetworkingMode.OverlayNetwork,
+                                                         NextHopNetworkingNodeId:      ocppEnergyMeter.Id,
 
                                                          DisableWebSocketPings:        false,
                                                          WebSocketPingEvery:           null,
@@ -674,7 +674,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
 
             var ocppGatewayConnectResult     = await ocppGateway.ConnectWebSocketClient(
 
-                                                   NetworkingNodeId:             ocppLocalController.Id,
                                                    RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppLocalController_tcpPort}"),
                                                    VirtualHostname:              null,
                                                    Description:                  null,
@@ -692,6 +691,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
 
                                                    SecWebSocketProtocols:        null,
                                                    NetworkingMode:               NetworkingMode.OverlayNetwork,
+                                                   NextHopNetworkingNodeId:      ocppLocalController.Id,
 
                                                    DisableWebSocketPings:        false,
                                                    WebSocketPingEvery:           null,
@@ -777,7 +777,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
 
             var csmsConnectResult  = await csms.ConnectWebSocketClient(
 
-                                         NetworkingNodeId:             ocppGateway.Id,
                                          RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppGateway_tcpPort}"),
                                          VirtualHostname:              null,
                                          Description:                  null,
@@ -795,6 +794,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
 
                                          SecWebSocketProtocols:        null,
                                          NetworkingMode:               NetworkingMode.OverlayNetwork,
+                                         NextHopNetworkingNodeId:      ocppGateway.Id,
 
                                          DisableWebSocketPings:        false,
                                          WebSocketPingEvery:           null,
