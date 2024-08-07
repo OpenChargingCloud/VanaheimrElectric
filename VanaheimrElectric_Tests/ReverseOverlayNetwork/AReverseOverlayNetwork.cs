@@ -139,18 +139,35 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
                                                                                          CustomData:   null
                                                                                      ),
 
+                                                        EVSEs:                       [
+                                                                                         new protocols.OCPPv2_1.CS.ChargingStationEVSE(
+                                                                                             Id:                  EVSE_Id.Parse(0),
+                                                                                             AdminStatus:         OperationalStatus.Operative,
+                                                                                             MeterType:           "myMeter",
+                                                                                             MeterSerialNumber:   "Meter#1",
+                                                                                             MeterPublicKey:      "pubkey#1",
+                                                                                             Connectors:          [
+                                                                                                                      new protocols.OCPPv2_1.CS.ChargingStationConnector(
+                                                                                                                          Id:              Connector_Id.Parse(1),
+                                                                                                                          ConnectorType:   ConnectorType.cType2
+                                                                                                                      )
+                                                                                                                  ]
+                                                                                         )
+                                                                                     ],
+                                                        UplinkEnergyMeter:           null,
+
+                                                        DefaultRequestTimeout:       null,
+
                                                         SignaturePolicy:             null,
                                                         ForwardingSignaturePolicy:   null,
 
-                                                        HTTPUploadPort:              null,
-                                                        HTTPDownloadPort:            null,
-
                                                         DisableSendHeartbeats:       true,
                                                         SendHeartbeatsEvery:         null,
-                                                        DefaultRequestTimeout:       null,
 
                                                         DisableMaintenanceTasks:     false,
                                                         MaintenanceEvery:            null,
+
+                                                        CustomData:                  null,
                                                         DNSClient:                   DNSClient
 
                                                     );
@@ -203,18 +220,35 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
                                                                                          CustomData:   null
                                                                                      ),
 
+                                                        EVSEs:                       [
+                                                                                         new protocols.OCPPv2_1.CS.ChargingStationEVSE(
+                                                                                             Id:                  EVSE_Id.Parse(0),
+                                                                                             AdminStatus:         OperationalStatus.Operative,
+                                                                                             MeterType:           "myMeter",
+                                                                                             MeterSerialNumber:   "Meter#1",
+                                                                                             MeterPublicKey:      "pubkey#1",
+                                                                                             Connectors:          [
+                                                                                                                      new protocols.OCPPv2_1.CS.ChargingStationConnector(
+                                                                                                                          Id:              Connector_Id.Parse(1),
+                                                                                                                          ConnectorType:   ConnectorType.cType2
+                                                                                                                      )
+                                                                                                                  ]
+                                                                                         )
+                                                                                     ],
+                                                        UplinkEnergyMeter:           null,
+
+                                                        DefaultRequestTimeout:       null,
+
                                                         SignaturePolicy:             null,
                                                         ForwardingSignaturePolicy:   null,
 
-                                                        HTTPUploadPort:              null,
-                                                        HTTPDownloadPort:            null,
-
                                                         DisableSendHeartbeats:       true,
                                                         SendHeartbeatsEvery:         null,
-                                                        DefaultRequestTimeout:       null,
 
                                                         DisableMaintenanceTasks:     false,
                                                         MaintenanceEvery:            null,
+
+                                                        CustomData:                  null,
                                                         DNSClient:                   DNSClient
 
                                                     );
@@ -267,18 +301,35 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
                                                                                          CustomData:   null
                                                                                      ),
 
+                                                        EVSEs:                       [
+                                                                                         new protocols.OCPPv2_1.CS.ChargingStationEVSE(
+                                                                                             Id:                  EVSE_Id.Parse(0),
+                                                                                             AdminStatus:         OperationalStatus.Operative,
+                                                                                             MeterType:           "myMeter",
+                                                                                             MeterSerialNumber:   "Meter#1",
+                                                                                             MeterPublicKey:      "pubkey#1",
+                                                                                             Connectors:          [
+                                                                                                                      new protocols.OCPPv2_1.CS.ChargingStationConnector(
+                                                                                                                          Id:              Connector_Id.Parse(1),
+                                                                                                                          ConnectorType:   ConnectorType.cType2
+                                                                                                                      )
+                                                                                                                  ]
+                                                                                         )
+                                                                                     ],
+                                                        UplinkEnergyMeter:           null,
+
+                                                        DefaultRequestTimeout:       null,
+
                                                         SignaturePolicy:             null,
                                                         ForwardingSignaturePolicy:   null,
 
-                                                        HTTPUploadPort:              null,
-                                                        HTTPDownloadPort:            null,
-
                                                         DisableSendHeartbeats:       true,
                                                         SendHeartbeatsEvery:         null,
-                                                        DefaultRequestTimeout:       null,
 
                                                         DisableMaintenanceTasks:     false,
                                                         MaintenanceEvery:            null,
+
+                                                        CustomData:                  null,
                                                         DNSClient:                   DNSClient
 
                                                     );
