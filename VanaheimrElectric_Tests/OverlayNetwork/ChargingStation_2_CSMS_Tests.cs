@@ -1991,10 +1991,46 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             Assert.Multiple(() => {
 
-                Assert.That(binaryDataTransferResponse.Status,                                             Is.EqualTo(BinaryDataTransferStatus.Accepted));
-                Assert.That(binaryDataTransferResponse.Data?.ToUTF8String(),                               Is.EqualTo("ataDtseT"));
+                Assert.That(binaryDataTransferResponse.Status,                                          Is.EqualTo(BinaryDataTransferStatus.Accepted));
+                Assert.That(binaryDataTransferResponse.Data?.ToUTF8String(),                            Is.EqualTo("ataDtseT"));
                 //StatusInfo
                 //Assert.That(chargingStation1_BinaryDataTransferRequestsSent.ElementAt(0).Signatures.Count,   Is.EqualTo(1));
+
+                Assert.That(chargingStation1_BinaryDataTransferRequestsSent.Count,                      Is.EqualTo(1));
+                Assert.That(chargingStation1_BinaryRequestMessageSent.Count,                            Is.EqualTo(1));
+
+                Assert.That(ocppLocalController_BinaryRequestMessageReceived.Count,                     Is.EqualTo(1));
+                Assert.That(ocppLocalController_BinaryDataTransferRequestsReceived.Count,               Is.EqualTo(1));
+                Assert.That(ocppLocalController_BinaryDataTransferRequestsForwardingDecisions.Count,    Is.EqualTo(1));
+                Assert.That(ocppLocalController_BinaryDataTransferRequestsSent.Count,                   Is.EqualTo(1));
+                Assert.That(ocppLocalController_BinaryRequestMessageSent.Count,                         Is.EqualTo(1));
+
+                Assert.That(ocppGateway_binaryRequestMessageReceived.Count,                             Is.EqualTo(1));
+                Assert.That(ocppGateway_BinaryDataTransferRequestsReceived.Count,                       Is.EqualTo(1));
+                Assert.That(ocppGateway_BinaryDataTransferRequestsForwardingDecisions.Count,            Is.EqualTo(1));
+                Assert.That(ocppGateway_BinaryDataTransferRequestsSent.Count,                           Is.EqualTo(1));
+                Assert.That(ocppGateway_binaryRequestMessageSent.Count,                                 Is.EqualTo(1));
+
+                Assert.That(csms1_BinaryRequestMessageReceived.Count,                                   Is.EqualTo(1));
+                Assert.That(csms1_BinaryDataTransferRequestsReceived.Count,                             Is.EqualTo(1));
+
+
+                Assert.That(csms1_BinaryDataTransferResponsesSent.Count,                                Is.EqualTo(1));
+                Assert.That(csms1_BinaryResponseMessagesSent.Count,                                     Is.EqualTo(1));
+
+                Assert.That(ocppGateway_binaryResponseMessagesReceived.Count,                           Is.EqualTo(1));
+                //Assert.That(ocppGateway_BinaryDataTransferResponsesReceived.Count,                      Is.EqualTo(1));
+                //Assert.That(ocppGateway_BinaryDataTransferResponsesSent.Count,                          Is.EqualTo(1));
+                Assert.That(ocppGateway_binaryResponseMessagesSent.Count,                               Is.EqualTo(1));
+
+                Assert.That(ocppLocalController_BinaryResponseMessagesReceived.Count,                   Is.EqualTo(1));
+                //Assert.That(ocppLocalController_BinaryDataTransferResponsesReceived.Count,              Is.EqualTo(1));
+                //Assert.That(ocppLocalController_BinaryDataTransferResponsesSent.Count,                  Is.EqualTo(1));
+                Assert.That(ocppLocalController_BinaryResponseMessagesSent.Count,                       Is.EqualTo(1));
+
+                Assert.That(chargingStation1_BinaryMessageResponseReceived.Count,                       Is.EqualTo(1));
+                Assert.That(chargingStation1_BinaryDataTransferResponsesReceived.Count,                 Is.EqualTo(1));
+
 
             });
 
@@ -2091,7 +2127,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnAuthorizeRequestFiltered   += (timestamp, sender, connection, authorizeRequest, forwardingDecision) => {
+            ocppLocalController.OCPP.FORWARD.OnAuthorizeRequestFiltered   += (timestamp, sender, connection, authorizeRequest, forwardingDecision, ct) => {
                 ocppLocalController_AuthorizeRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
@@ -2126,7 +2162,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnAuthorizeRequestFiltered   += (timestamp, sender, connection, authorizeRequest, forwardingDecision) => {
+            ocppGateway.OCPP.FORWARD.OnAuthorizeRequestFiltered   += (timestamp, sender, connection, authorizeRequest, forwardingDecision, ct) => {
                 ocppGateway_AuthorizeRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
@@ -2423,7 +2459,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnMeterValuesRequestFiltered += (timestamp, sender, connection, meterValuesRequest, forwardingDecision) => {
+            ocppLocalController.OCPP.FORWARD.OnMeterValuesRequestFiltered += (timestamp, sender, connection, meterValuesRequest, forwardingDecision, ct) => {
                 ocppLocalController_MeterValuesRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
@@ -2458,7 +2494,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnMeterValuesRequestFiltered += (timestamp, sender, connection, meterValuesRequest, forwardingDecision) => {
+            ocppGateway.OCPP.FORWARD.OnMeterValuesRequestFiltered += (timestamp, sender, connection, meterValuesRequest, forwardingDecision, ct) => {
                 ocppGateway_MeterValuesRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
@@ -2938,7 +2974,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnRequestStartTransactionRequestFiltered  += (timestamp, sender, connection, RequestStartTransactionRequest, forwardingDecision) => {
+            ocppGateway.OCPP.FORWARD.OnRequestStartTransactionRequestFiltered  += (timestamp, sender, connection, RequestStartTransactionRequest, forwardingDecision, ct) => {
                 ocppGateway_RequestStartTransactionRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
@@ -2973,7 +3009,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnRequestStartTransactionRequestFiltered  += (timestamp, sender, connection, RequestStartTransactionRequest, forwardingDecision) => {
+            ocppLocalController.OCPP.FORWARD.OnRequestStartTransactionRequestFiltered  += (timestamp, sender, connection, RequestStartTransactionRequest, forwardingDecision, ct) => {
                 ocppLocalController_RequestStartTransactionRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };

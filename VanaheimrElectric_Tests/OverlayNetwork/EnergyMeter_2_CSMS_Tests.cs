@@ -1365,6 +1365,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppLocalController_jsonRequestMessageReceived              = new ConcurrentList<OCPP_JSONRequestMessage>();
             var ocppLocalController_AuthorizeRequestsReceived               = new ConcurrentList<AuthorizeRequest>();
             var ocppLocalController_AuthorizeRequestsForwardingDecisions    = new ConcurrentList<ForwardingDecision<AuthorizeRequest, AuthorizeResponse>>();
+            var ocppLocalController_jsonRequestsForwardingDecisions         = new ConcurrentList<ForwardingDecision>();
             var ocppLocalController_AuthorizeResponsesSent                  = new ConcurrentList<AuthorizeResponse>();
             var ocppLocalController_jsonRequestErrorMessageSent             = new ConcurrentList<OCPP_JSONRequestErrorMessage>();
 
@@ -1378,8 +1379,13 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnAuthorizeRequestFiltered    += (timestamp, sender, connection, authorizeRequest, forwardingDecision) => {
+            ocppLocalController.OCPP.FORWARD.OnAuthorizeRequestFiltered    += (timestamp, sender, connection, authorizeRequest, forwardingDecision, ct) => {
                 ocppLocalController_AuthorizeRequestsForwardingDecisions.TryAdd(forwardingDecision);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnAnyJSONRequestFiltered      += (timestamp, sender, connection, jsonRequest, forwardingDecision, ct) => {
+                ocppLocalController_jsonRequestsForwardingDecisions.     TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
@@ -1442,7 +1448,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             Assert.Multiple(() => {
 
-                Assert.That(authorizeResponse.IdTokenInfo.Status,                                           Is.EqualTo(AuthorizationStatus.RequestError));
+                Assert.That(authorizeResponse.IdTokenInfo.Status,                                           Is.EqualTo(AuthorizationStatus.Error));
 
 
                 // -<request>--------------------------------------------------------------------------------------------------
@@ -1557,7 +1563,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnMeterValuesRequestFiltered += (timestamp, sender, connection, meterValuesRequest, forwardingDecision) => {
+            ocppLocalController.OCPP.FORWARD.OnMeterValuesRequestFiltered += (timestamp, sender, connection, meterValuesRequest, forwardingDecision, ct) => {
                 ocppLocalController_MeterValuesRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
@@ -1592,7 +1598,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnMeterValuesRequestFiltered += (timestamp, sender, connection, meterValuesRequest, forwardingDecision) => {
+            ocppGateway.OCPP.FORWARD.OnMeterValuesRequestFiltered += (timestamp, sender, connection, meterValuesRequest, forwardingDecision, ct) => {
                 ocppGateway_MeterValuesRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
