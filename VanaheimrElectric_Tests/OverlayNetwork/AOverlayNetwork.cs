@@ -1365,7 +1365,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                                          sender,
                                                                          connection,
                                                                          request,
-                                                                         previousFilterStep,
                                                                          cancellationToken) =>
 
                 Task.FromResult(
