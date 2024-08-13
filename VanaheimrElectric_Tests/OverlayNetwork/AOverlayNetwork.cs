@@ -154,9 +154,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                         SignaturePolicy:             null,
                         ForwardingSignaturePolicy:   null,
 
-                        HTTPUploadPort:              null,
-                        HTTPDownloadPort:            null,
-
                         DisableSendHeartbeats:       true,
                         SendHeartbeatsEvery:         null,
                         DefaultRequestTimeout:       null,
@@ -175,7 +172,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                             Description:                  null,
 
                                             RequireAuthentication:        true,
-                                            DisableWebSocketPings:        false,
+                                            DisableWebSocketPings:        true,
                                             WebSocketPingEvery:           null,
                                             SlowNetworkSimulationDelay:   null,
 
@@ -349,8 +346,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                         SignaturePolicy:             null,
                         ForwardingSignaturePolicy:   null,
 
-                        HTTPUploadPort:              null,
-                        HTTPDownloadPort:            null,
+                        //HTTPUploadPort:              null,
+                        //HTTPDownloadPort:            null,
 
                         DisableSendHeartbeats:       true,
                         SendHeartbeatsEvery:         null,

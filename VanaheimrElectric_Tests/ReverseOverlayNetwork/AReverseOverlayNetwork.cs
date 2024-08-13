@@ -807,8 +807,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
                        SignaturePolicy:             null,
                        ForwardingSignaturePolicy:   null,
 
-                       HTTPUploadPort:              null,
-                       HTTPDownloadPort:            null,
+                       //HTTPUploadPort:              null,
+                       //HTTPDownloadPort:            null,
 
                        DisableSendHeartbeats:       true,
                        SendHeartbeatsEvery:         null,
