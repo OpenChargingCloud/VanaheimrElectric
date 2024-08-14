@@ -1805,7 +1805,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             cpoCPOAPI.CPOAPILogger?.Debug("all", LogTargets.Debug);
 
-            cpoCommonAPI.ClientConfigurations.Description = (remotePartyId) => $"CPO Client for {remotePartyId}";
+            cpoCommonAPI.ClientConfigurations.Description = (remotePartyId) => I18NString.Create($"CPO Client for {remotePartyId}");
 
 
 
@@ -1827,7 +1827,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             emsp1EMSPAPI.EMSPAPILogger?.Debug("all", LogTargets.Debug);
 
-            emsp1CommonAPI.ClientConfigurations.Description = (remotePartyId) => $"EMSP #1 Client for {remotePartyId}";
+            emsp1CommonAPI.ClientConfigurations.Description = (remotePartyId) => I18NString.Create($"EMSP #1 Client for {remotePartyId}");
 
 
 
@@ -1849,7 +1849,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             emsp2EMSPAPI.EMSPAPILogger?.Debug("all", LogTargets.Debug);
 
-            emsp2CommonAPI.ClientConfigurations.Description = (remotePartyId) => $"EMSP #2 Client for {remotePartyId}";
+            emsp2CommonAPI.ClientConfigurations.Description = (remotePartyId) => I18NString.Create($"EMSP #2 Client for {remotePartyId}");
 
             #endregion
 

@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\libs\WWCP_EMP\WWCP_EMP\WWCP_EMP.csproj" />
     <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv2.1_ChargingStation\WWCP_OCPPv2.1_ChargingStation.csproj" />
     <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv2.1_CSMS\WWCP_OCPPv2.1_CSMS.csproj" />
     <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv2.1_Gateway\WWCP_OCPPv2.1_Gateway.csproj" />
