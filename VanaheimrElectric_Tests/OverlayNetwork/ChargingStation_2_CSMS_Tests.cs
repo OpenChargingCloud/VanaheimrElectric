@@ -1773,7 +1773,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             #endregion
 
 
-            #region 1. The BinaryDataTransfer request leaves the Energy Meter
+            #region 1. The BinaryDataTransfer request leaves the Charging Station
 
             var chargingStation1_BinaryDataTransferRequestsSent        = new ConcurrentList<BinaryDataTransferRequest>();
             var chargingStation1_BinaryRequestMessageSent              = new ConcurrentList<OCPP_BinaryRequestMessage>();
