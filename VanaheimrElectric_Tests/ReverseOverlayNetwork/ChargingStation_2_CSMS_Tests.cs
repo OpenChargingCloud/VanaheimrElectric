@@ -189,7 +189,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
             csms.OCPP.OUT.OnJSONResponseMessageSent       += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
                 csms_jsonResponseMessageSent.      TryAdd(sentMessageResult);
 
-                if (responseMessage.DestinationId != chargingStation1.Id)
+                if (responseMessage.Destination.Next != chargingStation1.Id)
                 {
 
                 }

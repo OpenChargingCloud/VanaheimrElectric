@@ -96,7 +96,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var response1 = await csms1.Reset(
 
-                                      DestinationId:       chargingStation1.Id,
+                                      Destination:         SourceRouting.To(chargingStation1.Id),
                                       ResetType:           ResetType.OnIdle,
                                       CustomData:          null,
 
@@ -173,7 +173,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var dataTransferResponse1  = await csms1.TransferData(
 
-                                                   DestinationId:       chargingStation1.Id,
+                                                   Destination:         SourceRouting.To(chargingStation1.Id),
                                                    VendorId:            Vendor_Id. GraphDefined,
                                                    MessageId:           Message_Id.GraphDefined_TestMessage,
                                                    Data:                "TestData",
@@ -192,7 +192,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var dataTransferResponse2  = await csms1.TransferData(
 
-                                                   DestinationId:       chargingStation1.Id,
+                                                   Destination:         SourceRouting.To(chargingStation1.Id),
                                                    VendorId:            Vendor_Id. GraphDefined,
                                                    MessageId:           Message_Id.GraphDefined_TestMessage,
                                                    Data:                JSONObject.Create(new JProperty("test", "data")),
@@ -211,7 +211,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var dataTransferResponse3  = await csms1.TransferData(
 
-                                                   DestinationId:       chargingStation1.Id,
+                                                   Destination:         SourceRouting.To(chargingStation1.Id),
                                                    VendorId:            Vendor_Id. GraphDefined,
                                                    MessageId:           Message_Id.GraphDefined_TestMessage,
                                                    Data:                new JArray("test", "data"),

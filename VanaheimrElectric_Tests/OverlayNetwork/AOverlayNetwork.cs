@@ -148,8 +148,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                         SignaturePolicy:                null,
                         ForwardingSignaturePolicy:      null,
 
-                        DisableSendHeartbeats:          true,
-                        SendHeartbeatsEvery:            null,
+                        //DisableSendHeartbeats:          true,
+                        //SendHeartbeatsEvery:            null,
                         DefaultRequestTimeout:          null,
 
                         DisableMaintenanceTasks:        false,
@@ -272,7 +272,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                TransactionLimits:       null,
                                ResponseTimestamp:       authStartResult.ResponseTimestamp,
 
-                               DestinationId:           authorizeRequest.NetworkPath.Source,
+                               Destination:             SourceRouting.To(authorizeRequest.NetworkPath.Source),
                                NetworkPath:             NetworkPath.Empty,
 
                                SignKeys:                null,
@@ -296,7 +296,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                              TransactionLimits:         null,
                              ResponseTimestamp:         authStartResult.ResponseTimestamp,
 
-                             DestinationId:             authorizeRequest.NetworkPath.Source,
+                             Destination:               SourceRouting.To(authorizeRequest.NetworkPath.Source),
                              NetworkPath:               NetworkPath.Empty,
 
                              SignKeys:                  null,
@@ -343,8 +343,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                         SignaturePolicy:                null,
                         ForwardingSignaturePolicy:      null,
 
-                        DisableSendHeartbeats:          true,
-                        SendHeartbeatsEvery:            null,
+                        //DisableSendHeartbeats:          true,
+                        //SendHeartbeatsEvery:            null,
                         DefaultRequestTimeout:          null,
 
                         DisableMaintenanceTasks:        false,
@@ -453,7 +453,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                                                    RemoteURL:                    URL.Parse($"ws://127.0.0.1:{csms1_OCPPWebSocketServer.IPPort}"),
                                                    VirtualHostname:              null,
-                                                   Description:                  null,
+                                                   Description:                  I18NString.Create("GW to CSMS1"),
                                                    PreferIPv4:                   null,
                                                    RemoteCertificateValidator:   null,
                                                    LocalCertificateSelector:     null,
@@ -500,7 +500,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                                                    RemoteURL:                    URL.Parse($"ws://127.0.0.1:{csms2_OCPPWebSocketServer.IPPort}"),
                                                    VirtualHostname:              null,
-                                                   Description:                  null,
+                                                   Description:                  I18NString.Create("GW to CSMS2"),
                                                    PreferIPv4:                   null,
                                                    RemoteCertificateValidator:   null,
                                                    LocalCertificateSelector:     null,
@@ -622,7 +622,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                                                                  RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppGateway_OCPPWebSocketServer.IPPort}"),
                                                                  VirtualHostname:              null,
-                                                                 Description:                  null,
+                                                                 Description:                  I18NString.Create("LC to GW"),
                                                                  PreferIPv4:                   null,
                                                                  RemoteCertificateValidator:   null,
                                                                  LocalCertificateSelector:     null,
@@ -741,7 +741,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                                                              RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppLocalController_OCPPWebSocketServer.IPPort}"),
                                                              VirtualHostname:              null,
-                                                             Description:                  null,
+                                                             Description:                  I18NString.Create("EM to LC"),
                                                              PreferIPv4:                   null,
                                                              RemoteCertificateValidator:   null,
                                                              LocalCertificateSelector:     null,
@@ -887,7 +887,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                                               RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppLocalController_OCPPWebSocketServer.IPPort}"),
                                               VirtualHostname:              null,
-                                              Description:                  null,
+                                              Description:                  I18NString.Create("CS1 to LC"),
                                               PreferIPv4:                   null,
                                               RemoteCertificateValidator:   null,
                                               LocalCertificateSelector:     null,
@@ -1162,7 +1162,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                                               RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppLocalController_OCPPWebSocketServer.IPPort}"),
                                               VirtualHostname:              null,
-                                              Description:                  null,
+                                              Description:                  I18NString.Create("CS2 to LC"),
                                               PreferIPv4:                   null,
                                               RemoteCertificateValidator:   null,
                                               LocalCertificateSelector:     null,
@@ -1276,7 +1276,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                                               RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppLocalController_OCPPWebSocketServer.IPPort}"),
                                               VirtualHostname:              null,
-                                              Description:                  null,
+                                              Description:                  I18NString.Create("CS3 to LC"),
                                               PreferIPv4:                   null,
                                               RemoteCertificateValidator:   null,
                                               LocalCertificateSelector:     null,
@@ -1361,7 +1361,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                 Task.FromResult(
                     request.NetworkPath.Source == chargingStation3.Id
-                        ? ForwardingDecision.FORWARD(request, csms2.Id)
+                        ? ForwardingDecision.FORWARD(request, SourceRouting.To(csms2.Id))
                         : ForwardingDecision.NEXT   (request)
                 );
 
@@ -1375,7 +1375,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                 Task.FromResult(
                     request.NetworkPath.Source == chargingStation3.Id
-                        ? ForwardingDecision<BootNotificationRequest, BootNotificationResponse>.FORWARD(request, csms2.Id)
+                        ? ForwardingDecision<BootNotificationRequest, BootNotificationResponse>.FORWARD(request, SourceRouting.To(csms2.Id))
                         : ForwardingDecision<BootNotificationRequest, BootNotificationResponse>.FORWARD(request)
                 );
 

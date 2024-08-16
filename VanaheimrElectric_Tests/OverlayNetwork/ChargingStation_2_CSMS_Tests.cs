@@ -350,7 +350,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 // -<response>-------------------------------------------------------------------------------------------------
                 Assert.That(csms1_BootNotificationResponsesSent.                                           Count,   Is.EqualTo(1));
                 Assert.That(csms1_jsonResponseMessagesSent.                                                Count,   Is.EqualTo(1));
-                Assert.That(csms1_jsonResponseMessagesSent.                     First().DestinationId,              Is.EqualTo(chargingStation1.Id));
+                Assert.That(csms1_jsonResponseMessagesSent.                     First().Destination.Next,           Is.EqualTo(chargingStation1.Id));
                 Assert.That(csms1_jsonResponseMessagesSent.                     First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id ]).ToString()));
 
                 Assert.That(ocppGateway_jsonResponseMessagesReceived.                                     Count,   Is.EqualTo(1));
@@ -369,7 +369,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 Assert.That(chargingStation1_BootNotificationResponsesReceived.                           Count,   Is.EqualTo(1));
                 Assert.That(chargingStation1_BootNotificationResponsesReceived.First().Signatures.        Count,   Is.EqualTo(1));
                 // Note: The charging stations use "normal" networking and thus have no valid networking information!
-                Assert.That(chargingStation1_jsonMessageResponseReceived.      First().DestinationId,              Is.EqualTo(chargingStation1.Id));
+                Assert.That(chargingStation1_jsonMessageResponseReceived.      First().Destination.Next,           Is.EqualTo(chargingStation1.Id));
                 //Assert.That(chargingStation1_BootNotificationResponsesReceived.First().DestinationId,              Is.EqualTo(chargingStation1.Id));
                 Assert.That(chargingStation1_jsonMessageResponseReceived.      First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
                 //Assert.That(chargingStation1_BootNotificationResponsesReceived.First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
@@ -683,7 +683,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 // -<response>-------------------------------------------------------------------------------------------------
                 Assert.That(csms1_BootNotificationResponsesSent.                                           Count,   Is.EqualTo(1));
                 Assert.That(csms1_jsonResponseMessagesSent.                                                Count,   Is.EqualTo(1));
-                Assert.That(csms1_jsonResponseMessagesSent.                     First().DestinationId,              Is.EqualTo(chargingStation2.Id));
+                Assert.That(csms1_jsonResponseMessagesSent.                     First().Destination.Next,              Is.EqualTo(chargingStation2.Id));
                 Assert.That(csms1_jsonResponseMessagesSent.                     First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id ]).ToString()));
 
                 Assert.That(ocppGateway_jsonResponseMessagesReceived.                                     Count,   Is.EqualTo(1));
@@ -702,7 +702,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 Assert.That(chargingStation2_BootNotificationResponsesReceived.                           Count,   Is.EqualTo(1));
                 Assert.That(chargingStation2_BootNotificationResponsesReceived.First().Signatures.        Count,   Is.EqualTo(1));
                 // Note: The charging stations use "normal" networking and thus have no valid networking information!
-                Assert.That(chargingStation2_jsonMessageResponseReceived.      First().DestinationId,              Is.EqualTo(chargingStation2.Id));
+                Assert.That(chargingStation2_jsonMessageResponseReceived.      First().Destination.Next,              Is.EqualTo(chargingStation2.Id));
                 //Assert.That(chargingStation2_BootNotificationResponsesReceived.First().DestinationId,              Is.EqualTo(chargingStation2.Id));
                 Assert.That(chargingStation2_jsonMessageResponseReceived.      First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
                 //Assert.That(chargingStation2_BootNotificationResponsesReceived.First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
@@ -1023,7 +1023,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 // -<response>-------------------------------------------------------------------------------------------------
                 Assert.That(csms2_BootNotificationResponsesSent.                                           Count,   Is.EqualTo(1));
                 Assert.That(csms2_jsonResponseMessagesSent.                                                Count,   Is.EqualTo(1));
-                Assert.That(csms2_jsonResponseMessagesSent.                     First().DestinationId,              Is.EqualTo(chargingStation3.Id));
+                Assert.That(csms2_jsonResponseMessagesSent.                     First().Destination.Next,              Is.EqualTo(chargingStation3.Id));
                 Assert.That(csms2_jsonResponseMessagesSent.                     First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms2.Id ]).ToString()));
 
                 Assert.That(ocppGateway_jsonResponseMessagesReceived.                                     Count,   Is.EqualTo(1));
@@ -1042,7 +1042,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 Assert.That(chargingStation3_BootNotificationResponsesReceived.                           Count,   Is.EqualTo(1));
                 Assert.That(chargingStation3_BootNotificationResponsesReceived.First().Signatures.        Count,   Is.EqualTo(1));
                 // Note: The charging stations use "normal" networking and thus have no valid networking information!
-                Assert.That(chargingStation3_jsonMessageResponseReceived.      First().DestinationId,              Is.EqualTo(chargingStation3.Id));
+                Assert.That(chargingStation3_jsonMessageResponseReceived.      First().Destination.Next,              Is.EqualTo(chargingStation3.Id));
                 //Assert.That(chargingStation3_BootNotificationResponsesReceived.First().DestinationId,              Is.EqualTo(chargingStation3.Id));
                 Assert.That(chargingStation3_jsonMessageResponseReceived.      First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
                 //Assert.That(chargingStation3_BootNotificationResponsesReceived.First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
@@ -1639,7 +1639,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var dataTransferResponse1  = await chargingStation1.TransferData(
 
-                                                   DestinationId:       NetworkingNode_Id.CSMS,
+                                                   Destination:         SourceRouting.CSMS,
                                                    VendorId:            Vendor_Id. GraphDefined,
                                                    MessageId:           Message_Id.GraphDefined_TestMessage,
                                                    Data:                "TestData",
@@ -1658,7 +1658,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var dataTransferResponse2  = await chargingStation1.TransferData(
 
-                                                   DestinationId:       NetworkingNode_Id.CSMS,
+                                                   Destination:         SourceRouting.CSMS,
                                                    VendorId:            Vendor_Id. GraphDefined,
                                                    MessageId:           Message_Id.GraphDefined_TestMessage,
                                                    Data:                JSONObject.Create(new JProperty("test", "data")),
@@ -1677,7 +1677,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var dataTransferResponse3  = await chargingStation1.TransferData(
 
-                                                   DestinationId:       NetworkingNode_Id.CSMS,
+                                                   Destination:         SourceRouting.CSMS,
                                                    VendorId:            Vendor_Id. GraphDefined,
                                                    MessageId:           Message_Id.GraphDefined_TestMessage,
                                                    Data:                new JArray("test", "data"),
@@ -2343,7 +2343,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 // -<response>-------------------------------------------------------------------------------------------------
                 Assert.That(csms1_AuthorizeResponsesSent.                                           Count,   Is.EqualTo(1));
                 Assert.That(csms1_jsonResponseMessagesSent.                                                Count,   Is.EqualTo(1));
-                Assert.That(csms1_jsonResponseMessagesSent.                     First().DestinationId,              Is.EqualTo(chargingStation1.Id));
+                Assert.That(csms1_jsonResponseMessagesSent.                     First().Destination.Next,              Is.EqualTo(chargingStation1.Id));
                 Assert.That(csms1_jsonResponseMessagesSent.                     First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id ]).ToString()));
 
                 Assert.That(ocppGateway_jsonResponseMessagesReceived.                                     Count,   Is.EqualTo(1));
@@ -2362,7 +2362,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 Assert.That(chargingStation1_AuthorizeResponsesReceived.                           Count,   Is.EqualTo(1));
                 Assert.That(chargingStation1_AuthorizeResponsesReceived.First().Signatures.        Count,   Is.EqualTo(1));
                 // Note: The charging stations use "normal" networking and thus have no valid networking information!
-                Assert.That(chargingStation1_jsonMessageResponseReceived.      First().DestinationId,              Is.EqualTo(chargingStation1.Id));
+                Assert.That(chargingStation1_jsonMessageResponseReceived.      First().Destination.Next,              Is.EqualTo(chargingStation1.Id));
                 //Assert.That(chargingStation1_AuthorizeResponsesReceived.First().DestinationId,              Is.EqualTo(chargingStation1.Id));
                 Assert.That(chargingStation1_jsonMessageResponseReceived.      First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
                 //Assert.That(chargingStation1_AuthorizeResponsesReceived.First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
@@ -2691,7 +2691,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 // -<response>-------------------------------------------------------------------------------------------------
                 Assert.That(csms1_MeterValuesResponsesSent.                                           Count,   Is.EqualTo(1));
                 Assert.That(csms1_jsonResponseMessagesSent.                                                Count,   Is.EqualTo(1));
-                Assert.That(csms1_jsonResponseMessagesSent.                     First().DestinationId,              Is.EqualTo(chargingStation1.Id));
+                Assert.That(csms1_jsonResponseMessagesSent.                     First().Destination.Next,           Is.EqualTo(chargingStation1.Id));
                 Assert.That(csms1_jsonResponseMessagesSent.                     First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id ]).ToString()));
 
                 Assert.That(ocppGateway_jsonResponseMessagesReceived.                                     Count,   Is.EqualTo(1));
@@ -2710,7 +2710,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 Assert.That(chargingStation1_MeterValuesResponsesReceived.                           Count,   Is.EqualTo(1));
                 Assert.That(chargingStation1_MeterValuesResponsesReceived.First().Signatures.        Count,   Is.EqualTo(1));
                 // Note: The charging stations use "normal" networking and thus have no valid networking information!
-                Assert.That(chargingStation1_jsonMessageResponseReceived.      First().DestinationId,              Is.EqualTo(chargingStation1.Id));
+                Assert.That(chargingStation1_jsonMessageResponseReceived.      First().Destination.Next,           Is.EqualTo(chargingStation1.Id));
                 //Assert.That(chargingStation1_MeterValuesResponsesReceived.First().DestinationId,              Is.EqualTo(chargingStation1.Id));
                 Assert.That(chargingStation1_jsonMessageResponseReceived.      First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
                 //Assert.That(chargingStation1_MeterValuesResponsesReceived.First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));

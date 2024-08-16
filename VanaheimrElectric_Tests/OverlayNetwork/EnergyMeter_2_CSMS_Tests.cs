@@ -339,7 +339,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 // -<response>-------------------------------------------------------------------------------------------------
                 Assert.That(csms_BootNotificationResponsesSent.                                           Count,   Is.EqualTo(1));
                 Assert.That(csms_jsonResponseMessagesSent.                                                Count,   Is.EqualTo(1));
-                Assert.That(csms_jsonResponseMessagesSent.                     First().DestinationId,              Is.EqualTo(gridEnergyMeter.Id));
+                Assert.That(csms_jsonResponseMessagesSent.                     First().Destination.Next,           Is.EqualTo(gridEnergyMeter.Id));
                 Assert.That(csms_jsonResponseMessagesSent.                     First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id ]).ToString()));
 
                 Assert.That(ocppGateway_jsonResponseMessagesReceived.                                     Count,   Is.EqualTo(1));
@@ -356,7 +356,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                 Assert.That(ocppEnergyMeter_jsonMessageResponseReceived.Count,                                          Is.EqualTo(1));
                 Assert.That(ocppEnergyMeter_jsonMessageResponseReceived.First().NetworkingMode,                         Is.EqualTo(NetworkingMode.OverlayNetwork));
-                Assert.That(ocppEnergyMeter_jsonMessageResponseReceived.First().DestinationId,                          Is.EqualTo(gridEnergyMeter.Id));
+                Assert.That(ocppEnergyMeter_jsonMessageResponseReceived.First().Destination.Next,                       Is.EqualTo(gridEnergyMeter.Id));
                 Assert.That(ocppEnergyMeter_jsonMessageResponseReceived.First().NetworkPath.ToString(),                 Is.EqualTo(new NetworkPath([ csms1.Id, ocppGateway.Id, ocppLocalController.Id ]).ToString()));
                 Assert.That(ocppEnergyMeter_BootNotificationResponsesReceived.Count,                                    Is.EqualTo(1));
                 Assert.That(ocppEnergyMeter_BootNotificationResponsesReceived.First().DestinationId,                    Is.EqualTo(gridEnergyMeter.Id));
@@ -939,7 +939,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var dataTransferResponse1  = await gridEnergyMeter.TransferData(
 
-                                                   DestinationId:       NetworkingNode_Id.CSMS,
+                                                   Destination:         SourceRouting.CSMS,
                                                    VendorId:            Vendor_Id. GraphDefined,
                                                    MessageId:           Message_Id.GraphDefined_TestMessage,
                                                    Data:                "TestData",
@@ -958,7 +958,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var dataTransferResponse2  = await gridEnergyMeter.TransferData(
 
-                                                   DestinationId:       NetworkingNode_Id.CSMS,
+                                                   Destination:         SourceRouting.CSMS,
                                                    VendorId:            Vendor_Id. GraphDefined,
                                                    MessageId:           Message_Id.GraphDefined_TestMessage,
                                                    Data:                JSONObject.Create(new JProperty("test", "data")),
@@ -977,7 +977,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var dataTransferResponse3  = await gridEnergyMeter.TransferData(
 
-                                                   DestinationId:       NetworkingNode_Id.CSMS,
+                                                   Destination:         SourceRouting.CSMS,
                                                    VendorId:            Vendor_Id. GraphDefined,
                                                    MessageId:           Message_Id.GraphDefined_TestMessage,
                                                    Data:                new JArray("test", "data"),
@@ -1425,7 +1425,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var authorizeResponse = await gridEnergyMeter.OCPP.OUT.Authorize(
                                               new AuthorizeRequest(
 
-                                                  DestinationId:                 NetworkingNode_Id.CSMS,
+                                                  Destination:                   SourceRouting.CSMS,
 
                                                   IdToken:                       IdToken.TryParseRFID("01-23-45-67-89-AB-CD")!,
                                                   Certificate:                   null,
@@ -1465,13 +1465,13 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 //Assert.That(ocppLocalController_AuthorizeResponsesSent.First().DestinationId,                         Is.EqualTo(ocppEnergyMeter.Id));
                 //Assert.That(ocppLocalController_AuthorizeResponsesSent.First().NetworkPath.ToString(),                Is.EqualTo(new NetworkPath([ ocppLocalController.Id ]).ToString()));
                 Assert.That(ocppLocalController_jsonRequestErrorMessageSent.                                 Count,   Is.EqualTo(1));
-                Assert.That(ocppLocalController_jsonRequestErrorMessageSent.First().DestinationId,                    Is.EqualTo(gridEnergyMeter.Id));
+                Assert.That(ocppLocalController_jsonRequestErrorMessageSent.First().Destination.Next,                 Is.EqualTo(gridEnergyMeter.Id));
                 Assert.That(ocppLocalController_jsonRequestErrorMessageSent.First().NetworkPath.ToString(),           Is.EqualTo(new NetworkPath([ ocppLocalController.Id ]).ToString()));
 
                 // ----------------------
 
                 Assert.That(ocppEnergyMeter_jsonRequestErrorMessageResponseReceived.                         Count,   Is.EqualTo(1));
-                Assert.That(ocppEnergyMeter_jsonRequestErrorMessageResponseReceived.First().DestinationId,            Is.EqualTo(gridEnergyMeter.Id));
+                Assert.That(ocppEnergyMeter_jsonRequestErrorMessageResponseReceived.First().Destination.Next,         Is.EqualTo(gridEnergyMeter.Id));
                 Assert.That(ocppEnergyMeter_jsonRequestErrorMessageResponseReceived.First().NetworkPath.ToString(),   Is.EqualTo(new NetworkPath([ ocppLocalController.Id ]).ToString()));
                 Assert.That(ocppEnergyMeter_AuthorizeResponsesReceived.                                      Count,   Is.EqualTo(1));
                 //Assert.That(ocppEnergyMeter_AuthorizeResponsesReceived.First().Signatures.                   Count,   Is.EqualTo(1));
@@ -1794,7 +1794,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 // -<response>-------------------------------------------------------------------------------------------------
                 Assert.That(csms_MeterValuesResponsesSent.                                           Count,   Is.EqualTo(1));
                 Assert.That(csms_jsonResponseMessagesSent.                                                Count,   Is.EqualTo(1));
-                Assert.That(csms_jsonResponseMessagesSent.                     First().DestinationId,              Is.EqualTo(gridEnergyMeter.Id));
+                Assert.That(csms_jsonResponseMessagesSent.                     First().Destination.Next,           Is.EqualTo(gridEnergyMeter.Id));
                 Assert.That(csms_jsonResponseMessagesSent.                     First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id ]).ToString()));
 
                 Assert.That(ocppGateway_jsonResponseMessagesReceived.                                     Count,   Is.EqualTo(1));
@@ -1810,7 +1810,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 //Assert.That(ocppLocalController_jsonResponseMessagesSent.      First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id, ocppGateway.Id, ocppLocalController.Id ]).ToString()));
 
                 Assert.That(ocppEnergyMeter_jsonMessageResponseReceived.                                 Count,    Is.EqualTo(1));
-                Assert.That(ocppEnergyMeter_jsonMessageResponseReceived.First().DestinationId,                     Is.EqualTo(gridEnergyMeter.Id));
+                Assert.That(ocppEnergyMeter_jsonMessageResponseReceived.First().Destination.Next,                  Is.EqualTo(gridEnergyMeter.Id));
                 Assert.That(ocppEnergyMeter_jsonMessageResponseReceived.First().NetworkPath.ToString(),            Is.EqualTo(new NetworkPath([ csms1.Id, ocppGateway.Id, ocppLocalController.Id ]).ToString()));
                 Assert.That(ocppEnergyMeter_MeterValuesResponsesReceived.Count,                                    Is.EqualTo(1));
                 Assert.That(ocppEnergyMeter_MeterValuesResponsesReceived.First().DestinationId,                    Is.EqualTo(gridEnergyMeter.Id));

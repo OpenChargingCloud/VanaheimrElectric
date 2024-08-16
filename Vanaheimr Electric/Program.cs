@@ -194,26 +194,26 @@ namespace cloud.charging.open.vanaheimr.electric
 
             csms1 = new TestCSMSNode(
 
-                Id:                             NetworkingNode_Id.Parse("csms1"),
-                VendorName:                     "GraphDefined",
-                Model:                          "vcsms1",
-                Description:                    I18NString.Create("Charging Station Management System #1 for testing"),
+                        Id:                             NetworkingNode_Id.Parse("csms1"),
+                        VendorName:                     "GraphDefined",
+                        Model:                          "vcsms1",
+                        Description:                    I18NString.Create("Charging Station Management System #1 for testing"),
 
-                SignaturePolicy:                null,
-                ForwardingSignaturePolicy:      null,
+                        SignaturePolicy:                null,
+                        ForwardingSignaturePolicy:      null,
 
-                DisableSendHeartbeats:          true,
-                SendHeartbeatsEvery:            null,
-                DefaultRequestTimeout:          null,
+                        DisableSendHeartbeats:          true,
+                        SendHeartbeatsEvery:            null,
+                        DefaultRequestTimeout:          null,
 
-                DisableMaintenanceTasks:        false,
-                MaintenanceEvery:               null,
+                        DisableMaintenanceTasks:        false,
+                        MaintenanceEvery:               null,
 
-                HTTPAPI_EventLoggingDisabled:   true,
+                        HTTPAPI_EventLoggingDisabled:   true,
 
-                DNSClient:                      DNSClient
+                        DNSClient:                      DNSClient
 
-            );
+                    );
 
             csms1_OCPPWebSocketServer = csms1.AttachWebSocketServer(
 
@@ -223,7 +223,7 @@ namespace cloud.charging.open.vanaheimr.electric
                                             Description:                  I18NString.Create("Charging Station Management System #1 Web Socket Server"),
 
                                             RequireAuthentication:        true,
-                                            DisableWebSocketPings:        true,
+                                            DisableWebSocketPings:        false,
                                             WebSocketPingEvery:           null,
                                             SlowNetworkSimulationDelay:   null,
 
@@ -326,7 +326,7 @@ namespace cloud.charging.open.vanaheimr.electric
                                TransactionLimits:       null,
                                ResponseTimestamp:       authStartResult.ResponseTimestamp,
 
-                               DestinationId:           authorizeRequest.NetworkPath.Source,
+                               Destination:             SourceRouting.To(authorizeRequest.NetworkPath.Source),
                                NetworkPath:             NetworkPath.Empty,
 
                                SignKeys:                null,
@@ -350,7 +350,7 @@ namespace cloud.charging.open.vanaheimr.electric
                              TransactionLimits:         null,
                              ResponseTimestamp:         authStartResult.ResponseTimestamp,
 
-                             DestinationId:             authorizeRequest.NetworkPath.Source,
+                             Destination:               SourceRouting.To(authorizeRequest.NetworkPath.Source),
                              NetworkPath:               NetworkPath.Empty,
 
                              SignKeys:                  null,
@@ -473,7 +473,7 @@ namespace cloud.charging.open.vanaheimr.electric
 
             #region Setup Gateway
 
-            ocppGateway1                      = new TestGatewayNode(
+            ocppGateway1                     = new TestGatewayNode(
 
                                                    Id:                             NetworkingNode_Id.Parse("gw"),
                                                    VendorName:                     "GraphDefined",
@@ -507,7 +507,7 @@ namespace cloud.charging.open.vanaheimr.electric
 
                                                    RemoteURL:                    URL.Parse($"ws://127.0.0.1:{csms1_OCPPWebSocketServer.IPPort}"),
                                                    VirtualHostname:              null,
-                                                   Description:                  null,
+                                                   Description:                  I18NString.Create("GW to CSMS1"),
                                                    PreferIPv4:                   null,
                                                    RemoteCertificateValidator:   null,
                                                    LocalCertificateSelector:     null,
@@ -555,7 +555,7 @@ namespace cloud.charging.open.vanaheimr.electric
 
                                                    RemoteURL:                    URL.Parse($"ws://127.0.0.1:{csms2_OCPPWebSocketServer.IPPort}"),
                                                    VirtualHostname:              null,
-                                                   Description:                  null,
+                                                   Description:                  I18NString.Create("GW to CSMS2"),
                                                    PreferIPv4:                   null,
                                                    RemoteCertificateValidator:   null,
                                                    LocalCertificateSelector:     null,
@@ -572,7 +572,7 @@ namespace cloud.charging.open.vanaheimr.electric
                                                    NetworkingMode:               NetworkingMode.OverlayNetwork,
                                                    NextHopNetworkingNodeId:      csms2.Id,
 
-                                                   DisableWebSocketPings:        false,
+                                                   DisableWebSocketPings:        true,
                                                    WebSocketPingEvery:           null,
                                                    SlowNetworkSimulationDelay:   null,
 
@@ -640,7 +640,7 @@ namespace cloud.charging.open.vanaheimr.electric
 
             #endregion
 
-
+/*
             #region Setup Local Controller
 
             ocppLocalController1                      = new TestLocalControllerNode(
@@ -678,7 +678,7 @@ namespace cloud.charging.open.vanaheimr.electric
 
                                                                  RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppGateway1_OCPPWebSocketServer.IPPort}"),
                                                                  VirtualHostname:              null,
-                                                                 Description:                  null,
+                                                                 Description:                  I18NString.Create("LC to GW"),
                                                                  PreferIPv4:                   null,
                                                                  RemoteCertificateValidator:   null,
                                                                  LocalCertificateSelector:     null,
@@ -798,7 +798,7 @@ namespace cloud.charging.open.vanaheimr.electric
 
                                                              RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppLocalController1_OCPPWebSocketServer.IPPort}"),
                                                              VirtualHostname:              null,
-                                                             Description:                  null,
+                                                             Description:                  I18NString.Create("EM to LC"),
                                                              PreferIPv4:                   null,
                                                              RemoteCertificateValidator:   null,
                                                              LocalCertificateSelector:     null,
@@ -945,7 +945,7 @@ namespace cloud.charging.open.vanaheimr.electric
 
                                               RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppLocalController1_OCPPWebSocketServer.IPPort}"),
                                               VirtualHostname:              null,
-                                              Description:                  null,
+                                              Description:                  I18NString.Create("CS1 to LC"),
                                               PreferIPv4:                   null,
                                               RemoteCertificateValidator:   null,
                                               LocalCertificateSelector:     null,
@@ -1221,7 +1221,7 @@ namespace cloud.charging.open.vanaheimr.electric
 
                                               RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppLocalController1_OCPPWebSocketServer.IPPort}"),
                                               VirtualHostname:              null,
-                                              Description:                  null,
+                                              Description:                  I18NString.Create("CS2 to LC"),
                                               PreferIPv4:                   null,
                                               RemoteCertificateValidator:   null,
                                               LocalCertificateSelector:     null,
@@ -1336,7 +1336,7 @@ namespace cloud.charging.open.vanaheimr.electric
 
                                               RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppLocalController1_OCPPWebSocketServer.IPPort}"),
                                               VirtualHostname:              null,
-                                              Description:                  null,
+                                              Description:                  I18NString.Create("CS3 to LC"),
                                               PreferIPv4:                   null,
                                               RemoteCertificateValidator:   null,
                                               LocalCertificateSelector:     null,
@@ -1389,7 +1389,7 @@ namespace cloud.charging.open.vanaheimr.electric
 
             #endregion
 
-
+*/
 
             #region Wait for key 'Q' pressed... and quit.
 
