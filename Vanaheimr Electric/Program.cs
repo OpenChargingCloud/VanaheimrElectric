@@ -90,54 +90,56 @@ namespace cloud.charging.open.vanaheimr.electric
 
         #region Data
 
-        public static TestCSMSNode?                csms1;
-        public static IPPort?                      csms1_tcpPort                        = IPPort.Parse(5001);
-        public static OCPPWebSocketServer?         csms1_OCPPWebSocketServer;
-        public static KeyPair?                     csms1_keyPair;
-        public static RoamingNetwork?              csms1_roamingNetwork;
-        public static IChargingStationOperator?    csms1_cso;
-        public static IEMobilityProvider?          csms1_emp;
-        public static EMobilityServiceProvider?    csms1_remoteEMP;
+        private static          TestCSMSNode?                csms1;
+        private static readonly IPPort                       csms1_tcpPort                        = IPPort. Parse(5001);
+        private static          OCPPWebSocketServer?         csms1_OCPPWebSocketServer;
+        private static readonly KeyPair                      csms1_keyPair                        = KeyPair.ParsePrivateKey("dtJJ1dZeOE9caar/kWdcH1EVC4Yu/S+nGbmDNvEBD1E=")!;
+        private static          RoamingNetwork?              csms1_roamingNetwork;
+        private static          IChargingStationOperator?    csms1_cso;
+        private static          IEMobilityProvider?          csms1_emp;
+        private static          EMobilityServiceProvider?    csms1_remoteEMP;
 
-        public static TestCSMSNode?                csms2;
-        public static IPPort?                      csms2_tcpPort                        = IPPort.Parse(5002);
-        public static OCPPWebSocketServer?         csms2_OCPPWebSocketServer;
-        public static KeyPair?                     csms2_keyPair;
-        public static RoamingNetwork?              csms2_roamingNetwork;
-        public static IChargingStationOperator?    csms2_cso;
-        public static EMobilityServiceProvider?    csms2_emp;
+        private static          TestCSMSNode?                csms2;
+        private static readonly IPPort                       csms2_tcpPort                        = IPPort. Parse(5002);
+        private static          OCPPWebSocketServer?         csms2_OCPPWebSocketServer;
+        private static readonly KeyPair                      csms2_keyPair                        = KeyPair.ParsePrivateKey("Da5Ero3vg9IumqNh+r9TEA7aSHxRccX7eds0VIgLXJs=")!;
+        private static          RoamingNetwork?              csms2_roamingNetwork;
+        private static          IChargingStationOperator?    csms2_cso;
+        private static          EMobilityServiceProvider?    csms2_emp;
 
-        public static TestGatewayNode?             ocppGateway1;
-        public static IPPort?                      ocppGateway1_tcpPort                  = IPPort.Parse(6001);
-        public static OCPPWebSocketServer?         ocppGateway1_OCPPWebSocketServer;
-        public static KeyPair?                     ocppGateway1_keyPair;
 
-        public static TestLocalControllerNode?     ocppLocalController1;
-        public static IPPort?                      ocppLocalController1_tcpPort          = IPPort.Parse(7001);
-        public static OCPPWebSocketServer?         ocppLocalController1_OCPPWebSocketServer;
-        public static KeyPair?                     ocppLocalController1_keyPair;
+        private static          TestGatewayNode?             ocppGateway1;
+        private static readonly IPPort                       ocppGateway1_tcpPort                 = IPPort. Parse(6001);
+        private static          OCPPWebSocketServer?         ocppGateway1_OCPPWebSocketServer;
+        private static readonly KeyPair                      ocppGateway1_keyPair                 = KeyPair.ParsePrivateKey("B2PTBabFjeRCQzgkw1C4DycqrgmWw4ysolqhZTOw4k4=")!;
 
-        public static TestEnergyMeterNode?         gridEnergyMeter1;
-        public static IPPort?                      gridEnergyMeter1_tcpPort             = IPPort.Parse(8001);
-        //public static OCPPWebSocketServer?         gridEnergyMeter1_OCPPWebSocketServer;
-        public static KeyPair?                     gridEnergyMeter1_keyPair;
 
-        public static TestChargingStationNode?     chargingStation1;
-        public static IPPort?                      chargingStation1_tcpPort             = IPPort.Parse(9001);
-        public static KeyPair?                     chargingStation1_keyPair;
-        public static IChargingPool?               p1;
-        public static IChargingStation?            s1;
-        public static IEVSE?                       e1;
+        private static          TestLocalControllerNode?     ocppLocalController1;
+        private static readonly IPPort                       ocppLocalController1_tcpPort         = IPPort. Parse(7001);
+        private static          OCPPWebSocketServer?         ocppLocalController1_OCPPWebSocketServer;
+        private static readonly KeyPair                      ocppLocalController1_keyPair         = KeyPair.ParsePrivateKey("H7k24uNZuvrU4dfsgZBBb0aJHRlGBDLsdGWRMSvTQz4=")!;
 
-        public static TestChargingStationNode?     chargingStation2;
-        public static IPPort?                      chargingStation2_tcpPort             = IPPort.Parse(9002);
-        public static KeyPair?                     chargingStation2_keyPair;
+        private static          TestEnergyMeterNode?         gridEnergyMeter1;
+        private static readonly IPPort                       gridEnergyMeter1_tcpPort             = IPPort. Parse(8001);
+        private static readonly KeyPair                      gridEnergyMeter1_keyPair             = KeyPair.ParsePrivateKey("UsDGEskGmd0ErWJIREnp8qBeN3NakOhQkvM+Ma9dsK0=")!;
 
-        public static TestChargingStationNode?     chargingStation3;
-        public static IPPort?                      chargingStation3_tcpPort             = IPPort.Parse(9003);
-        public static KeyPair?                     chargingStation3_keyPair;
 
-        public static DNSClient?                   DNSClient;
+        private static          TestChargingStationNode?     chargingStation1;
+        private static readonly IPPort                       chargingStation1_tcpPort             = IPPort. Parse(9001);
+        private static readonly KeyPair                      chargingStation1_keyPair             = KeyPair.ParsePrivateKey("B3T71DARe4dsmqcOcTmqijqcNiSN/4Svsq92ghWute0=")!;
+        private static          IChargingPool?               p1;
+        private static          IChargingStation?            s1;
+        private static          IEVSE?                       e1;
+
+        private static          TestChargingStationNode?     chargingStation2;
+        private static readonly IPPort                       chargingStation2_tcpPort             = IPPort. Parse(9002);
+        private static readonly KeyPair                      chargingStation2_keyPair             = KeyPair.ParsePrivateKey("V0losL4KyPjTprMfmP8k/v3nLFRHM5RBGeF0AdTrDLQ=")!;
+
+        private static          TestChargingStationNode?     chargingStation3;
+        private static readonly IPPort                       chargingStation3_tcpPort             = IPPort. Parse(9003);
+        private static readonly KeyPair                      chargingStation3_keyPair             = KeyPair.ParsePrivateKey("AJJzOpCMYy5KCPk0uPFmxBVJUNXmK3f1Twnvgnxvts/F")!;
+
+        private static          DNSClient?                   DNSClient;
 
         #endregion
 
@@ -149,7 +151,7 @@ namespace cloud.charging.open.vanaheimr.electric
         public async static Task Main(String[] Arguments)
         {
 
-            #region Write process ID to file
+            #region Write processId to pid file
 
             File.WriteAllText(Path.Combine(AppContext.BaseDirectory, "pid"),
                               Environment.ProcessId.ToString());
@@ -246,8 +248,6 @@ namespace cloud.charging.open.vanaheimr.electric
                                         );
 
             #region Define signature policy
-
-            csms1_keyPair = KeyPair.ParsePrivateKey("dtJJ1dZeOE9caar/kWdcH1EVC4Yu/S+nGbmDNvEBD1E=");
 
             csms1.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                            KeyPair:                csms1_keyPair!,
@@ -442,8 +442,6 @@ namespace cloud.charging.open.vanaheimr.electric
 
             #region Define signature policy
 
-            csms2_keyPair = KeyPair.ParsePrivateKey("Da5Ero3vg9IumqNh+r9TEA7aSHxRccX7eds0VIgLXJs=");
-
             csms2.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                            KeyPair:                csms2_keyPair!,
                                                            UserIdGenerator:        (signableMessage) => "cs002",
@@ -625,8 +623,6 @@ namespace cloud.charging.open.vanaheimr.electric
 
             #region Define signature policy
 
-            ocppGateway1_keyPair = KeyPair.ParsePrivateKey("B2PTBabFjeRCQzgkw1C4DycqrgmWw4ysolqhZTOw4k4=")!;
-
             ocppGateway1.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                                  KeyPair:                ocppGateway1_keyPair,
                                                                  UserIdGenerator:        (signableMessage) => "gw001",
@@ -640,7 +636,7 @@ namespace cloud.charging.open.vanaheimr.electric
 
             #endregion
 
-/*
+
             #region Setup Local Controller
 
             ocppLocalController1                      = new TestLocalControllerNode(
@@ -747,7 +743,7 @@ namespace cloud.charging.open.vanaheimr.electric
 
             #region Define signature policy
 
-            ocppLocalController1_keyPair = KeyPair.ParsePrivateKey("H7k24uNZuvrU4dfsgZBBb0aJHRlGBDLsdGWRMSvTQz4=")!;
+            
 
             ocppLocalController1.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                                          KeyPair:                ocppLocalController1_keyPair,
@@ -867,8 +863,6 @@ namespace cloud.charging.open.vanaheimr.electric
 
             #region Define signature policy
 
-            gridEnergyMeter1_keyPair = KeyPair.ParsePrivateKey("UsDGEskGmd0ErWJIREnp8qBeN3NakOhQkvM+Ma9dsK0=")!;
-
             gridEnergyMeter1.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                                      KeyPair:                gridEnergyMeter1_keyPair,
                                                                      UserIdGenerator:        (signableMessage) => "em001",
@@ -983,7 +977,7 @@ namespace cloud.charging.open.vanaheimr.electric
 
             #region Define signature policy
 
-            chargingStation1_keyPair = KeyPair.ParsePrivateKey("B3T71DARe4dsmqcOcTmqijqcNiSN/4Svsq92ghWute0=")!;
+            
 
             chargingStation1.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                                       KeyPair:                chargingStation1_keyPair,
@@ -1259,8 +1253,6 @@ namespace cloud.charging.open.vanaheimr.electric
 
             #region Define signature policy
 
-            chargingStation2_keyPair = KeyPair.ParsePrivateKey("V0losL4KyPjTprMfmP8k/v3nLFRHM5RBGeF0AdTrDLQ=")!;
-
             chargingStation2.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                                       KeyPair:                chargingStation2_keyPair,
                                                                       UserIdGenerator:        (signableMessage) => "cs002",
@@ -1374,8 +1366,6 @@ namespace cloud.charging.open.vanaheimr.electric
 
             #region Define signature policy
 
-            chargingStation3_keyPair = KeyPair.ParsePrivateKey("AJJzOpCMYy5KCPk0uPFmxBVJUNXmK3f1Twnvgnxvts/F")!;
-
             chargingStation3.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                                       KeyPair:                chargingStation3_keyPair,
                                                                       UserIdGenerator:        (signableMessage) => "cs003",
@@ -1389,7 +1379,7 @@ namespace cloud.charging.open.vanaheimr.electric
 
             #endregion
 
-*/
+
 
             #region Wait for key 'Q' pressed... and quit.
 
