@@ -30,6 +30,7 @@ using cloud.charging.open.protocols.OCPPv2_1.WebSockets;
 using cloud.charging.open.protocols.OCPPv2_1.NetworkingNode;
 
 using cloud.charging.open.protocols.WWCP;
+using cloud.charging.open.protocols.GermanCalibrationLaw;
 
 #endregion
 
@@ -2051,36 +2052,53 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #region Initial checks
 
-            if (csms1               is null ||
-                csms2               is null ||
-                ocppGateway         is null ||
-                ocppLocalController is null ||
-                chargingStation1    is null ||
-                chargingStation2    is null ||
-                chargingStation3    is null)
+            if (csms1                is null ||
+                csms1_roamingNetwork is null ||
+                csms1_cso            is null ||
+                csms1_emp            is null ||
+                csms1_remoteEMP      is null ||
+                csms2                is null ||
+                csms2                is null ||
+                ocppGateway          is null ||
+                ocppLocalController  is null ||
+                chargingStation1     is null ||
+                chargingStation2     is null ||
+                chargingStation3     is null)
             {
 
                 Assert.Multiple(() => {
 
-                    if (csms1               is null)
+                    if (csms1                is null)
                         Assert.Fail("The csms 1 must not be null!");
 
-                    if (csms2               is null)
+                    if (csms1_roamingNetwork is null)
+                        Assert.Fail("The csms roaming network must not be null!");
+
+                    if (csms1_cso            is null)
+                        Assert.Fail("The csms CSO must not be null!");
+
+                    if (csms1_emp            is null)
+                        Assert.Fail("The csms EMP must not be null!");
+
+                    if (csms1_remoteEMP      is null)
+                        Assert.Fail("The csms remote EMP must not be null!");
+
+                    if (csms2                is null)
                         Assert.Fail("The csms 2 must not be null!");
 
-                    if (ocppGateway         is null)
+                    if (ocppGateway          is null)
                         Assert.Fail("The gateway must not be null!");
 
-                    if (ocppLocalController is null)
+                    if (ocppLocalController  is null)
                         Assert.Fail("The local controller must not be null!");
 
-                    if (chargingStation1    is null)
+                    if (chargingStation1     is null)
                         Assert.Fail("The charging station 1 must not be null!");
 
-                    if (chargingStation2    is null)
+                    if (chargingStation2     is null)
                         Assert.Fail("The charging station 2 must not be null!");
 
-                    if (chargingStation3    is null)
+                    if (chargingStation3     is null)
                         Assert.Fail("The charging station 3 must not be null!");
 
                 });
@@ -2092,8 +2110,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             #endregion
 
 
+            // OCPP
 
-            #region 1. The Authorize request leaves the Charging Station
+            #region .1. The Authorize request leaves the Charging Station
 
             var chargingStation1_AuthorizeRequestsSent          = new ConcurrentList<AuthorizeRequest>();
             var chargingStation1_jsonRequestMessageSent         = new ConcurrentList<OCPP_JSONRequestMessage>();
@@ -2110,7 +2129,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #endregion
 
-            #region 2. The OCPP Local Controller receives and forwards the Authorize request
+            #region .2. The OCPP Local Controller receives and forwards the Authorize request
 
             var ocppLocalController_jsonRequestMessagesReceived            = new ConcurrentList<OCPP_JSONRequestMessage>();
             var ocppLocalController_AuthorizeRequestsReceived              = new ConcurrentList<AuthorizeRequest>();
@@ -2145,7 +2164,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #endregion
 
-            #region 3. The OCPP Gateway receives and forwards the Authorize request
+            #region .3. The OCPP Gateway receives and forwards the Authorize request
 
             var ocppGateway_jsonRequestMessagesReceived            = new ConcurrentList<OCPP_JSONRequestMessage>();
             var ocppGateway_AuthorizeRequestsReceived              = new ConcurrentList<AuthorizeRequest>();
@@ -2180,7 +2199,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #endregion
 
-            #region 4. The CSMS receives the Authorize request
+            #region .4. The CSMS receives and maps the Authorize request
 
             var csms1_jsonRequestMessageReceived         = new ConcurrentList<OCPP_JSONRequestMessage>();
             var csms1_AuthorizeRequestsReceived          = new ConcurrentList<AuthorizeRequest>();
@@ -2197,9 +2216,123 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #endregion
 
-            // processing...
 
-            #region 5. The CSMS responds the Authorize request
+            // EV Roaming
+
+            #region .5. RoamingNetwork Request
+
+            var csms1_roamingNetwork_OnAuthorizeStartRequests = new ConcurrentList<LocalAuthentication>();
+
+            csms1_roamingNetwork.OnAuthorizeStartRequest += (logTimestamp,
+                                                             requestTimestamp,
+                                                             sender,
+                                                             senderId,
+                                                             eventTrackingId,
+                                                             roamingNetworkId,
+                                                             empRoamingProviderId,
+                                                             csoRoamingProviderId,
+                                                             operatorId,
+                                                             localAuthentication,
+                                                             chargingLocation,
+                                                             chargingProduct,
+                                                             sessionId,
+                                                             cpoPartnerSessionId,
+                                                             iSendAuthorizeStartStops,
+                                                             requestTimeout) => {
+                csms1_roamingNetwork_OnAuthorizeStartRequests.TryAdd(localAuthentication);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region .6. EV-Mobility Provider Request
+
+            var csms1_remoteEMP_OnAuthorizeStartRequests = new ConcurrentList<LocalAuthentication>();
+
+            csms1_remoteEMP.OnAuthorizeStartRequest += (logTimestamp,
+                                                        requestTimestamp,
+                                                        sender,
+                                                        senderId,
+                                                        eventTrackingId,
+                                                        roamingNetworkId,
+                                                        empRoamingProviderId,
+                                                        csoRoamingProviderId,
+                                                        operatorId,
+                                                        localAuthentication,
+                                                        chargingLocation,
+                                                        chargingProduct,
+                                                        sessionId,
+                                                        cpoPartnerSessionId,
+                                                        iSendAuthorizeStartStops,
+                                                        requestTimeout) => {
+                csms1_remoteEMP_OnAuthorizeStartRequests.TryAdd(localAuthentication);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            // processing
+
+            #region .7. EV-Mobility Provider Response
+
+            var csms1_remoteEMP_OnAuthorizeStartResponses = new ConcurrentList<LocalAuthentication>();
+
+            csms1_remoteEMP.OnAuthorizeStartResponse += (logTimestamp,
+                                                         requestTimestamp,
+                                                         sender,
+                                                         senderId,
+                                                         eventTrackingId,
+                                                         roamingNetworkId,
+                                                         empRoamingProviderId,
+                                                         csoRoamingProviderId,
+                                                         operatorId,
+                                                         localAuthentication,
+                                                         chargingLocation,
+                                                         chargingProduct,
+                                                         sessionId,
+                                                         cpoPartnerSessionId,
+                                                         iSendAuthorizeStartStops,
+                                                         requestTimeout,
+                                                         result,
+                                                         runtime) => {
+                csms1_remoteEMP_OnAuthorizeStartResponses.TryAdd(localAuthentication);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region .8. RoamingNetwork Response
+
+            var csms1_roamingNetwork_OnAuthorizeStartResponses = new ConcurrentList<LocalAuthentication>();
+
+            csms1_roamingNetwork.OnAuthorizeStartResponse += (logTimestamp,
+                                                              requestTimestamp,
+                                                              sender,
+                                                              senderId,
+                                                              eventTrackingId,
+                                                              roamingNetworkId,
+                                                              empRoamingProviderId,
+                                                              csoRoamingProviderId,
+                                                              operatorId,
+                                                              localAuthentication,
+                                                              chargingLocation,
+                                                              chargingProduct,
+                                                              sessionId,
+                                                              cpoPartnerSessionId,
+                                                              iSendAuthorizeStartStops,
+                                                              requestTimeout,
+                                                              result,
+                                                              runtime) => {
+                csms1_roamingNetwork_OnAuthorizeStartResponses.TryAdd(localAuthentication);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+
+            // OCPP
+
+            #region .9. The CSMS receives and maps the Authorize response
 
             var csms1_AuthorizeResponsesSent          = new ConcurrentList<AuthorizeResponse>();
             var csms1_jsonResponseMessagesSent        = new ConcurrentList<OCPP_JSONResponseMessage>();
@@ -2216,7 +2349,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #endregion
 
-            #region 6. The OCPP Gateway receives and forwards the Authorize response
+            #region 10. The OCPP Gateway receives and forwards the Authorize response
 
             var ocppGateway_jsonResponseMessagesReceived            = new ConcurrentList<OCPP_JSONResponseMessage>();
             var ocppGateway_AuthorizeResponsesReceived              = new ConcurrentList<AuthorizeResponse>();
@@ -2245,7 +2378,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #endregion
 
-            #region 7. The OCPP Local Controller receives and forwards the Authorize response
+            #region 11. The OCPP Local Controller receives and forwards the Authorize response
 
             var ocppLocalController_jsonResponseMessagesReceived            = new ConcurrentList<OCPP_JSONResponseMessage>();
             var ocppLocalController_AuthorizeResponsesReceived              = new ConcurrentList<AuthorizeResponse>();
@@ -2274,7 +2407,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #endregion
 
-            #region 8. The Charging Station receives the Authorize response
+            #region 12. The Charging Station receives the Authorize response
 
             var chargingStation1_jsonMessageResponseReceived        = new ConcurrentList<OCPP_JSONResponseMessage>();
             var chargingStation1_AuthorizeResponsesReceived         = new ConcurrentList<AuthorizeResponse>();
@@ -2312,41 +2445,47 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             Assert.Multiple(() => {
 
-                Assert.That(authorizeResponse.IdTokenInfo.Status,                                           Is.EqualTo(AuthorizationStatus.Accepted));
+                Assert.That(authorizeResponse.IdTokenInfo.Status,                                                   Is.EqualTo(AuthorizationStatus.Accepted));
 
 
                 // -<request>--------------------------------------------------------------------------------------------------
-                Assert.That(chargingStation1_AuthorizeRequestsSent.                                Count,   Is.EqualTo(1));
-                Assert.That(chargingStation1_AuthorizeRequestsSent.First().Signatures.             Count,   Is.EqualTo(1));
-                Assert.That(chargingStation1_jsonRequestMessageSent.                                      Count,   Is.EqualTo(1));
+                Assert.That(chargingStation1_AuthorizeRequestsSent.                                        Count,   Is.EqualTo(1));
+                Assert.That(chargingStation1_AuthorizeRequestsSent.First().Signatures.                     Count,   Is.EqualTo(1));
+                Assert.That(chargingStation1_jsonRequestMessageSent.                                       Count,   Is.EqualTo(1));
                 //Assert.That(chargingStation1_jsonRequestMessageSent.           First().NetworkPath.ToString(),   Is.EqualTo(new NetworkPath([ chargingStation1.Id ]).ToString()));
-                Assert.That(chargingStation1_jsonRequestMessageSent.First().Payload["signatures"]?.       Count(), Is.EqualTo(1));
+                Assert.That(chargingStation1_jsonRequestMessageSent.First().Payload["signatures"]?.        Count(), Is.EqualTo(1));
 
                 Assert.That(ocppLocalController_jsonRequestMessagesReceived.                               Count,   Is.EqualTo(1));
-                Assert.That(ocppLocalController_AuthorizeRequestsReceived.                         Count,   Is.EqualTo(1));
-                Assert.That(ocppLocalController_AuthorizeRequestsForwardingDecisions.              Count,   Is.EqualTo(1));
-                Assert.That(ocppLocalController_AuthorizeRequestsSent.                             Count,   Is.EqualTo(1));
+                Assert.That(ocppLocalController_AuthorizeRequestsReceived.                                 Count,   Is.EqualTo(1));
+                Assert.That(ocppLocalController_AuthorizeRequestsForwardingDecisions.                      Count,   Is.EqualTo(1));
+                Assert.That(ocppLocalController_AuthorizeRequestsSent.                                     Count,   Is.EqualTo(1));
                 Assert.That(ocppLocalController_jsonRequestMessagesSent.                                   Count,   Is.EqualTo(1));
                 Assert.That(ocppLocalController_jsonRequestMessagesSent.        First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id ]).ToString()));
 
                 Assert.That(ocppGateway_jsonRequestMessagesReceived.                                       Count,   Is.EqualTo(1));
-                Assert.That(ocppGateway_AuthorizeRequestsReceived.                                 Count,   Is.EqualTo(1));
-                Assert.That(ocppGateway_AuthorizeRequestsForwardingDecisions.                      Count,   Is.EqualTo(1));
-                Assert.That(ocppGateway_AuthorizeRequestsSent.                                     Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_AuthorizeRequestsReceived.                                         Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_AuthorizeRequestsForwardingDecisions.                              Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_AuthorizeRequestsSent.                                             Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_jsonRequestMessagesSent.                                           Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_jsonRequestMessagesSent.                First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id, ocppGateway.Id]).ToString()));
 
                 Assert.That(csms1_jsonRequestMessageReceived.                                              Count,   Is.EqualTo(1));
                 Assert.That(csms1_jsonRequestMessageReceived.                   First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id, ocppGateway.Id]).ToString()));
-                Assert.That(csms1_AuthorizeRequestsReceived.                                        Count,   Is.EqualTo(1));
+                Assert.That(csms1_AuthorizeRequestsReceived.                                               Count,   Is.EqualTo(1));
+
+                Assert.That(csms1_roamingNetwork_OnAuthorizeStartRequests.                                 Count,   Is.EqualTo(1));
+                Assert.That(csms1_remoteEMP_OnAuthorizeStartRequests.                                      Count,   Is.EqualTo(1));
 
                 // -<response>-------------------------------------------------------------------------------------------------
-                Assert.That(csms1_AuthorizeResponsesSent.                                           Count,   Is.EqualTo(1));
+                Assert.That(csms1_remoteEMP_OnAuthorizeStartResponses.                                     Count,   Is.EqualTo(1));
+                Assert.That(csms1_roamingNetwork_OnAuthorizeStartResponses.                                Count,   Is.EqualTo(1));
+
+                Assert.That(csms1_AuthorizeResponsesSent.                                                  Count,   Is.EqualTo(1));
                 Assert.That(csms1_jsonResponseMessagesSent.                                                Count,   Is.EqualTo(1));
-                Assert.That(csms1_jsonResponseMessagesSent.                     First().Destination.Next,              Is.EqualTo(chargingStation1.Id));
+                Assert.That(csms1_jsonResponseMessagesSent.                     First().Destination.Next,           Is.EqualTo(chargingStation1.Id));
                 Assert.That(csms1_jsonResponseMessagesSent.                     First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id ]).ToString()));
 
-                Assert.That(ocppGateway_jsonResponseMessagesReceived.                                     Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_jsonResponseMessagesReceived.                                      Count,   Is.EqualTo(1));
                 //Assert.That(ocppGateway_AuthorizeResponsesReceived.                                Count,   Is.EqualTo(1));
                 //Assert.That(ocppGateway_AuthorizeResponsesSent.                                    Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_jsonResponseMessagesSent.                                         Count,   Is.EqualTo(1));
@@ -2366,6 +2505,512 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 //Assert.That(chargingStation1_AuthorizeResponsesReceived.First().DestinationId,              Is.EqualTo(chargingStation1.Id));
                 Assert.That(chargingStation1_jsonMessageResponseReceived.      First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
                 //Assert.That(chargingStation1_AuthorizeResponsesReceived.First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
+
+            });
+
+        }
+
+        #endregion
+
+        #region Transaction1()
+
+        /// <summary>
+        /// Transaction test.
+        /// </summary>
+        [Test]
+        public async Task Transaction1()
+        {
+
+            #region Initial checks
+
+            if (csms1                is null ||
+                csms1_roamingNetwork is null ||
+                csms1_cso            is null ||
+                csms1_emp            is null ||
+                csms1_remoteEMP      is null ||
+                csms2                is null ||
+                csms2                is null ||
+                ocppGateway          is null ||
+                ocppLocalController  is null ||
+                chargingStation1     is null ||
+                chargingStation2     is null ||
+                chargingStation3     is null)
+            {
+
+                Assert.Multiple(() => {
+
+                    if (csms1                is null)
+                        Assert.Fail("The csms 1 must not be null!");
+
+                    if (csms1_roamingNetwork is null)
+                        Assert.Fail("The csms roaming network must not be null!");
+
+                    if (csms1_cso            is null)
+                        Assert.Fail("The csms CSO must not be null!");
+
+                    if (csms1_emp            is null)
+                        Assert.Fail("The csms EMP must not be null!");
+
+                    if (csms1_remoteEMP      is null)
+                        Assert.Fail("The csms remote EMP must not be null!");
+
+                    if (csms2                is null)
+                        Assert.Fail("The csms 2 must not be null!");
+
+                    if (ocppGateway          is null)
+                        Assert.Fail("The gateway must not be null!");
+
+                    if (ocppLocalController  is null)
+                        Assert.Fail("The local controller must not be null!");
+
+                    if (chargingStation1     is null)
+                        Assert.Fail("The charging station 1 must not be null!");
+
+                    if (chargingStation2     is null)
+                        Assert.Fail("The charging station 2 must not be null!");
+
+                    if (chargingStation3     is null)
+                        Assert.Fail("The charging station 3 must not be null!");
+
+                });
+
+                return;
+
+            }
+
+            #endregion
+
+
+            // OCPP
+
+            #region .1. The Authorize request leaves the Charging Station
+
+            var chargingStation1_TransactionEventRequestsSent   = new ConcurrentList<TransactionEventRequest>();
+            var chargingStation1_jsonRequestMessageSent         = new ConcurrentList<OCPP_JSONRequestMessage>();
+
+            chargingStation1.OCPP.OUT.OnTransactionEventRequestSent += (timestamp, sender, connection, transactionEventRequest, sentMessageResult, ct) => {
+                chargingStation1_TransactionEventRequestsSent. TryAdd(transactionEventRequest);
+                return Task.CompletedTask;
+            };
+
+            chargingStation1.OCPP.OUT.OnJSONRequestMessageSent += (timestamp, sender, connection, jsonRequestMessage, sentMessageResult, ct) => {
+                chargingStation1_jsonRequestMessageSent.TryAdd(jsonRequestMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region .2. The OCPP Local Controller receives and forwards the TransactionEvent request
+
+            var ocppLocalController_jsonRequestMessagesReceived                   = new ConcurrentList<OCPP_JSONRequestMessage>();
+            var ocppLocalController_TransactionEventRequestsReceived              = new ConcurrentList<TransactionEventRequest>();
+            var ocppLocalController_TransactionEventRequestsForwardingDecisions   = new ConcurrentList<ForwardingDecision<TransactionEventRequest, TransactionEventResponse>>();
+            var ocppLocalController_TransactionEventRequestsSent                  = new ConcurrentList<TransactionEventRequest>();
+            var ocppLocalController_jsonRequestMessagesSent                       = new ConcurrentList<OCPP_JSONRequestMessage>();
+
+            ocppLocalController.OCPP.IN.     OnJSONRequestMessageReceived        += (timestamp, sender, connection, jsonRequestMessage, ct) => {
+                ocppLocalController_jsonRequestMessagesReceived.                TryAdd(jsonRequestMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnTransactionEventRequestReceived   += (timestamp, sender, connection, transactionEventRequest, ct) => {
+                ocppLocalController_TransactionEventRequestsReceived.           TryAdd(transactionEventRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnTransactionEventRequestFiltered   += (timestamp, sender, connection, transactionEventRequest, forwardingDecision, ct) => {
+                ocppLocalController_TransactionEventRequestsForwardingDecisions.TryAdd(forwardingDecision);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnTransactionEventRequestSent       += (timestamp, sender, connection, transactionEventRequest, sentMessageResult, ct) => {
+                ocppLocalController_TransactionEventRequestsSent.               TryAdd(transactionEventRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.OUT.    OnJSONRequestMessageSent            += (timestamp, sender, connection, jsonRequestMessage, sentMessageResult, ct) => {
+                ocppLocalController_jsonRequestMessagesSent.                    TryAdd(jsonRequestMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region .3. The OCPP Gateway receives and forwards the TransactionEvent request
+
+            var ocppGateway_jsonRequestMessagesReceived                   = new ConcurrentList<OCPP_JSONRequestMessage>();
+            var ocppGateway_TransactionEventRequestsReceived              = new ConcurrentList<TransactionEventRequest>();
+            var ocppGateway_TransactionEventRequestsForwardingDecisions   = new ConcurrentList<ForwardingDecision<TransactionEventRequest, TransactionEventResponse>>();
+            var ocppGateway_TransactionEventRequestsSent                  = new ConcurrentList<TransactionEventRequest>();
+            var ocppGateway_jsonRequestMessagesSent                       = new ConcurrentList<OCPP_JSONRequestMessage>();
+
+            ocppGateway.OCPP.IN.     OnJSONRequestMessageReceived += (timestamp, sender, connection, jsonRequestMessage, ct) => {
+                ocppGateway_jsonRequestMessagesReceived.                TryAdd(jsonRequestMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnTransactionEventRequestReceived   += (timestamp, sender, connection, transactionEventRequest, ct) => {
+                ocppGateway_TransactionEventRequestsReceived.           TryAdd(transactionEventRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnTransactionEventRequestFiltered   += (timestamp, sender, connection, transactionEventRequest, forwardingDecision, ct) => {
+                ocppGateway_TransactionEventRequestsForwardingDecisions.TryAdd(forwardingDecision);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnTransactionEventRequestSent       += (timestamp, sender, connection, transactionEventRequest, sentMessageResult, ct) => {
+                ocppGateway_TransactionEventRequestsSent.               TryAdd(transactionEventRequest);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.OUT.    OnJSONRequestMessageSent            += (timestamp, sender, connection, jsonRequestMessage, sentMessageResult, ct) => {
+                ocppGateway_jsonRequestMessagesSent.                    TryAdd(jsonRequestMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region .4. The CSMS receives and maps the TransactionEvent request
+
+            var csms1_jsonRequestMessageReceived                = new ConcurrentList<OCPP_JSONRequestMessage>();
+            var csms1_TransactionEventRequestsReceived          = new ConcurrentList<TransactionEventRequest>();
+
+            csms1.OCPP.IN. OnJSONRequestMessageReceived        += (timestamp, sender, connection, jsonRequestMessage, ct) => {
+                csms1_jsonRequestMessageReceived.      TryAdd(jsonRequestMessage);
+                return Task.CompletedTask;
+            };
+
+            csms1.OCPP.IN. OnTransactionEventRequestReceived   += (timestamp, sender, connection, request, ct) => {
+                csms1_TransactionEventRequestsReceived.TryAdd(request);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+
+            // EV Roaming
+
+            #region .5. RoamingNetwork Request
+
+            //var csms1_roamingNetwork_OnTransactionEventStartRequests = new ConcurrentList<LocalAuthentication>();
+
+            //csms1_roamingNetwork.OnTransactionEventStartRequest += (logTimestamp,
+            //                                                        requestTimestamp,
+            //                                                        sender,
+            //                                                        senderId,
+            //                                                        eventTrackingId,
+            //                                                        roamingNetworkId,
+            //                                                        empRoamingProviderId,
+            //                                                        csoRoamingProviderId,
+            //                                                        operatorId,
+            //                                                        localAuthentication,
+            //                                                        chargingLocation,
+            //                                                        chargingProduct,
+            //                                                        sessionId,
+            //                                                        cpoPartnerSessionId,
+            //                                                        iSendTransactionEventStartStops,
+            //                                                        requestTimeout) => {
+            //    csms1_roamingNetwork_OnTransactionEventStartRequests.TryAdd(localAuthentication);
+            //    return Task.CompletedTask;
+            //};
+
+            #endregion
+
+            #region .6. EV-Mobility Provider Request
+
+            //var csms1_remoteEMP_OnTransactionEventStartRequests = new ConcurrentList<LocalAuthentication>();
+
+            //csms1_remoteEMP.OnTransactionEventStartRequest += (logTimestamp,
+            //                                                   requestTimestamp,
+            //                                                   sender,
+            //                                                   senderId,
+            //                                                   eventTrackingId,
+            //                                                   roamingNetworkId,
+            //                                                   empRoamingProviderId,
+            //                                                   csoRoamingProviderId,
+            //                                                   operatorId,
+            //                                                   localAuthentication,
+            //                                                   chargingLocation,
+            //                                                   chargingProduct,
+            //                                                   sessionId,
+            //                                                   cpoPartnerSessionId,
+            //                                                   iSendTransactionEventStartStops,
+            //                                                   requestTimeout) => {
+            //    csms1_remoteEMP_OnTransactionEventStartRequests.TryAdd(localAuthentication);
+            //    return Task.CompletedTask;
+            //};
+
+            #endregion
+
+            // processing
+
+            #region .7. EV-Mobility Provider Response
+
+            //var csms1_remoteEMP_OnTransactionEventStartResponses = new ConcurrentList<LocalAuthentication>();
+
+            //csms1_remoteEMP.OnTransactionEventStartResponse += (logTimestamp,
+            //                                                    requestTimestamp,
+            //                                                    sender,
+            //                                                    senderId,
+            //                                                    eventTrackingId,
+            //                                                    roamingNetworkId,
+            //                                                    empRoamingProviderId,
+            //                                                    csoRoamingProviderId,
+            //                                                    operatorId,
+            //                                                    localAuthentication,
+            //                                                    chargingLocation,
+            //                                                    chargingProduct,
+            //                                                    sessionId,
+            //                                                    cpoPartnerSessionId,
+            //                                                    iSendTransactionEventStartStops,
+            //                                                    requestTimeout,
+            //                                                    result,
+            //                                                    runtime) => {
+            //    csms1_remoteEMP_OnTransactionEventStartResponses.TryAdd(localAuthentication);
+            //    return Task.CompletedTask;
+            //};
+
+            #endregion
+
+            #region .8. RoamingNetwork Response
+
+            //var csms1_roamingNetwork_OnTransactionEventStartResponses = new ConcurrentList<LocalAuthentication>();
+
+            //csms1_roamingNetwork.OnTransactionEventStartResponse += (logTimestamp,
+            //                                                         requestTimestamp,
+            //                                                         sender,
+            //                                                         senderId,
+            //                                                         eventTrackingId,
+            //                                                         roamingNetworkId,
+            //                                                         empRoamingProviderId,
+            //                                                         csoRoamingProviderId,
+            //                                                         operatorId,
+            //                                                         localAuthentication,
+            //                                                         chargingLocation,
+            //                                                         chargingProduct,
+            //                                                         sessionId,
+            //                                                         cpoPartnerSessionId,
+            //                                                         iSendTransactionEventStartStops,
+            //                                                         requestTimeout,
+            //                                                         result,
+            //                                                         runtime) => {
+            //    csms1_roamingNetwork_OnTransactionEventStartResponses.TryAdd(localAuthentication);
+            //    return Task.CompletedTask;
+            //};
+
+            #endregion
+
+
+            // OCPP
+
+            #region .9. The CSMS receives and maps the TransactionEvent response
+
+            var csms1_TransactionEventResponsesSent        = new ConcurrentList<TransactionEventResponse>();
+            var csms1_jsonResponseMessagesSent             = new ConcurrentList<OCPP_JSONResponseMessage>();
+
+            csms1.OCPP.OUT.OnTransactionEventResponseSent += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
+                csms1_TransactionEventResponsesSent.TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            csms1.OCPP.OUT.OnJSONResponseMessageSent      += (timestamp, sender, connection, jsonResponseMessage, sentMessageResult, ct) => {
+                csms1_jsonResponseMessagesSent.     TryAdd(jsonResponseMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 10. The OCPP Gateway receives and forwards the TransactionEvent response
+
+            var ocppGateway_jsonResponseMessagesReceived                 = new ConcurrentList<OCPP_JSONResponseMessage>();
+            var ocppGateway_TransactionEventResponsesReceived            = new ConcurrentList<TransactionEventResponse>();
+            var ocppGateway_TransactionEventResponsesSent                = new ConcurrentList<TransactionEventResponse>();
+            var ocppGateway_jsonResponseMessagesSent                     = new ConcurrentList<OCPP_JSONResponseMessage>();
+
+            ocppGateway.OCPP.IN.     OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
+                ocppGateway_jsonResponseMessagesReceived.     TryAdd(jsonResponseMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnTransactionEventResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
+                ocppGateway_TransactionEventResponsesReceived.TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.FORWARD.OnTransactionEventResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
+                ocppGateway_TransactionEventResponsesSent.    TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            ocppGateway.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, connection, jsonResponseMessage, sentMessageResult, ct) => {
+                ocppGateway_jsonResponseMessagesSent.         TryAdd(jsonResponseMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 11. The OCPP Local Controller receives and forwards the TransactionEvent response
+
+            var ocppLocalController_jsonResponseMessagesReceived                 = new ConcurrentList<OCPP_JSONResponseMessage>();
+            var ocppLocalController_TransactionEventResponsesReceived            = new ConcurrentList<TransactionEventResponse>();
+            var ocppLocalController_TransactionEventResponsesSent                = new ConcurrentList<TransactionEventResponse>();
+            var ocppLocalController_jsonResponseMessagesSent                     = new ConcurrentList<OCPP_JSONResponseMessage>();
+
+            ocppLocalController.OCPP.IN.     OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
+                ocppLocalController_jsonResponseMessagesReceived.     TryAdd(jsonResponseMessage);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnTransactionEventResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
+                ocppLocalController_TransactionEventResponsesReceived.TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.FORWARD.OnTransactionEventResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
+                ocppLocalController_TransactionEventResponsesReceived.TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            ocppLocalController.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, connection, jsonResponseMessage, sentMessageResult, ct) => {
+                ocppLocalController_jsonResponseMessagesSent.         TryAdd(jsonResponseMessage);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            #region 12. The Charging Station receives the TransactionEvent response
+
+            var chargingStation1_jsonMessageResponseReceived             = new ConcurrentList<OCPP_JSONResponseMessage>();
+            var chargingStation1_TransactionEventResponsesReceived       = new ConcurrentList<TransactionEventResponse>();
+
+            chargingStation1.OCPP.IN.OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
+                chargingStation1_jsonMessageResponseReceived.      TryAdd(jsonResponseMessage);
+                return Task.CompletedTask;
+            };
+
+            chargingStation1.OCPP.IN.OnTransactionEventResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
+                chargingStation1_TransactionEventResponsesReceived.TryAdd(response);
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+
+            var transactionEventResponse = await chargingStation1.SendTransactionEvent(
+
+                                                     TransactionEvents.Started,
+                                                     Timestamp.Now,
+                                                     TriggerReason.Authorized,
+                                                     1,
+                                                     new Transaction(
+
+                                                         Transaction_Id.NewRandom,
+                                                         ChargingState:       ChargingStates.Charging,
+                                                         TimeSpentCharging:   TimeSpan.Zero,
+                                                         StoppedReason:       null,
+                                                         RemoteStartId:       null,
+                                                         OperationMode:       OperationMode.ChargingOnly,
+                                                         TransactionLimits:   new TransactionLimits(
+                                                                                  MaxCost:      null,
+                                                                                  MaxEnergy:    null,
+                                                                                  MaxTime:      null,
+                                                                                  CustomData:   null
+                                                                              ),
+                                                         ChargingTariffId:    null,
+
+                                                         CustomData:          null
+
+                                                     ),
+
+                                                     Offline:                 null,
+                                                     NumberOfPhasesUsed:      null,
+                                                     CableMaxCurrent:         null,
+                                                     ReservationId:           null,
+                                                     IdToken:                 null,
+                                                     EVSE:                    null,
+                                                     MeterValues:             null,
+                                                     PreconditioningStatus:   null,
+
+                                                     CustomData:              null,
+
+                                                     SignKeys:                null,
+                                                     SignInfos:               null,
+                                                     Signatures:              null,
+
+                                                     RequestId:               null,
+                                                     RequestTimestamp:        null,
+                                                     RequestTimeout:          null,
+                                                     EventTrackingId:         null
+
+                                                 );
+
+            Assert.Multiple(() => {
+
+                // TotalCost
+                // ChargingPriority
+                // IdTokenInfo
+                // UpdatedPersonalMessage
+
+                Assert.That(transactionEventResponse.Result.ResultCode,                                             Is.EqualTo(ResultCode.OK));
+
+
+                // -<request>--------------------------------------------------------------------------------------------------
+                Assert.That(chargingStation1_TransactionEventRequestsSent.                                 Count,   Is.EqualTo(1));
+                Assert.That(chargingStation1_TransactionEventRequestsSent.First().Signatures.              Count,   Is.EqualTo(1));
+                Assert.That(chargingStation1_jsonRequestMessageSent.                                       Count,   Is.EqualTo(1));
+                //Assert.That(chargingStation1_jsonRequestMessageSent.            First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id ]).ToString()));
+                Assert.That(chargingStation1_jsonRequestMessageSent.First().Payload["signatures"]?.        Count(), Is.EqualTo(1));
+
+                Assert.That(ocppLocalController_jsonRequestMessagesReceived.                               Count,   Is.EqualTo(1));
+                Assert.That(ocppLocalController_TransactionEventRequestsReceived.                          Count,   Is.EqualTo(1));
+                Assert.That(ocppLocalController_TransactionEventRequestsForwardingDecisions.               Count,   Is.EqualTo(1));
+                Assert.That(ocppLocalController_TransactionEventRequestsSent.                              Count,   Is.EqualTo(1));
+                Assert.That(ocppLocalController_jsonRequestMessagesSent.                                   Count,   Is.EqualTo(1));
+                Assert.That(ocppLocalController_jsonRequestMessagesSent.        First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id ]).ToString()));
+
+                Assert.That(ocppGateway_jsonRequestMessagesReceived.                                       Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_TransactionEventRequestsReceived.                                  Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_TransactionEventRequestsForwardingDecisions.                       Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_TransactionEventRequestsSent.                                      Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_jsonRequestMessagesSent.                                           Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_jsonRequestMessagesSent.                First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id, ocppGateway.Id]).ToString()));
+
+                Assert.That(csms1_jsonRequestMessageReceived.                                              Count,   Is.EqualTo(1));
+                Assert.That(csms1_jsonRequestMessageReceived.                   First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id, ocppGateway.Id]).ToString()));
+                Assert.That(csms1_TransactionEventRequestsReceived.                                        Count,   Is.EqualTo(1));
+
+                //Assert.That(csms1_roamingNetwork_OnTransactionEventStartRequests.                          Count,   Is.EqualTo(1));
+                //Assert.That(csms1_remoteEMP_OnTransactionEventStartRequests.                               Count,   Is.EqualTo(1));
+
+                // -<response>-------------------------------------------------------------------------------------------------
+                //Assert.That(csms1_remoteEMP_OnTransactionEventStartResponses.                              Count,   Is.EqualTo(1));
+                //Assert.That(csms1_roamingNetwork_OnTransactionEventStartResponses.                         Count,   Is.EqualTo(1));
+
+                Assert.That(csms1_TransactionEventResponsesSent.                                           Count,   Is.EqualTo(1));
+                Assert.That(csms1_jsonResponseMessagesSent.                                                Count,   Is.EqualTo(1));
+                Assert.That(csms1_jsonResponseMessagesSent.                     First().Destination.Next,           Is.EqualTo(chargingStation1.Id));
+                Assert.That(csms1_jsonResponseMessagesSent.                     First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id ]).ToString()));
+
+                Assert.That(ocppGateway_jsonResponseMessagesReceived.                                      Count,   Is.EqualTo(1));
+                //Assert.That(ocppGateway_TransactionEventResponsesReceived.                                 Count,   Is.EqualTo(1));
+                //Assert.That(ocppGateway_TransactionEventResponsesSent.                                     Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_jsonResponseMessagesSent.                                          Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_jsonResponseMessagesSent.               First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id, ocppGateway.Id ]).ToString()));
+
+                Assert.That(ocppLocalController_jsonResponseMessagesReceived.                              Count,   Is.EqualTo(1));
+                //Assert.That(ocppLocalController_TransactionEventResponsesReceived.                         Count,   Is.EqualTo(1));
+                //Assert.That(ocppLocalController_TransactionEventResponsesSent.                             Count,   Is.EqualTo(1));
+                Assert.That(ocppLocalController_jsonResponseMessagesSent.                                  Count,   Is.EqualTo(1));
+                //Assert.That(ocppLocalController_jsonResponseMessagesSent.       First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id, ocppGateway.Id, ocppLocalController.Id ]).ToString()));
+
+                Assert.That(chargingStation1_jsonMessageResponseReceived.                                  Count,   Is.EqualTo(1));
+                Assert.That(chargingStation1_TransactionEventResponsesReceived.                            Count,   Is.EqualTo(1));
+                Assert.That(chargingStation1_TransactionEventResponsesReceived.First().Signatures.         Count,   Is.EqualTo(1));
+                // Note: The charging stations use "normal" networking and thus have no valid networking information!
+                Assert.That(chargingStation1_jsonMessageResponseReceived.      First().Destination.Next,            Is.EqualTo(chargingStation1.Id));
+                //Assert.That(chargingStation1_TransactionEventResponsesReceived.First().DestinationId,               Is.EqualTo(chargingStation1.Id));
+                Assert.That(chargingStation1_jsonMessageResponseReceived.      First().NetworkPath.ToString(),      Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
+                //Assert.That(chargingStation1_TransactionEventResponsesReceived.First().NetworkPath.ToString(),      Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
 
             });
 
@@ -2734,52 +3379,56 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #region Initial checks
 
-            if (csms1               is null ||
-                csms1_cso           is null ||
-                csms1_emp           is null ||
-                csms1_remoteEMP     is null ||
-                csms2               is null ||
-                ocppGateway         is null ||
-                ocppLocalController is null ||
-                chargingStation1    is null ||
-                e1                  is null ||
-                chargingStation2    is null ||
-                chargingStation3    is null)
+            if (csms1                is null ||
+                csms1_roamingNetwork is null ||
+                csms1_cso            is null ||
+                csms1_emp            is null ||
+                csms1_remoteEMP      is null ||
+                csms2                is null ||
+                ocppGateway          is null ||
+                ocppLocalController  is null ||
+                chargingStation1     is null ||
+                e1                   is null ||
+                chargingStation2     is null ||
+                chargingStation3     is null)
             {
 
                 Assert.Multiple(() => {
 
-                    if (csms1               is null)
+                    if (csms1                is null)
                         Assert.Fail("The csms 1 must not be null!");
 
-                    if (csms1_cso           is null)
+                    if (csms1_roamingNetwork is null)
+                        Assert.Fail("The csms roaming network must not be null!");
+
+                    if (csms1_cso            is null)
                         Assert.Fail("The csms CSO must not be null!");
 
-                    if (csms1_emp           is null)
+                    if (csms1_emp            is null)
                         Assert.Fail("The csms EMP must not be null!");
 
-                    if (csms1_remoteEMP     is null)
+                    if (csms1_remoteEMP      is null)
                         Assert.Fail("The csms remote EMP must not be null!");
 
-                    if (csms2               is null)
+                    if (csms2                is null)
                         Assert.Fail("The csms 2 must not be null!");
 
-                    if (ocppGateway         is null)
+                    if (ocppGateway          is null)
                         Assert.Fail("The gateway must not be null!");
 
-                    if (ocppLocalController is null)
+                    if (ocppLocalController  is null)
                         Assert.Fail("The local controller must not be null!");
 
-                    if (chargingStation1    is null)
+                    if (chargingStation1     is null)
                         Assert.Fail("The charging station 1 must not be null!");
 
-                    if (e1                  is null)
+                    if (e1                   is null)
                         Assert.Fail("The EVSE 1 of charging station 1 must not be null!");
 
-                    if (chargingStation2    is null)
+                    if (chargingStation2     is null)
                         Assert.Fail("The charging station 2 must not be null!");
 
-                    if (chargingStation3    is null)
+                    if (chargingStation3     is null)
                         Assert.Fail("The charging station 3 must not be null!");
 
                 });
@@ -2793,7 +3442,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             // EV Roaming
 
-            #region .1. CE-Mobility Provider Request
+            #region .1. EV-Mobility Provider Request
 
             var csms1_remoteEMP_OnRemoteStartRequest = 0;
 
@@ -2821,20 +3470,20 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var roamingNetwork_OnRemoteStartRequest = 0;
 
-            csms1_remoteEMP.RoamingNetwork.OnRemoteStartRequest += (logTimestamp,
-                                                                    requestTimestamp,
-                                                                    sender,
-                                                                    eventTrackingId,
-                                                                    roamingNetworkId,
-                                                                    chargingLocation,
-                                                                    remoteAuthentication,
-                                                                    sessionId,
-                                                                    reservationId,
-                                                                    chargingProduct,
-                                                                    empRoamingProviderId,
-                                                                    csoRoamingProviderId,
-                                                                    providerId,
-                                                                    requestTimeout) => {
+            csms1_roamingNetwork.OnRemoteStartRequest += (logTimestamp,
+                                                          requestTimestamp,
+                                                          sender,
+                                                          eventTrackingId,
+                                                          roamingNetworkId,
+                                                          chargingLocation,
+                                                          remoteAuthentication,
+                                                          sessionId,
+                                                          reservationId,
+                                                          chargingProduct,
+                                                          empRoamingProviderId,
+                                                          csoRoamingProviderId,
+                                                          providerId,
+                                                          requestTimeout) => {
                 roamingNetwork_OnRemoteStartRequest++;
                 return Task.CompletedTask;
             };
@@ -3254,7 +3903,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var roamingNetwork_OnRemoteStartResponse = 0;
 
-            csms1_remoteEMP.RoamingNetwork.OnRemoteStartResponse += (logTimestamp,
+            csms1_roamingNetwork.OnRemoteStartResponse += (logTimestamp,
                                                                      requestTimestamp,
                                                                      sender,
                                                                      eventTrackingId,
