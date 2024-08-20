@@ -91,53 +91,61 @@ namespace cloud.charging.open.vanaheimr.electric
         #region Data
 
         private static          TestCSMSNode?                csms1;
-        private static readonly IPPort                       csms1_tcpPort                        = IPPort. Parse(5001);
+        private static readonly IPPort                       csms1_httpAPI_tcpPort                 = IPPort. Parse(5010);
+        private static readonly IPPort                       csms1_wss_tcpPort                     = IPPort. Parse(5011);
         private static          OCPPWebSocketServer?         csms1_OCPPWebSocketServer;
-        private static readonly KeyPair                      csms1_keyPair                        = KeyPair.ParsePrivateKey("dtJJ1dZeOE9caar/kWdcH1EVC4Yu/S+nGbmDNvEBD1E=")!;
+        private static readonly KeyPair                      csms1_keyPair                         = KeyPair.ParsePrivateKey("dtJJ1dZeOE9caar/kWdcH1EVC4Yu/S+nGbmDNvEBD1E=")!;
         private static          RoamingNetwork?              csms1_roamingNetwork;
         private static          IChargingStationOperator?    csms1_cso;
         private static          IEMobilityProvider?          csms1_emp;
         private static          EMobilityServiceProvider?    csms1_remoteEMP;
 
         private static          TestCSMSNode?                csms2;
-        private static readonly IPPort                       csms2_tcpPort                        = IPPort. Parse(5002);
+        private static readonly IPPort                       csms2_httpAPI_tcpPort                 = IPPort. Parse(5020);
+        private static readonly IPPort                       csms2_wss_tcpPort                     = IPPort. Parse(5021);
         private static          OCPPWebSocketServer?         csms2_OCPPWebSocketServer;
-        private static readonly KeyPair                      csms2_keyPair                        = KeyPair.ParsePrivateKey("Da5Ero3vg9IumqNh+r9TEA7aSHxRccX7eds0VIgLXJs=")!;
+        private static readonly KeyPair                      csms2_keyPair                         = KeyPair.ParsePrivateKey("Da5Ero3vg9IumqNh+r9TEA7aSHxRccX7eds0VIgLXJs=")!;
         private static          RoamingNetwork?              csms2_roamingNetwork;
         private static          IChargingStationOperator?    csms2_cso;
         private static          EMobilityServiceProvider?    csms2_emp;
 
 
         private static          TestGatewayNode?             ocppGateway1;
-        private static readonly IPPort                       ocppGateway1_tcpPort                 = IPPort. Parse(6001);
+        private static readonly IPPort                       ocppGateway1_httpAPI_tcpPort          = IPPort. Parse(6000);
+        private static readonly IPPort                       ocppGateway1_wss_tcpPort              = IPPort. Parse(6001);
         private static          OCPPWebSocketServer?         ocppGateway1_OCPPWebSocketServer;
-        private static readonly KeyPair                      ocppGateway1_keyPair                 = KeyPair.ParsePrivateKey("B2PTBabFjeRCQzgkw1C4DycqrgmWw4ysolqhZTOw4k4=")!;
+        private static readonly KeyPair                      ocppGateway1_keyPair                  = KeyPair.ParsePrivateKey("B2PTBabFjeRCQzgkw1C4DycqrgmWw4ysolqhZTOw4k4=")!;
 
 
         private static          TestLocalControllerNode?     ocppLocalController1;
-        private static readonly IPPort                       ocppLocalController1_tcpPort         = IPPort. Parse(7001);
+        private static readonly IPPort                       ocppLocalController1_httpAPI_tcpPort  = IPPort. Parse(7000);
+        private static readonly IPPort                       ocppLocalController1_wss_tcpPort      = IPPort. Parse(7001);
         private static          OCPPWebSocketServer?         ocppLocalController1_OCPPWebSocketServer;
-        private static readonly KeyPair                      ocppLocalController1_keyPair         = KeyPair.ParsePrivateKey("H7k24uNZuvrU4dfsgZBBb0aJHRlGBDLsdGWRMSvTQz4=")!;
+        private static readonly KeyPair                      ocppLocalController1_keyPair          = KeyPair.ParsePrivateKey("H7k24uNZuvrU4dfsgZBBb0aJHRlGBDLsdGWRMSvTQz4=")!;
 
         private static          TestEnergyMeterNode?         gridEnergyMeter1;
-        private static readonly IPPort                       gridEnergyMeter1_tcpPort             = IPPort. Parse(8001);
-        private static readonly KeyPair                      gridEnergyMeter1_keyPair             = KeyPair.ParsePrivateKey("UsDGEskGmd0ErWJIREnp8qBeN3NakOhQkvM+Ma9dsK0=")!;
+        private static readonly IPPort                       gridEnergyMeter1_httpAPI_tcpPort      = IPPort. Parse(8000);
+        //private static readonly IPPort                       gridEnergyMeter1_tcpPort             = IPPort. Parse(8001);
+        private static readonly KeyPair                      gridEnergyMeter1_keyPair              = KeyPair.ParsePrivateKey("UsDGEskGmd0ErWJIREnp8qBeN3NakOhQkvM+Ma9dsK0=")!;
 
 
         private static          TestChargingStationNode?     chargingStation1;
-        private static readonly IPPort                       chargingStation1_tcpPort             = IPPort. Parse(9001);
-        private static readonly KeyPair                      chargingStation1_keyPair             = KeyPair.ParsePrivateKey("B3T71DARe4dsmqcOcTmqijqcNiSN/4Svsq92ghWute0=")!;
+        private static readonly IPPort                       chargingStation1_httpAPI_tcpPort      = IPPort. Parse(9010);
+        //private static readonly IPPort                       chargingStation1_tcpPort             = IPPort. Parse(9011);
+        private static readonly KeyPair                      chargingStation1_keyPair              = KeyPair.ParsePrivateKey("B3T71DARe4dsmqcOcTmqijqcNiSN/4Svsq92ghWute0=")!;
         private static          IChargingPool?               p1;
         private static          IChargingStation?            s1;
         private static          IEVSE?                       e1;
 
         private static          TestChargingStationNode?     chargingStation2;
-        private static readonly IPPort                       chargingStation2_tcpPort             = IPPort. Parse(9002);
-        private static readonly KeyPair                      chargingStation2_keyPair             = KeyPair.ParsePrivateKey("V0losL4KyPjTprMfmP8k/v3nLFRHM5RBGeF0AdTrDLQ=")!;
+        private static readonly IPPort                       chargingStation2_httpAPI_tcpPort      = IPPort. Parse(9020);
+        //private static readonly IPPort                       chargingStation2_tcpPort             = IPPort. Parse(9022);
+        private static readonly KeyPair                      chargingStation2_keyPair              = KeyPair.ParsePrivateKey("V0losL4KyPjTprMfmP8k/v3nLFRHM5RBGeF0AdTrDLQ=")!;
 
         private static          TestChargingStationNode?     chargingStation3;
-        private static readonly IPPort                       chargingStation3_tcpPort             = IPPort. Parse(9003);
-        private static readonly KeyPair                      chargingStation3_keyPair             = KeyPair.ParsePrivateKey("AJJzOpCMYy5KCPk0uPFmxBVJUNXmK3f1Twnvgnxvts/F")!;
+        private static readonly IPPort                       chargingStation3_httpAPI_tcpPort      = IPPort. Parse(9030);
+        //private static readonly IPPort                       chargingStation3_tcpPort             = IPPort. Parse(9033);
+        private static readonly KeyPair                      chargingStation3_keyPair              = KeyPair.ParsePrivateKey("AJJzOpCMYy5KCPk0uPFmxBVJUNXmK3f1Twnvgnxvts/F")!;
 
         private static          DNSClient?                   DNSClient;
 
@@ -211,6 +219,8 @@ namespace cloud.charging.open.vanaheimr.electric
                         DisableMaintenanceTasks:        false,
                         MaintenanceEvery:               null,
 
+                        HTTPAPI_Disabled:               false,
+                        HTTPAPI_Port:                   csms1_httpAPI_tcpPort,
                         HTTPAPI_EventLoggingDisabled:   true,
 
                         DNSClient:                      DNSClient
@@ -221,7 +231,7 @@ namespace cloud.charging.open.vanaheimr.electric
 
                                             HTTPServiceName:              "Charging Station Management System #1",
                                             IPAddress:                    null,
-                                            TCPPort:                      csms1_tcpPort,
+                                            TCPPort:                      csms1_wss_tcpPort,
                                             Description:                  I18NString.Create("Charging Station Management System #1 Web Socket Server"),
 
                                             RequireAuthentication:        true,
@@ -404,6 +414,8 @@ namespace cloud.charging.open.vanaheimr.electric
                         DisableMaintenanceTasks:        false,
                         MaintenanceEvery:               null,
 
+                        HTTPAPI_Disabled:               false,
+                        HTTPAPI_Port:                   csms2_httpAPI_tcpPort,
                         HTTPAPI_EventLoggingDisabled:   true,
 
                         DNSClient:                      DNSClient
@@ -414,7 +426,7 @@ namespace cloud.charging.open.vanaheimr.electric
 
                                             HTTPServiceName:              "Charging Station Management System #2",
                                             IPAddress:                    null,
-                                            TCPPort:                      csms2_tcpPort,
+                                            TCPPort:                      csms2_wss_tcpPort,
                                             Description:                  I18NString.Create("Charging Station Management System #2 Web Socket Server"),
 
                                             RequireAuthentication:        true,
@@ -488,6 +500,8 @@ namespace cloud.charging.open.vanaheimr.electric
                                                    DisableMaintenanceTasks:        false,
                                                    MaintenanceEvery:               null,
 
+                                                   HTTPAPI_Disabled:               false,
+                                                   HTTPAPI_Port:                   ocppGateway1_httpAPI_tcpPort,
                                                    HTTPAPI_EventLoggingDisabled:   true,
 
                                                    DNSClient:                      DNSClient
@@ -595,7 +609,7 @@ namespace cloud.charging.open.vanaheimr.electric
 
                                                    HTTPServiceName:              "OCPP Gateway",
                                                    IPAddress:                    null,
-                                                   TCPPort:                      ocppGateway1_tcpPort,
+                                                   TCPPort:                      ocppGateway1_wss_tcpPort,
                                                    Description:                  I18NString.Create("OCPP Gateway Web Socket Server"),
 
                                                    RequireAuthentication:        true,
@@ -659,6 +673,8 @@ namespace cloud.charging.open.vanaheimr.electric
                                                            DisableMaintenanceTasks:        false,
                                                            MaintenanceEvery:               null,
 
+                                                           HTTPAPI_Disabled:               false,
+                                                           HTTPAPI_Port:                   ocppLocalController1_httpAPI_tcpPort,
                                                            HTTPAPI_EventLoggingDisabled:   true,
 
                                                            DNSClient:                      DNSClient
@@ -715,7 +731,7 @@ namespace cloud.charging.open.vanaheimr.electric
 
                                                           HTTPServiceName:              "OCPP Local Controller",
                                                           IPAddress:                    null,
-                                                          TCPPort:                      ocppLocalController1_tcpPort,
+                                                          TCPPort:                      ocppLocalController1_wss_tcpPort,
                                                           Description:                  I18NString.Create("OCPP Local Controller Web Socket Server"),
 
                                                           RequireAuthentication:        true,
@@ -779,6 +795,8 @@ namespace cloud.charging.open.vanaheimr.electric
                                                        DisableMaintenanceTasks:        false,
                                                        MaintenanceEvery:               null,
 
+                                                       HTTPAPI_Disabled:               false,
+                                                       HTTPAPI_Port:                   gridEnergyMeter1_httpAPI_tcpPort,
                                                        HTTPAPI_EventLoggingDisabled:   true,
 
                                                        DNSClient:                      DNSClient
@@ -921,6 +939,8 @@ namespace cloud.charging.open.vanaheimr.electric
                                         DisableMaintenanceTasks:        false,
                                         MaintenanceEvery:               null,
 
+                                        HTTPAPI_Disabled:               false,
+                                        HTTPAPI_Port:                   chargingStation1_httpAPI_tcpPort,
                                         HTTPAPI_EventLoggingDisabled:   true,
 
                                         CustomData:                     null,
@@ -1157,52 +1177,54 @@ namespace cloud.charging.open.vanaheimr.electric
 
             chargingStation2      = new TestChargingStationNode(
 
-                                            Id:                             NetworkingNode_Id.Parse("cs2"),
-                                            VendorName:                     "GraphDefined",
-                                            Model:                          "vcs2",
-                                            Description:                    I18NString.Create("The second charging station for testing"),
-                                            SerialNumber:                   "cs#2",
-                                            FirmwareVersion:                "cs-fw v2.0",
-                                            Modem:                          new Modem(
-                                                                                ICCID:       "ICCID#2",
-                                                                                IMSI:        "IMSI#2",
-                                                                                CustomData:   null
-                                                                            ),
+                                        Id:                             NetworkingNode_Id.Parse("cs2"),
+                                        VendorName:                     "GraphDefined",
+                                        Model:                          "vcs2",
+                                        Description:                    I18NString.Create("The second charging station for testing"),
+                                        SerialNumber:                   "cs#2",
+                                        FirmwareVersion:                "cs-fw v2.0",
+                                        Modem:                          new Modem(
+                                                                            ICCID:       "ICCID#2",
+                                                                            IMSI:        "IMSI#2",
+                                                                            CustomData:   null
+                                                                        ),
 
-                                            EVSEs:                          [
-                                                                                new protocols.OCPPv2_1.CS.ChargingStationEVSE(
-                                                                                    Id:                  protocols.OCPPv2_1.EVSE_Id.Parse(0),
-                                                                                    AdminStatus:         OperationalStatus.Operative,
-                                                                                    MeterType:           "myMeter",
-                                                                                    MeterSerialNumber:   "Meter#2",
-                                                                                    MeterPublicKey:      "pubkey#2",
-                                                                                    Connectors:          [
-                                                                                                             new protocols.OCPPv2_1.CS.ChargingStationConnector(
-                                                                                                                 Id:              Connector_Id.Parse(1),
-                                                                                                                 ConnectorType:   ConnectorType.cType2
-                                                                                                             )
-                                                                                                         ]
-                                                                                )
-                                                                            ],
-                                            UplinkEnergyMeter:              null,
+                                        EVSEs:                          [
+                                                                            new protocols.OCPPv2_1.CS.ChargingStationEVSE(
+                                                                                Id:                  protocols.OCPPv2_1.EVSE_Id.Parse(0),
+                                                                                AdminStatus:         OperationalStatus.Operative,
+                                                                                MeterType:           "myMeter",
+                                                                                MeterSerialNumber:   "Meter#2",
+                                                                                MeterPublicKey:      "pubkey#2",
+                                                                                Connectors:          [
+                                                                                                         new protocols.OCPPv2_1.CS.ChargingStationConnector(
+                                                                                                             Id:              Connector_Id.Parse(1),
+                                                                                                             ConnectorType:   ConnectorType.cType2
+                                                                                                         )
+                                                                                                     ]
+                                                                            )
+                                                                        ],
+                                        UplinkEnergyMeter:              null,
 
-                                            DefaultRequestTimeout:          null,
+                                        DefaultRequestTimeout:          null,
 
-                                            SignaturePolicy:                null,
-                                            ForwardingSignaturePolicy:      null,
+                                        SignaturePolicy:                null,
+                                        ForwardingSignaturePolicy:      null,
 
-                                            DisableSendHeartbeats:          true,
-                                            SendHeartbeatsEvery:            null,
+                                        DisableSendHeartbeats:          true,
+                                        SendHeartbeatsEvery:            null,
 
-                                            DisableMaintenanceTasks:        false,
-                                            MaintenanceEvery:               null,
+                                        DisableMaintenanceTasks:        false,
+                                        MaintenanceEvery:               null,
 
-                                            HTTPAPI_EventLoggingDisabled:   true,
+                                        HTTPAPI_Disabled:               false,
+                                        HTTPAPI_Port:                   chargingStation2_httpAPI_tcpPort,
+                                        HTTPAPI_EventLoggingDisabled:   true,
 
-                                            CustomData:                     null,
-                                            DNSClient:                      DNSClient
+                                        CustomData:                     null,
+                                        DNSClient:                      DNSClient
 
-                                        );
+                                    );
 
             ocppLocalController1.AllowedChargingStations.Add(chargingStation2.Id);
 
@@ -1270,52 +1292,54 @@ namespace cloud.charging.open.vanaheimr.electric
 
             chargingStation3      = new TestChargingStationNode(
 
-                                            Id:                             NetworkingNode_Id.Parse("cs3"),
-                                            VendorName:                     "GraphDefined",
-                                            Model:                          "vcs3",
-                                            Description:                    I18NString.Create("The third charging station for testing"),
-                                            SerialNumber:                   "cs#3",
-                                            FirmwareVersion:                "cs-fw v3.0",
-                                            Modem:                          new Modem(
-                                                                                ICCID:       "ICCID#3",
-                                                                                IMSI:        "IMSI#3",
-                                                                                CustomData:   null
-                                                                            ),
+                                        Id:                             NetworkingNode_Id.Parse("cs3"),
+                                        VendorName:                     "GraphDefined",
+                                        Model:                          "vcs3",
+                                        Description:                    I18NString.Create("The third charging station for testing"),
+                                        SerialNumber:                   "cs#3",
+                                        FirmwareVersion:                "cs-fw v3.0",
+                                        Modem:                          new Modem(
+                                                                            ICCID:       "ICCID#3",
+                                                                            IMSI:        "IMSI#3",
+                                                                            CustomData:   null
+                                                                        ),
 
-                                            EVSEs:                          [
-                                                                                new protocols.OCPPv2_1.CS.ChargingStationEVSE(
-                                                                                    Id:                  protocols.OCPPv2_1.EVSE_Id.Parse(0),
-                                                                                    AdminStatus:         OperationalStatus.Operative,
-                                                                                    MeterType:           "myMeter",
-                                                                                    MeterSerialNumber:   "Meter#3",
-                                                                                    MeterPublicKey:      "pubkey#3",
-                                                                                    Connectors:          [
-                                                                                                             new protocols.OCPPv2_1.CS.ChargingStationConnector(
-                                                                                                                 Id:              Connector_Id.Parse(1),
-                                                                                                                 ConnectorType:   ConnectorType.cType2
-                                                                                                             )
-                                                                                                         ]
-                                                                                )
-                                                                            ],
-                                            UplinkEnergyMeter:              null,
+                                        EVSEs:                          [
+                                                                            new protocols.OCPPv2_1.CS.ChargingStationEVSE(
+                                                                                Id:                  protocols.OCPPv2_1.EVSE_Id.Parse(0),
+                                                                                AdminStatus:         OperationalStatus.Operative,
+                                                                                MeterType:           "myMeter",
+                                                                                MeterSerialNumber:   "Meter#3",
+                                                                                MeterPublicKey:      "pubkey#3",
+                                                                                Connectors:          [
+                                                                                                         new protocols.OCPPv2_1.CS.ChargingStationConnector(
+                                                                                                             Id:              Connector_Id.Parse(1),
+                                                                                                             ConnectorType:   ConnectorType.cType2
+                                                                                                         )
+                                                                                                     ]
+                                                                            )
+                                                                        ],
+                                        UplinkEnergyMeter:              null,
 
-                                            DefaultRequestTimeout:          null,
+                                        DefaultRequestTimeout:          null,
 
-                                            SignaturePolicy:                null,
-                                            ForwardingSignaturePolicy:      null,
+                                        SignaturePolicy:                null,
+                                        ForwardingSignaturePolicy:      null,
 
-                                            DisableSendHeartbeats:          true,
-                                            SendHeartbeatsEvery:            null,
+                                        DisableSendHeartbeats:          true,
+                                        SendHeartbeatsEvery:            null,
 
-                                            DisableMaintenanceTasks:        false,
-                                            MaintenanceEvery:               null,
+                                        DisableMaintenanceTasks:        false,
+                                        MaintenanceEvery:               null,
 
-                                            HTTPAPI_EventLoggingDisabled:   true,
+                                        HTTPAPI_Disabled:               false,
+                                        HTTPAPI_Port:                   chargingStation3_httpAPI_tcpPort,
+                                        HTTPAPI_EventLoggingDisabled:   true,
 
-                                            CustomData:                     null,
-                                            DNSClient:                      DNSClient
+                                        CustomData:                     null,
+                                        DNSClient:                      DNSClient
 
-                                        );
+                                    );
 
             ocppLocalController1.AllowedChargingStations.Add(chargingStation3.Id);
 
@@ -1379,6 +1403,31 @@ namespace cloud.charging.open.vanaheimr.electric
 
             #endregion
 
+
+            #region Setup static OCPP Routing
+
+            csms1.               OCPP.Routing.AddOrUpdateStaticRouting(ocppLocalController1.Id,  ocppGateway1.Id);
+            csms1.               OCPP.Routing.AddOrUpdateStaticRouting(gridEnergyMeter1.Id,      ocppGateway1.Id);
+            csms1.               OCPP.Routing.AddOrUpdateStaticRouting(chargingStation1.Id,      ocppGateway1.Id);
+            csms1.               OCPP.Routing.AddOrUpdateStaticRouting(chargingStation2.Id,      ocppGateway1.Id);
+            csms1.               OCPP.Routing.AddOrUpdateStaticRouting(chargingStation3.Id,      ocppGateway1.Id);
+
+            csms2.               OCPP.Routing.AddOrUpdateStaticRouting(ocppLocalController1.Id,  ocppGateway1.Id);
+            csms2.               OCPP.Routing.AddOrUpdateStaticRouting(gridEnergyMeter1.Id,      ocppGateway1.Id);
+            csms2.               OCPP.Routing.AddOrUpdateStaticRouting(chargingStation1.Id,      ocppGateway1.Id);
+            csms2.               OCPP.Routing.AddOrUpdateStaticRouting(chargingStation2.Id,      ocppGateway1.Id);
+            csms2.               OCPP.Routing.AddOrUpdateStaticRouting(chargingStation3.Id,      ocppGateway1.Id);
+
+            ocppGateway1.        OCPP.Routing.AddOrUpdateStaticRouting(NetworkingNode_Id.CSMS,   csms1.Id);  // The default CSMS!
+            ocppGateway1.        OCPP.Routing.AddOrUpdateStaticRouting(gridEnergyMeter1.Id,      ocppLocalController1.Id);
+            ocppGateway1.        OCPP.Routing.AddOrUpdateStaticRouting(chargingStation1.Id,      ocppLocalController1.Id);
+            ocppGateway1.        OCPP.Routing.AddOrUpdateStaticRouting(chargingStation2.Id,      ocppLocalController1.Id);
+            ocppGateway1.        OCPP.Routing.AddOrUpdateStaticRouting(chargingStation3.Id,      ocppLocalController1.Id);
+
+            ocppLocalController1.OCPP.Routing.AddOrUpdateStaticRouting(csms1.Id,                 ocppGateway1.Id);
+            ocppLocalController1.OCPP.Routing.AddOrUpdateStaticRouting(csms2.Id,                 ocppGateway1.Id);
+
+            #endregion
 
 
             #region Wait for key 'Q' pressed... and quit.

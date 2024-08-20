@@ -867,19 +867,19 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
             //ToDo: Make use of the routing protocol vendor extensions!
 
             // Towards the CSMS
-            chargingStation1.   OCPP.AddStaticRouting(NetworkingNode_Id.CSMS,  ocppLocalController.Id);
-            ocppLocalController.OCPP.AddStaticRouting(NetworkingNode_Id.CSMS,  ocppGateway.Id);
-            ocppGateway.        OCPP.AddStaticRouting(NetworkingNode_Id.CSMS,  csms.Id);
+            chargingStation1.   OCPP.Routing.AddOrUpdateStaticRouting(NetworkingNode_Id.CSMS,  ocppLocalController.Id);
+            ocppLocalController.OCPP.Routing.AddOrUpdateStaticRouting(NetworkingNode_Id.CSMS,  ocppGateway.Id);
+            ocppGateway.        OCPP.Routing.AddOrUpdateStaticRouting(NetworkingNode_Id.CSMS,  csms.Id);
 
             // Towards the charging stations
-            csms.               OCPP.AddStaticRouting(ocppLocalController.Id,  ocppGateway.Id);
-            csms.               OCPP.AddStaticRouting(chargingStation1.Id,     ocppGateway.Id);
-            csms.               OCPP.AddStaticRouting(chargingStation2.Id,     ocppGateway.Id);
-            csms.               OCPP.AddStaticRouting(chargingStation3.Id,     ocppGateway.Id);
+            csms.               OCPP.Routing.AddOrUpdateStaticRouting(ocppLocalController.Id,  ocppGateway.Id);
+            csms.               OCPP.Routing.AddOrUpdateStaticRouting(chargingStation1.Id,     ocppGateway.Id);
+            csms.               OCPP.Routing.AddOrUpdateStaticRouting(chargingStation2.Id,     ocppGateway.Id);
+            csms.               OCPP.Routing.AddOrUpdateStaticRouting(chargingStation3.Id,     ocppGateway.Id);
 
-            ocppGateway.        OCPP.AddStaticRouting(chargingStation1.Id,     ocppLocalController.Id);
-            ocppGateway.        OCPP.AddStaticRouting(chargingStation2.Id,     ocppLocalController.Id);
-            ocppGateway.        OCPP.AddStaticRouting(chargingStation3.Id,     ocppLocalController.Id);
+            ocppGateway.        OCPP.Routing.AddOrUpdateStaticRouting(chargingStation1.Id,     ocppLocalController.Id);
+            ocppGateway.        OCPP.Routing.AddOrUpdateStaticRouting(chargingStation2.Id,     ocppLocalController.Id);
+            ocppGateway.        OCPP.Routing.AddOrUpdateStaticRouting(chargingStation3.Id,     ocppLocalController.Id);
 
         }
 

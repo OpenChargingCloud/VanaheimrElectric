@@ -88,15 +88,15 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
         public IChargingStationOperator?    csms2_cso;
         public EMobilityServiceProvider?    csms2_emp;
 
-        public TestGatewayNode?             ocppGateway;
+        public TestGatewayNode?             ocppGateway1;
         public OCPPWebSocketServer?         ocppGateway_OCPPWebSocketServer;
         public KeyPair?                     ocppGateway_keyPair;
 
-        public TestLocalControllerNode?     ocppLocalController;
+        public TestLocalControllerNode?     ocppLocalController1;
         public OCPPWebSocketServer?         ocppLocalController_OCPPWebSocketServer;
         public KeyPair?                     ocppLocalController_keyPair;
 
-        public TestEnergyMeterNode?         gridEnergyMeter;
+        public TestEnergyMeterNode?         gridEnergyMeter1;
         public KeyPair?                     gridEnergyMeter_keyPair;
 
         public TestChargingStationNode?     chargingStation1;
@@ -419,7 +419,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #region Setup Gateway
 
-            ocppGateway                      = new TestGatewayNode(
+            ocppGateway1                     = new TestGatewayNode(
 
                                                    Id:                             NetworkingNode_Id.Parse("gw"),
                                                    VendorName:                     "GraphDefined",
@@ -445,11 +445,11 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             #region Connect to CSMS1
 
             var ocppGatewayAuth1             = csms1_OCPPWebSocketServer.AddOrUpdateHTTPBasicAuth(
-                                                                             ocppGateway.Id,
+                                                                             ocppGateway1.Id,
                                                                              "gw2csms1_12345678"
                                                                          );
 
-            var ocppGatewayConnectResult1    = await ocppGateway.ConnectWebSocketClient(
+            var ocppGatewayConnectResult1    = await ocppGateway1.ConnectWebSocketClient(
 
                                                    RemoteURL:                    URL.Parse($"ws://127.0.0.1:{csms1_OCPPWebSocketServer.IPPort}"),
                                                    VirtualHostname:              null,
@@ -492,11 +492,11 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             #region Connect to CSMS2
 
             var ocppGatewayAuth2             = csms2_OCPPWebSocketServer.AddOrUpdateHTTPBasicAuth(
-                                                                             ocppGateway.Id,
+                                                                             ocppGateway1.Id,
                                                                              "gw2csms2_12345678"
                                                                          );
 
-            var ocppGatewayConnectResult2    = await ocppGateway.ConnectWebSocketClient(
+            var ocppGatewayConnectResult2    = await ocppGateway1.ConnectWebSocketClient(
 
                                                    RemoteURL:                    URL.Parse($"ws://127.0.0.1:{csms2_OCPPWebSocketServer.IPPort}"),
                                                    VirtualHostname:              null,
@@ -537,7 +537,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             #endregion
 
 
-            ocppGateway_OCPPWebSocketServer  = ocppGateway.AttachWebSocketServer(
+            ocppGateway_OCPPWebSocketServer  = ocppGateway1.AttachWebSocketServer(
 
                                                    HTTPServiceName:              null,
                                                    IPAddress:                    null,
@@ -571,13 +571,13 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             ocppGateway_keyPair = KeyPair.GenerateKeys()!;
 
-            ocppGateway.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
+            ocppGateway1.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                                  KeyPair:                ocppGateway_keyPair!,
                                                                  UserIdGenerator:        (signableMessage) => "gw001",
                                                                  DescriptionGenerator:   (signableMessage) => I18NString.Create("Just an OCPP Gateway!"),
                                                                  TimestampGenerator:     (signableMessage) => Timestamp.Now);
 
-            ocppGateway.OCPP.SignaturePolicy.AddVerificationRule(JSONContext.OCPP.Any,
+            ocppGateway1.OCPP.SignaturePolicy.AddVerificationRule(JSONContext.OCPP.Any,
                                                                  VerificationRuleActions.VerifyAll);
 
             #endregion
@@ -587,7 +587,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #region Setup Local Controller
 
-            ocppLocalController                      = new TestLocalControllerNode(
+            ocppLocalController1                     = new TestLocalControllerNode(
 
                                                            Id:                             NetworkingNode_Id.Parse("lc"),
                                                            VendorName:                     "GraphDefined",
@@ -614,11 +614,11 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                        );
 
             var ocppLocalControllerAuth              = ocppGateway_OCPPWebSocketServer.AddOrUpdateHTTPBasicAuth(
-                                                                                           ocppLocalController.Id,
+                                                                                           ocppLocalController1.Id,
                                                                                            "lc12345678"
                                                                                        );
 
-            var ocppLocalControllerConnectResult     = await ocppLocalController.ConnectWebSocketClient(
+            var ocppLocalControllerConnectResult     = await ocppLocalController1.ConnectWebSocketClient(
 
                                                                  RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppGateway_OCPPWebSocketServer.IPPort}"),
                                                                  VirtualHostname:              null,
@@ -637,7 +637,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                                                                  SecWebSocketProtocols:        null,
                                                                  NetworkingMode:               NetworkingMode.OverlayNetwork,
-                                                                 NextHopNetworkingNodeId:      ocppGateway.Id,
+                                                                 NextHopNetworkingNodeId:      ocppGateway1.Id,
                                                                  RoutingNetworkingNodeIds:     [ NetworkingNode_Id.CSMS ],
 
                                                                  DisableWebSocketPings:        false,
@@ -658,7 +658,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             Assert.That(ocppLocalControllerConnectResult.HTTPStatusCode.Code, Is.EqualTo(101), $"OCPP Local Controller could not connect to OCPP Gateway: {ocppLocalControllerConnectResult.HTTPStatusCode}");
 
 
-            ocppLocalController_OCPPWebSocketServer  = ocppLocalController.AttachWebSocketServer(
+            ocppLocalController_OCPPWebSocketServer  = ocppLocalController1.AttachWebSocketServer(
 
                                                           HTTPServiceName:              null,
                                                           IPAddress:                    null,
@@ -692,13 +692,13 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             ocppLocalController_keyPair = KeyPair.GenerateKeys()!;
 
-            ocppLocalController.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
+            ocppLocalController1.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                                          KeyPair:                ocppLocalController_keyPair!,
                                                                          UserIdGenerator:        (signableMessage) => "lc001",
                                                                          DescriptionGenerator:   (signableMessage) => I18NString.Create("Just an OCPP Local Controller!"),
                                                                          TimestampGenerator:     (signableMessage) => Timestamp.Now);
 
-            ocppLocalController.OCPP.SignaturePolicy.AddVerificationRule(JSONContext.OCPP.Any,
+            ocppLocalController1.OCPP.SignaturePolicy.AddVerificationRule(JSONContext.OCPP.Any,
                                                                          VerificationRuleActions.VerifyAll);
 
             #endregion
@@ -707,7 +707,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #region Setup Grid Energy Meter
 
-            gridEnergyMeter                      = new TestEnergyMeterNode(
+            gridEnergyMeter1                     = new TestEnergyMeterNode(
 
                                                        Id:                             NetworkingNode_Id.Parse("em"),
                                                        VendorName:                     "GraphDefined",
@@ -733,11 +733,11 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                    );
 
             var gridEnergyMeterAuth              = ocppLocalController_OCPPWebSocketServer.AddOrUpdateHTTPBasicAuth(
-                                                                                               gridEnergyMeter.Id,
+                                                                                               gridEnergyMeter1.Id,
                                                                                                "em12345678"
                                                                                            );
 
-            var gridEnergyMeterConnectResult     = await gridEnergyMeter.ConnectWebSocketClient(
+            var gridEnergyMeterConnectResult     = await gridEnergyMeter1.ConnectWebSocketClient(
 
                                                              RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppLocalController_OCPPWebSocketServer.IPPort}"),
                                                              VirtualHostname:              null,
@@ -756,7 +756,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                                                              SecWebSocketProtocols:        null,
                                                              NetworkingMode:               NetworkingMode.OverlayNetwork,
-                                                             NextHopNetworkingNodeId:      ocppLocalController.Id,
+                                                             NextHopNetworkingNodeId:      ocppLocalController1.Id,
                                                              RoutingNetworkingNodeIds:     [ NetworkingNode_Id.CSMS ],
 
                                                              DisableWebSocketPings:        false,
@@ -811,13 +811,13 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             gridEnergyMeter_keyPair = KeyPair.GenerateKeys()!;
 
-            gridEnergyMeter.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
+            gridEnergyMeter1.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                                      KeyPair:                gridEnergyMeter_keyPair!,
                                                                      UserIdGenerator:        (signableMessage) => "em001",
                                                                      DescriptionGenerator:   (signableMessage) => I18NString.Create("Just an OCPP Energy Meter!"),
                                                                      TimestampGenerator:     (signableMessage) => Timestamp.Now);
 
-            gridEnergyMeter.OCPP.SignaturePolicy.AddVerificationRule(JSONContext.OCPP.Any,
+            gridEnergyMeter1.OCPP.SignaturePolicy.AddVerificationRule(JSONContext.OCPP.Any,
                                                                      VerificationRuleActions.VerifyAll);
 
             #endregion
@@ -876,7 +876,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                                     );
 
-            ocppLocalController.AllowedChargingStations.Add(chargingStation1.Id);
+            ocppLocalController1.AllowedChargingStations.Add(chargingStation1.Id);
 
             var cs1Auth           = ocppLocalController_OCPPWebSocketServer.AddOrUpdateHTTPBasicAuth(
                                                                                 chargingStation1.Id,
@@ -1151,7 +1151,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                                         );
 
-            ocppLocalController.AllowedChargingStations.Add(chargingStation2.Id);
+            ocppLocalController1.AllowedChargingStations.Add(chargingStation2.Id);
 
             var cs2Auth           = ocppLocalController_OCPPWebSocketServer.AddOrUpdateHTTPBasicAuth(
                                                                                 chargingStation2.Id,
@@ -1265,7 +1265,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                                         );
 
-            ocppLocalController.AllowedChargingStations.Add(chargingStation3.Id);
+            ocppLocalController1.AllowedChargingStations.Add(chargingStation3.Id);
 
             var cs3Auth           = ocppLocalController_OCPPWebSocketServer.AddOrUpdateHTTPBasicAuth(
                                                                                 chargingStation3.Id,
@@ -1331,33 +1331,33 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             //ToDo: Make use of the routing protocol vendor extensions!
 
-            csms1.              OCPP.AddStaticRouting(ocppLocalController.Id,  ocppGateway.Id);
-            csms1.              OCPP.AddStaticRouting(gridEnergyMeter.Id,      ocppGateway.Id);
-            csms1.              OCPP.AddStaticRouting(chargingStation1.Id,     ocppGateway.Id);
-            csms1.              OCPP.AddStaticRouting(chargingStation2.Id,     ocppGateway.Id);
-            csms1.              OCPP.AddStaticRouting(chargingStation3.Id,     ocppGateway.Id);
+            csms1.               OCPP.Routing.AddOrUpdateStaticRouting(ocppLocalController1.Id,  ocppGateway1.Id);
+            csms1.               OCPP.Routing.AddOrUpdateStaticRouting(gridEnergyMeter1.Id,      ocppGateway1.Id);
+            csms1.               OCPP.Routing.AddOrUpdateStaticRouting(chargingStation1.Id,      ocppGateway1.Id);
+            csms1.               OCPP.Routing.AddOrUpdateStaticRouting(chargingStation2.Id,      ocppGateway1.Id);
+            csms1.               OCPP.Routing.AddOrUpdateStaticRouting(chargingStation3.Id,      ocppGateway1.Id);
 
-            csms2.              OCPP.AddStaticRouting(ocppLocalController.Id,  ocppGateway.Id);
-            csms2.              OCPP.AddStaticRouting(gridEnergyMeter.Id,      ocppGateway.Id);
-            csms2.              OCPP.AddStaticRouting(chargingStation1.Id,     ocppGateway.Id);
-            csms2.              OCPP.AddStaticRouting(chargingStation2.Id,     ocppGateway.Id);
-            csms2.              OCPP.AddStaticRouting(chargingStation3.Id,     ocppGateway.Id);
+            csms2.               OCPP.Routing.AddOrUpdateStaticRouting(ocppLocalController1.Id,  ocppGateway1.Id);
+            csms2.               OCPP.Routing.AddOrUpdateStaticRouting(gridEnergyMeter1.Id,      ocppGateway1.Id);
+            csms2.               OCPP.Routing.AddOrUpdateStaticRouting(chargingStation1.Id,      ocppGateway1.Id);
+            csms2.               OCPP.Routing.AddOrUpdateStaticRouting(chargingStation2.Id,      ocppGateway1.Id);
+            csms2.               OCPP.Routing.AddOrUpdateStaticRouting(chargingStation3.Id,      ocppGateway1.Id);
 
-            ocppGateway.        OCPP.AddStaticRouting(NetworkingNode_Id.CSMS,  csms1.Id);  // The default CSMS!
-            ocppGateway.        OCPP.AddStaticRouting(gridEnergyMeter.Id,      ocppLocalController.Id);
-            ocppGateway.        OCPP.AddStaticRouting(chargingStation1.Id,     ocppLocalController.Id);
-            ocppGateway.        OCPP.AddStaticRouting(chargingStation2.Id,     ocppLocalController.Id);
-            ocppGateway.        OCPP.AddStaticRouting(chargingStation3.Id,     ocppLocalController.Id);
+            ocppGateway1.        OCPP.Routing.AddOrUpdateStaticRouting(NetworkingNode_Id.CSMS,   csms1.Id);  // The default CSMS!
+            ocppGateway1.        OCPP.Routing.AddOrUpdateStaticRouting(gridEnergyMeter1.Id,      ocppLocalController1.Id);
+            ocppGateway1.        OCPP.Routing.AddOrUpdateStaticRouting(chargingStation1.Id,      ocppLocalController1.Id);
+            ocppGateway1.        OCPP.Routing.AddOrUpdateStaticRouting(chargingStation2.Id,      ocppLocalController1.Id);
+            ocppGateway1.        OCPP.Routing.AddOrUpdateStaticRouting(chargingStation3.Id,      ocppLocalController1.Id);
 
-            ocppLocalController.OCPP.AddStaticRouting(csms1.Id,                ocppGateway.Id);
-            ocppLocalController.OCPP.AddStaticRouting(csms2.Id,                ocppGateway.Id);
+            ocppLocalController1.OCPP.Routing.AddOrUpdateStaticRouting(csms1.Id,                 ocppGateway1.Id);
+            ocppLocalController1.OCPP.Routing.AddOrUpdateStaticRouting(csms2.Id,                 ocppGateway1.Id);
 
 
-            ocppGateway.        OCPP.FORWARD.OnAnyJSONRequestFilter += (timestamp,
-                                                                        sender,
-                                                                        connection,
-                                                                        request,
-                                                                        cancellationToken) =>
+            ocppGateway1.        OCPP.FORWARD.OnAnyJSONRequestFilter += (timestamp,
+                                                                         sender,
+                                                                         connection,
+                                                                         request,
+                                                                         cancellationToken) =>
 
                 Task.FromResult(
                     request.NetworkPath.Source == chargingStation3.Id
@@ -1367,7 +1367,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #region OnBootNotification
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationRequestFilter += (timestamp,
+            ocppGateway1.OCPP.FORWARD.OnBootNotificationRequestFilter += (timestamp,
                                                                          sender,
                                                                          connection,
                                                                          request,

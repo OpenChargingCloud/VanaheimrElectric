@@ -55,8 +55,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             if (csms1               is null ||
                 csms2               is null ||
-                ocppGateway         is null ||
-                ocppLocalController is null ||
+                ocppGateway1         is null ||
+                ocppLocalController1 is null ||
                 chargingStation1    is null ||
                 chargingStation2    is null ||
                 chargingStation3    is null)
@@ -70,10 +70,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                     if (csms2               is null)
                         Assert.Fail("The csms 2 must not be null!");
 
-                    if (ocppGateway         is null)
+                    if (ocppGateway1         is null)
                         Assert.Fail("The gateway must not be null!");
 
-                    if (ocppLocalController is null)
+                    if (ocppLocalController1 is null)
                         Assert.Fail("The local controller must not be null!");
 
                     if (chargingStation1    is null)
@@ -132,8 +132,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             if (csms1               is null ||
                 csms2               is null ||
-                ocppGateway         is null ||
-                ocppLocalController is null ||
+                ocppGateway1         is null ||
+                ocppLocalController1 is null ||
                 chargingStation1    is null ||
                 chargingStation2    is null ||
                 chargingStation3    is null)
@@ -147,10 +147,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                     if (csms2               is null)
                         Assert.Fail("The csms 2 must not be null!");
 
-                    if (ocppGateway         is null)
+                    if (ocppGateway1         is null)
                         Assert.Fail("The gateway must not be null!");
 
-                    if (ocppLocalController is null)
+                    if (ocppLocalController1 is null)
                         Assert.Fail("The local controller must not be null!");
 
                     if (chargingStation1    is null)

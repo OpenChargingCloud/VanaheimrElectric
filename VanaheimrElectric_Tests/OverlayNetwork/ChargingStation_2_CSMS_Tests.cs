@@ -61,8 +61,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             if (csms1               is null ||
                 csms2               is null ||
-                ocppGateway         is null ||
-                ocppLocalController is null ||
+                ocppGateway1         is null ||
+                ocppLocalController1 is null ||
                 chargingStation1    is null ||
                 chargingStation2    is null ||
                 chargingStation3    is null)
@@ -76,10 +76,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                     if (csms2               is null)
                         Assert.Fail("The csms 2 must not be null!");
 
-                    if (ocppGateway         is null)
+                    if (ocppGateway1         is null)
                         Assert.Fail("The gateway must not be null!");
 
-                    if (ocppLocalController is null)
+                    if (ocppLocalController1 is null)
                         Assert.Fail("The local controller must not be null!");
 
                     if (chargingStation1    is null)
@@ -125,27 +125,27 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppLocalController_BootNotificationRequestsSent                 = new ConcurrentList<BootNotificationRequest>();
             var ocppLocalController_jsonRequestMessageSent                       = new ConcurrentList<OCPP_JSONRequestMessage>();
 
-            ocppLocalController.OCPP.IN.     OnJSONRequestMessageReceived       += (timestamp, sender, connection, jsonRequestMessage, ct) => {
+            ocppLocalController1.OCPP.IN.     OnJSONRequestMessageReceived       += (timestamp, sender, connection, jsonRequestMessage, ct) => {
                 ocppLocalController_jsonRequestMessageReceived.                 TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBootNotificationRequestReceived  += (timestamp, sender, connection, bootNotificationRequest, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBootNotificationRequestReceived  += (timestamp, sender, connection, bootNotificationRequest, ct) => {
                 ocppLocalController_BootNotificationRequestsReceived.           TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBootNotificationRequestFiltered  += (timestamp, sender, connection, bootNotificationRequest, forwardingDecision, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBootNotificationRequestFiltered  += (timestamp, sender, connection, bootNotificationRequest, forwardingDecision, ct) => {
                 ocppLocalController_BootNotificationRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, connection, bootNotificationRequest, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, connection, bootNotificationRequest, sentMessageResult, ct) => {
                 ocppLocalController_BootNotificationRequestsSent.               TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
                 ocppLocalController_jsonRequestMessageSent.                     TryAdd(requestMessage);
                 return Task.CompletedTask;
             };
@@ -160,27 +160,27 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppGateway_BootNotificationRequestsSent                 = new ConcurrentList<BootNotificationRequest>();
             var ocppGateway_jsonRequestMessageSent                       = new ConcurrentList<OCPP_JSONRequestMessage>();
 
-            ocppGateway.OCPP.IN.     OnJSONRequestMessageReceived       += (timestamp, sender, connection, jsonRequestMessage, ct) => {
+            ocppGateway1.OCPP.IN.     OnJSONRequestMessageReceived       += (timestamp, sender, connection, jsonRequestMessage, ct) => {
                 ocppGateway_jsonRequestMessageReceived.                 TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationRequestReceived  += (timestamp, sender, connection, bootNotificationRequest, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnBootNotificationRequestReceived  += (timestamp, sender, connection, bootNotificationRequest, ct) => {
                 ocppGateway_BootNotificationRequestsReceived.           TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationRequestFiltered  += (timestamp, sender, connection, bootNotificationRequest, forwardingDecision, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnBootNotificationRequestFiltered  += (timestamp, sender, connection, bootNotificationRequest, forwardingDecision, ct) => {
                 ocppGateway_BootNotificationRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, connection, bootNotificationRequest, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, connection, bootNotificationRequest, sentMessageResult, ct) => {
                 ocppGateway_BootNotificationRequestsSent.               TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
                 ocppGateway_jsonRequestMessageSent.                     TryAdd(requestMessage);
                 return Task.CompletedTask;
             };
@@ -230,22 +230,22 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppGateway_BootNotificationResponsesSent                = new ConcurrentList<BootNotificationResponse>();
             var ocppGateway_jsonResponseMessagesSent                     = new ConcurrentList<OCPP_JSONResponseMessage>();
 
-            ocppGateway.OCPP.IN.     OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
+            ocppGateway1.OCPP.IN.     OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
                 ocppGateway_jsonResponseMessagesReceived.     TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnBootNotificationResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
                 ocppGateway_BootNotificationResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnBootNotificationResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
                 ocppGateway_BootNotificationResponsesSent.    TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
                 ocppGateway_jsonResponseMessagesSent.         TryAdd(responseMessage);
                 return Task.CompletedTask;
             };
@@ -259,22 +259,22 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppLocalController_BootNotificationResponsesSent                = new ConcurrentList<BootNotificationResponse>();
             var ocppLocalController_jsonResponseMessagesSent                     = new ConcurrentList<OCPP_JSONResponseMessage>();
 
-            ocppLocalController.OCPP.IN.     OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
+            ocppLocalController1.OCPP.IN.     OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
                 ocppLocalController_jsonResponseMessagesReceived.     TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBootNotificationResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBootNotificationResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
                 ocppLocalController_BootNotificationResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBootNotificationResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBootNotificationResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
                 ocppLocalController_BootNotificationResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
                 ocppLocalController_jsonResponseMessagesSent.         TryAdd(responseMessage);
                 return Task.CompletedTask;
             };
@@ -335,17 +335,17 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 Assert.That(ocppLocalController_BootNotificationRequestsForwardingDecisions.              Count,   Is.EqualTo(1));
                 Assert.That(ocppLocalController_BootNotificationRequestsSent.                             Count,   Is.EqualTo(1));
                 Assert.That(ocppLocalController_jsonRequestMessageSent.                                   Count,   Is.EqualTo(1));
-                Assert.That(ocppLocalController_jsonRequestMessageSent.        First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id ]).ToString()));
+                Assert.That(ocppLocalController_jsonRequestMessageSent.        First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController1.Id ]).ToString()));
 
                 Assert.That(ocppGateway_jsonRequestMessageReceived.                                       Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_BootNotificationRequestsReceived.                                 Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_BootNotificationRequestsForwardingDecisions.                      Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_BootNotificationRequestsSent.                                     Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_jsonRequestMessageSent.                                           Count,   Is.EqualTo(1));
-                Assert.That(ocppGateway_jsonRequestMessageSent.                First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id, ocppGateway.Id]).ToString()));
+                Assert.That(ocppGateway_jsonRequestMessageSent.                First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController1.Id, ocppGateway1.Id]).ToString()));
 
                 Assert.That(csms1_jsonRequestMessageReceived.                                              Count,   Is.EqualTo(1));
-                Assert.That(csms1_jsonRequestMessageReceived.                   First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id, ocppGateway.Id]).ToString()));
+                Assert.That(csms1_jsonRequestMessageReceived.                   First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController1.Id, ocppGateway1.Id]).ToString()));
                 Assert.That(csms1_BootNotificationRequestsReceived.                                        Count,   Is.EqualTo(1));
 
                 // -<response>-------------------------------------------------------------------------------------------------
@@ -358,7 +358,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 //Assert.That(ocppGateway_BootNotificationResponsesReceived.                                Count,   Is.EqualTo(1));
                 //Assert.That(ocppGateway_BootNotificationResponsesSent.                                    Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_jsonResponseMessagesSent.                                         Count,   Is.EqualTo(1));
-                Assert.That(ocppGateway_jsonResponseMessagesSent.              First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id, ocppGateway.Id ]).ToString()));
+                Assert.That(ocppGateway_jsonResponseMessagesSent.              First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id, ocppGateway1.Id ]).ToString()));
 
                 Assert.That(ocppLocalController_jsonResponseMessagesReceived.                             Count,   Is.EqualTo(1));
                 //Assert.That(ocppLocalController_BootNotificationResponsesReceived.                        Count,   Is.EqualTo(1));
@@ -394,8 +394,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             if (csms1               is null ||
                 csms2               is null ||
-                ocppGateway         is null ||
-                ocppLocalController is null ||
+                ocppGateway1         is null ||
+                ocppLocalController1 is null ||
                 chargingStation2    is null ||
                 chargingStation2    is null ||
                 chargingStation3    is null)
@@ -409,10 +409,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                     if (csms2               is null)
                         Assert.Fail("The csms 2 must not be null!");
 
-                    if (ocppGateway         is null)
+                    if (ocppGateway1         is null)
                         Assert.Fail("The gateway must not be null!");
 
-                    if (ocppLocalController is null)
+                    if (ocppLocalController1 is null)
                         Assert.Fail("The local controller must not be null!");
 
                     if (chargingStation2    is null)
@@ -458,27 +458,27 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppLocalController_BootNotificationRequestsSent                 = new ConcurrentList<BootNotificationRequest>();
             var ocppLocalController_jsonRequestMessageSent                       = new ConcurrentList<OCPP_JSONRequestMessage>();
 
-            ocppLocalController.OCPP.IN.     OnJSONRequestMessageReceived       += (timestamp, sender, connection, jsonRequestMessage, ct) => {
+            ocppLocalController1.OCPP.IN.     OnJSONRequestMessageReceived       += (timestamp, sender, connection, jsonRequestMessage, ct) => {
                 ocppLocalController_jsonRequestMessageReceived.                 TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBootNotificationRequestReceived  += (timestamp, sender, connection, bootNotificationRequest, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBootNotificationRequestReceived  += (timestamp, sender, connection, bootNotificationRequest, ct) => {
                 ocppLocalController_BootNotificationRequestsReceived.           TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBootNotificationRequestFiltered  += (timestamp, sender, connection, bootNotificationRequest, forwardingDecision, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBootNotificationRequestFiltered  += (timestamp, sender, connection, bootNotificationRequest, forwardingDecision, ct) => {
                 ocppLocalController_BootNotificationRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, connection, bootNotificationRequest, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, connection, bootNotificationRequest, sentMessageResult, ct) => {
                 ocppLocalController_BootNotificationRequestsSent.               TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
                 ocppLocalController_jsonRequestMessageSent.                     TryAdd(requestMessage);
                 return Task.CompletedTask;
             };
@@ -493,27 +493,27 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppGateway_BootNotificationRequestsSent                 = new ConcurrentList<BootNotificationRequest>();
             var ocppGateway_jsonRequestMessageSent                       = new ConcurrentList<OCPP_JSONRequestMessage>();
 
-            ocppGateway.OCPP.IN.     OnJSONRequestMessageReceived       += (timestamp, sender, connection, jsonRequestMessage, ct) => {
+            ocppGateway1.OCPP.IN.     OnJSONRequestMessageReceived       += (timestamp, sender, connection, jsonRequestMessage, ct) => {
                 ocppGateway_jsonRequestMessageReceived.                 TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationRequestReceived  += (timestamp, sender, connection, bootNotificationRequest, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnBootNotificationRequestReceived  += (timestamp, sender, connection, bootNotificationRequest, ct) => {
                 ocppGateway_BootNotificationRequestsReceived.           TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationRequestFiltered   += (timestamp, sender, connection, bootNotificationRequest, forwardingDecision, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnBootNotificationRequestFiltered   += (timestamp, sender, connection, bootNotificationRequest, forwardingDecision, ct) => {
                 ocppGateway_BootNotificationRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, connection, bootNotificationRequest, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, connection, bootNotificationRequest, sentMessageResult, ct) => {
                 ocppGateway_BootNotificationRequestsSent.               TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
                 ocppGateway_jsonRequestMessageSent.                     TryAdd(requestMessage);
                 return Task.CompletedTask;
             };
@@ -563,22 +563,22 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppGateway_BootNotificationResponsesSent                = new ConcurrentList<BootNotificationResponse>();
             var ocppGateway_jsonResponseMessagesSent                     = new ConcurrentList<OCPP_JSONResponseMessage>();
 
-            ocppGateway.OCPP.IN.     OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
+            ocppGateway1.OCPP.IN.     OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
                 ocppGateway_jsonResponseMessagesReceived.     TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnBootNotificationResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
                 ocppGateway_BootNotificationResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnBootNotificationResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
                 ocppGateway_BootNotificationResponsesSent.    TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
                 ocppGateway_jsonResponseMessagesSent.         TryAdd(responseMessage);
                 return Task.CompletedTask;
             };
@@ -592,22 +592,22 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppLocalController_BootNotificationResponsesSent                = new ConcurrentList<BootNotificationResponse>();
             var ocppLocalController_jsonResponseMessagesSent                     = new ConcurrentList<OCPP_JSONResponseMessage>();
 
-            ocppLocalController.OCPP.IN.     OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
+            ocppLocalController1.OCPP.IN.     OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
                 ocppLocalController_jsonResponseMessagesReceived.     TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBootNotificationResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBootNotificationResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
                 ocppLocalController_BootNotificationResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBootNotificationResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBootNotificationResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
                 ocppLocalController_BootNotificationResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
                 ocppLocalController_jsonResponseMessagesSent.         TryAdd(responseMessage);
                 return Task.CompletedTask;
             };
@@ -668,17 +668,17 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 Assert.That(ocppLocalController_BootNotificationRequestsForwardingDecisions.              Count,   Is.EqualTo(1));
                 Assert.That(ocppLocalController_BootNotificationRequestsSent.                             Count,   Is.EqualTo(1));
                 Assert.That(ocppLocalController_jsonRequestMessageSent.                                   Count,   Is.EqualTo(1));
-                Assert.That(ocppLocalController_jsonRequestMessageSent.        First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation2.Id, ocppLocalController.Id ]).ToString()));
+                Assert.That(ocppLocalController_jsonRequestMessageSent.        First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation2.Id, ocppLocalController1.Id ]).ToString()));
 
                 Assert.That(ocppGateway_jsonRequestMessageReceived.                                       Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_BootNotificationRequestsReceived.                                 Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_BootNotificationRequestsForwardingDecisions.                      Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_BootNotificationRequestsSent.                                     Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_jsonRequestMessageSent.                                           Count,   Is.EqualTo(1));
-                Assert.That(ocppGateway_jsonRequestMessageSent.                First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation2.Id, ocppLocalController.Id, ocppGateway.Id]).ToString()));
+                Assert.That(ocppGateway_jsonRequestMessageSent.                First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation2.Id, ocppLocalController1.Id, ocppGateway1.Id]).ToString()));
 
                 Assert.That(csms1_jsonRequestMessageReceived.                                              Count,   Is.EqualTo(1));
-                Assert.That(csms1_jsonRequestMessageReceived.                   First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation2.Id, ocppLocalController.Id, ocppGateway.Id]).ToString()));
+                Assert.That(csms1_jsonRequestMessageReceived.                   First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation2.Id, ocppLocalController1.Id, ocppGateway1.Id]).ToString()));
                 Assert.That(csms1_BootNotificationRequestsReceived.                                        Count,   Is.EqualTo(1));
 
                 // -<response>-------------------------------------------------------------------------------------------------
@@ -691,7 +691,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 //Assert.That(ocppGateway_BootNotificationResponsesReceived.                                Count,   Is.EqualTo(1));
                 //Assert.That(ocppGateway_BootNotificationResponsesSent.                                    Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_jsonResponseMessagesSent.                                         Count,   Is.EqualTo(1));
-                Assert.That(ocppGateway_jsonResponseMessagesSent.              First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id, ocppGateway.Id ]).ToString()));
+                Assert.That(ocppGateway_jsonResponseMessagesSent.              First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id, ocppGateway1.Id ]).ToString()));
 
                 Assert.That(ocppLocalController_jsonResponseMessagesReceived.                             Count,   Is.EqualTo(1));
                 //Assert.That(ocppLocalController_BootNotificationResponsesReceived.                        Count,   Is.EqualTo(1));
@@ -727,8 +727,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             if (csms1               is null ||
                 csms2               is null ||
-                ocppGateway         is null ||
-                ocppLocalController is null ||
+                ocppGateway1         is null ||
+                ocppLocalController1 is null ||
                 chargingStation3    is null ||
                 chargingStation2    is null ||
                 chargingStation3    is null)
@@ -742,10 +742,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                     if (csms2               is null)
                         Assert.Fail("The csms 2 must not be null!");
 
-                    if (ocppGateway         is null)
+                    if (ocppGateway1         is null)
                         Assert.Fail("The gateway must not be null!");
 
-                    if (ocppLocalController is null)
+                    if (ocppLocalController1 is null)
                         Assert.Fail("The local controller must not be null!");
 
                     if (chargingStation3    is null)
@@ -791,27 +791,27 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppLocalController_BootNotificationRequestsSent                 = new ConcurrentList<BootNotificationRequest>();
             var ocppLocalController_jsonRequestMessageSent                       = new ConcurrentList<OCPP_JSONRequestMessage>();
 
-            ocppLocalController.OCPP.IN.     OnJSONRequestMessageReceived       += (timestamp, sender, connection, jsonRequestMessage, ct) => {
+            ocppLocalController1.OCPP.IN.     OnJSONRequestMessageReceived       += (timestamp, sender, connection, jsonRequestMessage, ct) => {
                 ocppLocalController_jsonRequestMessageReceived.                 TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBootNotificationRequestReceived  += (timestamp, sender, connection, bootNotificationRequest, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBootNotificationRequestReceived  += (timestamp, sender, connection, bootNotificationRequest, ct) => {
                 ocppLocalController_BootNotificationRequestsReceived.           TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBootNotificationRequestFiltered  += (timestamp, sender, connection, bootNotificationRequest, forwardingDecision, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBootNotificationRequestFiltered  += (timestamp, sender, connection, bootNotificationRequest, forwardingDecision, ct) => {
                 ocppLocalController_BootNotificationRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, connection, bootNotificationRequest, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, connection, bootNotificationRequest, sentMessageResult, ct) => {
                 ocppLocalController_BootNotificationRequestsSent.               TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
                 ocppLocalController_jsonRequestMessageSent.                     TryAdd(requestMessage);
                 return Task.CompletedTask;
             };
@@ -827,7 +827,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppGateway_JSONRequestsForwardingDecisions              = new ConcurrentList<ForwardingDecision>();
             var ocppGateway_jsonRequestMessageSent                       = new ConcurrentList<OCPP_JSONRequestMessage>();
 
-            ocppGateway.OCPP.IN.     OnJSONRequestMessageReceived       += (timestamp, sender, connection, jsonRequestMessage, ct) => {
+            ocppGateway1.OCPP.IN.     OnJSONRequestMessageReceived       += (timestamp, sender, connection, jsonRequestMessage, ct) => {
                 ocppGateway_jsonRequestMessageReceived.                 TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
@@ -847,12 +847,12 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             //    return Task.CompletedTask;
             //};
 
-            ocppGateway.OCPP.FORWARD.OnAnyJSONRequestFiltered           += (timestamp, sender, connection, jsonRequest, forwardingDecision, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnAnyJSONRequestFiltered           += (timestamp, sender, connection, jsonRequest, forwardingDecision, ct) => {
                 ocppGateway_JSONRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
                 ocppGateway_jsonRequestMessageSent.                     TryAdd(requestMessage);
                 return Task.CompletedTask;
             };
@@ -902,22 +902,22 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppGateway_BootNotificationResponsesSent                = new ConcurrentList<BootNotificationResponse>();
             var ocppGateway_jsonResponseMessagesSent                     = new ConcurrentList<OCPP_JSONResponseMessage>();
 
-            ocppGateway.OCPP.IN.     OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
+            ocppGateway1.OCPP.IN.     OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
                 ocppGateway_jsonResponseMessagesReceived.     TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnBootNotificationResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
                 ocppGateway_BootNotificationResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnBootNotificationResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
                 ocppGateway_BootNotificationResponsesSent.    TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
                 ocppGateway_jsonResponseMessagesSent.         TryAdd(responseMessage);
                 return Task.CompletedTask;
             };
@@ -931,22 +931,22 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppLocalController_BootNotificationResponsesSent                = new ConcurrentList<BootNotificationResponse>();
             var ocppLocalController_jsonResponseMessagesSent                     = new ConcurrentList<OCPP_JSONResponseMessage>();
 
-            ocppLocalController.OCPP.IN.     OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
+            ocppLocalController1.OCPP.IN.     OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
                 ocppLocalController_jsonResponseMessagesReceived.     TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBootNotificationResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBootNotificationResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
                 ocppLocalController_BootNotificationResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBootNotificationResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBootNotificationResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
                 ocppLocalController_BootNotificationResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
                 ocppLocalController_jsonResponseMessagesSent.         TryAdd(responseMessage);
                 return Task.CompletedTask;
             };
@@ -1007,7 +1007,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 Assert.That(ocppLocalController_BootNotificationRequestsForwardingDecisions.              Count,   Is.EqualTo(1));
                 Assert.That(ocppLocalController_BootNotificationRequestsSent.                             Count,   Is.EqualTo(1));
                 Assert.That(ocppLocalController_jsonRequestMessageSent.                                   Count,   Is.EqualTo(1));
-                Assert.That(ocppLocalController_jsonRequestMessageSent.        First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation3.Id, ocppLocalController.Id ]).ToString()));
+                Assert.That(ocppLocalController_jsonRequestMessageSent.        First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation3.Id, ocppLocalController1.Id ]).ToString()));
 
                 Assert.That(ocppGateway_jsonRequestMessageReceived.                                       Count,   Is.EqualTo(1));
                 //Assert.That(ocppGateway_BootNotificationRequestsReceived.                                 Count,   Is.EqualTo(1));
@@ -1015,10 +1015,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 //Assert.That(ocppGateway_BootNotificationRequestsSent.                                     Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_JSONRequestsForwardingDecisions.                                  Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_jsonRequestMessageSent.                                           Count,   Is.EqualTo(1));
-                Assert.That(ocppGateway_jsonRequestMessageSent.                First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation3.Id, ocppLocalController.Id, ocppGateway.Id]).ToString()));
+                Assert.That(ocppGateway_jsonRequestMessageSent.                First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation3.Id, ocppLocalController1.Id, ocppGateway1.Id]).ToString()));
 
                 Assert.That(csms2_jsonRequestMessageReceived.                                              Count,   Is.EqualTo(1));
-                Assert.That(csms2_jsonRequestMessageReceived.                   First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation3.Id, ocppLocalController.Id, ocppGateway.Id]).ToString()));
+                Assert.That(csms2_jsonRequestMessageReceived.                   First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation3.Id, ocppLocalController1.Id, ocppGateway1.Id]).ToString()));
                 Assert.That(csms2_BootNotificationRequestsReceived.                                        Count,   Is.EqualTo(1));
 
                 // -<response>-------------------------------------------------------------------------------------------------
@@ -1031,7 +1031,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 //Assert.That(ocppGateway_BootNotificationResponsesReceived.                                Count,   Is.EqualTo(1));
                 //Assert.That(ocppGateway_BootNotificationResponsesSent.                                    Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_jsonResponseMessagesSent.                                         Count,   Is.EqualTo(1));
-                Assert.That(ocppGateway_jsonResponseMessagesSent.              First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms2.Id, ocppGateway.Id ]).ToString()));
+                Assert.That(ocppGateway_jsonResponseMessagesSent.              First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms2.Id, ocppGateway1.Id ]).ToString()));
 
                 Assert.That(ocppLocalController_jsonResponseMessagesReceived.                             Count,   Is.EqualTo(1));
                 //Assert.That(ocppLocalController_BootNotificationResponsesReceived.                        Count,   Is.EqualTo(1));
@@ -1068,8 +1068,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             if (csms1               is null ||
                 csms2               is null ||
-                ocppGateway         is null ||
-                ocppLocalController is null ||
+                ocppGateway1         is null ||
+                ocppLocalController1 is null ||
                 chargingStation1    is null ||
                 chargingStation2    is null ||
                 chargingStation3    is null)
@@ -1083,10 +1083,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                     if (csms2               is null)
                         Assert.Fail("The csms 2 must not be null!");
 
-                    if (ocppGateway         is null)
+                    if (ocppGateway1         is null)
                         Assert.Fail("The gateway must not be null!");
 
-                    if (ocppLocalController is null)
+                    if (ocppLocalController1 is null)
                         Assert.Fail("The local controller must not be null!");
 
                     if (chargingStation1    is null)
@@ -1132,27 +1132,27 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppLocalController_BootNotificationRequestsSent                 = new ConcurrentList<BootNotificationRequest>();
             var ocppLocalController_jsonRequestMessageSent                       = new ConcurrentList<OCPP_JSONRequestMessage>();
 
-            ocppLocalController.OCPP.IN.     OnJSONRequestMessageReceived       += (timestamp, sender, connection, jsonRequestMessage, ct) => {
+            ocppLocalController1.OCPP.IN.     OnJSONRequestMessageReceived       += (timestamp, sender, connection, jsonRequestMessage, ct) => {
                 ocppLocalController_jsonRequestMessageReceived.                 TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBootNotificationRequestReceived  += (timestamp, sender, connection, bootNotificationRequest, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBootNotificationRequestReceived  += (timestamp, sender, connection, bootNotificationRequest, ct) => {
                 ocppLocalController_BootNotificationRequestsReceived.           TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBootNotificationRequestFiltered  += (timestamp, sender, connection, bootNotificationRequest, forwardingDecision, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBootNotificationRequestFiltered  += (timestamp, sender, connection, bootNotificationRequest, forwardingDecision, ct) => {
                 ocppLocalController_BootNotificationRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, connection, bootNotificationRequest, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, connection, bootNotificationRequest, sentMessageResult, ct) => {
                 ocppLocalController_BootNotificationRequestsSent.               TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
                 ocppLocalController_jsonRequestMessageSent.                     TryAdd(requestMessage);
                 return Task.CompletedTask;
             };
@@ -1167,27 +1167,27 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppGateway_BootNotificationRequestsSent                 = new ConcurrentList<BootNotificationRequest>();
             var ocppGateway_jsonRequestMessageSent                       = new ConcurrentList<OCPP_JSONRequestMessage>();
 
-            ocppGateway.OCPP.IN.     OnJSONRequestMessageReceived       += (timestamp, sender, connection, jsonRequestMessage, ct) => {
+            ocppGateway1.OCPP.IN.     OnJSONRequestMessageReceived       += (timestamp, sender, connection, jsonRequestMessage, ct) => {
                 ocppGateway_jsonRequestMessageReceived.                 TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationRequestReceived  += (timestamp, sender, connection, bootNotificationRequest, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnBootNotificationRequestReceived  += (timestamp, sender, connection, bootNotificationRequest, ct) => {
                 ocppGateway_BootNotificationRequestsReceived.           TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationRequestFiltered  += (timestamp, sender, connection, bootNotificationRequest, forwardingDecision, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnBootNotificationRequestFiltered  += (timestamp, sender, connection, bootNotificationRequest, forwardingDecision, ct) => {
                 ocppGateway_BootNotificationRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, connection, bootNotificationRequest, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, connection, bootNotificationRequest, sentMessageResult, ct) => {
                 ocppGateway_BootNotificationRequestsSent.               TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
                 ocppGateway_jsonRequestMessageSent.                     TryAdd(requestMessage);
                 return Task.CompletedTask;
             };
@@ -1237,22 +1237,22 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppGateway_BootNotificationResponsesSent                = new ConcurrentList<BootNotificationResponse>();
             var ocppGateway_jsonResponseMessagesSent                     = new ConcurrentList<OCPP_JSONResponseMessage>();
 
-            ocppGateway.OCPP.IN.     OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
+            ocppGateway1.OCPP.IN.     OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
                 ocppGateway_jsonResponseMessagesReceived.     TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnBootNotificationResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
                 ocppGateway_BootNotificationResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnBootNotificationResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
                 ocppGateway_BootNotificationResponsesSent.    TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
                 ocppGateway_jsonResponseMessagesSent.         TryAdd(responseMessage);
                 return Task.CompletedTask;
             };
@@ -1266,22 +1266,22 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppLocalController_BootNotificationResponsesSent                = new ConcurrentList<BootNotificationResponse>();
             var ocppLocalController_jsonResponseMessagesSent                     = new ConcurrentList<OCPP_JSONResponseMessage>();
 
-            ocppLocalController.OCPP.IN.     OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
+            ocppLocalController1.OCPP.IN.     OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
                 ocppLocalController_jsonResponseMessagesReceived.     TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBootNotificationResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBootNotificationResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
                 ocppLocalController_BootNotificationResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBootNotificationResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBootNotificationResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
                 ocppLocalController_BootNotificationResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
                 ocppLocalController_jsonResponseMessagesSent.         TryAdd(responseMessage);
                 return Task.CompletedTask;
             };
@@ -1343,17 +1343,17 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 Assert.That(ocppLocalController_BootNotificationRequestsForwardingDecisions.              Count,   Is.EqualTo(1));
                 Assert.That(ocppLocalController_BootNotificationRequestsSent.                             Count,   Is.EqualTo(1));
                 Assert.That(ocppLocalController_jsonRequestMessageSent.                                   Count,   Is.EqualTo(1));
-                Assert.That(ocppLocalController_jsonRequestMessageSent.        First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id ]).ToString()));
+                Assert.That(ocppLocalController_jsonRequestMessageSent.        First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController1.Id ]).ToString()));
 
                 Assert.That(ocppGateway_jsonRequestMessageReceived.                                       Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_BootNotificationRequestsReceived.                                 Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_BootNotificationRequestsForwardingDecisions.                      Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_BootNotificationRequestsSent.                                     Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_jsonRequestMessageSent.                                           Count,   Is.EqualTo(1));
-                Assert.That(ocppGateway_jsonRequestMessageSent.                First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id, ocppGateway.Id]).ToString()));
+                Assert.That(ocppGateway_jsonRequestMessageSent.                First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController1.Id, ocppGateway1.Id]).ToString()));
 
                 Assert.That(csms1_jsonRequestMessageReceived.                                              Count,   Is.EqualTo(1));
-                Assert.That(csms1_jsonRequestMessageReceived.                   First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id, ocppGateway.Id]).ToString()));
+                Assert.That(csms1_jsonRequestMessageReceived.                   First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController1.Id, ocppGateway1.Id]).ToString()));
                 Assert.That(csms1_BootNotificationRequestsReceived.                                        Count,   Is.EqualTo(1));
 
                 // -<response>-------------------------------------------------------------------------------------------------
@@ -1366,7 +1366,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 //Assert.That(ocppGateway_BootNotificationResponsesReceived.                                Count,   Is.EqualTo(1));
                 //Assert.That(ocppGateway_BootNotificationResponsesSent.                                    Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_jsonResponseMessagesSent.                                         Count,   Is.EqualTo(1));
-                Assert.That(ocppGateway_jsonResponseMessagesSent.              First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id, ocppGateway.Id ]).ToString()));
+                Assert.That(ocppGateway_jsonResponseMessagesSent.              First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id, ocppGateway1.Id ]).ToString()));
 
                 Assert.That(ocppLocalController_jsonResponseMessagesReceived.                             Count,   Is.EqualTo(1));
                 //Assert.That(ocppLocalController_BootNotificationResponsesReceived.                        Count,   Is.EqualTo(1));
@@ -1403,8 +1403,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             if (csms1               is null ||
                 csms2               is null ||
-                ocppGateway         is null ||
-                ocppLocalController is null ||
+                ocppGateway1         is null ||
+                ocppLocalController1 is null ||
                 chargingStation1    is null ||
                 chargingStation2    is null ||
                 chargingStation3    is null)
@@ -1418,10 +1418,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                     if (csms2               is null)
                         Assert.Fail("The csms 2 must not be null!");
 
-                    if (ocppGateway         is null)
+                    if (ocppGateway1         is null)
                         Assert.Fail("The gateway must not be null!");
 
-                    if (ocppLocalController is null)
+                    if (ocppLocalController1 is null)
                         Assert.Fail("The local controller must not be null!");
 
                     if (chargingStation1    is null)
@@ -1469,27 +1469,27 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppLocalController_BootNotificationRequestsSent                 = new ConcurrentList<BootNotificationRequest>();
             var ocppLocalController_jsonRequestMessageSent                       = new ConcurrentList<OCPP_JSONRequestMessage>();
 
-            ocppLocalController.OCPP.IN.     OnJSONRequestMessageReceived       += (timestamp, sender, connection, jsonRequestMessage, ct) => {
+            ocppLocalController1.OCPP.IN.     OnJSONRequestMessageReceived       += (timestamp, sender, connection, jsonRequestMessage, ct) => {
                 ocppLocalController_jsonRequestMessageReceived.                 TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBootNotificationRequestReceived  += (timestamp, sender, connection, bootNotificationRequest, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBootNotificationRequestReceived  += (timestamp, sender, connection, bootNotificationRequest, ct) => {
                 ocppLocalController_BootNotificationRequestsReceived.           TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBootNotificationRequestFiltered  += (timestamp, sender, connection, bootNotificationRequest, forwardingDecision, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBootNotificationRequestFiltered  += (timestamp, sender, connection, bootNotificationRequest, forwardingDecision, ct) => {
                 ocppLocalController_BootNotificationRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, connection, bootNotificationRequest, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, connection, bootNotificationRequest, sentMessageResult, ct) => {
                 ocppLocalController_BootNotificationRequestsSent.               TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
                 ocppLocalController_jsonRequestMessageSent.                     TryAdd(requestMessage);
                 return Task.CompletedTask;
             };
@@ -1504,27 +1504,27 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppGateway_BootNotificationRequestsSent                 = new ConcurrentList<BootNotificationRequest>();
             var ocppGateway_jsonRequestMessageSent                       = new ConcurrentList<OCPP_JSONRequestMessage>();
 
-            ocppGateway.OCPP.IN.     OnJSONRequestMessageReceived       += (timestamp, sender, connection, jsonRequestMessage, ct) => {
+            ocppGateway1.OCPP.IN.     OnJSONRequestMessageReceived       += (timestamp, sender, connection, jsonRequestMessage, ct) => {
                 ocppGateway_jsonRequestMessageReceived.                 TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationRequestReceived  += (timestamp, sender, connection, bootNotificationRequest, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnBootNotificationRequestReceived  += (timestamp, sender, connection, bootNotificationRequest, ct) => {
                 ocppGateway_BootNotificationRequestsReceived.           TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationRequestFiltered  += (timestamp, sender, connection, bootNotificationRequest, forwardingDecision, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnBootNotificationRequestFiltered  += (timestamp, sender, connection, bootNotificationRequest, forwardingDecision, ct) => {
                 ocppGateway_BootNotificationRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, connection, bootNotificationRequest, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnBootNotificationRequestSent      += (timestamp, sender, connection, bootNotificationRequest, sentMessageResult, ct) => {
                 ocppGateway_BootNotificationRequestsSent.               TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
                 ocppGateway_jsonRequestMessageSent.                     TryAdd(requestMessage);
                 return Task.CompletedTask;
             };
@@ -1574,22 +1574,22 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppGateway_BootNotificationResponsesSent                = new ConcurrentList<BootNotificationResponse>();
             var ocppGateway_jsonResponseMessagesSent                     = new ConcurrentList<OCPP_JSONResponseMessage>();
 
-            ocppGateway.OCPP.IN.     OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
+            ocppGateway1.OCPP.IN.     OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
                 ocppGateway_jsonResponseMessagesReceived.     TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnBootNotificationResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
                 ocppGateway_BootNotificationResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBootNotificationResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnBootNotificationResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
                 ocppGateway_BootNotificationResponsesSent.    TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
                 ocppGateway_jsonResponseMessagesSent.         TryAdd(responseMessage);
                 return Task.CompletedTask;
             };
@@ -1603,22 +1603,22 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppLocalController_BootNotificationResponsesSent                = new ConcurrentList<BootNotificationResponse>();
             var ocppLocalController_jsonResponseMessagesSent                     = new ConcurrentList<OCPP_JSONResponseMessage>();
 
-            ocppLocalController.OCPP.IN.     OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
+            ocppLocalController1.OCPP.IN.     OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
                 ocppLocalController_jsonResponseMessagesReceived.     TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBootNotificationResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBootNotificationResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
                 ocppLocalController_BootNotificationResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBootNotificationResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBootNotificationResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
                 ocppLocalController_BootNotificationResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
                 ocppLocalController_jsonResponseMessagesSent.         TryAdd(responseMessage);
                 return Task.CompletedTask;
             };
@@ -1680,17 +1680,17 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 Assert.That(ocppLocalController_BootNotificationRequestsForwardingDecisions.              Count,   Is.EqualTo(1));
                 Assert.That(ocppLocalController_BootNotificationRequestsSent.                             Count,   Is.EqualTo(1));
                 Assert.That(ocppLocalController_jsonRequestMessageSent.                                   Count,   Is.EqualTo(1));
-                Assert.That(ocppLocalController_jsonRequestMessageSent.        First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id ]).ToString()));
+                Assert.That(ocppLocalController_jsonRequestMessageSent.        First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController1.Id ]).ToString()));
 
                 Assert.That(ocppGateway_jsonRequestMessageReceived.                                       Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_BootNotificationRequestsReceived.                                 Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_BootNotificationRequestsForwardingDecisions.                      Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_BootNotificationRequestsSent.                                     Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_jsonRequestMessageSent.                                           Count,   Is.EqualTo(1));
-                Assert.That(ocppGateway_jsonRequestMessageSent.                First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id, ocppGateway.Id]).ToString()));
+                Assert.That(ocppGateway_jsonRequestMessageSent.                First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController1.Id, ocppGateway1.Id]).ToString()));
 
                 Assert.That(csms1_jsonRequestMessageReceived.                                              Count,   Is.EqualTo(1));
-                Assert.That(csms1_jsonRequestMessageReceived.                   First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id, ocppGateway.Id]).ToString()));
+                Assert.That(csms1_jsonRequestMessageReceived.                   First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController1.Id, ocppGateway1.Id]).ToString()));
                 Assert.That(csms1_BootNotificationRequestsReceived.                                        Count,   Is.EqualTo(1));
 
                 // -<response>-------------------------------------------------------------------------------------------------
@@ -1703,7 +1703,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 //Assert.That(ocppGateway_BootNotificationResponsesReceived.                                Count,   Is.EqualTo(1));
                 //Assert.That(ocppGateway_BootNotificationResponsesSent.                                    Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_jsonResponseMessagesSent.                                         Count,   Is.EqualTo(1));
-                Assert.That(ocppGateway_jsonResponseMessagesSent.              First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id, ocppGateway.Id ]).ToString()));
+                Assert.That(ocppGateway_jsonResponseMessagesSent.              First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id, ocppGateway1.Id ]).ToString()));
 
                 Assert.That(ocppLocalController_jsonResponseMessagesReceived.                             Count,   Is.EqualTo(1));
                 //Assert.That(ocppLocalController_BootNotificationResponsesReceived.                        Count,   Is.EqualTo(1));
@@ -1740,8 +1740,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             if (csms1               is null ||
                 csms2               is null ||
-                ocppGateway         is null ||
-                ocppLocalController is null ||
+                ocppGateway1         is null ||
+                ocppLocalController1 is null ||
                 chargingStation1    is null ||
                 chargingStation2    is null ||
                 chargingStation3    is null)
@@ -1755,10 +1755,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                     if (csms2               is null)
                         Assert.Fail("The csms 2 must not be null!");
 
-                    if (ocppGateway         is null)
+                    if (ocppGateway1         is null)
                         Assert.Fail("The gateway must not be null!");
 
-                    if (ocppLocalController is null)
+                    if (ocppLocalController1 is null)
                         Assert.Fail("The local controller must not be null!");
 
                     if (chargingStation1    is null)
@@ -1804,27 +1804,27 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppLocalController_DataTransferRequestsSent                 = new ConcurrentList<DataTransferRequest>();
             var ocppLocalController_jsonRequestMessageSent                   = new ConcurrentList<OCPP_JSONRequestMessage>();
 
-            ocppLocalController.OCPP.IN.     OnJSONRequestMessageReceived   += (timestamp, sender, connection, jsonRequestMessage, ct) => {
+            ocppLocalController1.OCPP.IN.     OnJSONRequestMessageReceived   += (timestamp, sender, connection, jsonRequestMessage, ct) => {
                 ocppLocalController_jsonRequestMessageReceived.           TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnDataTransferRequestReceived  += (timestamp, sender, connection, jsonDataTransferRequest, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnDataTransferRequestReceived  += (timestamp, sender, connection, jsonDataTransferRequest, ct) => {
                 ocppLocalController_DataTransferRequestsReceived.           TryAdd(jsonDataTransferRequest);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnDataTransferRequestFiltered  += (timestamp, sender, connection, jsonDataTransferRequest, forwardingDecision, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnDataTransferRequestFiltered  += (timestamp, sender, connection, jsonDataTransferRequest, forwardingDecision, ct) => {
                 ocppLocalController_DataTransferRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnDataTransferRequestSent      += (timestamp, sender, connection, jsonDataTransferRequest, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnDataTransferRequestSent      += (timestamp, sender, connection, jsonDataTransferRequest, sentMessageResult, ct) => {
                 ocppLocalController_DataTransferRequestsSent.               TryAdd(jsonDataTransferRequest);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.OUT.    OnJSONRequestMessageSent       += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.OUT.    OnJSONRequestMessageSent       += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
                 ocppLocalController_jsonRequestMessageSent.               TryAdd(requestMessage);
                 return Task.CompletedTask;
             };
@@ -1839,27 +1839,27 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppGateway_DataTransferRequestsSent                 = new ConcurrentList<DataTransferRequest>();
             var ocppGateway_jsonRequestMessageSent                   = new ConcurrentList<OCPP_JSONRequestMessage>();
 
-            ocppGateway.OCPP.IN.     OnJSONRequestMessageReceived   += (timestamp, sender, connection, jsonRequestMessage, ct) => {
+            ocppGateway1.OCPP.IN.     OnJSONRequestMessageReceived   += (timestamp, sender, connection, jsonRequestMessage, ct) => {
                 ocppGateway_jsonRequestMessageReceived.           TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnDataTransferRequestReceived  += (timestamp, sender, connection, jsonDataTransferRequest, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnDataTransferRequestReceived  += (timestamp, sender, connection, jsonDataTransferRequest, ct) => {
                 ocppGateway_DataTransferRequestsReceived.           TryAdd(jsonDataTransferRequest);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnDataTransferRequestFiltered  += (timestamp, sender, connection, jsonDataTransferRequest, forwardingDecision, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnDataTransferRequestFiltered  += (timestamp, sender, connection, jsonDataTransferRequest, forwardingDecision, ct) => {
                 ocppGateway_DataTransferRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnDataTransferRequestSent      += (timestamp, sender, connection, jsonDataTransferRequest, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnDataTransferRequestSent      += (timestamp, sender, connection, jsonDataTransferRequest, sentMessageResult, ct) => {
                 ocppGateway_DataTransferRequestsSent.               TryAdd(jsonDataTransferRequest);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.OUT.    OnJSONRequestMessageSent       += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.OUT.    OnJSONRequestMessageSent       += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
                 ocppGateway_jsonRequestMessageSent.               TryAdd(requestMessage);
                 return Task.CompletedTask;
             };
@@ -1909,22 +1909,22 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppGateway_DataTransferResponsesSent                = new ConcurrentList<DataTransferResponse>();
             var ocppGateway_jsonResponseMessagesSent               = new ConcurrentList<OCPP_JSONResponseMessage>();
 
-            ocppGateway.OCPP.IN.     OnJSONResponseMessageReceived  += (timestamp, sender, connection, jsonResponseMessage, ct) => {
+            ocppGateway1.OCPP.IN.     OnJSONResponseMessageReceived  += (timestamp, sender, connection, jsonResponseMessage, ct) => {
                 ocppGateway_jsonResponseMessagesReceived.     TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnDataTransferResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnDataTransferResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
                 ocppGateway_DataTransferResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnDataTransferResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnDataTransferResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
                 ocppGateway_DataTransferResponsesSent.    TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.OUT.    OnJSONResponseMessageSent      += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.OUT.    OnJSONResponseMessageSent      += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
                 ocppGateway_jsonResponseMessagesSent.         TryAdd(responseMessage);
                 return Task.CompletedTask;
             };
@@ -1938,22 +1938,22 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppLocalController_DataTransferResponsesSent                = new ConcurrentList<DataTransferResponse>();
             var ocppLocalController_jsonResponseMessagesSent               = new ConcurrentList<OCPP_JSONResponseMessage>();
 
-            ocppLocalController.OCPP.IN.     OnJSONResponseMessageReceived  += (timestamp, sender, connection, jsonResponseMessage, ct) => {
+            ocppLocalController1.OCPP.IN.     OnJSONResponseMessageReceived  += (timestamp, sender, connection, jsonResponseMessage, ct) => {
                 ocppLocalController_jsonResponseMessagesReceived.     TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnDataTransferResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnDataTransferResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
                 ocppLocalController_DataTransferResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnDataTransferResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnDataTransferResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
                 ocppLocalController_DataTransferResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.OUT.    OnJSONResponseMessageSent      += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.OUT.    OnJSONResponseMessageSent      += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
                 ocppLocalController_jsonResponseMessagesSent.         TryAdd(responseMessage);
                 return Task.CompletedTask;
             };
@@ -2072,8 +2072,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             if (csms1               is null ||
                 csms2               is null ||
-                ocppGateway         is null ||
-                ocppLocalController is null ||
+                ocppGateway1         is null ||
+                ocppLocalController1 is null ||
                 chargingStation1    is null ||
                 chargingStation2    is null ||
                 chargingStation3    is null)
@@ -2087,10 +2087,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                     if (csms2               is null)
                         Assert.Fail("The csms 2 must not be null!");
 
-                    if (ocppGateway         is null)
+                    if (ocppGateway1         is null)
                         Assert.Fail("The gateway must not be null!");
 
-                    if (ocppLocalController is null)
+                    if (ocppLocalController1 is null)
                         Assert.Fail("The local controller must not be null!");
 
                     if (chargingStation1    is null)
@@ -2136,27 +2136,27 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppLocalController_DataTransferRequestsSent                 = new ConcurrentList<DataTransferRequest>();
             var ocppLocalController_jsonRequestMessageSent                 = new ConcurrentList<OCPP_JSONRequestMessage>();
 
-            ocppLocalController.OCPP.IN.     OnJSONRequestMessageReceived   += (timestamp, sender, connection, jsonRequestMessage, ct) => {
+            ocppLocalController1.OCPP.IN.     OnJSONRequestMessageReceived   += (timestamp, sender, connection, jsonRequestMessage, ct) => {
                 ocppLocalController_jsonRequestMessageReceived.           TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnDataTransferRequestReceived  += (timestamp, sender, connection, jsonDataTransferRequest, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnDataTransferRequestReceived  += (timestamp, sender, connection, jsonDataTransferRequest, ct) => {
                 ocppLocalController_DataTransferRequestsReceived.           TryAdd(jsonDataTransferRequest);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnDataTransferRequestFiltered  += (timestamp, sender, connection, jsonDataTransferRequest, forwardingDecision, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnDataTransferRequestFiltered  += (timestamp, sender, connection, jsonDataTransferRequest, forwardingDecision, ct) => {
                 ocppLocalController_DataTransferRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnDataTransferRequestSent      += (timestamp, connection, sender, jsonDataTransferRequest, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnDataTransferRequestSent      += (timestamp, connection, sender, jsonDataTransferRequest, sentMessageResult, ct) => {
                 ocppLocalController_DataTransferRequestsSent.               TryAdd(jsonDataTransferRequest);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.OUT.    OnJSONRequestMessageSent       += (timestamp, connection, sender, requestMessage, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.OUT.    OnJSONRequestMessageSent       += (timestamp, connection, sender, requestMessage, sentMessageResult, ct) => {
                 ocppLocalController_jsonRequestMessageSent.               TryAdd(requestMessage);
                 return Task.CompletedTask;
             };
@@ -2171,27 +2171,27 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppGateway_DataTransferRequestsSent                 = new ConcurrentList<DataTransferRequest>();
             var ocppGateway_jsonRequestMessageSent                 = new ConcurrentList<OCPP_JSONRequestMessage>();
 
-            ocppGateway.OCPP.IN.     OnJSONRequestMessageReceived   += (timestamp, sender, connection, jsonRequestMessage, ct) => {
+            ocppGateway1.OCPP.IN.     OnJSONRequestMessageReceived   += (timestamp, sender, connection, jsonRequestMessage, ct) => {
                 ocppGateway_jsonRequestMessageReceived.           TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnDataTransferRequestReceived  += (timestamp, sender, connection, jsonDataTransferRequest, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnDataTransferRequestReceived  += (timestamp, sender, connection, jsonDataTransferRequest, ct) => {
                 ocppGateway_DataTransferRequestsReceived.           TryAdd(jsonDataTransferRequest);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnDataTransferRequestFiltered  += (timestamp, sender, connection, jsonDataTransferRequest, forwardingDecision, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnDataTransferRequestFiltered  += (timestamp, sender, connection, jsonDataTransferRequest, forwardingDecision, ct) => {
                 ocppGateway_DataTransferRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnDataTransferRequestSent      += (timestamp, sender, connection, jsonDataTransferRequest, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnDataTransferRequestSent      += (timestamp, sender, connection, jsonDataTransferRequest, sentMessageResult, ct) => {
                 ocppGateway_DataTransferRequestsSent.               TryAdd(jsonDataTransferRequest);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.OUT.    OnJSONRequestMessageSent       += (timestamp, sender, connection, jsonRequestMessage, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.OUT.    OnJSONRequestMessageSent       += (timestamp, sender, connection, jsonRequestMessage, sentMessageResult, ct) => {
                 ocppGateway_jsonRequestMessageSent.               TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
@@ -2241,22 +2241,22 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppGateway_DataTransferResponsesSent                = new ConcurrentList<DataTransferResponse>();
             var ocppGateway_jsonResponseMessagesSent               = new ConcurrentList<OCPP_JSONResponseMessage>();
 
-            ocppGateway.OCPP.IN.     OnJSONResponseMessageReceived  += (timestamp, sender, connection, jsonResponseMessage, ct) => {
+            ocppGateway1.OCPP.IN.     OnJSONResponseMessageReceived  += (timestamp, sender, connection, jsonResponseMessage, ct) => {
                 ocppGateway_jsonResponseMessagesReceived.     TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnDataTransferResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnDataTransferResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
                 ocppGateway_DataTransferResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnDataTransferResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnDataTransferResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
                 ocppGateway_DataTransferResponsesSent.    TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.OUT.    OnJSONResponseMessageSent      += (timestamp, sender, connection, jsonResponseMessage, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.OUT.    OnJSONResponseMessageSent      += (timestamp, sender, connection, jsonResponseMessage, sentMessageResult, ct) => {
                 ocppGateway_jsonResponseMessagesSent.         TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
@@ -2270,22 +2270,22 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppLocalController_DataTransferResponsesSent                = new ConcurrentList<DataTransferResponse>();
             var ocppLocalController_jsonResponseMessagesSent               = new ConcurrentList<OCPP_JSONResponseMessage>();
 
-            ocppLocalController.OCPP.IN.     OnJSONResponseMessageReceived  += (timestamp, sender, connection, jsonResponseMessage, ct) => {
+            ocppLocalController1.OCPP.IN.     OnJSONResponseMessageReceived  += (timestamp, sender, connection, jsonResponseMessage, ct) => {
                 ocppLocalController_jsonResponseMessagesReceived.     TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnDataTransferResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnDataTransferResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
                 ocppLocalController_DataTransferResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnDataTransferResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnDataTransferResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
                 ocppLocalController_DataTransferResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.OUT.    OnJSONResponseMessageSent      += (timestamp, sender, connection, jsonResponseMessage, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.OUT.    OnJSONResponseMessageSent      += (timestamp, sender, connection, jsonResponseMessage, sentMessageResult, ct) => {
                 ocppLocalController_jsonResponseMessagesSent.         TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
@@ -2407,8 +2407,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             if (csms1               is null ||
                 csms2               is null ||
-                ocppGateway         is null ||
-                ocppLocalController is null ||
+                ocppGateway1         is null ||
+                ocppLocalController1 is null ||
                 chargingStation1    is null ||
                 chargingStation2    is null ||
                 chargingStation3    is null)
@@ -2422,10 +2422,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                     if (csms2               is null)
                         Assert.Fail("The csms 2 must not be null!");
 
-                    if (ocppGateway         is null)
+                    if (ocppGateway1         is null)
                         Assert.Fail("The gateway must not be null!");
 
-                    if (ocppLocalController is null)
+                    if (ocppLocalController1 is null)
                         Assert.Fail("The local controller must not be null!");
 
                     if (chargingStation1    is null)
@@ -2471,27 +2471,27 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppLocalController_BinaryDataTransferRequestsSent                 = new ConcurrentList<BinaryDataTransferRequest>();
             var ocppLocalController_BinaryRequestMessageSent                       = new ConcurrentList<OCPP_BinaryRequestMessage>();
 
-            ocppLocalController.OCPP.IN.     OnBinaryRequestMessageReceived       += (timestamp, sender, connection, binaryRequestMessage, ct) => {
+            ocppLocalController1.OCPP.IN.     OnBinaryRequestMessageReceived       += (timestamp, sender, connection, binaryRequestMessage, ct) => {
                 ocppLocalController_BinaryRequestMessageReceived.                 TryAdd(binaryRequestMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBinaryDataTransferRequestReceived  += (timestamp, sender, connection, binaryDataTransferRequest, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBinaryDataTransferRequestReceived  += (timestamp, sender, connection, binaryDataTransferRequest, ct) => {
                 ocppLocalController_BinaryDataTransferRequestsReceived.           TryAdd(binaryDataTransferRequest);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBinaryDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequest, forwardingDecision, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBinaryDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequest, forwardingDecision, ct) => {
                 ocppLocalController_BinaryDataTransferRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBinaryDataTransferRequestSent      += (timestamp, sender, connection, binaryDataTransferRequest, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBinaryDataTransferRequestSent      += (timestamp, sender, connection, binaryDataTransferRequest, sentMessageResult, ct) => {
                 ocppLocalController_BinaryDataTransferRequestsSent.               TryAdd(binaryDataTransferRequest);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.OUT.    OnBinaryRequestMessageSent           += (timestamp, sender, connection, binaryRequestMessage, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.OUT.    OnBinaryRequestMessageSent           += (timestamp, sender, connection, binaryRequestMessage, sentMessageResult, ct) => {
                 ocppLocalController_BinaryRequestMessageSent.                     TryAdd(binaryRequestMessage);
                 return Task.CompletedTask;
             };
@@ -2506,27 +2506,27 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppGateway_BinaryDataTransferRequestsSent                 = new ConcurrentList<BinaryDataTransferRequest>();
             var ocppGateway_binaryRequestMessageSent                       = new ConcurrentList<OCPP_BinaryRequestMessage>();
 
-            ocppGateway.OCPP.IN.     OnBinaryRequestMessageReceived       += (timestamp, sender, connection, binaryRequestMessage, ct) => {
+            ocppGateway1.OCPP.IN.     OnBinaryRequestMessageReceived       += (timestamp, sender, connection, binaryRequestMessage, ct) => {
                 ocppGateway_binaryRequestMessageReceived.                 TryAdd(binaryRequestMessage);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBinaryDataTransferRequestReceived  += (timestamp, sender, connection, binaryDataTransferRequest, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnBinaryDataTransferRequestReceived  += (timestamp, sender, connection, binaryDataTransferRequest, ct) => {
                 ocppGateway_BinaryDataTransferRequestsReceived.           TryAdd(binaryDataTransferRequest);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBinaryDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequest, forwardingDecision, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnBinaryDataTransferRequestFiltered  += (timestamp, sender, connection, binaryDataTransferRequest, forwardingDecision, ct) => {
                 ocppGateway_BinaryDataTransferRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBinaryDataTransferRequestSent      += (timestamp, sender, connection, binaryDataTransferRequest, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnBinaryDataTransferRequestSent      += (timestamp, sender, connection, binaryDataTransferRequest, sentMessageResult, ct) => {
                 ocppGateway_BinaryDataTransferRequestsSent.               TryAdd(binaryDataTransferRequest);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.OUT.    OnBinaryRequestMessageSent           += (timestamp, sender, connection, binaryRequestMessage, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.OUT.    OnBinaryRequestMessageSent           += (timestamp, sender, connection, binaryRequestMessage, sentMessageResult, ct) => {
                 ocppGateway_binaryRequestMessageSent.                     TryAdd(binaryRequestMessage);
                 return Task.CompletedTask;
             };
@@ -2576,22 +2576,22 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppGateway_BinaryDataTransferResponsesSent                = new ConcurrentList<BinaryDataTransferResponse>();
             var ocppGateway_binaryResponseMessagesSent                     = new ConcurrentList<OCPP_BinaryResponseMessage>();
 
-            ocppGateway.OCPP.IN.     OnBinaryResponseMessageReceived      += (timestamp, sender, connection, binaryResponseMessage, ct) => {
+            ocppGateway1.OCPP.IN.     OnBinaryResponseMessageReceived      += (timestamp, sender, connection, binaryResponseMessage, ct) => {
                 ocppGateway_binaryResponseMessagesReceived.     TryAdd(binaryResponseMessage);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBinaryDataTransferResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnBinaryDataTransferResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
                 ocppGateway_BinaryDataTransferResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnBinaryDataTransferResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnBinaryDataTransferResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
                 ocppGateway_BinaryDataTransferResponsesSent.    TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.OUT.    OnBinaryResponseMessageSent          += (timestamp, sender, connection, binaryResponseMessage, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.OUT.    OnBinaryResponseMessageSent          += (timestamp, sender, connection, binaryResponseMessage, sentMessageResult, ct) => {
                 ocppGateway_binaryResponseMessagesSent.         TryAdd(binaryResponseMessage);
                 return Task.CompletedTask;
             };
@@ -2605,22 +2605,22 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppLocalController_BinaryDataTransferResponsesSent                = new ConcurrentList<BinaryDataTransferResponse>();
             var ocppLocalController_BinaryResponseMessagesSent                     = new ConcurrentList<OCPP_BinaryResponseMessage>();
 
-            ocppLocalController.OCPP.IN.     OnBinaryResponseMessageReceived      += (timestamp, sender, connection, binaryResponseMessage, ct) => {
+            ocppLocalController1.OCPP.IN.     OnBinaryResponseMessageReceived      += (timestamp, sender, connection, binaryResponseMessage, ct) => {
                 ocppLocalController_BinaryResponseMessagesReceived.     TryAdd(binaryResponseMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBinaryDataTransferResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBinaryDataTransferResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
                 ocppLocalController_BinaryDataTransferResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnBinaryDataTransferResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnBinaryDataTransferResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
                 ocppLocalController_BinaryDataTransferResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.OUT.    OnBinaryResponseMessageSent          += (timestamp, sender, connection, binaryResponseMessage, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.OUT.    OnBinaryResponseMessageSent          += (timestamp, sender, connection, binaryResponseMessage, sentMessageResult, ct) => {
                 ocppLocalController_BinaryResponseMessagesSent.         TryAdd(binaryResponseMessage);
                 return Task.CompletedTask;
             };
@@ -2726,8 +2726,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             if (csms1               is null ||
                 csms2               is null ||
-                ocppGateway         is null ||
-                ocppLocalController is null ||
+                ocppGateway1         is null ||
+                ocppLocalController1 is null ||
                 chargingStation1    is null ||
                 chargingStation2    is null ||
                 chargingStation3    is null)
@@ -2741,10 +2741,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                     if (csms2               is null)
                         Assert.Fail("The csms 2 must not be null!");
 
-                    if (ocppGateway         is null)
+                    if (ocppGateway1         is null)
                         Assert.Fail("The gateway must not be null!");
 
-                    if (ocppLocalController is null)
+                    if (ocppLocalController1 is null)
                         Assert.Fail("The local controller must not be null!");
 
                     if (chargingStation1    is null)
@@ -2790,27 +2790,27 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppLocalController_MessageTransferMessagesSent                 = new ConcurrentList<MessageTransferMessage>();
             var ocppLocalController_jsonSendMessagesSent                        = new ConcurrentList<OCPP_JSONSendMessage>();
 
-            ocppLocalController.OCPP.IN.     OnJSONSendMessageReceived         += (timestamp, sender, connection, jsonSendMessage, ct) => {
+            ocppLocalController1.OCPP.IN.     OnJSONSendMessageReceived         += (timestamp, sender, connection, jsonSendMessage, ct) => {
                 ocppLocalController_jsonSendMessagesReceived.                  TryAdd(jsonSendMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnMessageTransferMessageReceived  += (timestamp, sender, connection, jsonMessageTransferMessage, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnMessageTransferMessageReceived  += (timestamp, sender, connection, jsonMessageTransferMessage, ct) => {
                 ocppLocalController_MessageTransferMessagesReceived.           TryAdd(jsonMessageTransferMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnMessageTransferMessageFiltered  += (timestamp, sender, connection, jsonMessageTransferMessage, forwardingDecision, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnMessageTransferMessageFiltered  += (timestamp, sender, connection, jsonMessageTransferMessage, forwardingDecision, ct) => {
                 ocppLocalController_MessageTransferMessagesForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnMessageTransferMessageSent      += (timestamp, sender, connection, jsonMessageTransferMessage, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnMessageTransferMessageSent      += (timestamp, sender, connection, jsonMessageTransferMessage, sentMessageResult, ct) => {
                 ocppLocalController_MessageTransferMessagesSent.               TryAdd(jsonMessageTransferMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.OUT.    OnJSONSendMessageSent             += (timestamp, sender, connection, jsonSendMessage, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.OUT.    OnJSONSendMessageSent             += (timestamp, sender, connection, jsonSendMessage, sentMessageResult, ct) => {
                 ocppLocalController_jsonSendMessagesSent.                      TryAdd(jsonSendMessage);
                 return Task.CompletedTask;
             };
@@ -2825,27 +2825,27 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppGateway_MessageTransferMessagesSent                 = new ConcurrentList<MessageTransferMessage>();
             var ocppGateway_jsonSendMessagesSent                        = new ConcurrentList<OCPP_JSONSendMessage>();
 
-            ocppGateway.OCPP.IN.     OnJSONSendMessageReceived         += (timestamp, sender, connection, jsonSendMessage, ct) => {
+            ocppGateway1.OCPP.IN.     OnJSONSendMessageReceived         += (timestamp, sender, connection, jsonSendMessage, ct) => {
                 ocppGateway_jsonSendMessagesReceived.                  TryAdd(jsonSendMessage);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnMessageTransferMessageReceived  += (timestamp, sender, connection, jsonMessageTransferMessage, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnMessageTransferMessageReceived  += (timestamp, sender, connection, jsonMessageTransferMessage, ct) => {
                 ocppGateway_MessageTransferMessagesReceived.           TryAdd(jsonMessageTransferMessage);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnMessageTransferMessageFiltered  += (timestamp, sender, connection, jsonMessageTransferMessage, forwardingDecision, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnMessageTransferMessageFiltered  += (timestamp, sender, connection, jsonMessageTransferMessage, forwardingDecision, ct) => {
                 ocppGateway_MessageTransferMessagesForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnMessageTransferMessageSent      += (timestamp, sender, connection, jsonMessageTransferMessage, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnMessageTransferMessageSent      += (timestamp, sender, connection, jsonMessageTransferMessage, sentMessageResult, ct) => {
                 ocppGateway_MessageTransferMessagesSent.               TryAdd(jsonMessageTransferMessage);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.OUT.    OnJSONSendMessageSent             += (timestamp, sender, connection, jsonSendMessage, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.OUT.    OnJSONSendMessageSent             += (timestamp, sender, connection, jsonSendMessage, sentMessageResult, ct) => {
                 ocppGateway_jsonSendMessagesSent.                      TryAdd(jsonSendMessage);
                 return Task.CompletedTask;
             };
@@ -2992,8 +2992,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             if (csms1               is null ||
                 csms2               is null ||
-                ocppGateway         is null ||
-                ocppLocalController is null ||
+                ocppGateway1         is null ||
+                ocppLocalController1 is null ||
                 chargingStation1    is null ||
                 chargingStation2    is null ||
                 chargingStation3    is null)
@@ -3007,10 +3007,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                     if (csms2               is null)
                         Assert.Fail("The csms 2 must not be null!");
 
-                    if (ocppGateway         is null)
+                    if (ocppGateway1         is null)
                         Assert.Fail("The gateway must not be null!");
 
-                    if (ocppLocalController is null)
+                    if (ocppLocalController1 is null)
                         Assert.Fail("The local controller must not be null!");
 
                     if (chargingStation1    is null)
@@ -3056,27 +3056,27 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppLocalController_MessageTransferMessagesSent                 = new ConcurrentList<MessageTransferMessage>();
             var ocppLocalController_jsonSendMessagesSent                        = new ConcurrentList<OCPP_JSONSendMessage>();
 
-            ocppLocalController.OCPP.IN.     OnJSONSendMessageReceived         += (timestamp, sender, connection, jsonSendMessage, ct) => {
+            ocppLocalController1.OCPP.IN.     OnJSONSendMessageReceived         += (timestamp, sender, connection, jsonSendMessage, ct) => {
                 ocppLocalController_jsonSendMessagesReceived.                  TryAdd(jsonSendMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnMessageTransferMessageReceived  += (timestamp, sender, connection, jsonMessageTransferMessage, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnMessageTransferMessageReceived  += (timestamp, sender, connection, jsonMessageTransferMessage, ct) => {
                 ocppLocalController_MessageTransferMessagesReceived.           TryAdd(jsonMessageTransferMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnMessageTransferMessageFiltered  += (timestamp, sender, connection, jsonMessageTransferMessage, forwardingDecision, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnMessageTransferMessageFiltered  += (timestamp, sender, connection, jsonMessageTransferMessage, forwardingDecision, ct) => {
                 ocppLocalController_MessageTransferMessagesForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnMessageTransferMessageSent      += (timestamp, sender, connection, jsonMessageTransferMessage, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnMessageTransferMessageSent      += (timestamp, sender, connection, jsonMessageTransferMessage, sentMessageResult, ct) => {
                 ocppLocalController_MessageTransferMessagesSent.               TryAdd(jsonMessageTransferMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.OUT.    OnJSONSendMessageSent             += (timestamp, sender, connection, jsonSendMessage, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.OUT.    OnJSONSendMessageSent             += (timestamp, sender, connection, jsonSendMessage, sentMessageResult, ct) => {
                 ocppLocalController_jsonSendMessagesSent.                      TryAdd(jsonSendMessage);
                 return Task.CompletedTask;
             };
@@ -3091,27 +3091,27 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppGateway_MessageTransferMessagesSent                 = new ConcurrentList<MessageTransferMessage>();
             var ocppGateway_jsonSendMessagesSent                        = new ConcurrentList<OCPP_JSONSendMessage>();
 
-            ocppGateway.OCPP.IN.     OnJSONSendMessageReceived         += (timestamp, sender, connection, jsonSendMessage, ct) => {
+            ocppGateway1.OCPP.IN.     OnJSONSendMessageReceived         += (timestamp, sender, connection, jsonSendMessage, ct) => {
                 ocppGateway_jsonSendMessagesReceived.                  TryAdd(jsonSendMessage);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnMessageTransferMessageReceived  += (timestamp, sender, connection, jsonMessageTransferMessage, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnMessageTransferMessageReceived  += (timestamp, sender, connection, jsonMessageTransferMessage, ct) => {
                 ocppGateway_MessageTransferMessagesReceived.           TryAdd(jsonMessageTransferMessage);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnMessageTransferMessageFiltered  += (timestamp, sender, connection, jsonMessageTransferMessage, forwardingDecision, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnMessageTransferMessageFiltered  += (timestamp, sender, connection, jsonMessageTransferMessage, forwardingDecision, ct) => {
                 ocppGateway_MessageTransferMessagesForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnMessageTransferMessageSent      += (timestamp, sender, connection, jsonMessageTransferMessage, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnMessageTransferMessageSent      += (timestamp, sender, connection, jsonMessageTransferMessage, sentMessageResult, ct) => {
                 ocppGateway_MessageTransferMessagesSent.               TryAdd(jsonMessageTransferMessage);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.OUT.    OnJSONSendMessageSent             += (timestamp, sender, connection, jsonSendMessage, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.OUT.    OnJSONSendMessageSent             += (timestamp, sender, connection, jsonSendMessage, sentMessageResult, ct) => {
                 ocppGateway_jsonSendMessagesSent.                      TryAdd(jsonSendMessage);
                 return Task.CompletedTask;
             };
@@ -3268,8 +3268,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 csms1_remoteEMP      is null ||
                 csms2                is null ||
                 csms2                is null ||
-                ocppGateway          is null ||
-                ocppLocalController  is null ||
+                ocppGateway1          is null ||
+                ocppLocalController1  is null ||
                 chargingStation1     is null ||
                 chargingStation2     is null ||
                 chargingStation3     is null)
@@ -3295,10 +3295,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                     if (csms2                is null)
                         Assert.Fail("The csms 2 must not be null!");
 
-                    if (ocppGateway          is null)
+                    if (ocppGateway1          is null)
                         Assert.Fail("The gateway must not be null!");
 
-                    if (ocppLocalController  is null)
+                    if (ocppLocalController1  is null)
                         Assert.Fail("The local controller must not be null!");
 
                     if (chargingStation1     is null)
@@ -3346,27 +3346,27 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppLocalController_AuthorizeRequestsSent                  = new ConcurrentList<AuthorizeRequest>();
             var ocppLocalController_jsonRequestMessagesSent                = new ConcurrentList<OCPP_JSONRequestMessage>();
 
-            ocppLocalController.OCPP.IN.     OnJSONRequestMessageReceived += (timestamp, sender, connection, jsonRequestMessage, ct) => {
+            ocppLocalController1.OCPP.IN.     OnJSONRequestMessageReceived += (timestamp, sender, connection, jsonRequestMessage, ct) => {
                 ocppLocalController_jsonRequestMessagesReceived.         TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnAuthorizeRequestReceived   += (timestamp, sender, connection, authorizeRequest, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnAuthorizeRequestReceived   += (timestamp, sender, connection, authorizeRequest, ct) => {
                 ocppLocalController_AuthorizeRequestsReceived.           TryAdd(authorizeRequest);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnAuthorizeRequestFiltered   += (timestamp, sender, connection, authorizeRequest, forwardingDecision, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnAuthorizeRequestFiltered   += (timestamp, sender, connection, authorizeRequest, forwardingDecision, ct) => {
                 ocppLocalController_AuthorizeRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnAuthorizeRequestSent       += (timestamp, sender, connection, authorizeRequest, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnAuthorizeRequestSent       += (timestamp, sender, connection, authorizeRequest, sentMessageResult, ct) => {
                 ocppLocalController_AuthorizeRequestsSent.               TryAdd(authorizeRequest);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.OUT.    OnJSONRequestMessageSent     += (timestamp, sender, connection, jsonRequestMessage, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.OUT.    OnJSONRequestMessageSent     += (timestamp, sender, connection, jsonRequestMessage, sentMessageResult, ct) => {
                 ocppLocalController_jsonRequestMessagesSent.             TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
@@ -3381,27 +3381,27 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppGateway_AuthorizeRequestsSent                  = new ConcurrentList<AuthorizeRequest>();
             var ocppGateway_jsonRequestMessagesSent                = new ConcurrentList<OCPP_JSONRequestMessage>();
 
-            ocppGateway.OCPP.IN.     OnJSONRequestMessageReceived += (timestamp, sender, connection, jsonRequestMessage, ct) => {
+            ocppGateway1.OCPP.IN.     OnJSONRequestMessageReceived += (timestamp, sender, connection, jsonRequestMessage, ct) => {
                 ocppGateway_jsonRequestMessagesReceived.         TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnAuthorizeRequestReceived   += (timestamp, sender, connection, authorizeRequest, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnAuthorizeRequestReceived   += (timestamp, sender, connection, authorizeRequest, ct) => {
                 ocppGateway_AuthorizeRequestsReceived.           TryAdd(authorizeRequest);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnAuthorizeRequestFiltered   += (timestamp, sender, connection, authorizeRequest, forwardingDecision, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnAuthorizeRequestFiltered   += (timestamp, sender, connection, authorizeRequest, forwardingDecision, ct) => {
                 ocppGateway_AuthorizeRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnAuthorizeRequestSent       += (timestamp, sender, connection, authorizeRequest, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnAuthorizeRequestSent       += (timestamp, sender, connection, authorizeRequest, sentMessageResult, ct) => {
                 ocppGateway_AuthorizeRequestsSent.               TryAdd(authorizeRequest);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.OUT.    OnJSONRequestMessageSent     += (timestamp, sender, connection, jsonRequestMessage, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.OUT.    OnJSONRequestMessageSent     += (timestamp, sender, connection, jsonRequestMessage, sentMessageResult, ct) => {
                 ocppGateway_jsonRequestMessagesSent.             TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
@@ -3565,22 +3565,22 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppGateway_AuthorizeResponsesSent                  = new ConcurrentList<AuthorizeResponse>();
             var ocppGateway_jsonResponseMessagesSent                = new ConcurrentList<OCPP_JSONResponseMessage>();
 
-            ocppGateway.OCPP.IN.     OnJSONResponseMessageReceived += (timestamp, sender, connection, jsonResponseMessage, ct) => {
+            ocppGateway1.OCPP.IN.     OnJSONResponseMessageReceived += (timestamp, sender, connection, jsonResponseMessage, ct) => {
                 ocppGateway_jsonResponseMessagesReceived.TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnAuthorizeResponseReceived   += (timestamp, sender, connection, request, response, runtime, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnAuthorizeResponseReceived   += (timestamp, sender, connection, request, response, runtime, ct) => {
                 ocppGateway_AuthorizeResponsesReceived.  TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnAuthorizeResponseSent       += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnAuthorizeResponseSent       += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
                 ocppGateway_AuthorizeResponsesSent.      TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.OUT.    OnJSONResponseMessageSent     += (timestamp, sender, connection, jsonResponseMessage, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.OUT.    OnJSONResponseMessageSent     += (timestamp, sender, connection, jsonResponseMessage, sentMessageResult, ct) => {
                 ocppGateway_jsonResponseMessagesSent.    TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
@@ -3594,22 +3594,22 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppLocalController_AuthorizeResponsesSent                  = new ConcurrentList<AuthorizeResponse>();
             var ocppLocalController_jsonResponseMessagesSent                = new ConcurrentList<OCPP_JSONResponseMessage>();
 
-            ocppLocalController.OCPP.IN.     OnJSONResponseMessageReceived += (timestamp, sender, connection, jsonResponseMessage, ct) => {
+            ocppLocalController1.OCPP.IN.     OnJSONResponseMessageReceived += (timestamp, sender, connection, jsonResponseMessage, ct) => {
                 ocppLocalController_jsonResponseMessagesReceived.TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnAuthorizeResponseSent       += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnAuthorizeResponseSent       += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
                 ocppLocalController_AuthorizeResponsesReceived.  TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnAuthorizeResponseReceived   += (timestamp, sender, connection, request, response, runtime, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnAuthorizeResponseReceived   += (timestamp, sender, connection, request, response, runtime, ct) => {
                 ocppLocalController_AuthorizeResponsesReceived.  TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.OUT.    OnJSONResponseMessageSent     += (timestamp, sender, connection, jsonResponseMessage, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.OUT.    OnJSONResponseMessageSent     += (timestamp, sender, connection, jsonResponseMessage, sentMessageResult, ct) => {
                 ocppLocalController_jsonResponseMessagesSent.    TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
@@ -3669,17 +3669,17 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 Assert.That(ocppLocalController_AuthorizeRequestsForwardingDecisions.                      Count,   Is.EqualTo(1));
                 Assert.That(ocppLocalController_AuthorizeRequestsSent.                                     Count,   Is.EqualTo(1));
                 Assert.That(ocppLocalController_jsonRequestMessagesSent.                                   Count,   Is.EqualTo(1));
-                Assert.That(ocppLocalController_jsonRequestMessagesSent.        First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id ]).ToString()));
+                Assert.That(ocppLocalController_jsonRequestMessagesSent.        First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController1.Id ]).ToString()));
 
                 Assert.That(ocppGateway_jsonRequestMessagesReceived.                                       Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_AuthorizeRequestsReceived.                                         Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_AuthorizeRequestsForwardingDecisions.                              Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_AuthorizeRequestsSent.                                             Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_jsonRequestMessagesSent.                                           Count,   Is.EqualTo(1));
-                Assert.That(ocppGateway_jsonRequestMessagesSent.                First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id, ocppGateway.Id]).ToString()));
+                Assert.That(ocppGateway_jsonRequestMessagesSent.                First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController1.Id, ocppGateway1.Id]).ToString()));
 
                 Assert.That(csms1_jsonRequestMessageReceived.                                              Count,   Is.EqualTo(1));
-                Assert.That(csms1_jsonRequestMessageReceived.                   First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id, ocppGateway.Id]).ToString()));
+                Assert.That(csms1_jsonRequestMessageReceived.                   First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController1.Id, ocppGateway1.Id]).ToString()));
                 Assert.That(csms1_AuthorizeRequestsReceived.                                               Count,   Is.EqualTo(1));
 
                 Assert.That(csms1_roamingNetwork_OnAuthorizeStartRequests.                                 Count,   Is.EqualTo(1));
@@ -3698,7 +3698,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 //Assert.That(ocppGateway_AuthorizeResponsesReceived.                                Count,   Is.EqualTo(1));
                 //Assert.That(ocppGateway_AuthorizeResponsesSent.                                    Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_jsonResponseMessagesSent.                                         Count,   Is.EqualTo(1));
-                Assert.That(ocppGateway_jsonResponseMessagesSent.               First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id, ocppGateway.Id ]).ToString()));
+                Assert.That(ocppGateway_jsonResponseMessagesSent.               First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id, ocppGateway1.Id ]).ToString()));
 
                 Assert.That(ocppLocalController_jsonResponseMessagesReceived.                             Count,   Is.EqualTo(1));
                 //Assert.That(ocppLocalController_AuthorizeResponsesReceived.                        Count,   Is.EqualTo(1));
@@ -3739,8 +3739,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 csms1_remoteEMP      is null ||
                 csms2                is null ||
                 csms2                is null ||
-                ocppGateway          is null ||
-                ocppLocalController  is null ||
+                ocppGateway1          is null ||
+                ocppLocalController1  is null ||
                 chargingStation1     is null ||
                 chargingStation2     is null ||
                 chargingStation3     is null)
@@ -3766,10 +3766,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                     if (csms2                is null)
                         Assert.Fail("The csms 2 must not be null!");
 
-                    if (ocppGateway          is null)
+                    if (ocppGateway1          is null)
                         Assert.Fail("The gateway must not be null!");
 
-                    if (ocppLocalController  is null)
+                    if (ocppLocalController1  is null)
                         Assert.Fail("The local controller must not be null!");
 
                     if (chargingStation1     is null)
@@ -3817,27 +3817,27 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppLocalController_TransactionEventRequestsSent                  = new ConcurrentList<TransactionEventRequest>();
             var ocppLocalController_jsonRequestMessagesSent                       = new ConcurrentList<OCPP_JSONRequestMessage>();
 
-            ocppLocalController.OCPP.IN.     OnJSONRequestMessageReceived        += (timestamp, sender, connection, jsonRequestMessage, ct) => {
+            ocppLocalController1.OCPP.IN.     OnJSONRequestMessageReceived        += (timestamp, sender, connection, jsonRequestMessage, ct) => {
                 ocppLocalController_jsonRequestMessagesReceived.                TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnTransactionEventRequestReceived   += (timestamp, sender, connection, transactionEventRequest, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnTransactionEventRequestReceived   += (timestamp, sender, connection, transactionEventRequest, ct) => {
                 ocppLocalController_TransactionEventRequestsReceived.           TryAdd(transactionEventRequest);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnTransactionEventRequestFiltered   += (timestamp, sender, connection, transactionEventRequest, forwardingDecision, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnTransactionEventRequestFiltered   += (timestamp, sender, connection, transactionEventRequest, forwardingDecision, ct) => {
                 ocppLocalController_TransactionEventRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnTransactionEventRequestSent       += (timestamp, sender, connection, transactionEventRequest, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnTransactionEventRequestSent       += (timestamp, sender, connection, transactionEventRequest, sentMessageResult, ct) => {
                 ocppLocalController_TransactionEventRequestsSent.               TryAdd(transactionEventRequest);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.OUT.    OnJSONRequestMessageSent            += (timestamp, sender, connection, jsonRequestMessage, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.OUT.    OnJSONRequestMessageSent            += (timestamp, sender, connection, jsonRequestMessage, sentMessageResult, ct) => {
                 ocppLocalController_jsonRequestMessagesSent.                    TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
@@ -3852,27 +3852,27 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppGateway_TransactionEventRequestsSent                  = new ConcurrentList<TransactionEventRequest>();
             var ocppGateway_jsonRequestMessagesSent                       = new ConcurrentList<OCPP_JSONRequestMessage>();
 
-            ocppGateway.OCPP.IN.     OnJSONRequestMessageReceived += (timestamp, sender, connection, jsonRequestMessage, ct) => {
+            ocppGateway1.OCPP.IN.     OnJSONRequestMessageReceived += (timestamp, sender, connection, jsonRequestMessage, ct) => {
                 ocppGateway_jsonRequestMessagesReceived.                TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnTransactionEventRequestReceived   += (timestamp, sender, connection, transactionEventRequest, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnTransactionEventRequestReceived   += (timestamp, sender, connection, transactionEventRequest, ct) => {
                 ocppGateway_TransactionEventRequestsReceived.           TryAdd(transactionEventRequest);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnTransactionEventRequestFiltered   += (timestamp, sender, connection, transactionEventRequest, forwardingDecision, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnTransactionEventRequestFiltered   += (timestamp, sender, connection, transactionEventRequest, forwardingDecision, ct) => {
                 ocppGateway_TransactionEventRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnTransactionEventRequestSent       += (timestamp, sender, connection, transactionEventRequest, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnTransactionEventRequestSent       += (timestamp, sender, connection, transactionEventRequest, sentMessageResult, ct) => {
                 ocppGateway_TransactionEventRequestsSent.               TryAdd(transactionEventRequest);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.OUT.    OnJSONRequestMessageSent            += (timestamp, sender, connection, jsonRequestMessage, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.OUT.    OnJSONRequestMessageSent            += (timestamp, sender, connection, jsonRequestMessage, sentMessageResult, ct) => {
                 ocppGateway_jsonRequestMessagesSent.                    TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
@@ -4036,22 +4036,22 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppGateway_TransactionEventResponsesSent                = new ConcurrentList<TransactionEventResponse>();
             var ocppGateway_jsonResponseMessagesSent                     = new ConcurrentList<OCPP_JSONResponseMessage>();
 
-            ocppGateway.OCPP.IN.     OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
+            ocppGateway1.OCPP.IN.     OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
                 ocppGateway_jsonResponseMessagesReceived.     TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnTransactionEventResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnTransactionEventResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
                 ocppGateway_TransactionEventResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnTransactionEventResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnTransactionEventResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
                 ocppGateway_TransactionEventResponsesSent.    TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, connection, jsonResponseMessage, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, connection, jsonResponseMessage, sentMessageResult, ct) => {
                 ocppGateway_jsonResponseMessagesSent.         TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
@@ -4065,22 +4065,22 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppLocalController_TransactionEventResponsesSent                = new ConcurrentList<TransactionEventResponse>();
             var ocppLocalController_jsonResponseMessagesSent                     = new ConcurrentList<OCPP_JSONResponseMessage>();
 
-            ocppLocalController.OCPP.IN.     OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
+            ocppLocalController1.OCPP.IN.     OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
                 ocppLocalController_jsonResponseMessagesReceived.     TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnTransactionEventResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnTransactionEventResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
                 ocppLocalController_TransactionEventResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnTransactionEventResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnTransactionEventResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
                 ocppLocalController_TransactionEventResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, connection, jsonResponseMessage, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, connection, jsonResponseMessage, sentMessageResult, ct) => {
                 ocppLocalController_jsonResponseMessagesSent.         TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
@@ -4175,17 +4175,17 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 Assert.That(ocppLocalController_TransactionEventRequestsForwardingDecisions.               Count,   Is.EqualTo(1));
                 Assert.That(ocppLocalController_TransactionEventRequestsSent.                              Count,   Is.EqualTo(1));
                 Assert.That(ocppLocalController_jsonRequestMessagesSent.                                   Count,   Is.EqualTo(1));
-                Assert.That(ocppLocalController_jsonRequestMessagesSent.        First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id ]).ToString()));
+                Assert.That(ocppLocalController_jsonRequestMessagesSent.        First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController1.Id ]).ToString()));
 
                 Assert.That(ocppGateway_jsonRequestMessagesReceived.                                       Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_TransactionEventRequestsReceived.                                  Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_TransactionEventRequestsForwardingDecisions.                       Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_TransactionEventRequestsSent.                                      Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_jsonRequestMessagesSent.                                           Count,   Is.EqualTo(1));
-                Assert.That(ocppGateway_jsonRequestMessagesSent.                First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id, ocppGateway.Id]).ToString()));
+                Assert.That(ocppGateway_jsonRequestMessagesSent.                First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController1.Id, ocppGateway1.Id]).ToString()));
 
                 Assert.That(csms1_jsonRequestMessageReceived.                                              Count,   Is.EqualTo(1));
-                Assert.That(csms1_jsonRequestMessageReceived.                   First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id, ocppGateway.Id]).ToString()));
+                Assert.That(csms1_jsonRequestMessageReceived.                   First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController1.Id, ocppGateway1.Id]).ToString()));
                 Assert.That(csms1_TransactionEventRequestsReceived.                                        Count,   Is.EqualTo(1));
 
                 //Assert.That(csms1_roamingNetwork_OnTransactionEventStartRequests.                          Count,   Is.EqualTo(1));
@@ -4204,7 +4204,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 //Assert.That(ocppGateway_TransactionEventResponsesReceived.                                 Count,   Is.EqualTo(1));
                 //Assert.That(ocppGateway_TransactionEventResponsesSent.                                     Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_jsonResponseMessagesSent.                                          Count,   Is.EqualTo(1));
-                Assert.That(ocppGateway_jsonResponseMessagesSent.               First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id, ocppGateway.Id ]).ToString()));
+                Assert.That(ocppGateway_jsonResponseMessagesSent.               First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id, ocppGateway1.Id ]).ToString()));
 
                 Assert.That(ocppLocalController_jsonResponseMessagesReceived.                              Count,   Is.EqualTo(1));
                 //Assert.That(ocppLocalController_TransactionEventResponsesReceived.                         Count,   Is.EqualTo(1));
@@ -4240,8 +4240,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             if (csms1               is null ||
                 csms2               is null ||
-                ocppGateway         is null ||
-                ocppLocalController is null ||
+                ocppGateway1         is null ||
+                ocppLocalController1 is null ||
                 chargingStation1    is null ||
                 chargingStation2    is null ||
                 chargingStation3    is null)
@@ -4255,10 +4255,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                     if (csms2               is null)
                         Assert.Fail("The csms 2 must not be null!");
 
-                    if (ocppGateway         is null)
+                    if (ocppGateway1         is null)
                         Assert.Fail("The gateway must not be null!");
 
-                    if (ocppLocalController is null)
+                    if (ocppLocalController1 is null)
                         Assert.Fail("The local controller must not be null!");
 
                     if (chargingStation1    is null)
@@ -4304,27 +4304,27 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppLocalController_MeterValuesRequestsSent                = new ConcurrentList<MeterValuesRequest>();
             var ocppLocalController_jsonRequestMessageSent                 = new ConcurrentList<OCPP_JSONRequestMessage>();
 
-            ocppLocalController.OCPP.IN.     OnJSONRequestMessageReceived += (timestamp, sender, connection, jsonRequestMessage, ct) => {
+            ocppLocalController1.OCPP.IN.     OnJSONRequestMessageReceived += (timestamp, sender, connection, jsonRequestMessage, ct) => {
                 ocppLocalController_jsonRequestMessageReceived.            TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnMeterValuesRequestReceived += (timestamp, sender, connection, meterValuesRequest, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnMeterValuesRequestReceived += (timestamp, sender, connection, meterValuesRequest, ct) => {
                 ocppLocalController_MeterValuesRequestsReceived.           TryAdd(meterValuesRequest);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnMeterValuesRequestFiltered += (timestamp, sender, connection, meterValuesRequest, forwardingDecision, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnMeterValuesRequestFiltered += (timestamp, sender, connection, meterValuesRequest, forwardingDecision, ct) => {
                 ocppLocalController_MeterValuesRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnMeterValuesRequestSent     += (timestamp, sender, connection, meterValuesRequest, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnMeterValuesRequestSent     += (timestamp, sender, connection, meterValuesRequest, sentMessageResult, ct) => {
                 ocppLocalController_MeterValuesRequestsSent.               TryAdd(meterValuesRequest);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.OUT.    OnJSONRequestMessageSent     += (timestamp, sender, connection, jsonRequestMessage, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.OUT.    OnJSONRequestMessageSent     += (timestamp, sender, connection, jsonRequestMessage, sentMessageResult, ct) => {
                 ocppLocalController_jsonRequestMessageSent.                TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
@@ -4339,27 +4339,27 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppGateway_MeterValuesRequestsSent                = new ConcurrentList<MeterValuesRequest>();
             var ocppGateway_jsonRequestMessageSent                 = new ConcurrentList<OCPP_JSONRequestMessage>();
 
-            ocppGateway.OCPP.IN.     OnJSONRequestMessageReceived += (timestamp, sender, connection, jsonRequestMessage, ct) => {
+            ocppGateway1.OCPP.IN.     OnJSONRequestMessageReceived += (timestamp, sender, connection, jsonRequestMessage, ct) => {
                 ocppGateway_jsonRequestMessageReceived.            TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnMeterValuesRequestReceived += (timestamp, sender, connection, meterValuesRequest, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnMeterValuesRequestReceived += (timestamp, sender, connection, meterValuesRequest, ct) => {
                 ocppGateway_MeterValuesRequestsReceived.           TryAdd(meterValuesRequest);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnMeterValuesRequestFiltered += (timestamp, sender, connection, meterValuesRequest, forwardingDecision, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnMeterValuesRequestFiltered += (timestamp, sender, connection, meterValuesRequest, forwardingDecision, ct) => {
                 ocppGateway_MeterValuesRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnMeterValuesRequestSent     += (timestamp, sender, connection, meterValuesRequest, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnMeterValuesRequestSent     += (timestamp, sender, connection, meterValuesRequest, sentMessageResult, ct) => {
                 ocppGateway_MeterValuesRequestsSent.               TryAdd(meterValuesRequest);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.OUT.    OnJSONRequestMessageSent     += (timestamp, sender, connection, jsonRequestMessage, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.OUT.    OnJSONRequestMessageSent     += (timestamp, sender, connection, jsonRequestMessage, sentMessageResult, ct) => {
                 ocppGateway_jsonRequestMessageSent.                TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
@@ -4409,22 +4409,22 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppGateway_MeterValuesResponsesSent                = new ConcurrentList<MeterValuesResponse>();
             var ocppGateway_jsonResponseMessagesSent                = new ConcurrentList<OCPP_JSONResponseMessage>();
 
-            ocppGateway.OCPP.IN.     OnJSONResponseMessageReceived += (timestamp, sender, connection, jsonResponseMessage, ct) => {
+            ocppGateway1.OCPP.IN.     OnJSONResponseMessageReceived += (timestamp, sender, connection, jsonResponseMessage, ct) => {
                 ocppGateway_jsonResponseMessagesReceived.TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnMeterValuesResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnMeterValuesResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
                 ocppGateway_MeterValuesResponsesReceived.  TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnMeterValuesResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnMeterValuesResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
                 ocppGateway_MeterValuesResponsesSent.      TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.OUT.    OnJSONResponseMessageSent     += (timestamp, sender, connection, jsonResponseMessage, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.OUT.    OnJSONResponseMessageSent     += (timestamp, sender, connection, jsonResponseMessage, sentMessageResult, ct) => {
                 ocppGateway_jsonResponseMessagesSent.    TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
@@ -4438,22 +4438,22 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppLocalController_MeterValuesResponsesSent                = new ConcurrentList<MeterValuesResponse>();
             var ocppLocalController_jsonResponseMessagesSent                = new ConcurrentList<OCPP_JSONResponseMessage>();
 
-            ocppLocalController.OCPP.IN.     OnJSONResponseMessageReceived += (timestamp, sender, connection, jsonResponseMessage, ct) => {
+            ocppLocalController1.OCPP.IN.     OnJSONResponseMessageReceived += (timestamp, sender, connection, jsonResponseMessage, ct) => {
                 ocppLocalController_jsonResponseMessagesReceived.TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnMeterValuesResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnMeterValuesResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
                 ocppLocalController_MeterValuesResponsesReceived.  TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnMeterValuesResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnMeterValuesResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
                 ocppLocalController_MeterValuesResponsesReceived.  TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.OUT.    OnJSONResponseMessageSent     += (timestamp, sender, connection, jsonResponseMessage, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.OUT.    OnJSONResponseMessageSent     += (timestamp, sender, connection, jsonResponseMessage, sentMessageResult, ct) => {
                 ocppLocalController_jsonResponseMessagesSent.    TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
@@ -4529,17 +4529,17 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 Assert.That(ocppLocalController_MeterValuesRequestsForwardingDecisions.              Count,   Is.EqualTo(1));
                 Assert.That(ocppLocalController_MeterValuesRequestsSent.                             Count,   Is.EqualTo(1));
                 Assert.That(ocppLocalController_jsonRequestMessageSent.                                   Count,   Is.EqualTo(1));
-                Assert.That(ocppLocalController_jsonRequestMessageSent.        First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id ]).ToString()));
+                Assert.That(ocppLocalController_jsonRequestMessageSent.        First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController1.Id ]).ToString()));
 
                 Assert.That(ocppGateway_jsonRequestMessageReceived.                                       Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_MeterValuesRequestsReceived.                                 Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_MeterValuesRequestsForwardingDecisions.                      Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_MeterValuesRequestsSent.                                     Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_jsonRequestMessageSent.                                           Count,   Is.EqualTo(1));
-                Assert.That(ocppGateway_jsonRequestMessageSent.                First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id, ocppGateway.Id]).ToString()));
+                Assert.That(ocppGateway_jsonRequestMessageSent.                First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController1.Id, ocppGateway1.Id]).ToString()));
 
                 Assert.That(csms1_jsonRequestMessageReceived.                                              Count,   Is.EqualTo(1));
-                Assert.That(csms1_jsonRequestMessageReceived.                   First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController.Id, ocppGateway.Id]).ToString()));
+                Assert.That(csms1_jsonRequestMessageReceived.                   First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController1.Id, ocppGateway1.Id]).ToString()));
                 Assert.That(csms1_MeterValuesRequestsReceived.                                        Count,   Is.EqualTo(1));
 
                 // -<response>-------------------------------------------------------------------------------------------------
@@ -4552,7 +4552,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 //Assert.That(ocppGateway_MeterValuesResponsesReceived.                                Count,   Is.EqualTo(1));
                 //Assert.That(ocppGateway_MeterValuesResponsesSent.                                    Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_jsonResponseMessagesSent.                                         Count,   Is.EqualTo(1));
-                Assert.That(ocppGateway_jsonResponseMessagesSent.              First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id, ocppGateway.Id ]).ToString()));
+                Assert.That(ocppGateway_jsonResponseMessagesSent.              First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id, ocppGateway1.Id ]).ToString()));
 
                 Assert.That(ocppLocalController_jsonResponseMessagesReceived.                             Count,   Is.EqualTo(1));
                 //Assert.That(ocppLocalController_MeterValuesResponsesReceived.                        Count,   Is.EqualTo(1));
@@ -4594,8 +4594,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 csms1_emp            is null ||
                 csms1_remoteEMP      is null ||
                 csms2                is null ||
-                ocppGateway          is null ||
-                ocppLocalController  is null ||
+                ocppGateway1          is null ||
+                ocppLocalController1  is null ||
                 chargingStation1     is null ||
                 e1                   is null ||
                 chargingStation2     is null ||
@@ -4622,10 +4622,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                     if (csms2                is null)
                         Assert.Fail("The csms 2 must not be null!");
 
-                    if (ocppGateway          is null)
+                    if (ocppGateway1          is null)
                         Assert.Fail("The gateway must not be null!");
 
-                    if (ocppLocalController  is null)
+                    if (ocppLocalController1  is null)
                         Assert.Fail("The local controller must not be null!");
 
                     if (chargingStation1     is null)
@@ -4823,27 +4823,27 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppGateway_RequestStartTransactionRequestsSent                 = new ConcurrentList<RequestStartTransactionRequest>();
             var ocppGateway_jsonRequestMessageSent                              = new ConcurrentList<OCPP_JSONRequestMessage>();
 
-            ocppGateway.OCPP.IN.     OnJSONRequestMessageReceived              += (timestamp, sender, connection, jsonRequestMessage, ct) => {
+            ocppGateway1.OCPP.IN.     OnJSONRequestMessageReceived              += (timestamp, sender, connection, jsonRequestMessage, ct) => {
                 ocppGateway_jsonRequestMessageReceived.                        TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnRequestStartTransactionRequestReceived  += (timestamp, sender, connection, RequestStartTransactionRequest, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnRequestStartTransactionRequestReceived  += (timestamp, sender, connection, RequestStartTransactionRequest, ct) => {
                 ocppGateway_RequestStartTransactionRequestsReceived.           TryAdd(RequestStartTransactionRequest);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnRequestStartTransactionRequestFiltered  += (timestamp, sender, connection, RequestStartTransactionRequest, forwardingDecision, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnRequestStartTransactionRequestFiltered  += (timestamp, sender, connection, RequestStartTransactionRequest, forwardingDecision, ct) => {
                 ocppGateway_RequestStartTransactionRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnRequestStartTransactionRequestSent      += (timestamp, sender, connection, RequestStartTransactionRequest, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnRequestStartTransactionRequestSent      += (timestamp, sender, connection, RequestStartTransactionRequest, sentMessageResult, ct) => {
                 ocppGateway_RequestStartTransactionRequestsSent.               TryAdd(RequestStartTransactionRequest);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.OUT.    OnJSONRequestMessageSent                  += (timestamp, sender, connection, jsonRequestMessage, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.OUT.    OnJSONRequestMessageSent                  += (timestamp, sender, connection, jsonRequestMessage, sentMessageResult, ct) => {
                 ocppGateway_jsonRequestMessageSent.                            TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
@@ -4858,27 +4858,27 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppLocalController_RequestStartTransactionRequestsSent                 = new ConcurrentList<RequestStartTransactionRequest>();
             var ocppLocalController_jsonRequestMessageSent                              = new ConcurrentList<OCPP_JSONRequestMessage>();
 
-            ocppLocalController.OCPP.IN.     OnJSONRequestMessageReceived              += (timestamp, sender, connection, jsonRequestMessage, ct) => {
+            ocppLocalController1.OCPP.IN.     OnJSONRequestMessageReceived              += (timestamp, sender, connection, jsonRequestMessage, ct) => {
                 ocppLocalController_jsonRequestMessageReceived.                        TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnRequestStartTransactionRequestReceived  += (timestamp, sender, connection, RequestStartTransactionRequest, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnRequestStartTransactionRequestReceived  += (timestamp, sender, connection, RequestStartTransactionRequest, ct) => {
                 ocppLocalController_RequestStartTransactionRequestsReceived.           TryAdd(RequestStartTransactionRequest);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnRequestStartTransactionRequestFiltered  += (timestamp, sender, connection, RequestStartTransactionRequest, forwardingDecision, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnRequestStartTransactionRequestFiltered  += (timestamp, sender, connection, RequestStartTransactionRequest, forwardingDecision, ct) => {
                 ocppLocalController_RequestStartTransactionRequestsForwardingDecisions.TryAdd(forwardingDecision);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnRequestStartTransactionRequestSent      += (timestamp, sender, connection, RequestStartTransactionRequest, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnRequestStartTransactionRequestSent      += (timestamp, sender, connection, RequestStartTransactionRequest, sentMessageResult, ct) => {
                 ocppLocalController_RequestStartTransactionRequestsSent.               TryAdd(RequestStartTransactionRequest);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.OUT.    OnJSONRequestMessageSent                  += (timestamp, sender, connection, jsonRequestMessage, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.OUT.    OnJSONRequestMessageSent                  += (timestamp, sender, connection, jsonRequestMessage, sentMessageResult, ct) => {
                 ocppLocalController_jsonRequestMessageSent.                            TryAdd(jsonRequestMessage);
                 return Task.CompletedTask;
             };
@@ -4932,22 +4932,22 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppLocalController_RequestStartTransactionResponsesSent                = new ConcurrentList<RequestStartTransactionResponse>();
             var ocppLocalController_jsonResponseMessagesSent                            = new ConcurrentList<OCPP_JSONResponseMessage>();
 
-            ocppLocalController.OCPP.IN.     OnJSONResponseMessageReceived             += (timestamp, sender, connection, jsonResponseMessage, ct) => {
+            ocppLocalController1.OCPP.IN.     OnJSONResponseMessageReceived             += (timestamp, sender, connection, jsonResponseMessage, ct) => {
                 ocppLocalController_jsonResponseMessagesReceived.            TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnRequestStartTransactionResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnRequestStartTransactionResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
                 ocppLocalController_RequestStartTransactionResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.FORWARD.OnRequestStartTransactionResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
+            ocppLocalController1.OCPP.FORWARD.OnRequestStartTransactionResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
                 ocppLocalController_RequestStartTransactionResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppLocalController.OCPP.OUT.    OnJSONResponseMessageSent                 += (timestamp, sender, connection, jsonResponseMessage, sentMessageResult, ct) => {
+            ocppLocalController1.OCPP.OUT.    OnJSONResponseMessageSent                 += (timestamp, sender, connection, jsonResponseMessage, sentMessageResult, ct) => {
                 ocppLocalController_jsonResponseMessagesSent.                TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
@@ -4961,22 +4961,22 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var ocppGateway_RequestStartTransactionResponsesSent                = new ConcurrentList<RequestStartTransactionResponse>();
             var ocppGateway_jsonResponseMessagesSent                            = new ConcurrentList<OCPP_JSONResponseMessage>();
 
-            ocppGateway.OCPP.IN.     OnJSONResponseMessageReceived             += (timestamp, sender, connection, jsonResponseMessage, ct) => {
+            ocppGateway1.OCPP.IN.     OnJSONResponseMessageReceived             += (timestamp, sender, connection, jsonResponseMessage, ct) => {
                 ocppGateway_jsonResponseMessagesReceived.            TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnRequestStartTransactionResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnRequestStartTransactionResponseReceived += (timestamp, sender, connection, request, response, runtime, ct) => {
                 ocppGateway_RequestStartTransactionResponsesReceived.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.FORWARD.OnRequestStartTransactionResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.FORWARD.OnRequestStartTransactionResponseSent     += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
                 ocppGateway_RequestStartTransactionResponsesSent.    TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            ocppGateway.OCPP.OUT.    OnJSONResponseMessageSent                 += (timestamp, sender, connection, jsonResponseMessage, sentMessageResult, ct) => {
+            ocppGateway1.OCPP.OUT.    OnJSONResponseMessageSent                 += (timestamp, sender, connection, jsonResponseMessage, sentMessageResult, ct) => {
                 ocppGateway_jsonResponseMessagesSent.                TryAdd(jsonResponseMessage);
                 return Task.CompletedTask;
             };
