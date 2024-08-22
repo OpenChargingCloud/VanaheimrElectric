@@ -254,6 +254,367 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
 
 
+        #region ChangeTransactionTariff1()
+
+        /// <summary>
+        /// Change the tariff of an ongoing transaction.
+        /// </summary>
+        [Test]
+        public async Task ChangeTransactionTariff1()
+        {
+
+            #region Initial checks
+
+            if (csms1                is null ||
+                csms2                is null ||
+                ocppGateway1         is null ||
+                ocppLocalController1 is null ||
+                chargingStation1     is null ||
+                chargingStation2     is null ||
+                chargingStation3     is null)
+            {
+
+                Assert.Multiple(() => {
+
+                    if (csms1               is null)
+                        Assert.Fail("The csms 1 must not be null!");
+
+                    if (csms2               is null)
+                        Assert.Fail("The csms 2 must not be null!");
+
+                    if (ocppGateway1         is null)
+                        Assert.Fail("The gateway must not be null!");
+
+                    if (ocppLocalController1 is null)
+                        Assert.Fail("The local controller must not be null!");
+
+                    if (chargingStation1    is null)
+                        Assert.Fail("The charging station 1 must not be null!");
+
+                    if (chargingStation2    is null)
+                        Assert.Fail("The charging station 2 must not be null!");
+
+                    if (chargingStation3    is null)
+                        Assert.Fail("The charging station 3 must not be null!");
+
+                });
+
+                return;
+
+            }
+
+            #endregion
+
+
+            var response1 = await csms1.ChangeTransactionTariff(
+
+                                      Destination:        SourceRouting.To(chargingStation1.Id),
+                                      TransactionId:      Transaction_Id.Parse("1111-3333-5555-6666-7777"),
+                                      Tariff:             new Tariff(
+
+                                                              Id:               Tariff_Id.Parse("DE-GDF-T12345678"),
+                                                              Currency:         Currency.EUR,
+                                                              Energy:           new TariffEnergy(
+                                                                                    [ new TariffEnergyPrice(0.51M, StepSize: WattHour.TryParseKWh(1)) ],
+                                                                                    [ TaxRate.VAT(15)]
+                                                                                ),
+                                                              Description:      new MessageContents(
+                                                                                    "0.53 / kWh",
+                                                                                    Language_Id.EN
+                                                                                ),
+                                                              MinPrice:         null,
+                                                              MaxPrice:         new Price(
+                                                                                    ExcludingTaxes:  0.51M,
+                                                                                    IncludingTaxes:  0.53M
+                                                                                ),
+
+                                                              SignKeys:         null,
+                                                              SignInfos:        null,
+                                                              Signatures:       null,
+
+                                                              CustomData:       null
+
+                                                          ),
+                                      CustomData:         null,
+
+                                      SignKeys:           null,
+                                      SignInfos:          null,
+                                      Signatures:         null,
+
+                                      RequestId:          null,
+                                      RequestTimestamp:   null,
+                                      RequestTimeout:     null,
+                                      EventTrackingId:    null
+
+                                  );
+
+
+            Assert.That(response1.Status, Is.EqualTo(TariffStatus.Accepted));
+
+
+        }
+
+        #endregion
+
+        #region ClearTariffs1()
+
+        /// <summary>
+        /// Clear tariffs.
+        /// </summary>
+        [Test]
+        public async Task ClearTariffs1()
+        {
+
+            #region Initial checks
+
+            if (csms1                is null ||
+                csms2                is null ||
+                ocppGateway1         is null ||
+                ocppLocalController1 is null ||
+                chargingStation1     is null ||
+                chargingStation2     is null ||
+                chargingStation3     is null)
+            {
+
+                Assert.Multiple(() => {
+
+                    if (csms1               is null)
+                        Assert.Fail("The csms 1 must not be null!");
+
+                    if (csms2               is null)
+                        Assert.Fail("The csms 2 must not be null!");
+
+                    if (ocppGateway1         is null)
+                        Assert.Fail("The gateway must not be null!");
+
+                    if (ocppLocalController1 is null)
+                        Assert.Fail("The local controller must not be null!");
+
+                    if (chargingStation1    is null)
+                        Assert.Fail("The charging station 1 must not be null!");
+
+                    if (chargingStation2    is null)
+                        Assert.Fail("The charging station 2 must not be null!");
+
+                    if (chargingStation3    is null)
+                        Assert.Fail("The charging station 3 must not be null!");
+
+                });
+
+                return;
+
+            }
+
+            #endregion
+
+
+            var response1 = await csms1.ClearTariffs(
+
+                                      Destination:        SourceRouting.To(chargingStation1.Id),
+                                      TariffIds:          [ Tariff_Id.New() ],
+                                      TariffKind:         TariffKinds.DefaultTariff,
+                                      CustomData:         null,
+
+                                      SignKeys:           null,
+                                      SignInfos:          null,
+                                      Signatures:         null,
+
+                                      RequestId:          null,
+                                      RequestTimestamp:   null,
+                                      RequestTimeout:     null,
+                                      EventTrackingId:    null
+
+                                  );
+
+
+            Assert.That(response1.ClearTariffsResults.First().Status, Is.EqualTo(TariffStatus.Accepted));
+
+
+        }
+
+        #endregion
+
+        #region GetTariffs1()
+
+        /// <summary>
+        /// Get tariffs.
+        /// </summary>
+        [Test]
+        public async Task GetTariffs1()
+        {
+
+            #region Initial checks
+
+            if (csms1                is null ||
+                csms2                is null ||
+                ocppGateway1         is null ||
+                ocppLocalController1 is null ||
+                chargingStation1     is null ||
+                chargingStation2     is null ||
+                chargingStation3     is null)
+            {
+
+                Assert.Multiple(() => {
+
+                    if (csms1               is null)
+                        Assert.Fail("The csms 1 must not be null!");
+
+                    if (csms2               is null)
+                        Assert.Fail("The csms 2 must not be null!");
+
+                    if (ocppGateway1         is null)
+                        Assert.Fail("The gateway must not be null!");
+
+                    if (ocppLocalController1 is null)
+                        Assert.Fail("The local controller must not be null!");
+
+                    if (chargingStation1    is null)
+                        Assert.Fail("The charging station 1 must not be null!");
+
+                    if (chargingStation2    is null)
+                        Assert.Fail("The charging station 2 must not be null!");
+
+                    if (chargingStation3    is null)
+                        Assert.Fail("The charging station 3 must not be null!");
+
+                });
+
+                return;
+
+            }
+
+            #endregion
+
+
+            var response1 = await csms1.GetTariffs(
+
+                                      Destination:        SourceRouting.To(chargingStation1.Id),
+                                      EVSEId:             EVSE_Id.Parse(1),
+                                      CustomData:         null,
+
+                                      SignKeys:           null,
+                                      SignInfos:          null,
+                                      Signatures:         null,
+
+                                      RequestId:          null,
+                                      RequestTimestamp:   null,
+                                      RequestTimeout:     null,
+                                      EventTrackingId:    null
+
+                                  );
+
+
+            Assert.That(response1.Status,                              Is.EqualTo(TariffStatus.Accepted));
+            //Assert.That(response1.TariffAssignments.First().TariffId,  Is.EqualTo(TariffStatus.Accepted));
+
+
+        }
+
+        #endregion
+
+        #region SetDefaultTariff1()
+
+        /// <summary>
+        /// Set a default tariff.
+        /// </summary>
+        [Test]
+        public async Task SetDefaultTariff1()
+        {
+
+            #region Initial checks
+
+            if (csms1                is null ||
+                csms2                is null ||
+                ocppGateway1         is null ||
+                ocppLocalController1 is null ||
+                chargingStation1     is null ||
+                chargingStation2     is null ||
+                chargingStation3     is null)
+            {
+
+                Assert.Multiple(() => {
+
+                    if (csms1               is null)
+                        Assert.Fail("The csms 1 must not be null!");
+
+                    if (csms2               is null)
+                        Assert.Fail("The csms 2 must not be null!");
+
+                    if (ocppGateway1         is null)
+                        Assert.Fail("The gateway must not be null!");
+
+                    if (ocppLocalController1 is null)
+                        Assert.Fail("The local controller must not be null!");
+
+                    if (chargingStation1    is null)
+                        Assert.Fail("The charging station 1 must not be null!");
+
+                    if (chargingStation2    is null)
+                        Assert.Fail("The charging station 2 must not be null!");
+
+                    if (chargingStation3    is null)
+                        Assert.Fail("The charging station 3 must not be null!");
+
+                });
+
+                return;
+
+            }
+
+            #endregion
+
+
+            var response1 = await csms1.SetDefaultTariff(
+
+                                      Destination:        SourceRouting.To(chargingStation1.Id),
+                                      EVSEId:             EVSE_Id.Parse(1),
+                                      Tariff:             new Tariff(
+
+                                                              Id:               Tariff_Id.Parse("DE-GDF-T12345678"),
+                                                              Currency:         Currency.EUR,
+                                                              Energy:           new TariffEnergy(
+                                                                                    [ new TariffEnergyPrice(0.51M, StepSize: WattHour.TryParseKWh(1)) ],
+                                                                                    [ TaxRate.VAT(15)]
+                                                                                ),
+                                                              Description:      new MessageContents(
+                                                                                    "0.53 / kWh",
+                                                                                    Language_Id.EN
+                                                                                ),
+                                                              MinPrice:         null,
+                                                              MaxPrice:         new Price(
+                                                                                    ExcludingTaxes:  0.51M,
+                                                                                    IncludingTaxes:  0.53M
+                                                                                ),
+
+                                                              SignKeys:         null,
+                                                              SignInfos:        null,
+                                                              Signatures:       null,
+
+                                                              CustomData:       null
+
+                                                          ),
+                                      CustomData:         null,
+
+                                      SignKeys:           null,
+                                      SignInfos:          null,
+                                      Signatures:         null,
+
+                                      RequestId:          null,
+                                      RequestTimestamp:   null,
+                                      RequestTimeout:     null,
+                                      EventTrackingId:    null
+
+                                  );
+
+
+            Assert.That(response1.Status, Is.EqualTo(TariffStatus.Accepted));
+
+
+        }
+
+        #endregion
+
+
     }
 
 }

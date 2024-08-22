@@ -835,27 +835,29 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                         Description:                   I18NString.Create("The first charging station for testing"),
                                         SerialNumber:                  "cs#1",
                                         FirmwareVersion:               "cs-fw v1.0",
+
+                                        EVSEs:                         [
+                                                                            new EVSESpec(
+                                                                                AdminStatus:         OperationalStatus.Operative,
+                                                                                ConnectorTypes:      [ ConnectorType.sType2 ],
+                                                                                MeterType:           "myMeter",
+                                                                                MeterSerialNumber:   "Meter#1.1",
+                                                                                MeterPublicKey:      "pubkey#1.1"
+                                                                            ),
+                                                                            new EVSESpec(
+                                                                                AdminStatus:         OperationalStatus.Operative,
+                                                                                ConnectorTypes:      [ ConnectorType.cCCS2 ],
+                                                                                MeterType:           "myMeter",
+                                                                                MeterSerialNumber:   "Meter#1.2",
+                                                                                MeterPublicKey:      "pubkey#1.2"
+                                                                            )
+                                                                        ],
                                         Modem:                          new Modem(
                                                                             ICCID:       "ICCID#1",
                                                                             IMSI:        "IMSI#1",
                                                                             CustomData:   null
                                                                         ),
 
-                                        EVSEs:                          [
-                                                                            new protocols.OCPPv2_1.CS.ChargingStationEVSE(
-                                                                                Id:                  protocols.OCPPv2_1.EVSE_Id.Parse(0),
-                                                                                AdminStatus:         OperationalStatus.Operative,
-                                                                                MeterType:           "myMeter",
-                                                                                MeterSerialNumber:   "Meter#1",
-                                                                                MeterPublicKey:      "pubkey#1",
-                                                                                Connectors:          [
-                                                                                                         new protocols.OCPPv2_1.CS.ChargingStationConnector(
-                                                                                                             Id:              Connector_Id.Parse(1),
-                                                                                                             ConnectorType:   ConnectorType.cType2
-                                                                                                         )
-                                                                                                     ]
-                                                                            )
-                                                                        ],
                                         UplinkEnergyMeter:              null,
 
                                         DefaultRequestTimeout:          null,
@@ -873,8 +875,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                                         CustomData:                     null,
                                         DNSClient:                      DNSClient
-
-                                    );
+            );
 
             ocppLocalController1.AllowedChargingStations.Add(chargingStation1.Id);
 
@@ -1104,52 +1105,47 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             chargingStation2      = new TestChargingStationNode(
 
-                                            Id:                             NetworkingNode_Id.Parse("cs2"),
-                                            VendorName:                     "GraphDefined",
-                                            Model:                          "vcs2",
-                                            Description:                    I18NString.Create("The second charging station for testing"),
-                                            SerialNumber:                   "cs#2",
-                                            FirmwareVersion:                "cs-fw v2.0",
-                                            Modem:                          new Modem(
-                                                                                ICCID:       "ICCID#2",
-                                                                                IMSI:        "IMSI#2",
-                                                                                CustomData:   null
-                                                                            ),
+                                        Id:                             NetworkingNode_Id.Parse("cs2"),
+                                        VendorName:                     "GraphDefined",
+                                        Model:                          "vcs2",
+                                        Description:                    I18NString.Create("The second charging station for testing"),
+                                        SerialNumber:                   "cs#2",
+                                        FirmwareVersion:                "cs-fw v2.0",
 
-                                            EVSEs:                          [
-                                                                                new protocols.OCPPv2_1.CS.ChargingStationEVSE(
-                                                                                    Id:                  protocols.OCPPv2_1.EVSE_Id.Parse(0),
-                                                                                    AdminStatus:         OperationalStatus.Operative,
-                                                                                    MeterType:           "myMeter",
-                                                                                    MeterSerialNumber:   "Meter#2",
-                                                                                    MeterPublicKey:      "pubkey#2",
-                                                                                    Connectors:          [
-                                                                                                             new protocols.OCPPv2_1.CS.ChargingStationConnector(
-                                                                                                                 Id:              Connector_Id.Parse(1),
-                                                                                                                 ConnectorType:   ConnectorType.cType2
-                                                                                                             )
-                                                                                                         ]
-                                                                                )
-                                                                            ],
-                                            UplinkEnergyMeter:              null,
+                                        EVSEs:                          [
+                                                                            new EVSESpec(
+                                                                                AdminStatus:         OperationalStatus.Operative,
+                                                                                ConnectorTypes:      [ ConnectorType.sType2 ],
+                                                                                MeterType:           "myMeter",
+                                                                                MeterSerialNumber:   "Meter#2",
+                                                                                MeterPublicKey:      "pubkey#2"
+                                                                            )
+                                                                        ],
+                                        Modem:                          new Modem(
+                                                                            ICCID:       "ICCID#2",
+                                                                            IMSI:        "IMSI#2",
+                                                                            CustomData:   null
+                                                                        ),
 
-                                            DefaultRequestTimeout:          null,
+                                        UplinkEnergyMeter:              null,
 
-                                            SignaturePolicy:                null,
-                                            ForwardingSignaturePolicy:      null,
+                                        DefaultRequestTimeout:          null,
 
-                                            DisableSendHeartbeats:          true,
-                                            SendHeartbeatsEvery:            null,
+                                        SignaturePolicy:                null,
+                                        ForwardingSignaturePolicy:      null,
 
-                                            DisableMaintenanceTasks:        false,
-                                            MaintenanceEvery:               null,
+                                        DisableSendHeartbeats:          true,
+                                        SendHeartbeatsEvery:            null,
 
-                                            HTTPAPI_EventLoggingDisabled:   true,
+                                        DisableMaintenanceTasks:        false,
+                                        MaintenanceEvery:               null,
 
-                                            CustomData:                     null,
-                                            DNSClient:                      DNSClient
+                                        HTTPAPI_EventLoggingDisabled:   true,
 
-                                        );
+                                        CustomData:                     null,
+                                        DNSClient:                      DNSClient
+
+                                    );
 
             ocppLocalController1.AllowedChargingStations.Add(chargingStation2.Id);
 
@@ -1218,52 +1214,47 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             chargingStation3      = new TestChargingStationNode(
 
-                                            Id:                             NetworkingNode_Id.Parse("cs3"),
-                                            VendorName:                     "GraphDefined",
-                                            Model:                          "vcs3",
-                                            Description:                    I18NString.Create("The third charging station for testing"),
-                                            SerialNumber:                   "cs#3",
-                                            FirmwareVersion:                "cs-fw v3.0",
-                                            Modem:                          new Modem(
-                                                                                ICCID:       "ICCID#3",
-                                                                                IMSI:        "IMSI#3",
-                                                                                CustomData:   null
-                                                                            ),
+                                        Id:                             NetworkingNode_Id.Parse("cs3"),
+                                        VendorName:                     "GraphDefined",
+                                        Model:                          "vcs3",
+                                        Description:                    I18NString.Create("The third charging station for testing"),
+                                        SerialNumber:                   "cs#3",
+                                        FirmwareVersion:                "cs-fw v3.0",
 
-                                            EVSEs:                          [
-                                                                                new protocols.OCPPv2_1.CS.ChargingStationEVSE(
-                                                                                    Id:                  protocols.OCPPv2_1.EVSE_Id.Parse(0),
-                                                                                    AdminStatus:         OperationalStatus.Operative,
-                                                                                    MeterType:           "myMeter",
-                                                                                    MeterSerialNumber:   "Meter#3",
-                                                                                    MeterPublicKey:      "pubkey#3",
-                                                                                    Connectors:          [
-                                                                                                             new protocols.OCPPv2_1.CS.ChargingStationConnector(
-                                                                                                                 Id:              Connector_Id.Parse(1),
-                                                                                                                 ConnectorType:   ConnectorType.cType2
-                                                                                                             )
-                                                                                                         ]
-                                                                                )
-                                                                            ],
-                                            UplinkEnergyMeter:              null,
+                                        EVSEs:                          [
+                                                                            new EVSESpec(
+                                                                                AdminStatus:         OperationalStatus.Operative,
+                                                                                ConnectorTypes:      [ ConnectorType.sType2 ],
+                                                                                MeterType:           "myMeter",
+                                                                                MeterSerialNumber:   "Meter#3",
+                                                                                MeterPublicKey:      "pubkey#3"
+                                                                            )
+                                                                        ],
+                                        Modem:                          new Modem(
+                                                                            ICCID:       "ICCID#3",
+                                                                            IMSI:        "IMSI#3",
+                                                                            CustomData:   null
+                                                                        ),
 
-                                            DefaultRequestTimeout:          null,
+                                        UplinkEnergyMeter:              null,
 
-                                            SignaturePolicy:                null,
-                                            ForwardingSignaturePolicy:      null,
+                                        DefaultRequestTimeout:          null,
 
-                                            DisableSendHeartbeats:          true,
-                                            SendHeartbeatsEvery:            null,
+                                        SignaturePolicy:                null,
+                                        ForwardingSignaturePolicy:      null,
 
-                                            DisableMaintenanceTasks:        false,
-                                            MaintenanceEvery:               null,
+                                        DisableSendHeartbeats:          true,
+                                        SendHeartbeatsEvery:            null,
 
-                                            HTTPAPI_EventLoggingDisabled:   true,
+                                        DisableMaintenanceTasks:        false,
+                                        MaintenanceEvery:               null,
 
-                                            CustomData:                     null,
-                                            DNSClient:                      DNSClient
+                                        HTTPAPI_EventLoggingDisabled:   true,
 
-                                        );
+                                        CustomData:                     null,
+                                        DNSClient:                      DNSClient
+
+                                    );
 
             ocppLocalController1.AllowedChargingStations.Add(chargingStation3.Id);
 

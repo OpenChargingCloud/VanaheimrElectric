@@ -912,18 +912,12 @@ namespace cloud.charging.open.vanaheimr.electric
                                                                         ),
 
                                         EVSEs:                          [
-                                                                            new protocols.OCPPv2_1.CS.ChargingStationEVSE(
-                                                                                Id:                  protocols.OCPPv2_1.EVSE_Id.Parse(0),
+                                                                            new EVSESpec(
                                                                                 AdminStatus:         OperationalStatus.Operative,
+                                                                                ConnectorTypes:      [ ConnectorType.cType2 ],
                                                                                 MeterType:           "myMeter",
                                                                                 MeterSerialNumber:   "Meter#1",
-                                                                                MeterPublicKey:      "pubkey#1",
-                                                                                Connectors:          [
-                                                                                                         new protocols.OCPPv2_1.CS.ChargingStationConnector(
-                                                                                                             Id:              Connector_Id.Parse(1),
-                                                                                                             ConnectorType:   ConnectorType.cType2
-                                                                                                         )
-                                                                                                     ]
+                                                                                MeterPublicKey:      "pubkey#1"
                                                                             )
                                                                         ],
                                         UplinkEnergyMeter:              null,
@@ -1190,18 +1184,12 @@ namespace cloud.charging.open.vanaheimr.electric
                                                                         ),
 
                                         EVSEs:                          [
-                                                                            new protocols.OCPPv2_1.CS.ChargingStationEVSE(
-                                                                                Id:                  protocols.OCPPv2_1.EVSE_Id.Parse(0),
+                                                                            new EVSESpec(
                                                                                 AdminStatus:         OperationalStatus.Operative,
+                                                                                ConnectorTypes:      [ ConnectorType.cType2 ],
                                                                                 MeterType:           "myMeter",
                                                                                 MeterSerialNumber:   "Meter#2",
-                                                                                MeterPublicKey:      "pubkey#2",
-                                                                                Connectors:          [
-                                                                                                         new protocols.OCPPv2_1.CS.ChargingStationConnector(
-                                                                                                             Id:              Connector_Id.Parse(1),
-                                                                                                             ConnectorType:   ConnectorType.cType2
-                                                                                                         )
-                                                                                                     ]
+                                                                                MeterPublicKey:      "pubkey#2"
                                                                             )
                                                                         ],
                                         UplinkEnergyMeter:              null,
@@ -1305,18 +1293,12 @@ namespace cloud.charging.open.vanaheimr.electric
                                                                         ),
 
                                         EVSEs:                          [
-                                                                            new protocols.OCPPv2_1.CS.ChargingStationEVSE(
-                                                                                Id:                  protocols.OCPPv2_1.EVSE_Id.Parse(0),
+                                                                            new EVSESpec(
                                                                                 AdminStatus:         OperationalStatus.Operative,
+                                                                                ConnectorTypes:      [ ConnectorType.cType2 ],
                                                                                 MeterType:           "myMeter",
                                                                                 MeterSerialNumber:   "Meter#3",
-                                                                                MeterPublicKey:      "pubkey#3",
-                                                                                Connectors:          [
-                                                                                                         new protocols.OCPPv2_1.CS.ChargingStationConnector(
-                                                                                                             Id:              Connector_Id.Parse(1),
-                                                                                                             ConnectorType:   ConnectorType.cType2
-                                                                                                         )
-                                                                                                     ]
+                                                                                MeterPublicKey:      "pubkey#3"
                                                                             )
                                                                         ],
                                         UplinkEnergyMeter:              null,
