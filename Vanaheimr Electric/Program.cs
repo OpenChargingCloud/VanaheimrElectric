@@ -942,6 +942,11 @@ namespace cloud.charging.open.vanaheimr.electric
 
                                     );
 
+            chargingStation1.EVSEs.First().QRCodePaymentsController.Enabled       = true;
+            chargingStation1.EVSEs.First().QRCodePaymentsController.URLTemplate   = $"http://127.0.0.1:{csms1_httpAPI_tcpPort}/qr/{{TOTP}}";
+            chargingStation1.EVSEs.First().QRCodePaymentsController.SharedSecret  = "g98w%h/AS0s4jsb0F8j0s-gjAthd";
+
+
             ocppLocalController1.AllowedChargingStations.Add(chargingStation1.Id);
 
             var cs1Auth           = ocppLocalController1_OCPPWebSocketServer.AddOrUpdateHTTPBasicAuth(
@@ -990,8 +995,6 @@ namespace cloud.charging.open.vanaheimr.electric
                 throw new Exception($"Charging Station #1 could not connect to OCPP Local Controller: {cs1ConnectResult.HTTPStatusCode}");
 
             #region Define signature policy
-
-            
 
             chargingStation1.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                                       KeyPair:                chargingStation1_keyPair,
@@ -1214,6 +1217,10 @@ namespace cloud.charging.open.vanaheimr.electric
 
                                     );
 
+            chargingStation2.EVSEs.First().QRCodePaymentsController.Enabled       = true;
+            chargingStation2.EVSEs.First().QRCodePaymentsController.URLTemplate   = $"http://127.0.0.1:{csms1_httpAPI_tcpPort}/qr/{{TOTP}}";
+            chargingStation2.EVSEs.First().QRCodePaymentsController.SharedSecret  = "b0Fs4j0s-gg98w%h/AS0Athd";
+
             ocppLocalController1.AllowedChargingStations.Add(chargingStation2.Id);
 
             var cs2Auth           = ocppLocalController1_OCPPWebSocketServer.AddOrUpdateHTTPBasicAuth(
@@ -1323,6 +1330,10 @@ namespace cloud.charging.open.vanaheimr.electric
 
                                     );
 
+            chargingStation3.EVSEs.First().QRCodePaymentsController.Enabled       = true;
+            chargingStation3.EVSEs.First().QRCodePaymentsController.URLTemplate   = $"http://127.0.0.1:{csms1_httpAPI_tcpPort}/qr/{{TOTP}}";
+            chargingStation3.EVSEs.First().QRCodePaymentsController.SharedSecret  = "9fGh/AXb743HFH0s-gg54thd";
+
             ocppLocalController1.AllowedChargingStations.Add(chargingStation3.Id);
 
             var cs3Auth           = ocppLocalController1_OCPPWebSocketServer.AddOrUpdateHTTPBasicAuth(
@@ -1384,6 +1395,7 @@ namespace cloud.charging.open.vanaheimr.electric
             #endregion
 
             #endregion
+
 
 
             #region Setup static OCPP Routing

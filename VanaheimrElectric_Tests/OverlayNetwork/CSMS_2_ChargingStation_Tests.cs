@@ -26,7 +26,6 @@ using org.GraphDefined.Vanaheimr.Illias;
 using cloud.charging.open.protocols.OCPPv2_1;
 using cloud.charging.open.protocols.OCPPv2_1.CS;
 using cloud.charging.open.protocols.OCPPv2_1.CSMS;
-using cloud.charging.open.protocols.OCPPv2_1.WebSockets;
 using cloud.charging.open.protocols.OCPPv2_1.NetworkingNode;
 
 #endregion
@@ -42,82 +41,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
     public class CSMS_2_ChargingStation_Tests : AOverlayNetwork
     {
 
-        #region SendReset1()
-
-        /// <summary>
-        /// Send Reset test.
-        /// </summary>
-        [Test]
-        public async Task SendReset1()
-        {
-
-            #region Initial checks
-
-            if (csms1               is null ||
-                csms2               is null ||
-                ocppGateway1         is null ||
-                ocppLocalController1 is null ||
-                chargingStation1    is null ||
-                chargingStation2    is null ||
-                chargingStation3    is null)
-            {
-
-                Assert.Multiple(() => {
-
-                    if (csms1               is null)
-                        Assert.Fail("The csms 1 must not be null!");
-
-                    if (csms2               is null)
-                        Assert.Fail("The csms 2 must not be null!");
-
-                    if (ocppGateway1         is null)
-                        Assert.Fail("The gateway must not be null!");
-
-                    if (ocppLocalController1 is null)
-                        Assert.Fail("The local controller must not be null!");
-
-                    if (chargingStation1    is null)
-                        Assert.Fail("The charging station 1 must not be null!");
-
-                    if (chargingStation2    is null)
-                        Assert.Fail("The charging station 2 must not be null!");
-
-                    if (chargingStation3    is null)
-                        Assert.Fail("The charging station 3 must not be null!");
-
-                });
-
-                return;
-
-            }
-
-            #endregion
-
-
-            var response1 = await csms1.Reset(
-
-                                      Destination:         SourceRouting.To(chargingStation1.Id),
-                                      ResetType:           ResetType.OnIdle,
-                                      CustomData:          null,
-
-                                      SignKeys:            null,
-                                      SignInfos:           null,
-                                      Signatures:          null,
-
-                                      RequestId:           null,
-                                      RequestTimestamp:    null,
-                                      RequestTimeout:      null,
-                                      EventTrackingId:     null
-
-                                  );
-
-
-            Assert.That(response1.Status, Is.EqualTo(ResetStatus.Accepted));
-
-
-        }
-
-        #endregion
+        #region Common
 
         #region SendDataTransfer()
 
@@ -252,7 +176,11 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
         #endregion
 
+        #endregion
 
+        #region Charging
+
+        #region Tariffs
 
         #region ChangeTransactionTariff1()
 
@@ -611,6 +539,334 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
 
         }
+
+        #endregion
+
+        #endregion
+
+
+        // QRCodeScanned
+        // RequestStartTransaction
+        // GetTransactionStatus
+        // GetCompositeSchedule
+        // RequestStopTransaction
+
+
+        #endregion
+
+        #region DeviceModel
+
+        #region Variables
+
+        #region SetAndVerifyQRCodePaymentParameters()
+
+        /// <summary>
+        /// Set QR-Code payment parameters.
+        /// </summary>
+        [Test]
+        public async Task SetAndVerifyQRCodePaymentParameters()
+        {
+
+            #region Initial checks
+
+            if (csms1                is null ||
+                csms2                is null ||
+                ocppGateway1         is null ||
+                ocppLocalController1 is null ||
+                chargingStation1     is null ||
+                chargingStation2     is null ||
+                chargingStation3     is null)
+            {
+
+                Assert.Multiple(() => {
+
+                    if (csms1               is null)
+                        Assert.Fail("The csms 1 must not be null!");
+
+                    if (csms2               is null)
+                        Assert.Fail("The csms 2 must not be null!");
+
+                    if (ocppGateway1         is null)
+                        Assert.Fail("The gateway must not be null!");
+
+                    if (ocppLocalController1 is null)
+                        Assert.Fail("The local controller must not be null!");
+
+                    if (chargingStation1    is null)
+                        Assert.Fail("The charging station 1 must not be null!");
+
+                    if (chargingStation2    is null)
+                        Assert.Fail("The charging station 2 must not be null!");
+
+                    if (chargingStation3    is null)
+                        Assert.Fail("The charging station 3 must not be null!");
+
+                });
+
+                return;
+
+            }
+
+            #endregion
+
+            var qrCodeURLTemplate  = "https://example.org/qr/{TOPT}";
+            var sharedSecret       = RandomExtensions.RandomString(16);
+
+            #region SetVariables...
+
+            var setVariablesResponse = await csms1.SetVariables(
+
+                                                 Destination:        SourceRouting.To(chargingStation1.Id),
+                                                 VariableData:       [
+                                                                         new SetVariableData(
+                                                                             new Component(
+                                                                                 Name:  nameof(QRCodePaymentsCtrlr),
+                                                                                 EVSE:  new EVSE(EVSE_Id.Parse(1))
+                                                                             ),
+                                                                             new Variable(
+                                                                                 Name:  nameof(QRCodePaymentsCtrlr.Enabled)
+                                                                             ),
+                                                                             "true"
+                                                                         ),
+                                                                         new SetVariableData(
+                                                                             new Component(
+                                                                                 Name:  nameof(QRCodePaymentsCtrlr),
+                                                                                 EVSE:  new EVSE(EVSE_Id.Parse(1))
+                                                                             ),
+                                                                             new Variable(
+                                                                                 Name:  nameof(QRCodePaymentsCtrlr.URLTemplate)
+                                                                             ),
+                                                                             qrCodeURLTemplate
+                                                                         ),
+                                                                         new SetVariableData(
+                                                                             new Component(
+                                                                                 Name:  nameof(QRCodePaymentsCtrlr),
+                                                                                 EVSE:  new EVSE(EVSE_Id.Parse(1))
+                                                                             ),
+                                                                             new Variable(
+                                                                                 Name:  nameof(QRCodePaymentsCtrlr.SharedSecret)
+                                                                             ),
+                                                                             sharedSecret
+                                                                         )
+                                                                     ],
+                                                 CustomData:         null,
+
+                                                 SignKeys:           null,
+                                                 SignInfos:          null,
+                                                 Signatures:         null,
+
+                                                 RequestId:          null,
+                                                 RequestTimestamp:   null,
+                                                 RequestTimeout:     null,
+                                                 EventTrackingId:    null
+
+                                             );
+
+
+            Assert.That(setVariablesResponse.SetVariableResults.ElementAt(0).AttributeStatus,   Is.EqualTo(SetVariableStatus.Accepted));
+            Assert.That(setVariablesResponse.SetVariableResults.ElementAt(1).AttributeStatus,   Is.EqualTo(SetVariableStatus.Accepted));
+            Assert.That(setVariablesResponse.SetVariableResults.ElementAt(2).AttributeStatus,   Is.EqualTo(SetVariableStatus.Accepted));
+
+            #endregion
+
+            #region GetVariables...
+
+            var getVariablesResponse = await csms1.GetVariables(
+
+                                                 Destination:        SourceRouting.To(chargingStation1.Id),
+                                                 VariableData:       [
+                                                                         new GetVariableData(
+                                                                             new Component(
+                                                                                 Name:  nameof(QRCodePaymentsCtrlr),
+                                                                                 EVSE:  new EVSE(EVSE_Id.Parse(1))
+                                                                             ),
+                                                                             new Variable(
+                                                                                 Name:  nameof(QRCodePaymentsCtrlr.Enabled)
+                                                                             )
+                                                                         ),
+                                                                         new GetVariableData(
+                                                                             new Component(
+                                                                                 Name:  nameof(QRCodePaymentsCtrlr),
+                                                                                 EVSE:  new EVSE(EVSE_Id.Parse(1))
+                                                                             ),
+                                                                             new Variable(
+                                                                                 Name:  nameof(QRCodePaymentsCtrlr.URLTemplate)
+                                                                             )
+                                                                         ),
+                                                                         new GetVariableData(
+                                                                             new Component(
+                                                                                 Name:  nameof(QRCodePaymentsCtrlr),
+                                                                                 EVSE:  new EVSE(EVSE_Id.Parse(1))
+                                                                             ),
+                                                                             new Variable(
+                                                                                 Name:  nameof(QRCodePaymentsCtrlr.SharedSecret)
+                                                                             )
+                                                                         )
+                                                                     ],
+                                                 CustomData:         null,
+
+                                                 SignKeys:           null,
+                                                 SignInfos:          null,
+                                                 Signatures:         null,
+
+                                                 RequestId:          null,
+                                                 RequestTimestamp:   null,
+                                                 RequestTimeout:     null,
+                                                 EventTrackingId:    null
+
+                                             );
+
+
+            Assert.That(getVariablesResponse.Results.ElementAt(0).AttributeStatus,   Is.EqualTo(GetVariableStatus.Accepted));
+            Assert.That(getVariablesResponse.Results.ElementAt(1).AttributeStatus,   Is.EqualTo(GetVariableStatus.Accepted));
+            Assert.That(getVariablesResponse.Results.ElementAt(2).AttributeStatus,   Is.EqualTo(GetVariableStatus.Accepted));
+
+
+            Assert.That(getVariablesResponse.Results.ElementAt(0).AttributeValue,    Is.EqualTo("true"));
+            Assert.That(getVariablesResponse.Results.ElementAt(1).AttributeValue,    Is.EqualTo(qrCodeURLTemplate));
+            Assert.That(getVariablesResponse.Results.ElementAt(2).AttributeValue,    Is.EqualTo(sharedSecret));
+
+            #endregion
+
+            var evse               = chargingStation1.EVSEs.First()!;
+
+            do
+            {
+                await Task.Delay(50);
+            } while (evse.QRCodePaymentsURL is null);
+
+            Assert.That(chargingStation1.EVSEs.First().QRCodePaymentsURL?[..23],     Is.EqualTo(qrCodeURLTemplate[..23]));
+
+            #region GetReport...
+
+            var reports = new ConcurrentList<ReportData>();
+
+            csms1.OCPP.IN.OnNotifyReportRequestReceived += (timestamp, sender, connection, notifyReportRequest, ct) => {
+                foreach (var report in notifyReportRequest.ReportData)
+                    reports.TryAdd(report);
+                return Task.CompletedTask;
+            };
+
+            var getReportResponse = await csms1.GetReport(
+
+                                              Destination:          SourceRouting.To(chargingStation1.Id),
+                                              GetReportRequestId:   1,
+                                              ComponentCriteria:    [ ComponentCriteria.Enabled ],
+                                              ComponentVariables:   [
+                                                                        new ComponentVariable(
+                                                                            new Component(
+                                                                                Name:  nameof(QRCodePaymentsCtrlr),
+                                                                                EVSE:  new EVSE(EVSE_Id.Parse(1))
+                                                                            ),
+                                                                            new Variable(
+                                                                                Name:  nameof(QRCodePaymentsCtrlr.URLTemplate)
+                                                                            )
+                                                                        )
+                                                                    ],
+                                              CustomData:           null,
+
+                                              SignKeys:             null,
+                                              SignInfos:            null,
+                                              Signatures:           null,
+
+                                              RequestId:            null,
+                                              RequestTimestamp:     null,
+                                              RequestTimeout:       null,
+                                              EventTrackingId:      null
+
+                                          );
+
+            //ToDo: Implement the charging station side!
+            //Assert.That(getReportResponse.Status,Is.EqualTo(GenericDeviceModelStatus.Accepted));
+
+            #endregion
+
+        }
+
+        #endregion
+
+        #endregion
+
+        #endregion
+
+        #region Firmware
+
+        #region SendReset1()
+
+        /// <summary>
+        /// Send Reset test.
+        /// </summary>
+        [Test]
+        public async Task SendReset1()
+        {
+
+            #region Initial checks
+
+            if (csms1               is null ||
+                csms2               is null ||
+                ocppGateway1         is null ||
+                ocppLocalController1 is null ||
+                chargingStation1    is null ||
+                chargingStation2    is null ||
+                chargingStation3    is null)
+            {
+
+                Assert.Multiple(() => {
+
+                    if (csms1               is null)
+                        Assert.Fail("The csms 1 must not be null!");
+
+                    if (csms2               is null)
+                        Assert.Fail("The csms 2 must not be null!");
+
+                    if (ocppGateway1         is null)
+                        Assert.Fail("The gateway must not be null!");
+
+                    if (ocppLocalController1 is null)
+                        Assert.Fail("The local controller must not be null!");
+
+                    if (chargingStation1    is null)
+                        Assert.Fail("The charging station 1 must not be null!");
+
+                    if (chargingStation2    is null)
+                        Assert.Fail("The charging station 2 must not be null!");
+
+                    if (chargingStation3    is null)
+                        Assert.Fail("The charging station 3 must not be null!");
+
+                });
+
+                return;
+
+            }
+
+            #endregion
+
+
+            var response1 = await csms1.Reset(
+
+                                      Destination:         SourceRouting.To(chargingStation1.Id),
+                                      ResetType:           ResetType.OnIdle,
+                                      CustomData:          null,
+
+                                      SignKeys:            null,
+                                      SignInfos:           null,
+                                      Signatures:          null,
+
+                                      RequestId:           null,
+                                      RequestTimestamp:    null,
+                                      RequestTimeout:      null,
+                                      EventTrackingId:     null
+
+                                  );
+
+
+            Assert.That(response1.Status, Is.EqualTo(ResetStatus.Accepted));
+
+
+        }
+
+        #endregion
 
         #endregion
 
