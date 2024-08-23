@@ -618,7 +618,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                    VendorId:            Vendor_Id. GraphDefined,
                                                    MessageId:           Message_Id.GraphDefined_TestMessage,
                                                    Data:                "TestData",
-                                                   CustomData:          null,
 
                                                    SignKeys:            null,
                                                    SignInfos:           null,
@@ -636,7 +635,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                    VendorId:            Vendor_Id. GraphDefined,
                                                    MessageId:           Message_Id.GraphDefined_TestMessage,
                                                    Data:                JSONObject.Create(new JProperty("test", "data")),
-                                                   CustomData:          null,
 
                                                    SignKeys:            null,
                                                    SignInfos:           null,
@@ -654,7 +652,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                    VendorId:            Vendor_Id. GraphDefined,
                                                    MessageId:           Message_Id.GraphDefined_TestMessage,
                                                    Data:                new JArray("test", "data"),
-                                                   CustomData:          null,
 
                                                    SignKeys:            null,
                                                    SignInfos:           null,
@@ -943,7 +940,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                    VendorId:            Vendor_Id. GraphDefined,
                                                    MessageId:           Message_Id.GraphDefined_TestMessage,
                                                    Data:                "TestData",
-                                                   CustomData:          null,
 
                                                    SignKeys:            null,
                                                    SignInfos:           null,
@@ -962,7 +958,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                    VendorId:            Vendor_Id. GraphDefined,
                                                    MessageId:           Message_Id.GraphDefined_TestMessage,
                                                    Data:                JSONObject.Create(new JProperty("test", "data")),
-                                                   CustomData:          null,
 
                                                    SignKeys:            null,
                                                    SignInfos:           null,
@@ -981,7 +976,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                    VendorId:            Vendor_Id. GraphDefined,
                                                    MessageId:           Message_Id.GraphDefined_TestMessage,
                                                    Data:                new JArray("test", "data"),
-                                                   CustomData:          null,
 
                                                    SignKeys:            null,
                                                    SignInfos:           null,
