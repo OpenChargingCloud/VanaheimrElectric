@@ -191,20 +191,69 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                                         );
 
+            #region Add User Roles
+
+            csms1.UserRoles.Add(
+                new UserRole(
+
+                    Id:                      ChargingStationSettings.UserRoles.Admin,
+                    Description:             I18NString. Create("The admin user role for charging stations"),
+
+                    KeyPairs:                [ KeyPair.  ParsePrivateKey("ANqBTkO85kZZ44o1jT/Ygxa7JDtVOBUPBtXhtoPYWjgO")! ],
+
+                    ComponentAccessRights:   null,
+
+                    //SignerName:              null,
+                    //Description:             null,
+                    //Timestamp:               null,
+
+                    CustomData:              null
+
+                )
+            );
+
+            csms1.UserRoles.Add(
+                new UserRole(
+
+                    Id:                      ChargingStationSettings.UserRoles.User,
+                    Description:             I18NString. Create("The default user role for charging stations"),
+
+                    KeyPairs:                [ KeyPair.  ParsePrivateKey("BtSha5ImqfBiNY53aGrU1cQ5hmQ9CheI79+EKJNKNeQ=")! ],
+
+                    ComponentAccessRights:   null,
+
+                    //SignerName:              null,
+                    //Description:             null,
+                    //Timestamp:               null,
+
+                    CustomData:              null
+
+                )
+            );
+
+            #endregion
+
             #region Define signature policy
 
             csms1_keyPair = KeyPair.GenerateKeys()!;
 
             csms1.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                            KeyPair:                csms1_keyPair!,
-                                                           UserIdGenerator:        (signableMessage) => "cs001",
+                                                           UserIdGenerator:        (signableMessage) => "csms1",
                                                            DescriptionGenerator:   (signableMessage) => I18NString.Create("Just an OCPP Charging Station Management System #1!"),
                                                            TimestampGenerator:     (signableMessage) => Timestamp.Now);
+
+            //csms1.OCPP.SignaturePolicy.AddSigningRule     (SetVariablesRequest.DefaultJSONLDContext,
+            //                                               KeyPair:                csms1.UserRoles.First()?.KeyPairs.First()!,
+            //                                               UserIdGenerator:        (signableMessage) => "csms #1 admin",
+            //                                               DescriptionGenerator:   (signableMessage) => I18NString.Create("The admin of OCPP Charging Station Management System #1!"),
+            //                                               TimestampGenerator:     (signableMessage) => Timestamp.Now);
 
             csms1.OCPP.SignaturePolicy.AddVerificationRule(JSONContext.OCPP.Any,
                                                            VerificationRuleActions.VerifyAll);
 
             #endregion
+
 
             csms1_roamingNetwork          = new RoamingNetwork(
                                                 RoamingNetwork_Id.Parse("PROD"),
@@ -922,6 +971,59 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                           );
 
             Assert.That(cs1ConnectResult.HTTPStatusCode.Code, Is.EqualTo(101), $"Charging Station #1 could not connect to OCPP Local Controller: {cs1ConnectResult.HTTPStatusCode}");
+
+            #region Register User Roles
+
+            //var ur1 = KeyPair.GenerateKeys()!;
+            //var ur2 = KeyPair.GenerateKeys()!;
+
+            // {
+            //   "private": "ANqBTkO85kZZ44o1jT/Ygxa7JDtVOBUPBtXhtoPYWjgO",
+            //   "public":  "BGFDuYqF2x8R4DUb0glpmRDgOpd9+197eQ1jOriP9PaWF013TSU5WedD4YePdEwTXDbdsLPucT8L/cFKTKqCCgQ="
+            // }
+
+            // {
+            //   "private": "BtSha5ImqfBiNY53aGrU1cQ5hmQ9CheI79+EKJNKNeQ=",
+            //   "public":  "BHP5kGwkiii3V7YS7XbG1MEAY9UmxTzo8iEBftaBcstf0xy3qLUhdmtL5DPqs5F9k2mvMZDPzhOQXP1UZlrvefY="
+            // }
+
+            chargingStation1.UserRoles.Add(
+                new UserRole(
+
+                    Id:                      UserRole_Id.Parse ("admin"),
+                    Description:             I18NString. Create("The admin user role for the charging station"),
+                    KeyPairs:                [ KeyPair.  ParsePublicKey("BGFDuYqF2x8R4DUb0glpmRDgOpd9+197eQ1jOriP9PaWF013TSU5WedD4YePdEwTXDbdsLPucT8L/cFKTKqCCgQ=")! ],
+
+                    ComponentAccessRights:   null,
+
+                    //SignerName:              null,
+                    //Description:             null,
+                    //Timestamp:               null,
+
+                    CustomData:              null
+
+                )
+            );
+
+            chargingStation1.UserRoles.Add(
+                new UserRole(
+
+                    Id:                      UserRole_Id.Parse ("user"),
+                    Description:             I18NString. Create("The default user role for the charging station"),
+                    KeyPairs:                [ KeyPair.  ParsePublicKey("BHP5kGwkiii3V7YS7XbG1MEAY9UmxTzo8iEBftaBcstf0xy3qLUhdmtL5DPqs5F9k2mvMZDPzhOQXP1UZlrvefY=")! ],
+
+                    ComponentAccessRights:   null,
+
+                    //SignerName:              null,
+                    //Description:             null,
+                    //Timestamp:               null,
+
+                    CustomData:              null
+
+                )
+            );
+
+            #endregion
 
             #region Define signature policy
 

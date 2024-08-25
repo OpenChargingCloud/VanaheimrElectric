@@ -27,6 +27,7 @@ using cloud.charging.open.protocols.OCPPv2_1;
 using cloud.charging.open.protocols.OCPPv2_1.CS;
 using cloud.charging.open.protocols.OCPPv2_1.CSMS;
 using cloud.charging.open.protocols.OCPPv2_1.NetworkingNode;
+using cloud.charging.open.utils.QRCodes.TOTP;
 
 #endregion
 
@@ -606,65 +607,135 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #endregion
 
-            var qrCodeURLTemplate  = "https://example.org/qr/{TOPT}";
+            var qrCodeURLTemplate  = "https://example.org/qr/{TOTP}";
             var sharedSecret       = RandomExtensions.RandomString(16);
 
-            #region SetVariables...
+            var qrCodeURLs         = new ConcurrentList<String>();
 
-            var setVariablesResponse = await csms1.SetVariables(
+            chargingStation1.EVSEs.First().OnQRCodeChanged += (timestamp,
+                                                               evseId,
+                                                               qrCodeURL,
+                                                               remainingTime,
+                                                               endTime,
+                                                               ct) => {
+                qrCodeURLs.TryAdd(qrCodeURL);
+                return Task.CompletedTask;
+            };
 
-                                                 Destination:        SourceRouting.To(chargingStation1.Id),
-                                                 VariableData:       [
-                                                                         new SetVariableData(
-                                                                             new Component(
-                                                                                 Name:  nameof(QRCodePaymentsCtrlr),
-                                                                                 EVSE:  new EVSE(EVSE_Id.Parse(1))
-                                                                             ),
-                                                                             new Variable(
-                                                                                 Name:  nameof(QRCodePaymentsCtrlr.Enabled)
-                                                                             ),
-                                                                             "true"
-                                                                         ),
-                                                                         new SetVariableData(
-                                                                             new Component(
-                                                                                 Name:  nameof(QRCodePaymentsCtrlr),
-                                                                                 EVSE:  new EVSE(EVSE_Id.Parse(1))
-                                                                             ),
-                                                                             new Variable(
-                                                                                 Name:  nameof(QRCodePaymentsCtrlr.URLTemplate)
-                                                                             ),
-                                                                             qrCodeURLTemplate
-                                                                         ),
-                                                                         new SetVariableData(
-                                                                             new Component(
-                                                                                 Name:  nameof(QRCodePaymentsCtrlr),
-                                                                                 EVSE:  new EVSE(EVSE_Id.Parse(1))
-                                                                             ),
-                                                                             new Variable(
-                                                                                 Name:  nameof(QRCodePaymentsCtrlr.SharedSecret)
-                                                                             ),
-                                                                             sharedSecret
-                                                                         )
-                                                                     ],
-                                                 CustomData:         null,
+            #region SetVariables... wrong user role/digital signature
 
-                                                 SignKeys:           null,
-                                                 SignInfos:          null,
-                                                 Signatures:         null,
+            var setVariablesResponse1 = await csms1.SetVariables(
 
-                                                 RequestId:          null,
-                                                 RequestTimestamp:   null,
-                                                 RequestTimeout:     null,
-                                                 EventTrackingId:    null
+                                                  Destination:        SourceRouting.To(chargingStation1.Id),
+                                                  VariableData:       [
+                                                                          new SetVariableData(
+                                                                              new Component(
+                                                                                  Name:  nameof(QRCodePaymentsCtrlr),
+                                                                                  EVSE:  new EVSE(EVSE_Id.Parse(1))
+                                                                              ),
+                                                                              new Variable(
+                                                                                  Name:  nameof(QRCodePaymentsCtrlr.Enabled)
+                                                                              ),
+                                                                              "true"
+                                                                          ),
+                                                                          new SetVariableData(
+                                                                              new Component(
+                                                                                  Name:  nameof(QRCodePaymentsCtrlr),
+                                                                                  EVSE:  new EVSE(EVSE_Id.Parse(1))
+                                                                              ),
+                                                                              new Variable(
+                                                                                  Name:  nameof(QRCodePaymentsCtrlr.URLTemplate)
+                                                                              ),
+                                                                              qrCodeURLTemplate
+                                                                          ),
+                                                                          new SetVariableData(
+                                                                              new Component(
+                                                                                  Name:  nameof(QRCodePaymentsCtrlr),
+                                                                                  EVSE:  new EVSE(EVSE_Id.Parse(1))
+                                                                              ),
+                                                                              new Variable(
+                                                                                  Name:  nameof(QRCodePaymentsCtrlr.SharedSecret)
+                                                                              ),
+                                                                              sharedSecret
+                                                                          )
+                                                                      ],
+                                                  CustomData:         null,
 
-                                             );
+                                                  SignKeys:           null,
+                                                  SignInfos:          null,
+                                                  Signatures:         null,
+
+                                                  RequestId:          null,
+                                                  RequestTimestamp:   null,
+                                                  RequestTimeout:     null,
+                                                  EventTrackingId:    null
+
+                                              );
 
 
-            Assert.That(setVariablesResponse.SetVariableResults.ElementAt(0).AttributeStatus,   Is.EqualTo(SetVariableStatus.Accepted));
-            Assert.That(setVariablesResponse.SetVariableResults.ElementAt(1).AttributeStatus,   Is.EqualTo(SetVariableStatus.Accepted));
-            Assert.That(setVariablesResponse.SetVariableResults.ElementAt(2).AttributeStatus,   Is.EqualTo(SetVariableStatus.Accepted));
+            Assert.That(setVariablesResponse1.SetVariableResults.ElementAt(0).AttributeStatus,   Is.EqualTo(SetVariableStatus.Rejected));
+            Assert.That(setVariablesResponse1.SetVariableResults.ElementAt(1).AttributeStatus,   Is.EqualTo(SetVariableStatus.Rejected));
+            Assert.That(setVariablesResponse1.SetVariableResults.ElementAt(2).AttributeStatus,   Is.EqualTo(SetVariableStatus.Rejected));
 
             #endregion
+
+            #region SetVariables... correct admin user role/digital signature
+
+            var setVariablesResponse2 = await csms1.SetVariables(
+
+                                                  Destination:        SourceRouting.To(chargingStation1.Id),
+                                                  VariableData:       [
+                                                                          new SetVariableData(
+                                                                              new Component(
+                                                                                  Name:  nameof(QRCodePaymentsCtrlr),
+                                                                                  EVSE:  new EVSE(EVSE_Id.Parse(1))
+                                                                              ),
+                                                                              new Variable(
+                                                                                  Name:  nameof(QRCodePaymentsCtrlr.Enabled)
+                                                                              ),
+                                                                              "true"
+                                                                          ),
+                                                                          new SetVariableData(
+                                                                              new Component(
+                                                                                  Name:  nameof(QRCodePaymentsCtrlr),
+                                                                                  EVSE:  new EVSE(EVSE_Id.Parse(1))
+                                                                              ),
+                                                                              new Variable(
+                                                                                  Name:  nameof(QRCodePaymentsCtrlr.URLTemplate)
+                                                                              ),
+                                                                              qrCodeURLTemplate
+                                                                          ),
+                                                                          new SetVariableData(
+                                                                              new Component(
+                                                                                  Name:  nameof(QRCodePaymentsCtrlr),
+                                                                                  EVSE:  new EVSE(EVSE_Id.Parse(1))
+                                                                              ),
+                                                                              new Variable(
+                                                                                  Name:  nameof(QRCodePaymentsCtrlr.SharedSecret)
+                                                                              ),
+                                                                              sharedSecret
+                                                                          )
+                                                                      ],
+                                                  CustomData:         null,
+
+                                                  SignKeys:           [ csms1.UserRoles.First(userRole => userRole.Id.ToString() == "admin").KeyPairs.First()! ],
+                                                  SignInfos:          null,
+                                                  Signatures:         null,
+
+                                                  RequestId:          null,
+                                                  RequestTimestamp:   null,
+                                                  RequestTimeout:     null,
+                                                  EventTrackingId:    null
+
+                                              );
+
+
+            Assert.That(setVariablesResponse2.SetVariableResults.ElementAt(0).AttributeStatus,   Is.EqualTo(SetVariableStatus.Accepted));
+            Assert.That(setVariablesResponse2.SetVariableResults.ElementAt(1).AttributeStatus,   Is.EqualTo(SetVariableStatus.Accepted));
+            Assert.That(setVariablesResponse2.SetVariableResults.ElementAt(2).AttributeStatus,   Is.EqualTo(SetVariableStatus.Accepted));
+
+            #endregion
+
 
             #region GetVariables...
 
@@ -726,13 +797,17 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             #endregion
 
             var evse               = chargingStation1.EVSEs.First()!;
+            var expectedTOTPURLs   = QRCodeTOTPGenerator.GenerateURLs(qrCodeURLTemplate, sharedSecret);
 
             do
             {
                 await Task.Delay(50);
             } while (evse.QRCodePaymentsURL is null);
 
-            Assert.That(chargingStation1.EVSEs.First().QRCodePaymentsURL?[..23],     Is.EqualTo(qrCodeURLTemplate[..23]));
+
+            Assert.That(qrCodeURLs.Last(),   Is.EqualTo(expectedTOTPURLs.Current).
+                                             Or.EqualTo(expectedTOTPURLs.Previous).
+                                             Or.EqualTo(expectedTOTPURLs.Next));
 
             #region GetReport...
 

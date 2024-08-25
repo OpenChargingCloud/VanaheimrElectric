@@ -257,11 +257,53 @@ namespace cloud.charging.open.vanaheimr.electric
 
                                         );
 
+            #region Add User Roles
+
+            csms1.UserRoles.Add(
+                new UserRole(
+
+                    Id:                      UserRole_Id.Parse ("admin"),
+                    Description:             I18NString. Create("The admin user role for charging stations"),
+
+                    KeyPairs:                [ KeyPair. ParsePrivateKey("ANqBTkO85kZZ44o1jT/Ygxa7JDtVOBUPBtXhtoPYWjgO")! ],
+
+                    ComponentAccessRights:   null,
+
+                    //SignerName:              null,
+                    //Description:             null,
+                    //Timestamp:               null,
+
+                    CustomData:              null
+
+                )
+            );
+
+            csms1.UserRoles.Add(
+                new UserRole(
+
+                    Id:                      UserRole_Id.Parse ("user"),
+                    Description:             I18NString. Create("The default user role for charging stations"),
+
+                    KeyPairs:                [ KeyPair. ParsePrivateKey("BtSha5ImqfBiNY53aGrU1cQ5hmQ9CheI79+EKJNKNeQ=")! ],
+
+                    ComponentAccessRights:   null,
+
+                    //SignerName:              null,
+                    //Description:             null,
+                    //Timestamp:               null,
+
+                    CustomData:              null
+
+                )
+            );
+
+            #endregion
+
             #region Define signature policy
 
             csms1.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                            KeyPair:                csms1_keyPair!,
-                                                           UserIdGenerator:        (signableMessage) => "cs001",
+                                                           UserIdGenerator:        (signableMessage) => "csms1",
                                                            DescriptionGenerator:   (signableMessage) => I18NString.Create("Just an OCPP Charging Station Management System #1!"),
                                                            TimestampGenerator:     (signableMessage) => Timestamp.Now);
 
