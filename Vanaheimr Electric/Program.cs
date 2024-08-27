@@ -36,6 +36,7 @@ using cloud.charging.open.protocols.OCPPv2_1.WebSockets;
 
 using cloud.charging.open.protocols.WWCP;
 using cloud.charging.open.protocols.WWCP.EMP;
+using cloud.charging.open.protocols.WWCP.NetworkingNode;
 
 #endregion
 
@@ -267,7 +268,7 @@ namespace cloud.charging.open.vanaheimr.electric
 
                     KeyPairs:                [ KeyPair. ParsePrivateKey("ANqBTkO85kZZ44o1jT/Ygxa7JDtVOBUPBtXhtoPYWjgO")! ],
 
-                    ComponentAccessRights:   null,
+                    //ComponentAccessRights:   null,
 
                     //SignerName:              null,
                     //Description:             null,
@@ -286,7 +287,7 @@ namespace cloud.charging.open.vanaheimr.electric
 
                     KeyPairs:                [ KeyPair. ParsePrivateKey("BtSha5ImqfBiNY53aGrU1cQ5hmQ9CheI79+EKJNKNeQ=")! ],
 
-                    ComponentAccessRights:   null,
+                    //ComponentAccessRights:   null,
 
                     //SignerName:              null,
                     //Description:             null,
@@ -557,7 +558,7 @@ namespace cloud.charging.open.vanaheimr.electric
                                                                              "gw2csms1_12345678"
                                                                          );
 
-            var ocppGatewayConnectResult1    = await ocppGateway1.ConnectWebSocketClient(
+            var ocppGatewayConnectResult1    = await ocppGateway1.ConnectOCPPWebSocketClient(
 
                                                    RemoteURL:                    URL.Parse($"ws://127.0.0.1:{csms1_OCPPWebSocketServer.IPPort}"),
                                                    VirtualHostname:              null,
@@ -605,7 +606,7 @@ namespace cloud.charging.open.vanaheimr.electric
                                                                              "gw2csms2_12345678"
                                                                          );
 
-            var ocppGatewayConnectResult2    = await ocppGateway1.ConnectWebSocketClient(
+            var ocppGatewayConnectResult2    = await ocppGateway1.ConnectOCPPWebSocketClient(
 
                                                    RemoteURL:                    URL.Parse($"ws://127.0.0.1:{csms2_OCPPWebSocketServer.IPPort}"),
                                                    VirtualHostname:              null,
@@ -728,7 +729,7 @@ namespace cloud.charging.open.vanaheimr.electric
                                                                                            "lc12345678"
                                                                                        );
 
-            var ocppLocalControllerConnectResult     = await ocppLocalController1.ConnectWebSocketClient(
+            var ocppLocalControllerConnectResult     = await ocppLocalController1.ConnectOCPPWebSocketClient(
 
                                                                  RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppGateway1_OCPPWebSocketServer.IPPort}"),
                                                                  VirtualHostname:              null,
@@ -850,7 +851,7 @@ namespace cloud.charging.open.vanaheimr.electric
                                                                                                 "em12345678"
                                                                                             );
 
-            var gridEnergyMeter1ConnectResult    = await gridEnergyMeter1.ConnectWebSocketClient(
+            var gridEnergyMeter1ConnectResult    = await gridEnergyMeter1.ConnectOCPPWebSocketClient(
 
                                                              RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppLocalController1_OCPPWebSocketServer.IPPort}"),
                                                              VirtualHostname:              null,
@@ -996,7 +997,7 @@ namespace cloud.charging.open.vanaheimr.electric
                                                                                  "cs1_12345678"
                                                                              );
 
-            var cs1ConnectResult  = await chargingStation1.ConnectWebSocketClient(
+            var cs1ConnectResult  = await chargingStation1.ConnectOCPPWebSocketClient(
 
                                               RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppLocalController1_OCPPWebSocketServer.IPPort}"),
                                               VirtualHostname:              null,
@@ -1270,7 +1271,7 @@ namespace cloud.charging.open.vanaheimr.electric
                                                                                  "cs2_12345678"
                                                                              );
 
-            var cs2ConnectResult  = await chargingStation2.ConnectWebSocketClient(
+            var cs2ConnectResult  = await chargingStation2.ConnectOCPPWebSocketClient(
 
                                               RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppLocalController1_OCPPWebSocketServer.IPPort}"),
                                               VirtualHostname:              null,
@@ -1383,7 +1384,7 @@ namespace cloud.charging.open.vanaheimr.electric
                                                                                  "cs3_12345678"
                                                                              );
 
-            var cs3ConnectResult  = await chargingStation3.ConnectWebSocketClient(
+            var cs3ConnectResult  = await chargingStation3.ConnectOCPPWebSocketClient(
 
                                               RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppLocalController1_OCPPWebSocketServer.IPPort}"),
                                               VirtualHostname:              null,
@@ -1442,26 +1443,26 @@ namespace cloud.charging.open.vanaheimr.electric
 
             #region Setup static OCPP Routing
 
-            csms1.               OCPP.Routing.AddOrUpdateStaticRouting(ocppLocalController1.Id,  ocppGateway1.Id);
-            csms1.               OCPP.Routing.AddOrUpdateStaticRouting(gridEnergyMeter1.Id,      ocppGateway1.Id);
-            csms1.               OCPP.Routing.AddOrUpdateStaticRouting(chargingStation1.Id,      ocppGateway1.Id);
-            csms1.               OCPP.Routing.AddOrUpdateStaticRouting(chargingStation2.Id,      ocppGateway1.Id);
-            csms1.               OCPP.Routing.AddOrUpdateStaticRouting(chargingStation3.Id,      ocppGateway1.Id);
+            csms1.               Routing.AddOrUpdateStaticRouting(ocppLocalController1.Id,  ocppGateway1.Id);
+            csms1.               Routing.AddOrUpdateStaticRouting(gridEnergyMeter1.Id,      ocppGateway1.Id);
+            csms1.               Routing.AddOrUpdateStaticRouting(chargingStation1.Id,      ocppGateway1.Id);
+            csms1.               Routing.AddOrUpdateStaticRouting(chargingStation2.Id,      ocppGateway1.Id);
+            csms1.               Routing.AddOrUpdateStaticRouting(chargingStation3.Id,      ocppGateway1.Id);
 
-            csms2.               OCPP.Routing.AddOrUpdateStaticRouting(ocppLocalController1.Id,  ocppGateway1.Id);
-            csms2.               OCPP.Routing.AddOrUpdateStaticRouting(gridEnergyMeter1.Id,      ocppGateway1.Id);
-            csms2.               OCPP.Routing.AddOrUpdateStaticRouting(chargingStation1.Id,      ocppGateway1.Id);
-            csms2.               OCPP.Routing.AddOrUpdateStaticRouting(chargingStation2.Id,      ocppGateway1.Id);
-            csms2.               OCPP.Routing.AddOrUpdateStaticRouting(chargingStation3.Id,      ocppGateway1.Id);
+            csms2.               Routing.AddOrUpdateStaticRouting(ocppLocalController1.Id,  ocppGateway1.Id);
+            csms2.               Routing.AddOrUpdateStaticRouting(gridEnergyMeter1.Id,      ocppGateway1.Id);
+            csms2.               Routing.AddOrUpdateStaticRouting(chargingStation1.Id,      ocppGateway1.Id);
+            csms2.               Routing.AddOrUpdateStaticRouting(chargingStation2.Id,      ocppGateway1.Id);
+            csms2.               Routing.AddOrUpdateStaticRouting(chargingStation3.Id,      ocppGateway1.Id);
 
-            ocppGateway1.        OCPP.Routing.AddOrUpdateStaticRouting(NetworkingNode_Id.CSMS,   csms1.Id);  // The default CSMS!
-            ocppGateway1.        OCPP.Routing.AddOrUpdateStaticRouting(gridEnergyMeter1.Id,      ocppLocalController1.Id);
-            ocppGateway1.        OCPP.Routing.AddOrUpdateStaticRouting(chargingStation1.Id,      ocppLocalController1.Id);
-            ocppGateway1.        OCPP.Routing.AddOrUpdateStaticRouting(chargingStation2.Id,      ocppLocalController1.Id);
-            ocppGateway1.        OCPP.Routing.AddOrUpdateStaticRouting(chargingStation3.Id,      ocppLocalController1.Id);
+            ocppGateway1.        Routing.AddOrUpdateStaticRouting(NetworkingNode_Id.CSMS,   csms1.Id);  // The default CSMS!
+            ocppGateway1.        Routing.AddOrUpdateStaticRouting(gridEnergyMeter1.Id,      ocppLocalController1.Id);
+            ocppGateway1.        Routing.AddOrUpdateStaticRouting(chargingStation1.Id,      ocppLocalController1.Id);
+            ocppGateway1.        Routing.AddOrUpdateStaticRouting(chargingStation2.Id,      ocppLocalController1.Id);
+            ocppGateway1.        Routing.AddOrUpdateStaticRouting(chargingStation3.Id,      ocppLocalController1.Id);
 
-            ocppLocalController1.OCPP.Routing.AddOrUpdateStaticRouting(csms1.Id,                 ocppGateway1.Id);
-            ocppLocalController1.OCPP.Routing.AddOrUpdateStaticRouting(csms2.Id,                 ocppGateway1.Id);
+            ocppLocalController1.Routing.AddOrUpdateStaticRouting(csms1.Id,                 ocppGateway1.Id);
+            ocppLocalController1.Routing.AddOrUpdateStaticRouting(csms2.Id,                 ocppGateway1.Id);
 
             #endregion
 

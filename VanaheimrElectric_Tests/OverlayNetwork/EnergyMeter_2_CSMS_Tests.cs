@@ -29,6 +29,8 @@ using cloud.charging.open.protocols.OCPPv2_1.EM;
 using cloud.charging.open.protocols.OCPPv2_1.CSMS;
 using cloud.charging.open.protocols.OCPPv2_1.WebSockets;
 using cloud.charging.open.protocols.OCPPv2_1.NetworkingNode;
+using cloud.charging.open.protocols.WWCP.NetworkingNode;
+using cloud.charging.open.protocols.WWCP;
 
 #endregion
 
@@ -1723,7 +1725,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var meterValuesResponse = await gridEnergyMeter1.SendMeterValues(
 
-                                              EVSEId:             EVSE_Id.Parse(0),
+                                              EVSEId:             protocols.OCPPv2_1.EVSE_Id.Parse(0),
                                               MeterValues:        [
                                                                       new MeterValue(
                                                                           Timestamp:       Timestamp.Now,

@@ -28,6 +28,8 @@ using cloud.charging.open.protocols.OCPPv2_1.CS;
 using cloud.charging.open.protocols.OCPPv2_1.CSMS;
 using cloud.charging.open.protocols.OCPPv2_1.NetworkingNode;
 using cloud.charging.open.utils.QRCodes.TOTP;
+using cloud.charging.open.protocols.WWCP.NetworkingNode;
+using cloud.charging.open.protocols.WWCP;
 
 #endregion
 
@@ -249,7 +251,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                                                     Language_Id.EN
                                                                                 ),
                                                               MinPrice:         null,
-                                                              MaxPrice:         new Price(
+                                                              MaxPrice:         new protocols.OCPPv2_1.Price(
                                                                                     ExcludingTaxes:  0.51M,
                                                                                     IncludingTaxes:  0.53M
                                                                                 ),
@@ -415,7 +417,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var response1 = await csms1.GetTariffs(
 
                                       Destination:        SourceRouting.To(chargingStation1.Id),
-                                      EVSEId:             EVSE_Id.Parse(1),
+                                      EVSEId:             protocols.OCPPv2_1.EVSE_Id.Parse(1),
                                       CustomData:         null,
 
                                       SignKeys:           null,
@@ -493,7 +495,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var response1 = await csms1.SetDefaultTariff(
 
                                       Destination:        SourceRouting.To(chargingStation1.Id),
-                                      EVSEId:             EVSE_Id.Parse(1),
+                                      EVSEId:             protocols.OCPPv2_1.EVSE_Id.Parse(1),
                                       Tariff:             new Tariff(
 
                                                               Id:               Tariff_Id.Parse("DE-GDF-T12345678"),
@@ -507,7 +509,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                                                     Language_Id.EN
                                                                                 ),
                                                               MinPrice:         null,
-                                                              MaxPrice:         new Price(
+                                                              MaxPrice:         new protocols.OCPPv2_1.Price(
                                                                                     ExcludingTaxes:  0.51M,
                                                                                     IncludingTaxes:  0.53M
                                                                                 ),
@@ -631,7 +633,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                                           new SetVariableData(
                                                                               new Component(
                                                                                   Name:  nameof(QRCodePaymentsCtrlr),
-                                                                                  EVSE:  new EVSE(EVSE_Id.Parse(1))
+                                                                                  EVSE:  new protocols.OCPPv2_1.EVSE(protocols.OCPPv2_1.EVSE_Id.Parse(1))
                                                                               ),
                                                                               new Variable(
                                                                                   Name:  nameof(QRCodePaymentsCtrlr.Enabled)
@@ -641,7 +643,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                                           new SetVariableData(
                                                                               new Component(
                                                                                   Name:  nameof(QRCodePaymentsCtrlr),
-                                                                                  EVSE:  new EVSE(EVSE_Id.Parse(1))
+                                                                                  EVSE:  new protocols.OCPPv2_1.EVSE(protocols.OCPPv2_1.EVSE_Id.Parse(1))
                                                                               ),
                                                                               new Variable(
                                                                                   Name:  nameof(QRCodePaymentsCtrlr.URLTemplate)
@@ -651,7 +653,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                                           new SetVariableData(
                                                                               new Component(
                                                                                   Name:  nameof(QRCodePaymentsCtrlr),
-                                                                                  EVSE:  new EVSE(EVSE_Id.Parse(1))
+                                                                                  EVSE:  new protocols.OCPPv2_1.EVSE(protocols.OCPPv2_1.EVSE_Id.Parse(1))
                                                                               ),
                                                                               new Variable(
                                                                                   Name:  nameof(QRCodePaymentsCtrlr.SharedSecret)
@@ -688,7 +690,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                                           new SetVariableData(
                                                                               new Component(
                                                                                   Name:  nameof(QRCodePaymentsCtrlr),
-                                                                                  EVSE:  new EVSE(EVSE_Id.Parse(1))
+                                                                                  EVSE:  new protocols.OCPPv2_1.EVSE(protocols.OCPPv2_1.EVSE_Id.Parse(1))
                                                                               ),
                                                                               new Variable(
                                                                                   Name:  nameof(QRCodePaymentsCtrlr.Enabled)
@@ -698,7 +700,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                                           new SetVariableData(
                                                                               new Component(
                                                                                   Name:  nameof(QRCodePaymentsCtrlr),
-                                                                                  EVSE:  new EVSE(EVSE_Id.Parse(1))
+                                                                                  EVSE:  new protocols.OCPPv2_1.EVSE(protocols.OCPPv2_1.EVSE_Id.Parse(1))
                                                                               ),
                                                                               new Variable(
                                                                                   Name:  nameof(QRCodePaymentsCtrlr.URLTemplate)
@@ -708,7 +710,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                                           new SetVariableData(
                                                                               new Component(
                                                                                   Name:  nameof(QRCodePaymentsCtrlr),
-                                                                                  EVSE:  new EVSE(EVSE_Id.Parse(1))
+                                                                                  EVSE:  new protocols.OCPPv2_1.EVSE(protocols.OCPPv2_1.EVSE_Id.Parse(1))
                                                                               ),
                                                                               new Variable(
                                                                                   Name:  nameof(QRCodePaymentsCtrlr.SharedSecret)
@@ -746,7 +748,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                                          new GetVariableData(
                                                                              new Component(
                                                                                  Name:  nameof(QRCodePaymentsCtrlr),
-                                                                                 EVSE:  new EVSE(EVSE_Id.Parse(1))
+                                                                                 EVSE:  new protocols.OCPPv2_1.EVSE(protocols.OCPPv2_1.EVSE_Id.Parse(1))
                                                                              ),
                                                                              new Variable(
                                                                                  Name:  nameof(QRCodePaymentsCtrlr.Enabled)
@@ -755,7 +757,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                                          new GetVariableData(
                                                                              new Component(
                                                                                  Name:  nameof(QRCodePaymentsCtrlr),
-                                                                                 EVSE:  new EVSE(EVSE_Id.Parse(1))
+                                                                                 EVSE:  new protocols.OCPPv2_1.EVSE(protocols.OCPPv2_1.EVSE_Id.Parse(1))
                                                                              ),
                                                                              new Variable(
                                                                                  Name:  nameof(QRCodePaymentsCtrlr.URLTemplate)
@@ -764,7 +766,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                                          new GetVariableData(
                                                                              new Component(
                                                                                  Name:  nameof(QRCodePaymentsCtrlr),
-                                                                                 EVSE:  new EVSE(EVSE_Id.Parse(1))
+                                                                                 EVSE:  new protocols.OCPPv2_1.EVSE(protocols.OCPPv2_1.EVSE_Id.Parse(1))
                                                                              ),
                                                                              new Variable(
                                                                                  Name:  nameof(QRCodePaymentsCtrlr.SharedSecret)
@@ -828,7 +830,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                                         new ComponentVariable(
                                                                             new Component(
                                                                                 Name:  nameof(QRCodePaymentsCtrlr),
-                                                                                EVSE:  new EVSE(EVSE_Id.Parse(1))
+                                                                                EVSE:  new protocols.OCPPv2_1.EVSE(protocols.OCPPv2_1.EVSE_Id.Parse(1))
                                                                             ),
                                                                             new Variable(
                                                                                 Name:  nameof(QRCodePaymentsCtrlr.URLTemplate)

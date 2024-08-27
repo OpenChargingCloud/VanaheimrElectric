@@ -33,6 +33,8 @@ using cloud.charging.open.protocols.OCPPv2_1.EnergyMeter;
 using cloud.charging.open.protocols.OCPPv2_1.NetworkingNode;
 using cloud.charging.open.protocols.OCPPv2_1.LocalController;
 using cloud.charging.open.protocols.OCPPv2_1.WebSockets;
+using cloud.charging.open.protocols.WWCP;
+using cloud.charging.open.protocols.WWCP.NetworkingNode;
 
 #endregion
 
@@ -454,7 +456,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
                                                          "lc_cs1_12345678"
                                                      );
 
-            var ocppLocalControllerConnectResult1  = await ocppLocalController.ConnectWebSocketClient(
+            var ocppLocalControllerConnectResult1  = await ocppLocalController.ConnectOCPPWebSocketClient(
 
                                                          RemoteURL:                    URL.Parse($"ws://127.0.0.1:{chargingStation1_tcpPort}"),
                                                          VirtualHostname:              null,
@@ -503,7 +505,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
                                                          "lc_cs2_12345678"
                                                      );
 
-            var ocppLocalControllerConnectResult2  = await ocppLocalController.ConnectWebSocketClient(
+            var ocppLocalControllerConnectResult2  = await ocppLocalController.ConnectOCPPWebSocketClient(
 
                                                          RemoteURL:                    URL.Parse($"ws://127.0.0.1:{chargingStation2_tcpPort}"),
                                                          VirtualHostname:              null,
@@ -552,7 +554,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
                                                          "lc_cs3_12345678"
                                                      );
 
-            var ocppLocalControllerConnectResult3  = await ocppLocalController.ConnectWebSocketClient(
+            var ocppLocalControllerConnectResult3  = await ocppLocalController.ConnectOCPPWebSocketClient(
 
                                                          RemoteURL:                    URL.Parse($"ws://127.0.0.1:{chargingStation3_tcpPort}"),
                                                          VirtualHostname:              null,
@@ -599,7 +601,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
                                                          "lc_em_12345678"
                                                      );
 
-            var ocppLocalControllerConnectResult4  = await ocppLocalController.ConnectWebSocketClient(
+            var ocppLocalControllerConnectResult4  = await ocppLocalController.ConnectOCPPWebSocketClient(
 
                                                          RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppEnergyMeter_tcpPort}"),
                                                          VirtualHostname:              null,
@@ -702,7 +704,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
                                                    "gw12345678"
                                                );
 
-            var ocppGatewayConnectResult     = await ocppGateway.ConnectWebSocketClient(
+            var ocppGatewayConnectResult     = await ocppGateway.ConnectOCPPWebSocketClient(
 
                                                    RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppLocalController_tcpPort}"),
                                                    VirtualHostname:              null,
@@ -805,7 +807,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
                                          "gw12345678"
                                      );
 
-            var csmsConnectResult  = await csms.ConnectWebSocketClient(
+            var csmsConnectResult  = await csms.ConnectOCPPWebSocketClient(
 
                                          RemoteURL:                    URL.Parse($"ws://127.0.0.1:{ocppGateway_tcpPort}"),
                                          VirtualHostname:              null,
@@ -849,19 +851,19 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
             //ToDo: Make use of the routing protocol vendor extensions!
 
             // Towards the CSMS
-            chargingStation1.   OCPP.Routing.AddOrUpdateStaticRouting(NetworkingNode_Id.CSMS,  ocppLocalController.Id);
-            ocppLocalController.OCPP.Routing.AddOrUpdateStaticRouting(NetworkingNode_Id.CSMS,  ocppGateway.Id);
-            ocppGateway.        OCPP.Routing.AddOrUpdateStaticRouting(NetworkingNode_Id.CSMS,  csms.Id);
+            chargingStation1.   Routing.AddOrUpdateStaticRouting(NetworkingNode_Id.CSMS,  ocppLocalController.Id);
+            ocppLocalController.Routing.AddOrUpdateStaticRouting(NetworkingNode_Id.CSMS,  ocppGateway.Id);
+            ocppGateway.        Routing.AddOrUpdateStaticRouting(NetworkingNode_Id.CSMS,  csms.Id);
 
             // Towards the charging stations
-            csms.               OCPP.Routing.AddOrUpdateStaticRouting(ocppLocalController.Id,  ocppGateway.Id);
-            csms.               OCPP.Routing.AddOrUpdateStaticRouting(chargingStation1.Id,     ocppGateway.Id);
-            csms.               OCPP.Routing.AddOrUpdateStaticRouting(chargingStation2.Id,     ocppGateway.Id);
-            csms.               OCPP.Routing.AddOrUpdateStaticRouting(chargingStation3.Id,     ocppGateway.Id);
+            csms.               Routing.AddOrUpdateStaticRouting(ocppLocalController.Id,  ocppGateway.Id);
+            csms.               Routing.AddOrUpdateStaticRouting(chargingStation1.Id,     ocppGateway.Id);
+            csms.               Routing.AddOrUpdateStaticRouting(chargingStation2.Id,     ocppGateway.Id);
+            csms.               Routing.AddOrUpdateStaticRouting(chargingStation3.Id,     ocppGateway.Id);
 
-            ocppGateway.        OCPP.Routing.AddOrUpdateStaticRouting(chargingStation1.Id,     ocppLocalController.Id);
-            ocppGateway.        OCPP.Routing.AddOrUpdateStaticRouting(chargingStation2.Id,     ocppLocalController.Id);
-            ocppGateway.        OCPP.Routing.AddOrUpdateStaticRouting(chargingStation3.Id,     ocppLocalController.Id);
+            ocppGateway.        Routing.AddOrUpdateStaticRouting(chargingStation1.Id,     ocppLocalController.Id);
+            ocppGateway.        Routing.AddOrUpdateStaticRouting(chargingStation2.Id,     ocppLocalController.Id);
+            ocppGateway.        Routing.AddOrUpdateStaticRouting(chargingStation3.Id,     ocppLocalController.Id);
 
         }
 
