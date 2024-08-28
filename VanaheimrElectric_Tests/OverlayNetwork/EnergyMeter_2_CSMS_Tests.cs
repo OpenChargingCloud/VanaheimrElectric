@@ -110,7 +110,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var ocppLocalController_jsonRequestMessageReceived                   = new ConcurrentList<OCPP_JSONRequestMessage>();
             var ocppLocalController_BootNotificationRequestsReceived             = new ConcurrentList<BootNotificationRequest>();
-            var ocppLocalController_BootNotificationRequestsForwardingDecisions  = new ConcurrentList<ForwardingDecision<BootNotificationRequest, BootNotificationResponse>>();
+            var ocppLocalController_BootNotificationRequestsForwardingDecisions  = new ConcurrentList<RequestForwardingDecision<BootNotificationRequest, BootNotificationResponse>>();
             var ocppLocalController_BootNotificationRequestsSent                 = new ConcurrentList<BootNotificationRequest>();
             var ocppLocalController_jsonRequestMessageSent                       = new ConcurrentList<OCPP_JSONRequestMessage>();
 
@@ -145,7 +145,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var ocppGateway_jsonRequestMessageReceived                   = new ConcurrentList<OCPP_JSONRequestMessage>();
             var ocppGateway_BootNotificationRequestsReceived             = new ConcurrentList<BootNotificationRequest>();
-            var ocppGateway_BootNotificationRequestsForwardingDecisions  = new ConcurrentList<ForwardingDecision<BootNotificationRequest, BootNotificationResponse>>();
+            var ocppGateway_BootNotificationRequestsForwardingDecisions  = new ConcurrentList<RequestForwardingDecision<BootNotificationRequest, BootNotificationResponse>>();
             var ocppGateway_BootNotificationRequestsSent                 = new ConcurrentList<BootNotificationRequest>();
             var ocppGateway_jsonRequestMessageSent                       = new ConcurrentList<OCPP_JSONRequestMessage>();
 
@@ -437,7 +437,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var ocppLocalController_jsonRequestMessageReceived               = new ConcurrentList<OCPP_JSONRequestMessage>();
             var ocppLocalController_DataTransferRequestsReceived             = new ConcurrentList<DataTransferRequest>();
-            var ocppLocalController_DataTransferRequestsForwardingDecisions  = new ConcurrentList<ForwardingDecision<DataTransferRequest, DataTransferResponse>>();
+            var ocppLocalController_DataTransferRequestsForwardingDecisions  = new ConcurrentList<RequestForwardingDecision<DataTransferRequest, DataTransferResponse>>();
             var ocppLocalController_DataTransferRequestsSent                 = new ConcurrentList<DataTransferRequest>();
             var ocppLocalController_jsonRequestMessageSent                   = new ConcurrentList<OCPP_JSONRequestMessage>();
 
@@ -472,7 +472,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var ocppGateway_jsonRequestMessageReceived               = new ConcurrentList<OCPP_JSONRequestMessage>();
             var ocppGateway_DataTransferRequestsReceived             = new ConcurrentList<DataTransferRequest>();
-            var ocppGateway_DataTransferRequestsForwardingDecisions  = new ConcurrentList<ForwardingDecision<DataTransferRequest, DataTransferResponse>>();
+            var ocppGateway_DataTransferRequestsForwardingDecisions  = new ConcurrentList<RequestForwardingDecision<DataTransferRequest, DataTransferResponse>>();
             var ocppGateway_DataTransferRequestsSent                 = new ConcurrentList<DataTransferRequest>();
             var ocppGateway_jsonRequestMessageSent                   = new ConcurrentList<OCPP_JSONRequestMessage>();
 
@@ -758,7 +758,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var ocppLocalController_jsonRequestMessageReceived               = new ConcurrentList<OCPP_JSONRequestMessage>();
             var ocppLocalController_DataTransferRequestsReceived             = new ConcurrentList<DataTransferRequest>();
-            var ocppLocalController_DataTransferRequestsForwardingDecisions  = new ConcurrentList<ForwardingDecision<DataTransferRequest, DataTransferResponse>>();
+            var ocppLocalController_DataTransferRequestsForwardingDecisions  = new ConcurrentList<RequestForwardingDecision<DataTransferRequest, DataTransferResponse>>();
             var ocppLocalController_DataTransferRequestsSent                 = new ConcurrentList<DataTransferRequest>();
             var ocppLocalController_jsonRequestMessageSent                   = new ConcurrentList<OCPP_JSONRequestMessage>();
 
@@ -793,7 +793,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var ocppGateway_jsonRequestMessageReceived               = new ConcurrentList<OCPP_JSONRequestMessage>();
             var ocppGateway_DataTransferRequestsReceived             = new ConcurrentList<DataTransferRequest>();
-            var ocppGateway_DataTransferRequestsForwardingDecisions  = new ConcurrentList<ForwardingDecision<DataTransferRequest, DataTransferResponse>>();
+            var ocppGateway_DataTransferRequestsForwardingDecisions  = new ConcurrentList<RequestForwardingDecision<DataTransferRequest, DataTransferResponse>>();
             var ocppGateway_DataTransferRequestsSent                 = new ConcurrentList<DataTransferRequest>();
             var ocppGateway_jsonRequestMessageSent                   = new ConcurrentList<OCPP_JSONRequestMessage>();
 
@@ -1083,7 +1083,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var ocppLocalController_BinaryRequestMessageReceived                   = new ConcurrentList<OCPP_BinaryRequestMessage>();
             var ocppLocalController_BinaryDataTransferRequestsReceived             = new ConcurrentList<BinaryDataTransferRequest>();
-            var ocppLocalController_BinaryDataTransferRequestsForwardingDecisions  = new ConcurrentList<ForwardingDecision<BinaryDataTransferRequest, BinaryDataTransferResponse>>();
+            var ocppLocalController_BinaryDataTransferRequestsForwardingDecisions  = new ConcurrentList<RequestForwardingDecision<BinaryDataTransferRequest, BinaryDataTransferResponse>>();
             var ocppLocalController_BinaryDataTransferRequestsSent                 = new ConcurrentList<BinaryDataTransferRequest>();
             var ocppLocalController_BinaryRequestMessageSent                       = new ConcurrentList<OCPP_BinaryRequestMessage>();
 
@@ -1118,7 +1118,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var ocppGateway_binaryRequestMessageReceived                   = new ConcurrentList<OCPP_BinaryRequestMessage>();
             var ocppGateway_BinaryDataTransferRequestsReceived             = new ConcurrentList<BinaryDataTransferRequest>();
-            var ocppGateway_BinaryDataTransferRequestsForwardingDecisions  = new ConcurrentList<ForwardingDecision<BinaryDataTransferRequest, BinaryDataTransferResponse>>();
+            var ocppGateway_BinaryDataTransferRequestsForwardingDecisions  = new ConcurrentList<RequestForwardingDecision<BinaryDataTransferRequest, BinaryDataTransferResponse>>();
             var ocppGateway_BinaryDataTransferRequestsSent                 = new ConcurrentList<BinaryDataTransferRequest>();
             var ocppGateway_binaryRequestMessageSent                       = new ConcurrentList<OCPP_BinaryRequestMessage>();
 
@@ -1360,8 +1360,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var ocppLocalController_jsonRequestMessageReceived              = new ConcurrentList<OCPP_JSONRequestMessage>();
             var ocppLocalController_AuthorizeRequestsReceived               = new ConcurrentList<AuthorizeRequest>();
-            var ocppLocalController_AuthorizeRequestsForwardingDecisions    = new ConcurrentList<ForwardingDecision<AuthorizeRequest, AuthorizeResponse>>();
-            var ocppLocalController_jsonRequestsForwardingDecisions         = new ConcurrentList<ForwardingDecision>();
+            var ocppLocalController_AuthorizeRequestsForwardingDecisions    = new ConcurrentList<RequestForwardingDecision<AuthorizeRequest, AuthorizeResponse>>();
+            var ocppLocalController_jsonRequestsForwardingDecisions         = new ConcurrentList<RequestForwardingDecision>();
             var ocppLocalController_AuthorizeResponsesSent                  = new ConcurrentList<AuthorizeResponse>();
             var ocppLocalController_jsonRequestErrorMessageSent             = new ConcurrentList<OCPP_JSONRequestErrorMessage>();
 
@@ -1545,7 +1545,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var ocppLocalController_jsonRequestMessageReceived             = new ConcurrentList<OCPP_JSONRequestMessage>();
             var ocppLocalController_MeterValuesRequestsReceived            = new ConcurrentList<MeterValuesRequest>();
-            var ocppLocalController_MeterValuesRequestsForwardingDecisions = new ConcurrentList<ForwardingDecision<MeterValuesRequest, MeterValuesResponse>>();
+            var ocppLocalController_MeterValuesRequestsForwardingDecisions = new ConcurrentList<RequestForwardingDecision<MeterValuesRequest, MeterValuesResponse>>();
             var ocppLocalController_MeterValuesRequestsSent                = new ConcurrentList<MeterValuesRequest>();
             var ocppLocalController_jsonRequestMessageSent                 = new ConcurrentList<OCPP_JSONRequestMessage>();
 
@@ -1580,7 +1580,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var ocppGateway_jsonRequestMessageReceived             = new ConcurrentList<OCPP_JSONRequestMessage>();
             var ocppGateway_MeterValuesRequestsReceived            = new ConcurrentList<MeterValuesRequest>();
-            var ocppGateway_MeterValuesRequestsForwardingDecisions = new ConcurrentList<ForwardingDecision<MeterValuesRequest, MeterValuesResponse>>();
+            var ocppGateway_MeterValuesRequestsForwardingDecisions = new ConcurrentList<RequestForwardingDecision<MeterValuesRequest, MeterValuesResponse>>();
             var ocppGateway_MeterValuesRequestsSent                = new ConcurrentList<MeterValuesRequest>();
             var ocppGateway_jsonRequestMessageSent                 = new ConcurrentList<OCPP_JSONRequestMessage>();
 

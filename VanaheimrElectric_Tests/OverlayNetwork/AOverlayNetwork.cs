@@ -1455,8 +1455,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                 Task.FromResult(
                     request.NetworkPath.Source == chargingStation3.Id
-                        ? ForwardingDecision.FORWARD(request, SourceRouting.To(csms2.Id))
-                        : ForwardingDecision.NEXT   (request)
+                        ? RequestForwardingDecision.FORWARD(request, SourceRouting.To(csms2.Id))
+                        : RequestForwardingDecision.NEXT   (request)
                 );
 
             #region OnBootNotification
@@ -1469,8 +1469,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                 Task.FromResult(
                     request.NetworkPath.Source == chargingStation3.Id
-                        ? ForwardingDecision<BootNotificationRequest, BootNotificationResponse>.FORWARD(request, SourceRouting.To(csms2.Id))
-                        : ForwardingDecision<BootNotificationRequest, BootNotificationResponse>.FORWARD(request)
+                        ? RequestForwardingDecision<BootNotificationRequest, BootNotificationResponse>.FORWARD(request, SourceRouting.To(csms2.Id))
+                        : RequestForwardingDecision<BootNotificationRequest, BootNotificationResponse>.FORWARD(request)
                 );
 
             #endregion
