@@ -205,6 +205,17 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             }
 
+            #region Verify
+
+            var parserResult        = RegisterEMobilityAccountData.TryParse(signedUserRegistrationJSON, out var parsedSignedUserRegistrationJSON, out var errorResponse2);
+            var verificationResult  = parsedSignedUserRegistrationJSON.Verify(signedUserRegistrationJSON, RegisterEMobilityAccountData.DefaultJSONLDContext, out var errorResponse3);
+
+            Assert.That(verificationResult, Is.True);
+
+            #endregion
+
+
+
 
         }
 
