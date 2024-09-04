@@ -800,11 +800,13 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             var evse               = chargingStation1.EVSEs.First()!;
             var expectedTOTPURLs   = QRCodeTOTPGenerator.GenerateURLs(qrCodeURLTemplate, sharedSecret);
+            var runs               = 0;
 
             do
             {
                 await Task.Delay(50);
-            } while (evse.QRCodePaymentsURL is null);
+                runs++;
+            } while (evse.QRCodePaymentsURL is null || runs > 100);
 
 
             Assert.That(qrCodeURLs.Last(),   Is.EqualTo(expectedTOTPURLs.Current).

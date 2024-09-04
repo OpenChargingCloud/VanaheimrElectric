@@ -37,6 +37,7 @@ using cloud.charging.open.protocols.OCPPv2_1.WebSockets;
 using cloud.charging.open.protocols.WWCP;
 using cloud.charging.open.protocols.WWCP.EMP;
 using cloud.charging.open.protocols.WWCP.NetworkingNode;
+using cloud.charging.open.protocols.OCPP.WebSockets;
 
 #endregion
 
@@ -49,7 +50,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
     /// Energy Meter at the shared grid connection point, an OCPP Gateway
     /// and two Charging Station Management Systems.
     /// 
-    /// The HTTP Web Socket connections are initiated in "normal order" from
+    /// The HTTP WebSocket connections are initiated in "normal order" from
     /// the Charging Stations to the Local Controller, to the Gateway and
     /// finally to the CSMS.
     /// 
@@ -167,7 +168,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                             HTTPServiceName:              null,
                                             IPAddress:                    null,
                                             TCPPort:                      null,//csms1_tcpPort,
-                                            Description:                  I18NString.Create("Charging Station Management System #1 Web Socket Server"),
+                                            Description:                  I18NString.Create("Charging Station Management System #1 WebSocket Server"),
 
                                             RequireAuthentication:        true,
                                             DisableWebSocketPings:        true,
@@ -411,7 +412,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                             HTTPServiceName:              null,
                                             IPAddress:                    null,
                                             TCPPort:                      null,//csms2_tcpPort,
-                                            Description:                  I18NString.Create("Charging Station Management System #2 Web Socket Server"),
+                                            Description:                  I18NString.Create("Charging Station Management System #2 WebSocket Server"),
 
                                             RequireAuthentication:        true,
                                             DisableWebSocketPings:        false,
@@ -592,7 +593,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                    HTTPServiceName:              null,
                                                    IPAddress:                    null,
                                                    TCPPort:                      null,//ocppGateway_tcpPort,
-                                                   Description:                  I18NString.Create("OCPP Gateway Web Socket Server"),
+                                                   Description:                  I18NString.Create("OCPP Gateway WebSocket Server"),
 
                                                    RequireAuthentication:        true,
                                                    DisableWebSocketPings:        false,
@@ -713,7 +714,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                           HTTPServiceName:              null,
                                                           IPAddress:                    null,
                                                           TCPPort:                      null,//ocppLocalController_tcpPort,
-                                                          Description:                  I18NString.Create("OCPP Local Controller Web Socket Server"),
+                                                          Description:                  I18NString.Create("OCPP Local Controller WebSocket Server"),
 
                                                           RequireAuthentication:        true,
                                                           DisableWebSocketPings:        false,
@@ -975,8 +976,12 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #region Register User Roles
 
-            //var ur1 = KeyPair.GenerateKeys()!;
-            //var ur2 = KeyPair.GenerateKeys()!;
+            //var keys = KeyPair.GenerateKeys()!;
+
+            // {
+            //   "private": "AMMLFGD82B7GFc7QQYNtB/1AaNFBdo/W5TQpAneLbCza",
+            //   "public":  "BEvelX5aAzr77LsrEqlUKAq69XHpLT2I9rPuSflnWGGvM+BAROk9IAUEho5HvO7QyD9j374CcjbUfi6xGp0m9ig="
+            // }
 
             // {
             //   "private": "ANqBTkO85kZZ44o1jT/Ygxa7JDtVOBUPBtXhtoPYWjgO",
@@ -991,7 +996,25 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             chargingStation1.UserRoles.Add(
                 new UserRole(
 
-                    Id:                      UserRole_Id.Parse ("admin"),
+                    Id:                      UserRole_Id.Vendor,
+                    Description:             I18NString. Create("The vendor user role for the charging station"),
+                    KeyPairs:                [ KeyPair.  ParsePublicKey("BEvelX5aAzr77LsrEqlUKAq69XHpLT2I9rPuSflnWGGvM+BAROk9IAUEho5HvO7QyD9j374CcjbUfi6xGp0m9ig=")! ],
+
+                    //ComponentAccessRights:   null,
+
+                    //SignerName:              null,
+                    //Description:             null,
+                    //Timestamp:               null,
+
+                    CustomData:              null
+
+                )
+            );
+
+            chargingStation1.UserRoles.Add(
+                new UserRole(
+
+                    Id:                      UserRole_Id.Admin,
                     Description:             I18NString. Create("The admin user role for the charging station"),
                     KeyPairs:                [ KeyPair.  ParsePublicKey("BGFDuYqF2x8R4DUb0glpmRDgOpd9+197eQ1jOriP9PaWF013TSU5WedD4YePdEwTXDbdsLPucT8L/cFKTKqCCgQ=")! ],
 
@@ -1009,8 +1032,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             chargingStation1.UserRoles.Add(
                 new UserRole(
 
-                    Id:                      UserRole_Id.Parse ("user"),
-                    Description:             I18NString. Create("The default user role for the charging station"),
+                    Id:                      UserRole_Id.Support,
+                    Description:             I18NString. Create("The support user role for the charging station"),
                     KeyPairs:                [ KeyPair.  ParsePublicKey("BHP5kGwkiii3V7YS7XbG1MEAY9UmxTzo8iEBftaBcstf0xy3qLUhdmtL5DPqs5F9k2mvMZDPzhOQXP1UZlrvefY=")! ],
 
                     //ComponentAccessRights:   null,

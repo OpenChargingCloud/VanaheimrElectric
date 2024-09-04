@@ -320,63 +320,79 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             Assert.Multiple(() => {
 
-                Assert.That(bootNotificationResponse.Status,                                                       Is.EqualTo(RegistrationStatus.Accepted));
-                Assert.That(Math.Abs((Timestamp.Now - bootNotificationResponse.CurrentTime).TotalMinutes) < 1,     Is.True);
-                Assert.That(bootNotificationResponse.Interval                    > TimeSpan.Zero,                  Is.True);
+                Assert.That(bootNotificationResponse.Status,                                                          Is.EqualTo(RegistrationStatus.Accepted));
+                Assert.That(Math.Abs((Timestamp.Now - bootNotificationResponse.CurrentTime).TotalMinutes) < 1,        Is.True);
+                Assert.That(bootNotificationResponse.Interval                    > TimeSpan.Zero,                     Is.True);
                 //StatusInfo
 
+                // -<request>----------------------------------------------------------------------------------------------------------
+                var bootNotificationRequestSent1 = chargingStation1_BootNotificationRequestsSent.FirstOrDefault();
+                Assert.That(bootNotificationRequestSent1,                                                              Is.Not.Null);
+                if (bootNotificationRequestSent1 is not null)
+                {
+                    Assert.That(bootNotificationRequestSent1.Destination,                                              Is.EqualTo(SourceRouting.CSMS));
+                    Assert.That(bootNotificationRequestSent1.NetworkPath,                                              Is.EqualTo(NetworkPath.Empty), $"NetworkPath is '{bootNotificationRequestSent1.NetworkPath}'!");
+                    Assert.That(bootNotificationRequestSent1.Signatures.Count(),                                       Is.EqualTo(1));
+                }
 
-                // -<request>--------------------------------------------------------------------------------------------------
-                Assert.That(chargingStation1_BootNotificationRequestsSent.                                Count,   Is.EqualTo(1));
-                Assert.That(chargingStation1_BootNotificationRequestsSent.First().Signatures.             Count,   Is.EqualTo(1));
-                Assert.That(chargingStation1_jsonRequestMessageSent.                                      Count,   Is.EqualTo(1));
-                //Assert.That(chargingStation1_jsonRequestMessageSent.           First().NetworkPath.ToString(),   Is.EqualTo(new NetworkPath([ chargingStation1.Id ]).ToString()));
-                Assert.That(chargingStation1_jsonRequestMessageSent.First().Payload["signatures"]?.       Count(), Is.EqualTo(1));
+                var jsonRequestMessageSent1 = chargingStation1_jsonRequestMessageSent.FirstOrDefault();
+                Assert.That(jsonRequestMessageSent1,                                                                   Is.Not.Null);
+                if (jsonRequestMessageSent1 is not null)
+                {
+                    Assert.That(jsonRequestMessageSent1.Destination,                                                   Is.EqualTo(SourceRouting.CSMS));
+                    Assert.That(jsonRequestMessageSent1.NetworkPath,                                                   Is.EqualTo(NetworkPath.Empty), $"NetworkPath is '{jsonRequestMessageSent1.NetworkPath}'!");
+                    Assert.That(jsonRequestMessageSent1.Payload["signatures"]?.Count(),                                Is.EqualTo(1));
+                }
 
-                Assert.That(ocppLocalController_jsonRequestMessageReceived.                               Count,   Is.EqualTo(1));
-                Assert.That(ocppLocalController_BootNotificationRequestsReceived.                         Count,   Is.EqualTo(1));
-                Assert.That(ocppLocalController_BootNotificationRequestsForwardingDecisions.              Count,   Is.EqualTo(1));
-                Assert.That(ocppLocalController_BootNotificationRequestsSent.                             Count,   Is.EqualTo(1));
-                Assert.That(ocppLocalController_jsonRequestMessageSent.                                   Count,   Is.EqualTo(1));
-                Assert.That(ocppLocalController_jsonRequestMessageSent.        First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController1.Id ]).ToString()));
+                Assert.That(ocppLocalController_jsonRequestMessageReceived.                  Count,                    Is.EqualTo(1));
+                Assert.That(ocppLocalController_BootNotificationRequestsReceived.            Count,                    Is.EqualTo(1));
+                Assert.That(ocppLocalController_BootNotificationRequestsForwardingDecisions. Count,                    Is.EqualTo(1));
+                Assert.That(ocppLocalController_BootNotificationRequestsSent.                Count,                    Is.EqualTo(1));
+                Assert.That(ocppLocalController_jsonRequestMessageSent.                      Count,                    Is.EqualTo(1));
+                var jsonRequestMessageSent2 = ocppLocalController_jsonRequestMessageSent.FirstOrDefault();
+                Assert.That(jsonRequestMessageSent2,                                                                   Is.Not.Null);
+                if (jsonRequestMessageSent2 is not null)
+                {
+                    Assert.That(jsonRequestMessageSent2.NetworkPath,                                                   Is.EqualTo(NetworkPath.From(chargingStation1.Id, ocppLocalController1.Id)));
+                }
 
                 Assert.That(ocppGateway_jsonRequestMessageReceived.                                       Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_BootNotificationRequestsReceived.                                 Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_BootNotificationRequestsForwardingDecisions.                      Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_BootNotificationRequestsSent.                                     Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_jsonRequestMessageSent.                                           Count,   Is.EqualTo(1));
-                Assert.That(ocppGateway_jsonRequestMessageSent.                First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController1.Id, ocppGateway1.Id]).ToString()));
+                Assert.That(ocppGateway_jsonRequestMessageSent.FirstOrDefault()?.NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController1.Id, ocppGateway1.Id]).ToString()));
 
                 Assert.That(csms1_jsonRequestMessageReceived.                                              Count,   Is.EqualTo(1));
-                Assert.That(csms1_jsonRequestMessageReceived.                   First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController1.Id, ocppGateway1.Id]).ToString()));
+                Assert.That(csms1_jsonRequestMessageReceived.FirstOrDefault()?.NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController1.Id, ocppGateway1.Id]).ToString()));
                 Assert.That(csms1_BootNotificationRequestsReceived.                                        Count,   Is.EqualTo(1));
 
                 // -<response>-------------------------------------------------------------------------------------------------
-                Assert.That(csms1_BootNotificationResponsesSent.                                           Count,   Is.EqualTo(1));
-                Assert.That(csms1_jsonResponseMessagesSent.                                                Count,   Is.EqualTo(1));
-                Assert.That(csms1_jsonResponseMessagesSent.                     First().Destination.Next,           Is.EqualTo(chargingStation1.Id));
-                Assert.That(csms1_jsonResponseMessagesSent.                     First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id ]).ToString()));
+                Assert.That(csms1_BootNotificationResponsesSent.Count,                                                 Is.EqualTo(1));
+                Assert.That(csms1_jsonResponseMessagesSent.Count,                                                      Is.EqualTo(1));
+                Assert.That(csms1_jsonResponseMessagesSent.FirstOrDefault()?.Destination.Next,                         Is.EqualTo(chargingStation1.Id));
+                Assert.That(csms1_jsonResponseMessagesSent.FirstOrDefault()?.NetworkPath.ToString(),                   Is.EqualTo(new NetworkPath([ csms1.Id ]).ToString()));
 
-                Assert.That(ocppGateway_jsonResponseMessagesReceived.                                     Count,   Is.EqualTo(1));
-                //Assert.That(ocppGateway_BootNotificationResponsesReceived.                                Count,   Is.EqualTo(1));
-                //Assert.That(ocppGateway_BootNotificationResponsesSent.                                    Count,   Is.EqualTo(1));
-                Assert.That(ocppGateway_jsonResponseMessagesSent.                                         Count,   Is.EqualTo(1));
-                Assert.That(ocppGateway_jsonResponseMessagesSent.              First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id, ocppGateway1.Id ]).ToString()));
+                Assert.That(ocppGateway_jsonResponseMessagesReceived.Count,                                            Is.EqualTo(1));
+                //Assert.That(ocppGateway_BootNotificationResponsesReceived.Count,                                       Is.EqualTo(1));
+                //Assert.That(ocppGateway_BootNotificationResponsesSent.Count,                                           Is.EqualTo(1));
+                Assert.That(ocppGateway_jsonResponseMessagesSent.Count,                                                Is.EqualTo(1));
+                Assert.That(ocppGateway_jsonResponseMessagesSent.FirstOrDefault()?.NetworkPath.ToString(),             Is.EqualTo(new NetworkPath([ csms1.Id, ocppGateway1.Id ]).ToString()));
 
-                Assert.That(ocppLocalController_jsonResponseMessagesReceived.                             Count,   Is.EqualTo(1));
-                //Assert.That(ocppLocalController_BootNotificationResponsesReceived.                        Count,   Is.EqualTo(1));
-                //Assert.That(ocppLocalController_BootNotificationResponsesSent.                            Count,   Is.EqualTo(1));
-                Assert.That(ocppLocalController_jsonResponseMessagesSent.                                 Count,   Is.EqualTo(1));
-                //Assert.That(ocppLocalController_jsonResponseMessagesSent.      First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id, ocppGateway.Id, ocppLocalController.Id ]).ToString()));
+                Assert.That(ocppLocalController_jsonResponseMessagesReceived.Count,                                    Is.EqualTo(1));
+                //Assert.That(ocppLocalController_BootNotificationResponsesReceived.Count,                               Is.EqualTo(1));
+                //Assert.That(ocppLocalController_BootNotificationResponsesSent.Count,                                   Is.EqualTo(1));
+                Assert.That(ocppLocalController_jsonResponseMessagesSent.Count,                                        Is.EqualTo(1));
+                //Assert.That(ocppLocalController_jsonResponseMessagesSent.FirstOrDefault().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id, ocppGateway.Id, ocppLocalController.Id ]).ToString()));
 
-                Assert.That(chargingStation1_jsonMessageResponseReceived.                                 Count,   Is.EqualTo(1));
-                Assert.That(chargingStation1_BootNotificationResponsesReceived.                           Count,   Is.EqualTo(1));
-                Assert.That(chargingStation1_BootNotificationResponsesReceived.First().Signatures.        Count,   Is.EqualTo(1));
+                Assert.That(chargingStation1_jsonMessageResponseReceived.Count,                                        Is.EqualTo(1));
+                Assert.That(chargingStation1_BootNotificationResponsesReceived.Count,                                  Is.EqualTo(1));
+                Assert.That(chargingStation1_BootNotificationResponsesReceived.FirstOrDefault()?.Signatures.Count(),   Is.EqualTo(1));
                 // Note: The charging stations use "normal" networking and thus have no valid networking information!
-                Assert.That(chargingStation1_jsonMessageResponseReceived.      First().Destination.Next,           Is.EqualTo(chargingStation1.Id));
-                //Assert.That(chargingStation1_BootNotificationResponsesReceived.First().DestinationId,              Is.EqualTo(chargingStation1.Id));
-                Assert.That(chargingStation1_jsonMessageResponseReceived.      First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
-                //Assert.That(chargingStation1_BootNotificationResponsesReceived.First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
+                Assert.That(chargingStation1_jsonMessageResponseReceived.FirstOrDefault()?.Destination.Next,           Is.EqualTo(chargingStation1.Id));
+                //Assert.That(chargingStation1_BootNotificationResponsesReceived.First().DestinationId,                  Is.EqualTo(chargingStation1.Id));
+                Assert.That(chargingStation1_jsonMessageResponseReceived.FirstOrDefault()?.NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
+                //Assert.That(chargingStation1_BootNotificationResponsesReceived.First().NetworkPath.ToString(),         Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
 
             });
 
@@ -1116,15 +1132,15 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             #region 1. The BootNotification request leaves the Charging Station
 
             var chargingStation1_BootNotificationRequestsSent  = new ConcurrentList<BootNotificationRequest>();
-            var chargingStation1_jsonRequestMessageSent        = new ConcurrentList<OCPP_JSONRequestMessage>();
+            var chargingStation1_binaryRequestMessageSent      = new ConcurrentList<OCPP_BinaryRequestMessage>();
 
             chargingStation1.OCPP.OUT.OnBootNotificationRequestSent += (timestamp, sender, connection, bootNotificationRequest, sentMessageResult, ct) => {
                 chargingStation1_BootNotificationRequestsSent.TryAdd(bootNotificationRequest);
                 return Task.CompletedTask;
             };
 
-            chargingStation1.OCPP.OUT.OnJSONRequestMessageSent      += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
-                chargingStation1_jsonRequestMessageSent.      TryAdd(requestMessage);
+            chargingStation1.OCPP.OUT.OnBinaryRequestMessageSent      += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
+                chargingStation1_binaryRequestMessageSent.    TryAdd(requestMessage);
                 return Task.CompletedTask;
             };
 
@@ -1132,14 +1148,14 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #region 2. The OCPP Local Controller receives and forwards the BootNotification request
 
-            var ocppLocalController_jsonRequestMessageReceived                   = new ConcurrentList<OCPP_JSONRequestMessage>();
+            var ocppLocalController_binaryRequestMessageReceived                 = new ConcurrentList<OCPP_BinaryRequestMessage>();
             var ocppLocalController_BootNotificationRequestsReceived             = new ConcurrentList<BootNotificationRequest>();
             var ocppLocalController_BootNotificationRequestsForwardingDecisions  = new ConcurrentList<RequestForwardingDecision<BootNotificationRequest, BootNotificationResponse>>();
             var ocppLocalController_BootNotificationRequestsSent                 = new ConcurrentList<BootNotificationRequest>();
-            var ocppLocalController_jsonRequestMessageSent                       = new ConcurrentList<OCPP_JSONRequestMessage>();
+            var ocppLocalController_binaryRequestMessageSent                     = new ConcurrentList<OCPP_BinaryRequestMessage>();
 
-            ocppLocalController1.OCPP.IN.     OnJSONRequestMessageReceived       += (timestamp, sender, connection, jsonRequestMessage, ct) => {
-                ocppLocalController_jsonRequestMessageReceived.                 TryAdd(jsonRequestMessage);
+            ocppLocalController1.OCPP.IN.     OnBinaryRequestMessageReceived     += (timestamp, sender, connection, binaryRequestMessage, ct) => {
+                ocppLocalController_binaryRequestMessageReceived.                 TryAdd(binaryRequestMessage);
                 return Task.CompletedTask;
             };
 
@@ -1158,8 +1174,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppLocalController1.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
-                ocppLocalController_jsonRequestMessageSent.                     TryAdd(requestMessage);
+            ocppLocalController1.OCPP.OUT.    OnBinaryRequestMessageSent         += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
+                ocppLocalController_binaryRequestMessageSent.                     TryAdd(requestMessage);
                 return Task.CompletedTask;
             };
 
@@ -1167,14 +1183,14 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #region 3. The OCPP Gateway receives and forwards the BootNotification request
 
-            var ocppGateway_jsonRequestMessageReceived                   = new ConcurrentList<OCPP_JSONRequestMessage>();
+            var ocppGateway_binaryRequestMessageReceived                   = new ConcurrentList<OCPP_BinaryRequestMessage>();
             var ocppGateway_BootNotificationRequestsReceived             = new ConcurrentList<BootNotificationRequest>();
             var ocppGateway_BootNotificationRequestsForwardingDecisions  = new ConcurrentList<RequestForwardingDecision<BootNotificationRequest, BootNotificationResponse>>();
             var ocppGateway_BootNotificationRequestsSent                 = new ConcurrentList<BootNotificationRequest>();
-            var ocppGateway_jsonRequestMessageSent                       = new ConcurrentList<OCPP_JSONRequestMessage>();
+            var ocppGateway_binaryRequestMessageSent                       = new ConcurrentList<OCPP_BinaryRequestMessage>();
 
-            ocppGateway1.OCPP.IN.     OnJSONRequestMessageReceived       += (timestamp, sender, connection, jsonRequestMessage, ct) => {
-                ocppGateway_jsonRequestMessageReceived.                 TryAdd(jsonRequestMessage);
+            ocppGateway1.OCPP.IN.     OnBinaryRequestMessageReceived       += (timestamp, sender, connection, binaryRequestMessage, ct) => {
+                ocppGateway_binaryRequestMessageReceived.                 TryAdd(binaryRequestMessage);
                 return Task.CompletedTask;
             };
 
@@ -1193,8 +1209,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppGateway1.OCPP.OUT.    OnJSONRequestMessageSent           += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
-                ocppGateway_jsonRequestMessageSent.                     TryAdd(requestMessage);
+            ocppGateway1.OCPP.OUT.    OnBinaryRequestMessageSent           += (timestamp, sender, connection, requestMessage, sentMessageResult, ct) => {
+                ocppGateway_binaryRequestMessageSent.                     TryAdd(requestMessage);
                 return Task.CompletedTask;
             };
 
@@ -1202,11 +1218,11 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #region 4. The CSMS receives the BootNotification request
 
-            var csms1_jsonRequestMessageReceived               = new ConcurrentList<OCPP_JSONRequestMessage>();
+            var csms1_binaryRequestMessageReceived               = new ConcurrentList<OCPP_BinaryRequestMessage>();
             var csms1_BootNotificationRequestsReceived         = new ConcurrentList<BootNotificationRequest>();
 
-            csms1.OCPP.IN. OnJSONRequestMessageReceived       += (timestamp, sender, connection, jsonRequestMessage, ct) => {
-                csms1_jsonRequestMessageReceived.      TryAdd(jsonRequestMessage);
+            csms1.OCPP.IN. OnBinaryRequestMessageReceived       += (timestamp, sender, connection, binaryRequestMessage, ct) => {
+                csms1_binaryRequestMessageReceived.      TryAdd(binaryRequestMessage);
                 return Task.CompletedTask;
             };
 
@@ -1222,15 +1238,15 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             #region 5. The CSMS responds the BootNotification request
 
             var csms1_BootNotificationResponsesSent        = new ConcurrentList<BootNotificationResponse>();
-            var csms1_jsonResponseMessagesSent             = new ConcurrentList<OCPP_JSONResponseMessage>();
+            var csms1_binaryResponseMessagesSent             = new ConcurrentList<OCPP_BinaryResponseMessage>();
 
             csms1.OCPP.OUT.OnBootNotificationResponseSent += (timestamp, sender, connection, request, response, runtime, sentMessageResult, ct) => {
                 csms1_BootNotificationResponsesSent.TryAdd(response);
                 return Task.CompletedTask;
             };
 
-            csms1.OCPP.OUT.OnJSONResponseMessageSent      += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
-                csms1_jsonResponseMessagesSent.     TryAdd(responseMessage);
+            csms1.OCPP.OUT.OnBinaryResponseMessageSent      += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
+                csms1_binaryResponseMessagesSent.     TryAdd(responseMessage);
                 return Task.CompletedTask;
             };
 
@@ -1238,13 +1254,13 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #region 6. The OCPP Gateway receives and forwards the BootNotification response
 
-            var ocppGateway_jsonResponseMessagesReceived                 = new ConcurrentList<OCPP_JSONResponseMessage>();
+            var ocppGateway_binaryResponseMessagesReceived                 = new ConcurrentList<OCPP_BinaryResponseMessage>();
             var ocppGateway_BootNotificationResponsesReceived            = new ConcurrentList<BootNotificationResponse>();
             var ocppGateway_BootNotificationResponsesSent                = new ConcurrentList<BootNotificationResponse>();
-            var ocppGateway_jsonResponseMessagesSent                     = new ConcurrentList<OCPP_JSONResponseMessage>();
+            var ocppGateway_binaryResponseMessagesSent                     = new ConcurrentList<OCPP_BinaryResponseMessage>();
 
-            ocppGateway1.OCPP.IN.     OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
-                ocppGateway_jsonResponseMessagesReceived.     TryAdd(jsonResponseMessage);
+            ocppGateway1.OCPP.IN.     OnBinaryResponseMessageReceived      += (timestamp, sender, connection, binaryResponseMessage, ct) => {
+                ocppGateway_binaryResponseMessagesReceived.     TryAdd(binaryResponseMessage);
                 return Task.CompletedTask;
             };
 
@@ -1258,8 +1274,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppGateway1.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
-                ocppGateway_jsonResponseMessagesSent.         TryAdd(responseMessage);
+            ocppGateway1.OCPP.OUT.    OnBinaryResponseMessageSent          += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
+                ocppGateway_binaryResponseMessagesSent.         TryAdd(responseMessage);
                 return Task.CompletedTask;
             };
 
@@ -1267,13 +1283,13 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #region 7. The OCPP Local Controller receives and forwards the BootNotification response
 
-            var ocppLocalController_jsonResponseMessagesReceived                 = new ConcurrentList<OCPP_JSONResponseMessage>();
+            var ocppLocalController_binaryResponseMessagesReceived                 = new ConcurrentList<OCPP_BinaryResponseMessage>();
             var ocppLocalController_BootNotificationResponsesReceived            = new ConcurrentList<BootNotificationResponse>();
             var ocppLocalController_BootNotificationResponsesSent                = new ConcurrentList<BootNotificationResponse>();
-            var ocppLocalController_jsonResponseMessagesSent                     = new ConcurrentList<OCPP_JSONResponseMessage>();
+            var ocppLocalController_binaryResponseMessagesSent                     = new ConcurrentList<OCPP_BinaryResponseMessage>();
 
-            ocppLocalController1.OCPP.IN.     OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
-                ocppLocalController_jsonResponseMessagesReceived.     TryAdd(jsonResponseMessage);
+            ocppLocalController1.OCPP.IN.     OnBinaryResponseMessageReceived      += (timestamp, sender, connection, binaryResponseMessage, ct) => {
+                ocppLocalController_binaryResponseMessagesReceived.     TryAdd(binaryResponseMessage);
                 return Task.CompletedTask;
             };
 
@@ -1287,8 +1303,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 return Task.CompletedTask;
             };
 
-            ocppLocalController1.OCPP.OUT.    OnJSONResponseMessageSent          += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
-                ocppLocalController_jsonResponseMessagesSent.         TryAdd(responseMessage);
+            ocppLocalController1.OCPP.OUT.    OnBinaryResponseMessageSent          += (timestamp, sender, connection, responseMessage, sentMessageResult, ct) => {
+                ocppLocalController_binaryResponseMessagesSent.         TryAdd(responseMessage);
                 return Task.CompletedTask;
             };
 
@@ -1296,11 +1312,11 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #region 8. The Charging Station receives the BootNotification response
 
-            var chargingStation1_jsonMessageResponseReceived             = new ConcurrentList<OCPP_JSONResponseMessage>();
+            var chargingStation1_binaryMessageResponseReceived             = new ConcurrentList<OCPP_BinaryResponseMessage>();
             var chargingStation1_BootNotificationResponsesReceived       = new ConcurrentList<BootNotificationResponse>();
 
-            chargingStation1.OCPP.IN.OnJSONResponseMessageReceived      += (timestamp, sender, connection, jsonResponseMessage, ct) => {
-                chargingStation1_jsonMessageResponseReceived.      TryAdd(jsonResponseMessage);
+            chargingStation1.OCPP.IN.OnBinaryResponseMessageReceived      += (timestamp, sender, connection, binaryResponseMessage, ct) => {
+                chargingStation1_binaryMessageResponseReceived.      TryAdd(binaryResponseMessage);
                 return Task.CompletedTask;
             };
 
@@ -1340,53 +1356,53 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 // -<request>--------------------------------------------------------------------------------------------------
                 Assert.That(chargingStation1_BootNotificationRequestsSent.                                Count,   Is.EqualTo(1));
                 Assert.That(chargingStation1_BootNotificationRequestsSent.First().Signatures.             Count,   Is.EqualTo(1));
-                Assert.That(chargingStation1_jsonRequestMessageSent.                                      Count,   Is.EqualTo(1));
-                //Assert.That(chargingStation1_jsonRequestMessageSent.           First().NetworkPath.ToString(),   Is.EqualTo(new NetworkPath([ chargingStation1.Id ]).ToString()));
-                Assert.That(chargingStation1_jsonRequestMessageSent.First().Payload["signatures"]?.       Count(), Is.EqualTo(1));
+                Assert.That(chargingStation1_binaryRequestMessageSent.                                    Count,   Is.EqualTo(1));
+                //Assert.That(chargingStation1_binaryRequestMessageSent.           First().NetworkPath.ToString(),   Is.EqualTo(new NetworkPath([ chargingStation1.Id ]).ToString()));
+                //Assert.That(chargingStation1_binaryRequestMessageSent.First().Payload["signatures"]?.       Count(), Is.EqualTo(1));
 
-                Assert.That(ocppLocalController_jsonRequestMessageReceived.                               Count,   Is.EqualTo(1));
+                Assert.That(ocppLocalController_binaryRequestMessageReceived.                               Count,   Is.EqualTo(1));
                 Assert.That(ocppLocalController_BootNotificationRequestsReceived.                         Count,   Is.EqualTo(1));
                 Assert.That(ocppLocalController_BootNotificationRequestsForwardingDecisions.              Count,   Is.EqualTo(1));
                 Assert.That(ocppLocalController_BootNotificationRequestsSent.                             Count,   Is.EqualTo(1));
-                Assert.That(ocppLocalController_jsonRequestMessageSent.                                   Count,   Is.EqualTo(1));
-                Assert.That(ocppLocalController_jsonRequestMessageSent.        First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController1.Id ]).ToString()));
+                Assert.That(ocppLocalController_binaryRequestMessageSent.                                   Count,   Is.EqualTo(1));
+                Assert.That(ocppLocalController_binaryRequestMessageSent.        First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController1.Id ]).ToString()));
 
-                Assert.That(ocppGateway_jsonRequestMessageReceived.                                       Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_binaryRequestMessageReceived.                                       Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_BootNotificationRequestsReceived.                                 Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_BootNotificationRequestsForwardingDecisions.                      Count,   Is.EqualTo(1));
                 Assert.That(ocppGateway_BootNotificationRequestsSent.                                     Count,   Is.EqualTo(1));
-                Assert.That(ocppGateway_jsonRequestMessageSent.                                           Count,   Is.EqualTo(1));
-                Assert.That(ocppGateway_jsonRequestMessageSent.                First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController1.Id, ocppGateway1.Id]).ToString()));
+                Assert.That(ocppGateway_binaryRequestMessageSent.                                           Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_binaryRequestMessageSent.                First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController1.Id, ocppGateway1.Id]).ToString()));
 
-                Assert.That(csms1_jsonRequestMessageReceived.                                              Count,   Is.EqualTo(1));
-                Assert.That(csms1_jsonRequestMessageReceived.                   First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController1.Id, ocppGateway1.Id]).ToString()));
+                Assert.That(csms1_binaryRequestMessageReceived.                                              Count,   Is.EqualTo(1));
+                Assert.That(csms1_binaryRequestMessageReceived.                   First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ chargingStation1.Id, ocppLocalController1.Id, ocppGateway1.Id]).ToString()));
                 Assert.That(csms1_BootNotificationRequestsReceived.                                        Count,   Is.EqualTo(1));
 
                 // -<response>-------------------------------------------------------------------------------------------------
                 Assert.That(csms1_BootNotificationResponsesSent.                                           Count,   Is.EqualTo(1));
-                Assert.That(csms1_jsonResponseMessagesSent.                                                Count,   Is.EqualTo(1));
-                Assert.That(csms1_jsonResponseMessagesSent.                     First().Destination.Next,           Is.EqualTo(chargingStation1.Id));
-                Assert.That(csms1_jsonResponseMessagesSent.                     First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id ]).ToString()));
+                Assert.That(csms1_binaryResponseMessagesSent.                                                Count,   Is.EqualTo(1));
+                Assert.That(csms1_binaryResponseMessagesSent.                     First().Destination.Next,           Is.EqualTo(chargingStation1.Id));
+                Assert.That(csms1_binaryResponseMessagesSent.                     First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id ]).ToString()));
 
-                Assert.That(ocppGateway_jsonResponseMessagesReceived.                                     Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_binaryResponseMessagesReceived.                                     Count,   Is.EqualTo(1));
                 //Assert.That(ocppGateway_BootNotificationResponsesReceived.                                Count,   Is.EqualTo(1));
                 //Assert.That(ocppGateway_BootNotificationResponsesSent.                                    Count,   Is.EqualTo(1));
-                Assert.That(ocppGateway_jsonResponseMessagesSent.                                         Count,   Is.EqualTo(1));
-                Assert.That(ocppGateway_jsonResponseMessagesSent.              First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id, ocppGateway1.Id ]).ToString()));
+                Assert.That(ocppGateway_binaryResponseMessagesSent.                                         Count,   Is.EqualTo(1));
+                Assert.That(ocppGateway_binaryResponseMessagesSent.              First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id, ocppGateway1.Id ]).ToString()));
 
-                Assert.That(ocppLocalController_jsonResponseMessagesReceived.                             Count,   Is.EqualTo(1));
+                Assert.That(ocppLocalController_binaryResponseMessagesReceived.                             Count,   Is.EqualTo(1));
                 //Assert.That(ocppLocalController_BootNotificationResponsesReceived.                        Count,   Is.EqualTo(1));
                 //Assert.That(ocppLocalController_BootNotificationResponsesSent.                            Count,   Is.EqualTo(1));
-                Assert.That(ocppLocalController_jsonResponseMessagesSent.                                 Count,   Is.EqualTo(1));
-                //Assert.That(ocppLocalController_jsonResponseMessagesSent.      First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id, ocppGateway.Id, ocppLocalController.Id ]).ToString()));
+                Assert.That(ocppLocalController_binaryResponseMessagesSent.                                 Count,   Is.EqualTo(1));
+                //Assert.That(ocppLocalController_binaryResponseMessagesSent.      First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ csms1.Id, ocppGateway.Id, ocppLocalController.Id ]).ToString()));
 
-                Assert.That(chargingStation1_jsonMessageResponseReceived.                                 Count,   Is.EqualTo(1));
+                Assert.That(chargingStation1_binaryMessageResponseReceived.                                 Count,   Is.EqualTo(1));
                 Assert.That(chargingStation1_BootNotificationResponsesReceived.                           Count,   Is.EqualTo(1));
                 Assert.That(chargingStation1_BootNotificationResponsesReceived.First().Signatures.        Count,   Is.EqualTo(1));
                 // Note: The charging stations use "normal" networking and thus have no valid networking information!
-                Assert.That(chargingStation1_jsonMessageResponseReceived.      First().Destination.Next,           Is.EqualTo(chargingStation1.Id));
+                Assert.That(chargingStation1_binaryMessageResponseReceived.      First().Destination.Next,           Is.EqualTo(chargingStation1.Id));
                 //Assert.That(chargingStation1_BootNotificationResponsesReceived.First().DestinationId,              Is.EqualTo(chargingStation1.Id));
-                Assert.That(chargingStation1_jsonMessageResponseReceived.      First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
+                Assert.That(chargingStation1_binaryMessageResponseReceived.      First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
                 //Assert.That(chargingStation1_BootNotificationResponsesReceived.First().NetworkPath.ToString(),     Is.EqualTo(new NetworkPath([ NetworkingNode_Id.CSMS ]).ToString()));
 
             });
@@ -2870,6 +2886,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             #endregion
 
 
+            // Note: Those messages will be sent as fast as possible!
+
             var messageTransferResponse1  = await chargingStation1.SendMessage(
 
                                                       VendorId:            Vendor_Id. GraphDefined,
@@ -2924,7 +2942,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var rounds = 0;
             do
             {
-                await Task.Delay(10);
+                await Task.Delay(100);
                 rounds++;
             } while (csms1_MessageTransferMessagesReceived.Count < 3 && rounds < 1000);
 
@@ -2933,42 +2951,45 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             Assert.Multiple(() => {
 
-                Assert.That(messageTransferResponse1.Result,                                                                        Is.EqualTo(SentMessageResults.Success));
-                Assert.That(messageTransferResponse2.Result,                                                                        Is.EqualTo(SentMessageResults.Success));
-                Assert.That(messageTransferResponse3.Result,                                                                        Is.EqualTo(SentMessageResults.Success));
+                Assert.That(messageTransferResponse1.Result,                                                                      Is.EqualTo(SentMessageResults.Success));
+                Assert.That(messageTransferResponse2.Result,                                                                      Is.EqualTo(SentMessageResults.Success));
+                Assert.That(messageTransferResponse3.Result,                                                                      Is.EqualTo(SentMessageResults.Success));
 
-                Assert.That(chargingStation1_MessageTransferMessagesSent.Count,                                                     Is.EqualTo(3));
-                //Assert.That(chargingStation1_MessageTransferMessagesSent.ElementAt(0).Signatures.Count,                             Is.EqualTo(1));
-                //Assert.That(chargingStation1_MessageTransferMessagesSent.ElementAt(1).Signatures.Count,                             Is.EqualTo(1));
-                //Assert.That(chargingStation1_MessageTransferMessagesSent.ElementAt(2).Signatures.Count,                             Is.EqualTo(1));
-                Assert.That(chargingStation1_jsonSendMessagesSent.Count,                                                            Is.EqualTo(3));
+                Assert.That(chargingStation1_MessageTransferMessagesSent.Count,                                                   Is.EqualTo(3));
+                Assert.That(chargingStation1_MessageTransferMessagesSent.ElementAt(0).Signatures.Count,                           Is.EqualTo(1));
+                Assert.That(chargingStation1_MessageTransferMessagesSent.ElementAt(1).Signatures.Count,                           Is.EqualTo(1));
+                Assert.That(chargingStation1_MessageTransferMessagesSent.ElementAt(2).Signatures.Count,                           Is.EqualTo(1));
+                Assert.That(chargingStation1_jsonSendMessagesSent.Count,                                                          Is.EqualTo(3));
 
-                Assert.That(ocppLocalController_jsonSendMessagesReceived.Count,                                                     Is.EqualTo(3));
-                Assert.That(ocppLocalController_MessageTransferMessagesReceived.Count,                                              Is.EqualTo(3));
-                Assert.That(ocppLocalController_MessageTransferMessagesForwardingDecisions.Count,                                   Is.EqualTo(3));
-                Assert.That(ocppLocalController_MessageTransferMessagesSent.Count,                                                  Is.EqualTo(3));
-                Assert.That(ocppLocalController_jsonSendMessagesSent.Count,                                                         Is.EqualTo(3));
+                Assert.That(ocppLocalController_jsonSendMessagesReceived.Count,                                                   Is.EqualTo(3));
+                Assert.That(ocppLocalController_MessageTransferMessagesReceived.Count,                                            Is.EqualTo(3));
+                Assert.That(ocppLocalController_MessageTransferMessagesForwardingDecisions.Count,                                 Is.EqualTo(3));
+                Assert.That(ocppLocalController_MessageTransferMessagesSent.Count,                                                Is.EqualTo(3));
+                Assert.That(ocppLocalController_jsonSendMessagesSent.Count,                                                       Is.EqualTo(3));
 
-                Assert.That(ocppGateway_jsonSendMessagesReceived.Count,                                                             Is.EqualTo(3));
-                Assert.That(ocppGateway_MessageTransferMessagesReceived.Count,                                                      Is.EqualTo(3));
-                Assert.That(ocppGateway_MessageTransferMessagesForwardingDecisions.Count,                                           Is.EqualTo(3));
-                Assert.That(ocppGateway_MessageTransferMessagesSent.Count,                                                          Is.EqualTo(3));
-                Assert.That(ocppGateway_jsonSendMessagesSent.Count,                                                                 Is.EqualTo(3));
+                Assert.That(ocppGateway_jsonSendMessagesReceived.Count,                                                           Is.EqualTo(3));
+                Assert.That(ocppGateway_MessageTransferMessagesReceived.Count,                                                    Is.EqualTo(3));
+                Assert.That(ocppGateway_MessageTransferMessagesForwardingDecisions.Count,                                         Is.EqualTo(3));
+                Assert.That(ocppGateway_MessageTransferMessagesSent.Count,                                                        Is.EqualTo(3));
+                Assert.That(ocppGateway_jsonSendMessagesSent.Count,                                                               Is.EqualTo(3));
 
-                Assert.That(csms1_jsonSendMessagesReceived.Count,                                                                   Is.EqualTo(3));
-                Assert.That(csms1_MessageTransferMessagesReceived.Count,                                                            Is.EqualTo(3));
+                Assert.That(csms1_jsonSendMessagesReceived.Count,                                                                 Is.EqualTo(3));
+                Assert.That(csms1_MessageTransferMessagesReceived.Count,                                                          Is.EqualTo(3));
 
-                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(0).Data?.Type,                                          Is.EqualTo(JTokenType.String));
-                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(0).Data?.ToString(),                                    Is.EqualTo("TestData"));
-                //Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(0).Signatures.Count,                                    Is.EqualTo(1));
+                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(0).Data?.Type,                                        Is.EqualTo(JTokenType.String));
+                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(0).Data?.ToString(),                                  Is.EqualTo("TestData"));
+                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(0).Signatures.Count,                                  Is.EqualTo(1));
+                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(0).Signatures.ElementAt(0).Status,                    Is.EqualTo(VerificationStatus.ValidSignature));
 
-                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(1).Data?.Type,                                          Is.EqualTo(JTokenType.Object));
-                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(1).Data?.ToString(Newtonsoft.Json.Formatting.None),     Is.EqualTo("{\"test\":\"data\"}"));
-                //Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(1).Signatures.Count,                                    Is.EqualTo(1));
+                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(1).Data?.Type,                                        Is.EqualTo(JTokenType.Object));
+                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(1).Data?.ToString(Newtonsoft.Json.Formatting.None),   Is.EqualTo("{\"test\":\"data\"}"));
+                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(1).Signatures.Count,                                  Is.EqualTo(1));
+                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(1).Signatures.ElementAt(0).Status,                    Is.EqualTo(VerificationStatus.ValidSignature));
 
-                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(2).Data?.Type,                                          Is.EqualTo(JTokenType.Array));
-                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(2).Data?.ToString(Newtonsoft.Json.Formatting.None),     Is.EqualTo("[\"test\",\"data\"]"));
-                //Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(2).Signatures.Count,                                    Is.EqualTo(1));
+                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(2).Data?.Type,                                        Is.EqualTo(JTokenType.Array));
+                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(2).Data?.ToString(Newtonsoft.Json.Formatting.None),   Is.EqualTo("[\"test\",\"data\"]"));
+                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(2).Signatures.Count,                                  Is.EqualTo(1));
+                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(2).Signatures.ElementAt(0).Status,                    Is.EqualTo(VerificationStatus.ValidSignature));
 
             });
 
@@ -3133,6 +3154,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             #endregion
 
 
+            // Note: Those messages will be sent as fast as possible!
+
             var messageTransferResponse1  = await chargingStation1.SendMessage(
 
                                                       Destination:         SourceRouting.CSMS,
@@ -3199,42 +3222,45 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             Assert.Multiple(() => {
 
-                Assert.That(messageTransferResponse1.Result,                                                                        Is.EqualTo(SentMessageResults.Success));
-                Assert.That(messageTransferResponse2.Result,                                                                        Is.EqualTo(SentMessageResults.Success));
-                Assert.That(messageTransferResponse3.Result,                                                                        Is.EqualTo(SentMessageResults.Success));
+                Assert.That(messageTransferResponse1.Result,                                                                      Is.EqualTo(SentMessageResults.Success));
+                Assert.That(messageTransferResponse2.Result,                                                                      Is.EqualTo(SentMessageResults.Success));
+                Assert.That(messageTransferResponse3.Result,                                                                      Is.EqualTo(SentMessageResults.Success));
 
-                Assert.That(chargingStation1_MessageTransferMessagesSent.Count,                                                     Is.EqualTo(3));
-                //Assert.That(chargingStation1_MessageTransferMessagesSent.ElementAt(0).Signatures.Count,                             Is.EqualTo(1));
-                //Assert.That(chargingStation1_MessageTransferMessagesSent.ElementAt(1).Signatures.Count,                             Is.EqualTo(1));
-                //Assert.That(chargingStation1_MessageTransferMessagesSent.ElementAt(2).Signatures.Count,                             Is.EqualTo(1));
-                Assert.That(chargingStation1_jsonSendMessagesSent.Count,                                                            Is.EqualTo(3));
+                Assert.That(chargingStation1_MessageTransferMessagesSent.Count,                                                   Is.EqualTo(3));
+                Assert.That(chargingStation1_MessageTransferMessagesSent.ElementAt(0).Signatures.Count,                           Is.EqualTo(1));
+                Assert.That(chargingStation1_MessageTransferMessagesSent.ElementAt(1).Signatures.Count,                           Is.EqualTo(1));
+                Assert.That(chargingStation1_MessageTransferMessagesSent.ElementAt(2).Signatures.Count,                           Is.EqualTo(1));
+                Assert.That(chargingStation1_jsonSendMessagesSent.Count,                                                          Is.EqualTo(3));
 
-                Assert.That(ocppLocalController_jsonSendMessagesReceived.Count,                                                     Is.EqualTo(3));
-                Assert.That(ocppLocalController_MessageTransferMessagesReceived.Count,                                              Is.EqualTo(3));
-                Assert.That(ocppLocalController_MessageTransferMessagesForwardingDecisions.Count,                                   Is.EqualTo(3));
-                Assert.That(ocppLocalController_MessageTransferMessagesSent.Count,                                                  Is.EqualTo(3));
-                Assert.That(ocppLocalController_jsonSendMessagesSent.Count,                                                         Is.EqualTo(3));
+                Assert.That(ocppLocalController_jsonSendMessagesReceived.Count,                                                   Is.EqualTo(3));
+                Assert.That(ocppLocalController_MessageTransferMessagesReceived.Count,                                            Is.EqualTo(3));
+                Assert.That(ocppLocalController_MessageTransferMessagesForwardingDecisions.Count,                                 Is.EqualTo(3));
+                Assert.That(ocppLocalController_MessageTransferMessagesSent.Count,                                                Is.EqualTo(3));
+                Assert.That(ocppLocalController_jsonSendMessagesSent.Count,                                                       Is.EqualTo(3));
 
-                Assert.That(ocppGateway_jsonSendMessagesReceived.Count,                                                             Is.EqualTo(3));
-                Assert.That(ocppGateway_MessageTransferMessagesReceived.Count,                                                      Is.EqualTo(3));
-                Assert.That(ocppGateway_MessageTransferMessagesForwardingDecisions.Count,                                           Is.EqualTo(3));
-                Assert.That(ocppGateway_MessageTransferMessagesSent.Count,                                                          Is.EqualTo(3));
-                Assert.That(ocppGateway_jsonSendMessagesSent.Count,                                                                 Is.EqualTo(3));
+                Assert.That(ocppGateway_jsonSendMessagesReceived.Count,                                                           Is.EqualTo(3));
+                Assert.That(ocppGateway_MessageTransferMessagesReceived.Count,                                                    Is.EqualTo(3));
+                Assert.That(ocppGateway_MessageTransferMessagesForwardingDecisions.Count,                                         Is.EqualTo(3));
+                Assert.That(ocppGateway_MessageTransferMessagesSent.Count,                                                        Is.EqualTo(3));
+                Assert.That(ocppGateway_jsonSendMessagesSent.Count,                                                               Is.EqualTo(3));
 
-                Assert.That(csms1_jsonSendMessagesReceived.Count,                                                                   Is.EqualTo(3));
-                Assert.That(csms1_MessageTransferMessagesReceived.Count,                                                            Is.EqualTo(3));
+                Assert.That(csms1_jsonSendMessagesReceived.Count,                                                                 Is.EqualTo(3));
+                Assert.That(csms1_MessageTransferMessagesReceived.Count,                                                          Is.EqualTo(3));
 
-                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(0).Data?.Type,                                          Is.EqualTo(JTokenType.String));
-                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(0).Data?.ToString(),                                    Is.EqualTo("TestData"));
-                //Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(0).Signatures.Count,                                    Is.EqualTo(1));
+                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(0).Data?.Type,                                        Is.EqualTo(JTokenType.String));
+                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(0).Data?.ToString(),                                  Is.EqualTo("TestData"));
+                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(0).Signatures.Count,                                  Is.EqualTo(1));
+                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(0).Signatures.ElementAt(0).Status,                    Is.EqualTo(VerificationStatus.ValidSignature));
 
-                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(1).Data?.Type,                                          Is.EqualTo(JTokenType.Object));
-                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(1).Data?.ToString(Newtonsoft.Json.Formatting.None),     Is.EqualTo("{\"test\":\"data\"}"));
-                //Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(1).Signatures.Count,                                    Is.EqualTo(1));
+                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(1).Data?.Type,                                        Is.EqualTo(JTokenType.Object));
+                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(1).Data?.ToString(Newtonsoft.Json.Formatting.None),   Is.EqualTo("{\"test\":\"data\"}"));
+                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(1).Signatures.Count,                                  Is.EqualTo(1));
+                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(1).Signatures.ElementAt(0).Status,                    Is.EqualTo(VerificationStatus.ValidSignature));
 
-                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(2).Data?.Type,                                          Is.EqualTo(JTokenType.Array));
-                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(2).Data?.ToString(Newtonsoft.Json.Formatting.None),     Is.EqualTo("[\"test\",\"data\"]"));
-                //Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(2).Signatures.Count,                                    Is.EqualTo(1));
+                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(2).Data?.Type,                                        Is.EqualTo(JTokenType.Array));
+                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(2).Data?.ToString(Newtonsoft.Json.Formatting.None),   Is.EqualTo("[\"test\",\"data\"]"));
+                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(2).Signatures.Count,                                  Is.EqualTo(1));
+                Assert.That(csms1_MessageTransferMessagesReceived.ElementAt(2).Signatures.ElementAt(0).Status,                    Is.EqualTo(VerificationStatus.ValidSignature));
 
             });
 

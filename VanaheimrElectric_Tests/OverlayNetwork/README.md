@@ -5,7 +5,7 @@ consisting of three Charging Stations, an OCPP Local Controller, an
 Energy Meter at the shared grid connection point, an OCPP Gateway
 and two Charging Station Management Systems.
 
-The HTTP Web Socket connections are initiated in "normal order" from
+The HTTP WebSocket connections are initiated in "normal order" from
 the Charging Stations to the Local Controller, to the Gateway and
 finally to the CSMS.
 

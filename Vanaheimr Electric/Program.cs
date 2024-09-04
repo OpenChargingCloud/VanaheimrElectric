@@ -37,6 +37,7 @@ using cloud.charging.open.protocols.OCPPv2_1.WebSockets;
 using cloud.charging.open.protocols.WWCP;
 using cloud.charging.open.protocols.WWCP.EMP;
 using cloud.charging.open.protocols.WWCP.NetworkingNode;
+using cloud.charging.open.protocols.OCPP.WebSockets;
 
 #endregion
 
@@ -233,7 +234,7 @@ namespace cloud.charging.open.vanaheimr.electric
                                             HTTPServiceName:              "Charging Station Management System #1",
                                             IPAddress:                    null,
                                             TCPPort:                      csms1_wss_tcpPort,
-                                            Description:                  I18NString.Create("Charging Station Management System #1 Web Socket Server"),
+                                            Description:                  I18NString.Create("Charging Station Management System #1 WebSocket Server"),
 
                                             RequireAuthentication:        true,
                                             DisableWebSocketPings:        false,
@@ -470,7 +471,7 @@ namespace cloud.charging.open.vanaheimr.electric
                                             HTTPServiceName:              "Charging Station Management System #2",
                                             IPAddress:                    null,
                                             TCPPort:                      csms2_wss_tcpPort,
-                                            Description:                  I18NString.Create("Charging Station Management System #2 Web Socket Server"),
+                                            Description:                  I18NString.Create("Charging Station Management System #2 WebSocket Server"),
 
                                             RequireAuthentication:        true,
                                             DisableWebSocketPings:        false,
@@ -653,7 +654,7 @@ namespace cloud.charging.open.vanaheimr.electric
                                                    HTTPServiceName:              "OCPP Gateway",
                                                    IPAddress:                    null,
                                                    TCPPort:                      ocppGateway1_wss_tcpPort,
-                                                   Description:                  I18NString.Create("OCPP Gateway Web Socket Server"),
+                                                   Description:                  I18NString.Create("OCPP Gateway WebSocket Server"),
 
                                                    RequireAuthentication:        true,
                                                    DisableWebSocketPings:        false,
@@ -775,7 +776,7 @@ namespace cloud.charging.open.vanaheimr.electric
                                                           HTTPServiceName:              "OCPP Local Controller",
                                                           IPAddress:                    null,
                                                           TCPPort:                      ocppLocalController1_wss_tcpPort,
-                                                          Description:                  I18NString.Create("OCPP Local Controller Web Socket Server"),
+                                                          Description:                  I18NString.Create("OCPP Local Controller WebSocket Server"),
 
                                                           RequireAuthentication:        true,
                                                           DisableWebSocketPings:        false,

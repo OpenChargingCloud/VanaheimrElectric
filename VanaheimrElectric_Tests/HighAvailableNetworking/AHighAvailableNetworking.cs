@@ -33,6 +33,7 @@ using cloud.charging.open.protocols.OCPPv2_1.WebSockets;
 using cloud.charging.open.protocols.WWCP;
 using cloud.charging.open.protocols.WWCP.EMP;
 using cloud.charging.open.protocols.WWCP.NetworkingNode;
+using cloud.charging.open.protocols.OCPP.WebSockets;
 
 #endregion
 
@@ -44,7 +45,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
     /// consisting of a single Charging Stations, three OCPP Local Controllers,
     /// an and a Charging Station Management Systems.
     /// 
-    /// The HTTP Web Socket connections are initiated in "normal order" from
+    /// The HTTP WebSocket connections are initiated in "normal order" from
     /// the Charging Station to the Local Controllers and finally to the CSMS.
     /// 
     /// Between the Charging Station and the Local Controllers the "normal"
@@ -151,7 +152,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                            HTTPServiceName:              null,
                                            IPAddress:                    null,
                                            TCPPort:                      null,
-                                           Description:                  I18NString.Create("Charging Station Management System Web Socket Server"),
+                                           Description:                  I18NString.Create("Charging Station Management System WebSocket Server"),
 
                                            RequireAuthentication:        true,
                                            DisableWebSocketPings:        true,
@@ -444,7 +445,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                             HTTPServiceName:              null,
                                                             IPAddress:                    null,
                                                             TCPPort:                      null,
-                                                            Description:                  I18NString.Create("OCPP Local Controller #1 Web Socket Server"),
+                                                            Description:                  I18NString.Create("OCPP Local Controller #1 WebSocket Server"),
 
                                                             RequireAuthentication:        true,
                                                             DisableWebSocketPings:        false,
@@ -564,7 +565,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                             HTTPServiceName:              null,
                                                             IPAddress:                    null,
                                                             TCPPort:                      null,
-                                                            Description:                  I18NString.Create("OCPP Local Controller #2 Web Socket Server"),
+                                                            Description:                  I18NString.Create("OCPP Local Controller #2 WebSocket Server"),
 
                                                             RequireAuthentication:        true,
                                                             DisableWebSocketPings:        false,
@@ -684,7 +685,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                             HTTPServiceName:              null,
                                                             IPAddress:                    null,
                                                             TCPPort:                      null,
-                                                            Description:                  I18NString.Create("OCPP Local Controller #3 Web Socket Server"),
+                                                            Description:                  I18NString.Create("OCPP Local Controller #3 WebSocket Server"),
 
                                                             RequireAuthentication:        true,
                                                             DisableWebSocketPings:        false,
