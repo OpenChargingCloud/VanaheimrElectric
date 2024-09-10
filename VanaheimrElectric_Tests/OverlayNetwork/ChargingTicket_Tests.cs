@@ -100,16 +100,16 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
 
             var userKeys1                   = new[] {
-                                                  KeyPair.GenerateKeys(CryptoAlgorithm.secp256r1)!,
-                                                  KeyPair.GenerateKeys(CryptoAlgorithm.secp384r1)!,
-                                                  KeyPair.GenerateKeys(CryptoAlgorithm.secp521r1)!
+                                                  ECCKeyPair.GenerateKeys(CryptoAlgorithm.Secp256r1)!,
+                                                  ECCKeyPair.GenerateKeys(CryptoAlgorithm.Secp384r1)!,
+                                                  ECCKeyPair.GenerateKeys(CryptoAlgorithm.Secp521r1)!
                                               };
 
             var userRegistration            = new RegisterEMobilityAccountData(
                                                   Username:                   "John Doe",
                                                   Password:                   "veryS3CUR3!",
                                                   EMailAddress:               SimpleEMailAddress.Parse("john@doe.net"),
-                                                  PublicKeys:                 userKeys1.Select(keys => keys.ToPublicKey()),
+                                                  PublicKeys:                 userKeys1.Select(keyPair => keyPair.ToECCPublicKey()),
                                                   Signatures:                 null,
                                                   AdditionalEMailAddresses:   [ SimpleEMailAddress.Parse("john2@doe.net") ],
                                                   PhoneNumber:                PhoneNumber.Parse("555-12345678-23")
@@ -163,8 +163,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 Assert.That(publicKey3?["value"]?.Value<String>(),          Is.Not.Null);
 
                 Assert.That(publicKey1?["algorithm"]?.Value<String>(),      Is.Null);
-                Assert.That(publicKey2?["algorithm"]?.Value<String>(),      Is.EqualTo(CryptoAlgorithm.secp384r1.ToString()));
-                Assert.That(publicKey3?["algorithm"]?.Value<String>(),      Is.EqualTo(CryptoAlgorithm.secp521r1.ToString()));
+                Assert.That(publicKey2?["algorithm"]?.Value<String>(),      Is.EqualTo(CryptoAlgorithm.Secp384r1.ToString()));
+                Assert.That(publicKey3?["algorithm"]?.Value<String>(),      Is.EqualTo(CryptoAlgorithm.Secp521r1.ToString()));
 
             }
 
@@ -200,8 +200,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                 Assert.That(signature3?["value"]?.Value<String>(),          Is.Not.Null);
 
                 Assert.That(signature1?["algorithm"]?.Value<String>(),      Is.Null);
-                Assert.That(signature2?["algorithm"]?.Value<String>(),      Is.EqualTo(CryptoAlgorithm.secp384r1.ToString()));
-                Assert.That(signature3?["algorithm"]?.Value<String>(),      Is.EqualTo(CryptoAlgorithm.secp521r1.ToString()));
+                Assert.That(signature2?["algorithm"]?.Value<String>(),      Is.EqualTo(CryptoAlgorithm.Secp384r1.ToString()));
+                Assert.That(signature3?["algorithm"]?.Value<String>(),      Is.EqualTo(CryptoAlgorithm.Secp521r1.ToString()));
 
             }
 

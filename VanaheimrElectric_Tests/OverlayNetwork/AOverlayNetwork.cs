@@ -201,7 +201,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                     Id:                      ChargingStationSettings.UserRoles.Admin,
                     Description:             I18NString. Create("The admin user role for charging stations"),
 
-                    KeyPairs:                [ KeyPair.  ParsePrivateKey("ANqBTkO85kZZ44o1jT/Ygxa7JDtVOBUPBtXhtoPYWjgO")! ],
+                    KeyPairs:                [ ECCKeyPair.  ParsePrivateKey("ANqBTkO85kZZ44o1jT/Ygxa7JDtVOBUPBtXhtoPYWjgO")! ],
 
                     //ComponentAccessRights:   null,
 
@@ -220,7 +220,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                     Id:                      ChargingStationSettings.UserRoles.User,
                     Description:             I18NString. Create("The default user role for charging stations"),
 
-                    KeyPairs:                [ KeyPair.  ParsePrivateKey("BtSha5ImqfBiNY53aGrU1cQ5hmQ9CheI79+EKJNKNeQ=")! ],
+                    KeyPairs:                [ ECCKeyPair.  ParsePrivateKey("BtSha5ImqfBiNY53aGrU1cQ5hmQ9CheI79+EKJNKNeQ=")! ],
 
                     //ComponentAccessRights:   null,
 
@@ -237,7 +237,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #region Define signature policy
 
-            csms1_keyPair = KeyPair.GenerateKeys()!;
+            csms1_keyPair = ECCKeyPair.GenerateKeys()!;
 
             csms1.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                            KeyPair:                csms1_keyPair!,
@@ -439,7 +439,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #region Define signature policy
 
-            csms2_keyPair = KeyPair.GenerateKeys()!;
+            csms2_keyPair = ECCKeyPair.GenerateKeys()!;
 
             csms2.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                            KeyPair:                csms2_keyPair!,
@@ -620,7 +620,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #region Define signature policy
 
-            ocppGateway_keyPair = KeyPair.GenerateKeys()!;
+            ocppGateway_keyPair = ECCKeyPair.GenerateKeys()!;
 
             ocppGateway1.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                                  KeyPair:                ocppGateway_keyPair!,
@@ -741,7 +741,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #region Define signature policy
 
-            ocppLocalController_keyPair = KeyPair.GenerateKeys()!;
+            ocppLocalController_keyPair = ECCKeyPair.GenerateKeys()!;
 
             ocppLocalController1.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                                          KeyPair:                ocppLocalController_keyPair!,
@@ -860,7 +860,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #region Define signature policy
 
-            gridEnergyMeter_keyPair = KeyPair.GenerateKeys()!;
+            gridEnergyMeter_keyPair = ECCKeyPair.GenerateKeys()!;
 
             gridEnergyMeter1.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                                      KeyPair:                gridEnergyMeter_keyPair!,
@@ -976,7 +976,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #region Register User Roles
 
-            //var keys = KeyPair.GenerateKeys()!;
+            //var keys = ECCKeyPair.GenerateKeys()!;
 
             // {
             //   "private": "AMMLFGD82B7GFc7QQYNtB/1AaNFBdo/W5TQpAneLbCza",
@@ -998,7 +998,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                     Id:                      UserRole_Id.Vendor,
                     Description:             I18NString. Create("The vendor user role for the charging station"),
-                    KeyPairs:                [ KeyPair.  ParsePublicKey("BEvelX5aAzr77LsrEqlUKAq69XHpLT2I9rPuSflnWGGvM+BAROk9IAUEho5HvO7QyD9j374CcjbUfi6xGp0m9ig=")! ],
+                    KeyPairs:                [ ECCKeyPair.  ParsePublicKey("BEvelX5aAzr77LsrEqlUKAq69XHpLT2I9rPuSflnWGGvM+BAROk9IAUEho5HvO7QyD9j374CcjbUfi6xGp0m9ig=")! ],
 
                     //ComponentAccessRights:   null,
 
@@ -1016,7 +1016,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                     Id:                      UserRole_Id.Admin,
                     Description:             I18NString. Create("The admin user role for the charging station"),
-                    KeyPairs:                [ KeyPair.  ParsePublicKey("BGFDuYqF2x8R4DUb0glpmRDgOpd9+197eQ1jOriP9PaWF013TSU5WedD4YePdEwTXDbdsLPucT8L/cFKTKqCCgQ=")! ],
+                    KeyPairs:                [ ECCKeyPair.  ParsePublicKey("BGFDuYqF2x8R4DUb0glpmRDgOpd9+197eQ1jOriP9PaWF013TSU5WedD4YePdEwTXDbdsLPucT8L/cFKTKqCCgQ=")! ],
 
                     //ComponentAccessRights:   null,
 
@@ -1034,7 +1034,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
                     Id:                      UserRole_Id.Support,
                     Description:             I18NString. Create("The support user role for the charging station"),
-                    KeyPairs:                [ KeyPair.  ParsePublicKey("BHP5kGwkiii3V7YS7XbG1MEAY9UmxTzo8iEBftaBcstf0xy3qLUhdmtL5DPqs5F9k2mvMZDPzhOQXP1UZlrvefY=")! ],
+                    KeyPairs:                [ ECCKeyPair.  ParsePublicKey("BHP5kGwkiii3V7YS7XbG1MEAY9UmxTzo8iEBftaBcstf0xy3qLUhdmtL5DPqs5F9k2mvMZDPzhOQXP1UZlrvefY=")! ],
 
                     //ComponentAccessRights:   null,
 
@@ -1051,7 +1051,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #region Define signature policy
 
-            chargingStation1_keyPair = KeyPair.GenerateKeys()!;
+            chargingStation1_keyPair = ECCKeyPair.GenerateKeys()!;
 
             chargingStation1.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                                       KeyPair:                chargingStation1_keyPair!,
@@ -1321,7 +1321,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #region Define signature policy
 
-            chargingStation2_keyPair = KeyPair.GenerateKeys()!;
+            chargingStation2_keyPair = ECCKeyPair.GenerateKeys()!;
 
             chargingStation2.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                                       KeyPair:                chargingStation2_keyPair!,
@@ -1430,7 +1430,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #region Define signature policy
 
-            chargingStation3_keyPair = KeyPair.GenerateKeys()!;
+            chargingStation3_keyPair = ECCKeyPair.GenerateKeys()!;
 
             chargingStation3.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                                       KeyPair:                chargingStation3_keyPair!,

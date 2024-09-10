@@ -93,61 +93,61 @@ namespace cloud.charging.open.vanaheimr.electric
         #region Data
 
         private static          TestCSMSNode?                csms1;
-        private static readonly IPPort                       csms1_httpAPI_tcpPort                 = IPPort. Parse(5010);
-        private static readonly IPPort                       csms1_wss_tcpPort                     = IPPort. Parse(5011);
+        private static readonly IPPort                       csms1_httpAPI_tcpPort                 = IPPort.    Parse(5010);
+        private static readonly IPPort                       csms1_wss_tcpPort                     = IPPort.    Parse(5011);
         private static          OCPPWebSocketServer?         csms1_OCPPWebSocketServer;
-        private static readonly KeyPair                      csms1_keyPair                         = KeyPair.ParsePrivateKey("dtJJ1dZeOE9caar/kWdcH1EVC4Yu/S+nGbmDNvEBD1E=")!;
+        private static readonly KeyPair                      csms1_keyPair                         = ECCKeyPair.ParsePrivateKey("dtJJ1dZeOE9caar/kWdcH1EVC4Yu/S+nGbmDNvEBD1E=")!;
         private static          RoamingNetwork?              csms1_roamingNetwork;
         private static          IChargingStationOperator?    csms1_cso;
         private static          IEMobilityProvider?          csms1_emp;
         private static          EMobilityServiceProvider?    csms1_remoteEMP;
 
         private static          TestCSMSNode?                csms2;
-        private static readonly IPPort                       csms2_httpAPI_tcpPort                 = IPPort. Parse(5020);
-        private static readonly IPPort                       csms2_wss_tcpPort                     = IPPort. Parse(5021);
+        private static readonly IPPort                       csms2_httpAPI_tcpPort                 = IPPort.    Parse(5020);
+        private static readonly IPPort                       csms2_wss_tcpPort                     = IPPort.    Parse(5021);
         private static          OCPPWebSocketServer?         csms2_OCPPWebSocketServer;
-        private static readonly KeyPair                      csms2_keyPair                         = KeyPair.ParsePrivateKey("Da5Ero3vg9IumqNh+r9TEA7aSHxRccX7eds0VIgLXJs=")!;
+        private static readonly KeyPair                      csms2_keyPair                         = ECCKeyPair.ParsePrivateKey("Da5Ero3vg9IumqNh+r9TEA7aSHxRccX7eds0VIgLXJs=")!;
         private static          RoamingNetwork?              csms2_roamingNetwork;
         private static          IChargingStationOperator?    csms2_cso;
         private static          EMobilityServiceProvider?    csms2_emp;
 
 
         private static          TestGatewayNode?             ocppGateway1;
-        private static readonly IPPort                       ocppGateway1_httpAPI_tcpPort          = IPPort. Parse(6000);
-        private static readonly IPPort                       ocppGateway1_wss_tcpPort              = IPPort. Parse(6001);
+        private static readonly IPPort                       ocppGateway1_httpAPI_tcpPort          = IPPort.    Parse(6000);
+        private static readonly IPPort                       ocppGateway1_wss_tcpPort              = IPPort.    Parse(6001);
         private static          OCPPWebSocketServer?         ocppGateway1_OCPPWebSocketServer;
-        private static readonly KeyPair                      ocppGateway1_keyPair                  = KeyPair.ParsePrivateKey("B2PTBabFjeRCQzgkw1C4DycqrgmWw4ysolqhZTOw4k4=")!;
+        private static readonly KeyPair                      ocppGateway1_keyPair                  = ECCKeyPair.ParsePrivateKey("B2PTBabFjeRCQzgkw1C4DycqrgmWw4ysolqhZTOw4k4=")!;
 
 
         private static          TestLocalControllerNode?     ocppLocalController1;
-        private static readonly IPPort                       ocppLocalController1_httpAPI_tcpPort  = IPPort. Parse(7000);
-        private static readonly IPPort                       ocppLocalController1_wss_tcpPort      = IPPort. Parse(7001);
+        private static readonly IPPort                       ocppLocalController1_httpAPI_tcpPort  = IPPort.    Parse(7000);
+        private static readonly IPPort                       ocppLocalController1_wss_tcpPort      = IPPort.    Parse(7001);
         private static          OCPPWebSocketServer?         ocppLocalController1_OCPPWebSocketServer;
-        private static readonly KeyPair                      ocppLocalController1_keyPair          = KeyPair.ParsePrivateKey("H7k24uNZuvrU4dfsgZBBb0aJHRlGBDLsdGWRMSvTQz4=")!;
+        private static readonly KeyPair                      ocppLocalController1_keyPair          = ECCKeyPair.ParsePrivateKey("H7k24uNZuvrU4dfsgZBBb0aJHRlGBDLsdGWRMSvTQz4=")!;
 
         private static          TestEnergyMeterNode?         gridEnergyMeter1;
-        private static readonly IPPort                       gridEnergyMeter1_httpAPI_tcpPort      = IPPort. Parse(8000);
-        //private static readonly IPPort                       gridEnergyMeter1_tcpPort             = IPPort. Parse(8001);
-        private static readonly KeyPair                      gridEnergyMeter1_keyPair              = KeyPair.ParsePrivateKey("UsDGEskGmd0ErWJIREnp8qBeN3NakOhQkvM+Ma9dsK0=")!;
+        private static readonly IPPort                       gridEnergyMeter1_httpAPI_tcpPort      = IPPort.    Parse(8000);
+        //private static readonly IPPort                       gridEnergyMeter1_tcpPort             = IPPort.    Parse(8001);
+        private static readonly KeyPair                      gridEnergyMeter1_keyPair              = ECCKeyPair.ParsePrivateKey("UsDGEskGmd0ErWJIREnp8qBeN3NakOhQkvM+Ma9dsK0=")!;
 
 
         private static          TestChargingStationNode?     chargingStation1;
-        private static readonly IPPort                       chargingStation1_httpAPI_tcpPort      = IPPort. Parse(9010);
-        //private static readonly IPPort                       chargingStation1_tcpPort             = IPPort. Parse(9011);
-        private static readonly KeyPair                      chargingStation1_keyPair              = KeyPair.ParsePrivateKey("B3T71DARe4dsmqcOcTmqijqcNiSN/4Svsq92ghWute0=")!;
+        private static readonly IPPort                       chargingStation1_httpAPI_tcpPort      = IPPort.    Parse(9010);
+        //private static readonly IPPort                       chargingStation1_tcpPort             = IPPort.    Parse(9011);
+        private static readonly KeyPair                      chargingStation1_keyPair              = ECCKeyPair.ParsePrivateKey("B3T71DARe4dsmqcOcTmqijqcNiSN/4Svsq92ghWute0=")!;
         private static          IChargingPool?               p1;
         private static          IChargingStation?            s1;
         private static          IEVSE?                       e1;
 
         private static          TestChargingStationNode?     chargingStation2;
-        private static readonly IPPort                       chargingStation2_httpAPI_tcpPort      = IPPort. Parse(9020);
-        //private static readonly IPPort                       chargingStation2_tcpPort             = IPPort. Parse(9022);
-        private static readonly KeyPair                      chargingStation2_keyPair              = KeyPair.ParsePrivateKey("V0losL4KyPjTprMfmP8k/v3nLFRHM5RBGeF0AdTrDLQ=")!;
+        private static readonly IPPort                       chargingStation2_httpAPI_tcpPort      = IPPort.    Parse(9020);
+        //private static readonly IPPort                       chargingStation2_tcpPort             = IPPort.    Parse(9022);
+        private static readonly KeyPair                      chargingStation2_keyPair              = ECCKeyPair.ParsePrivateKey("V0losL4KyPjTprMfmP8k/v3nLFRHM5RBGeF0AdTrDLQ=")!;
 
         private static          TestChargingStationNode?     chargingStation3;
-        private static readonly IPPort                       chargingStation3_httpAPI_tcpPort      = IPPort. Parse(9030);
-        //private static readonly IPPort                       chargingStation3_tcpPort             = IPPort. Parse(9033);
-        private static readonly KeyPair                      chargingStation3_keyPair              = KeyPair.ParsePrivateKey("AJJzOpCMYy5KCPk0uPFmxBVJUNXmK3f1Twnvgnxvts/F")!;
+        private static readonly IPPort                       chargingStation3_httpAPI_tcpPort      = IPPort.    Parse(9030);
+        //private static readonly IPPort                       chargingStation3_tcpPort             = IPPort.    Parse(9033);
+        private static readonly KeyPair                      chargingStation3_keyPair              = ECCKeyPair.ParsePrivateKey("AJJzOpCMYy5KCPk0uPFmxBVJUNXmK3f1Twnvgnxvts/F")!;
 
         private static          DNSClient?                   DNSClient;
 
@@ -267,7 +267,7 @@ namespace cloud.charging.open.vanaheimr.electric
                     Id:                      UserRole_Id.Parse ("admin"),
                     Description:             I18NString. Create("The admin user role for charging stations"),
 
-                    KeyPairs:                [ KeyPair. ParsePrivateKey("ANqBTkO85kZZ44o1jT/Ygxa7JDtVOBUPBtXhtoPYWjgO")! ],
+                    KeyPairs:                [ ECCKeyPair. ParsePrivateKey("ANqBTkO85kZZ44o1jT/Ygxa7JDtVOBUPBtXhtoPYWjgO")! ],
 
                     //ComponentAccessRights:   null,
 
@@ -286,7 +286,7 @@ namespace cloud.charging.open.vanaheimr.electric
                     Id:                      UserRole_Id.Parse ("user"),
                     Description:             I18NString. Create("The default user role for charging stations"),
 
-                    KeyPairs:                [ KeyPair. ParsePrivateKey("BtSha5ImqfBiNY53aGrU1cQ5hmQ9CheI79+EKJNKNeQ=")! ],
+                    KeyPairs:                [ ECCKeyPair. ParsePrivateKey("BtSha5ImqfBiNY53aGrU1cQ5hmQ9CheI79+EKJNKNeQ=")! ],
 
                     //ComponentAccessRights:   null,
 

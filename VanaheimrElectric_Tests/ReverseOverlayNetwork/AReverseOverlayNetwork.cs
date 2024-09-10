@@ -408,7 +408,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.ReverseOverlayNetwork
 
             #region Define signature policy
 
-            ocppEnergyMeter_keyPair = KeyPair.GenerateKeys()!;
+            ocppEnergyMeter_keyPair = ECCKeyPair.GenerateKeys()!;
 
             ocppEnergyMeter.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                                      KeyPair:                ocppEnergyMeter_keyPair!,
