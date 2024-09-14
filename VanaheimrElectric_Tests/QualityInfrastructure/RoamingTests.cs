@@ -318,7 +318,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                 ],
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
-                                          InitialStatus:        EVSEStatusTypes.Available,
+                                          InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
                                                                 }
@@ -372,7 +372,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                 ],
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
-                                          InitialStatus:        EVSEStatusTypes.Available,
+                                          InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
                                                                 }
@@ -405,7 +405,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                 ],
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
-                                          InitialStatus:        EVSEStatusTypes.Available,
+                                          InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
                                                                 }
@@ -438,7 +438,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                 ],
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
-                                          InitialStatus:        EVSEStatusTypes.Available,
+                                          InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
                                                                 }
@@ -720,7 +720,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                 ],
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
-                                          InitialStatus:        EVSEStatusTypes.Available,
+                                          InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
                                                                 }
@@ -753,7 +753,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                 ],
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
-                                          InitialStatus:        EVSEStatusTypes.Available,
+                                          InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
                                                                 }
@@ -786,7 +786,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                 ],
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
-                                          InitialStatus:        EVSEStatusTypes.Available,
+                                          InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
                                                                 }
@@ -819,7 +819,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                 ],
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
-                                          InitialStatus:        EVSEStatusTypes.Available,
+                                          InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
                                                                 }
@@ -1328,7 +1328,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                 ],
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
-                                          InitialStatus:        EVSEStatusTypes.Available,
+                                          InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
                                                                 }
@@ -1361,7 +1361,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                 ],
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
-                                          InitialStatus:        EVSEStatusTypes.Available,
+                                          InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
                                                                 }
@@ -1394,7 +1394,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                 ],
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
-                                          InitialStatus:        EVSEStatusTypes.Available,
+                                          InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
                                                                 }
@@ -1427,7 +1427,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                 ],
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
-                                          InitialStatus:        EVSEStatusTypes.Available,
+                                          InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
                                                                 }
@@ -1560,7 +1560,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
 
 
-                evse1.SetStatus(EVSEStatusTypes.Charging);
+                evse1.SetStatus(EVSEStatusType.Charging);
 
 
                 //ToDo: There seems to be a timing issue!
@@ -1570,7 +1570,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                 ClassicAssert.AreEqual(3, updatedEVSEStatus.    Count);
                 ClassicAssert.AreEqual(2, updatedOCPIEVSEStatus.Count);
 
-                ClassicAssert.AreEqual(EVSEStatusTypes.Charging,  graphDefinedCSO.GetEVSEById(evse1!.Id).Status.Value);
+                ClassicAssert.AreEqual(EVSEStatusType.Charging,  graphDefinedCSO.GetEVSEById(evse1!.Id).Status.Value);
 
                 {
                     if (evse1_UId.HasValue &&
@@ -1793,7 +1793,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                           Description:          I18NString.Create(Languages.en, "GraphDefined EVSE for tests #1A1"),
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
-                                          InitialStatus:        EVSEStatusTypes.Available,
+                                          InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
                                                                 }
@@ -1816,7 +1816,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                           Description:          I18NString.Create(Languages.en, "GraphDefined EVSE for tests #1A2"),
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
-                                          InitialStatus:        EVSEStatusTypes.Available,
+                                          InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
                                                                 }
@@ -1839,7 +1839,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                           Description:          I18NString.Create(Languages.en, "GraphDefined EVSE for tests #1B1"),
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
-                                          InitialStatus:        EVSEStatusTypes.Available,
+                                          InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
                                                                 }
@@ -1862,7 +1862,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                           Description:          I18NString.Create(Languages.en, "GraphDefined EVSE for tests #2A1"),
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
-                                          InitialStatus:        EVSEStatusTypes.Available,
+                                          InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
                                                                 }
@@ -2054,7 +2054,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                           Description:          I18NString.Create(Languages.en, "GraphDefined EVSE for tests #1A1"),
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
-                                          InitialStatus:        EVSEStatusTypes.Available,
+                                          InitialStatus:        EVSEStatusType.Available,
 
                                           ChargingConnectors:   [
                                                                     new ChargingConnector(
@@ -2274,7 +2274,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                           Description:          I18NString.Create(Languages.en, "GraphDefined EVSE for tests #1A1"),
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
-                                          InitialStatus:        EVSEStatusTypes.Available,
+                                          InitialStatus:        EVSEStatusType.Available,
 
                                           ChargingConnectors:   [
                                                                     new ChargingConnector(
@@ -2572,7 +2572,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                           Description:          I18NString.Create(Languages.en, "GraphDefined EVSE for tests #1A1"),
 
                                           InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
-                                          InitialStatus:        EVSEStatusTypes.Available,
+                                          InitialStatus:        EVSEStatusType.Available,
 
                                           ChargingConnectors:   [
                                                                     new ChargingConnector(

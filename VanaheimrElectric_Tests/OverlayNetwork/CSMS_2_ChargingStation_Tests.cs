@@ -22,14 +22,15 @@ using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
 using org.GraphDefined.Vanaheimr.Illias;
+using org.GraphDefined.Vanaheimr.Hermod;
+
+using cloud.charging.open.protocols.WWCP;
+using cloud.charging.open.protocols.WWCP.NetworkingNode;
 
 using cloud.charging.open.protocols.OCPPv2_1;
 using cloud.charging.open.protocols.OCPPv2_1.CS;
 using cloud.charging.open.protocols.OCPPv2_1.CSMS;
 using cloud.charging.open.protocols.OCPPv2_1.NetworkingNode;
-using cloud.charging.open.utils.QRCodes.TOTP;
-using cloud.charging.open.protocols.WWCP.NetworkingNode;
-using cloud.charging.open.protocols.WWCP;
 
 #endregion
 
@@ -799,7 +800,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             #endregion
 
             var evse               = chargingStation1.EVSEs.First()!;
-            var expectedTOTPURLs   = QRCodeTOTPGenerator.GenerateURLs(qrCodeURLTemplate, sharedSecret);
+            var expectedTOTPURLs   = TOTPGenerator.GenerateURLs(qrCodeURLTemplate, sharedSecret);
             var runs               = 0;
 
             do
