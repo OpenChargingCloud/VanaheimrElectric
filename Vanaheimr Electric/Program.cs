@@ -25,6 +25,10 @@ using org.GraphDefined.Vanaheimr.Hermod.DNS;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 
 using cloud.charging.open.protocols.OCPP;
+using cloud.charging.open.protocols.OCPP.WebSockets;
+
+using cloud.charging.open.protocols.OCPPv1_6;
+
 using cloud.charging.open.protocols.OCPPv2_1;
 using cloud.charging.open.protocols.OCPPv2_1.CS;
 using cloud.charging.open.protocols.OCPPv2_1.CSMS;
@@ -37,7 +41,6 @@ using cloud.charging.open.protocols.OCPPv2_1.WebSockets;
 using cloud.charging.open.protocols.WWCP;
 using cloud.charging.open.protocols.WWCP.EMP;
 using cloud.charging.open.protocols.WWCP.NetworkingNode;
-using cloud.charging.open.protocols.OCPP.WebSockets;
 
 #endregion
 
@@ -148,6 +151,10 @@ namespace cloud.charging.open.vanaheimr.electric
         private static readonly IPPort                       chargingStation3_httpAPI_tcpPort      = IPPort.    Parse(9030);
         //private static readonly IPPort                       chargingStation3_tcpPort             = IPPort.    Parse(9033);
         private static readonly KeyPair                      chargingStation3_keyPair              = ECCKeyPair.ParsePrivateKey("AJJzOpCMYy5KCPk0uPFmxBVJUNXmK3f1Twnvgnxvts/F")!;
+
+
+
+        private static          TestChargePointNode?         chargePoint1;
 
         private static          DNSClient?                   DNSClient;
 
@@ -364,7 +371,7 @@ namespace cloud.charging.open.vanaheimr.electric
                         => new AuthorizeResponse(
                                Request:                 authorizeRequest,
                                IdTokenInfo:             new IdTokenInfo(
-                                                            Status:                AuthorizationStatus.Accepted,
+                                                            Status:                protocols.OCPPv2_1.AuthorizationStatus.Accepted,
                                                             ChargingPriority:      null,
                                                             CacheExpiryDateTime:   null,
                                                             ValidEVSEIds:          null,
@@ -397,7 +404,7 @@ namespace cloud.charging.open.vanaheimr.electric
                     _ => new AuthorizeResponse(
                              Request:                   authorizeRequest,
                              IdTokenInfo:               new IdTokenInfo(
-                                                            AuthorizationStatus.Invalid
+                                                            protocols.OCPPv2_1.AuthorizationStatus.Invalid
                                                         ),
                              CertificateStatus:         null,
                              AllowedEnergyTransfer:     null,
