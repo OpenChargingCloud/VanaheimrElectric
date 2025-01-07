@@ -1,12 +1,12 @@
 ﻿/*
- * Copyright (c) 2015-2024 GraphDefined GmbH
+ * Copyright (c) 2015-2025 GraphDefined GmbH <achim.friedland@graphdefined.com>
  * This file is part of WWCP Vanaheimr Electric <https://github.com/OpenChargingCloud/VanaheimrElectric>
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Affero GPL license, Version 3.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.gnu.org/licenses/agpl.html
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -220,18 +220,17 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                 var addChargingStationResult1 = await chargingPool1!.AddChargingStation(
 
-                                                    Id: ChargingStation_Id.Parse("DE*GEF*STATION*1*A"),
-                                                    Name: I18NString.Create(Languages.en, "Test station #1A"),
-                                                    Description: I18NString.Create(Languages.en, "GraphDefined charging station for tests #1A"),
+                                                    Id:                  WWCP.ChargingStation_Id.Parse("DE*GEF*STATION*1*A"),
+                                                    Name:                I18NString.Create(Languages.en, "Test station #1A"),
+                                                    Description:         I18NString.Create(Languages.en, "GraphDefined charging station for tests #1A"),
 
-                                                    GeoLocation: GeoCoordinate.Parse(50.82, 11.52),
+                                                    GeoLocation:         GeoCoordinate.Parse(50.82, 11.52),
 
-                                                    InitialAdminStatus: ChargingStationAdminStatusTypes.Operational,
-                                                    InitialStatus: ChargingStationStatusTypes.Available,
+                                                    InitialAdminStatus:  ChargingStationAdminStatusTypes.Operational,
+                                                    InitialStatus:       ChargingStationStatusTypes.Available,
 
-                                                    Configurator: chargingStation =>
-                                                    {
-                                                    }
+                                                    Configurator:        chargingStation => {
+                                                                         }
 
                                                 );
 
@@ -247,18 +246,17 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                 var addChargingStationResult2 = await chargingPool1!.AddChargingStation(
 
-                                                    Id: ChargingStation_Id.Parse("DE*GEF*STATION*1*B"),
-                                                    Name: I18NString.Create(Languages.en, "Test station #1B"),
-                                                    Description: I18NString.Create(Languages.en, "GraphDefined charging station for tests #1B"),
+                                                    Id:                  WWCP.ChargingStation_Id.Parse("DE*GEF*STATION*1*B"),
+                                                    Name:                I18NString.Create(Languages.en, "Test station #1B"),
+                                                    Description:         I18NString.Create(Languages.en, "GraphDefined charging station for tests #1B"),
 
-                                                    GeoLocation: GeoCoordinate.Parse(50.82, 11.52),
+                                                    GeoLocation:         GeoCoordinate.Parse(50.82, 11.52),
 
-                                                    InitialAdminStatus: ChargingStationAdminStatusTypes.Operational,
-                                                    InitialStatus: ChargingStationStatusTypes.Available,
+                                                    InitialAdminStatus:  ChargingStationAdminStatusTypes.Operational,
+                                                    InitialStatus:       ChargingStationStatusTypes.Available,
 
-                                                    Configurator: chargingStation =>
-                                                    {
-                                                    }
+                                                    Configurator:        chargingStation => {
+                                                                         }
 
                                                 );
 
@@ -274,18 +272,17 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                 var addChargingStationResult3 = await chargingPool2!.AddChargingStation(
 
-                                                    Id: ChargingStation_Id.Parse("DE*GEF*STATION*2*A"),
-                                                    Name: I18NString.Create(Languages.en, "Test station #2A"),
-                                                    Description: I18NString.Create(Languages.en, "GraphDefined charging station for tests #2A"),
+                                                    Id:                  WWCP.ChargingStation_Id.Parse("DE*GEF*STATION*2*A"),
+                                                    Name:                I18NString.Create(Languages.en, "Test station #2A"),
+                                                    Description:         I18NString.Create(Languages.en, "GraphDefined charging station for tests #2A"),
 
-                                                    GeoLocation: GeoCoordinate.Parse(50.82, 11.52),
+                                                    GeoLocation:         GeoCoordinate.Parse(50.82, 11.52),
 
-                                                    InitialAdminStatus: ChargingStationAdminStatusTypes.Operational,
-                                                    InitialStatus: ChargingStationStatusTypes.Available,
+                                                    InitialAdminStatus:  ChargingStationAdminStatusTypes.Operational,
+                                                    InitialStatus:       ChargingStationStatusTypes.Available,
 
-                                                    Configurator: chargingStation =>
-                                                    {
-                                                    }
+                                                    Configurator:        chargingStation => {
+                                                                         }
 
                                                 );
 
@@ -629,7 +626,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                 var addChargingStationResult1 = await chargingPool1!.AddChargingStation(
 
-                                                    Id:                   ChargingStation_Id.Parse("DE*GEF*STATION*1*A"),
+                                                    Id:                   WWCP.ChargingStation_Id.Parse("DE*GEF*STATION*1*A"),
                                                     Name:                 I18NString.Create(Languages.en, "Test station #1A"),
                                                     Description:          I18NString.Create(Languages.en, "GraphDefined charging station for tests #1A"),
 
@@ -654,7 +651,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                 var addChargingStationResult2 = await chargingPool1!.AddChargingStation(
 
-                                                    Id:                   ChargingStation_Id.Parse("DE*GEF*STATION*1*B"),
+                                                    Id:                   WWCP.ChargingStation_Id.Parse("DE*GEF*STATION*1*B"),
                                                     Name:                 I18NString.Create(Languages.en, "Test station #1B"),
                                                     Description:          I18NString.Create(Languages.en, "GraphDefined charging station for tests #1B"),
 
@@ -679,7 +676,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                 var addChargingStationResult3 = await chargingPool2!.AddChargingStation(
 
-                                                    Id:                   ChargingStation_Id.Parse("DE*GEF*STATION*2*A"),
+                                                    Id:                   WWCP.ChargingStation_Id.Parse("DE*GEF*STATION*2*A"),
                                                     Name:                 I18NString.Create(Languages.en, "Test station #2A"),
                                                     Description:          I18NString.Create(Languages.en, "GraphDefined charging station for tests #2A"),
 
@@ -874,7 +871,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                 #region Update Add DE*GEF*POOL2, DE*GEF*STATION*2*A, DE*GEF*POOL2
 
                 var updatedPoolProperties     = new List<PropertyUpdateInfo<ChargingPool_Id>>();
-                var updatedStationProperties  = new List<PropertyUpdateInfo<ChargingStation_Id>>();
+                var updatedStationProperties  = new List<PropertyUpdateInfo<WWCP.ChargingStation_Id>>();
                 var updatedEVSEProperties     = new List<PropertyUpdateInfo<WWCP.EVSE_Id>>();
 
                 #region Subscribe charging pool events
@@ -943,7 +940,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                         oldValue,
                                                         dataSource) => {
 
-                    updatedStationProperties.Add(new PropertyUpdateInfo<ChargingStation_Id>((chargingStation as IChargingStation)!.Id, propertyName, newValue, oldValue, dataSource));
+                    updatedStationProperties.Add(new PropertyUpdateInfo<WWCP.ChargingStation_Id>((chargingStation as IChargingStation)!.Id, propertyName, newValue, oldValue, dataSource));
                     return Task.CompletedTask;
 
                 };
@@ -956,7 +953,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                     oldValue,
                                                     dataSource) => {
 
-                    updatedStationProperties.Add(new PropertyUpdateInfo<ChargingStation_Id>(chargingStation.Id, propertyName, newValue, oldValue, dataSource));
+                    updatedStationProperties.Add(new PropertyUpdateInfo<WWCP.ChargingStation_Id>(chargingStation.Id, propertyName, newValue, oldValue, dataSource));
                     return Task.CompletedTask;
 
                 };
@@ -969,7 +966,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                  oldValue,
                                                                  dataSource) => {
 
-                    updatedStationProperties.Add(new PropertyUpdateInfo<ChargingStation_Id>(chargingStation.Id, propertyName, newValue, oldValue, dataSource));
+                    updatedStationProperties.Add(new PropertyUpdateInfo<WWCP.ChargingStation_Id>(chargingStation.Id, propertyName, newValue, oldValue, dataSource));
                     return Task.CompletedTask;
 
                 };
@@ -982,7 +979,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                    oldValue,
                                                                    dataSource) => {
 
-                    updatedStationProperties.Add(new PropertyUpdateInfo<ChargingStation_Id>(chargingStation.Id, propertyName, newValue, oldValue, dataSource));
+                    updatedStationProperties.Add(new PropertyUpdateInfo<WWCP.ChargingStation_Id>(chargingStation.Id, propertyName, newValue, oldValue, dataSource));
                     return Task.CompletedTask;
 
                 };
@@ -1237,7 +1234,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                 var addChargingStationResult1 = await chargingPool1!.AddChargingStation(
 
-                                                    Id:                   ChargingStation_Id.Parse("DE*GEF*STATION*1*A"),
+                                                    Id:                   WWCP.ChargingStation_Id.Parse("DE*GEF*STATION*1*A"),
                                                     Name:                 I18NString.Create(Languages.en, "Test station #1A"),
                                                     Description:          I18NString.Create(Languages.en, "GraphDefined charging station for tests #1A"),
 
@@ -1262,7 +1259,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                 var addChargingStationResult2 = await chargingPool1!.AddChargingStation(
 
-                                                    Id:                   ChargingStation_Id.Parse("DE*GEF*STATION*1*B"),
+                                                    Id:                   WWCP.ChargingStation_Id.Parse("DE*GEF*STATION*1*B"),
                                                     Name:                 I18NString.Create(Languages.en, "Test station #1B"),
                                                     Description:          I18NString.Create(Languages.en, "GraphDefined charging station for tests #1B"),
 
@@ -1287,7 +1284,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                 var addChargingStationResult3 = await chargingPool2!.AddChargingStation(
 
-                                                    Id:                   ChargingStation_Id.Parse("DE*GEF*STATION*2*A"),
+                                                    Id:                   WWCP.ChargingStation_Id.Parse("DE*GEF*STATION*2*A"),
                                                     Name:                 I18NString.Create(Languages.en, "Test station #2A"),
                                                     Description:          I18NString.Create(Languages.en, "GraphDefined charging station for tests #2A"),
 
@@ -1712,7 +1709,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                 var addChargingStationResult1 = await chargingPool1!.AddChargingStation(
 
-                                                    Id:                   ChargingStation_Id.Parse("DE*GEF*STATION*1*A"),
+                                                    Id:                   WWCP.ChargingStation_Id.Parse("DE*GEF*STATION*1*A"),
                                                     Name:                 I18NString.Create(Languages.en, "Test station #1A"),
                                                     Description:          I18NString.Create(Languages.en, "GraphDefined charging station for tests #1A"),
 
@@ -1737,7 +1734,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                 var addChargingStationResult2 = await chargingPool1!.AddChargingStation(
 
-                                                    Id:                   ChargingStation_Id.Parse("DE*GEF*STATION*1*B"),
+                                                    Id:                   WWCP.ChargingStation_Id.Parse("DE*GEF*STATION*1*B"),
                                                     Name:                 I18NString.Create(Languages.en, "Test station #1B"),
                                                     Description:          I18NString.Create(Languages.en, "GraphDefined charging station for tests #1B"),
 
@@ -1762,7 +1759,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                 var addChargingStationResult3 = await chargingPool2!.AddChargingStation(
 
-                                                    Id:                   ChargingStation_Id.Parse("DE*GEF*STATION*2*A"),
+                                                    Id:                   WWCP.ChargingStation_Id.Parse("DE*GEF*STATION*2*A"),
                                                     Name:                 I18NString.Create(Languages.en, "Test station #2A"),
                                                     Description:          I18NString.Create(Languages.en, "GraphDefined charging station for tests #2A"),
 
@@ -2024,7 +2021,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                 var addChargingStationResult1 = await chargingPool1!.AddChargingStation(
 
-                                                    Id:                   ChargingStation_Id.Parse("DE*GEF*STATION*1*A"),
+                                                    Id:                   WWCP.ChargingStation_Id.Parse("DE*GEF*STATION*1*A"),
                                                     Name:                 I18NString.Create(Languages.en, "Test station #1A"),
                                                     Description:          I18NString.Create(Languages.en, "GraphDefined charging station for tests #1A"),
 
@@ -2244,7 +2241,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                 var addChargingStationResult1 = await chargingPool1!.AddChargingStation(
 
-                                                    Id:                   ChargingStation_Id.Parse("DE*GEF*STATION*1*A"),
+                                                    Id:                   WWCP.ChargingStation_Id.Parse("DE*GEF*STATION*1*A"),
                                                     Name:                 I18NString.Create(Languages.en, "Test station #1A"),
                                                     Description:          I18NString.Create(Languages.en, "GraphDefined charging station for tests #1A"),
 
@@ -2542,7 +2539,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
                 var addChargingStationResult1 = await chargingPool1!.AddChargingStation(
 
-                                                    Id:                   ChargingStation_Id.Parse("DE*GEF*STATION*1*A"),
+                                                    Id:                   WWCP.ChargingStation_Id.Parse("DE*GEF*STATION*1*A"),
                                                     Name:                 I18NString.Create(Languages.en, "Test station #1A"),
                                                     Description:          I18NString.Create(Languages.en, "GraphDefined charging station for tests #1A"),
 

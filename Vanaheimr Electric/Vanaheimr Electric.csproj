@@ -2,19 +2,25 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>Vanaheimr_Electric</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BouncyCastle.Cryptography" Version="2.4.0" />
+    <PackageReference Include="BouncyCastle.Cryptography" Version="2.5.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\libs\WWCP_Core\WWCP_OverlayNetworking2\WWCP_OverlayNetworking2.csproj" />
     <ProjectReference Include="..\libs\WWCP_EMP\WWCP_EMP\WWCP_EMP.csproj" />
+    <ProjectReference Include="..\libs\WWCP_OCPI\WWCP_OCPIv2.3.0\WWCP_OCPIv2.3.0.csproj" />
+    <ProjectReference Include="..\libs\WWCP_OCPI\WWCP_OCPIv2.3.0_Adapter\WWCP_OCPIv2.3.0_Adapter.csproj" />
+    <ProjectReference Include="..\libs\WWCP_OCPI\WWCP_OCPIv2.3.0_WebAPI\WWCP_OCPIv2.3.0_WebAPI.csproj" />
+    <ProjectReference Include="..\libs\WWCP_OCPI\WWCP_OCPIv3.0\WWCP_OCPIv3.0.csproj" />
+    <ProjectReference Include="..\libs\WWCP_OCPI\WWCP_OCPIv3.0_Adapter\WWCP_OCPIv3.0_Adapter.csproj" />
+    <ProjectReference Include="..\libs\WWCP_OCPI\WWCP_OCPIv3.0_WebAPI\WWCP_OCPIv3.0_WebAPI.csproj" />
     <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv1.6\WWCP_OCPPv1.6.csproj" />
     <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv1.6_Adapter\WWCP_OCPPv1.6_Adapter.csproj" />
     <ProjectReference Include="..\libs\WWCP_OCPP\WWCP_OCPPv1.6_CentralSystem\WWCP_OCPPv1.6_CentralSystem.csproj" />

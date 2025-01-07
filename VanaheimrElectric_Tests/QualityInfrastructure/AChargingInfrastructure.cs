@@ -1,12 +1,12 @@
-﻿﻿/*
- * Copyright (c) 2015-2024 GraphDefined GmbH
- * This file is part of WWCP OCPI <https://github.com/OpenChargingCloud/WWCP_OCPI>
+﻿/*
+ * Copyright (c) 2015-2025 GraphDefined GmbH <achim.friedland@graphdefined.com>
+ * This file is part of WWCP Vanaheimr Electric <https://github.com/OpenChargingCloud/VanaheimrElectric>
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Affero GPL license, Version 3.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.gnu.org/licenses/agpl.html
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -786,14 +786,54 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             #endregion
 
-            #region OCPI v2.1
+            #region OCPI
 
             cpoVersionsAPIURL = URL.Parse($"http://127.0.0.1:{GraphDefinedCSO_Node1_HTTPPort}/ocpi/v2.1/versions");
 
+            var ocpiBaseAPI = new CommonAPIBase(
+
+                                  OurBaseURL:                URL.Parse($"http://127.0.0.1:{GraphDefinedCSO_Node1_HTTPPort}/ocpi/v2.1"),
+                                  OurVersionsURL:            cpoVersionsAPIURL.Value,
+                                  HTTPServer:                GraphDefinedCSO_Node1.DefaultHTTPAPI!.HTTPServer,
+
+                                  AdditionalURLPathPrefix:   null,
+                                  //KeepRemovedEVSEs:          null,
+                                  LocationsAsOpenData:       true,
+                                  AllowDowngrades:           null,
+                                  Disable_RootServices:      false,
+
+                                  HTTPHostname:              null,
+                                  ExternalDNSName:           null,
+                                  HTTPServiceName:           null,
+                                  BasePath:                  null,
+
+                                  URLPathPrefix:             HTTPPath.Parse("/ocpi/v2.1"),
+                                  APIVersionHashes:          null,
+
+                                  DisableMaintenanceTasks:   null,
+                                  MaintenanceInitialDelay:   null,
+                                  MaintenanceEvery:          null,
+
+                                  DisableWardenTasks:        null,
+                                  WardenInitialDelay:        null,
+                                  WardenCheckEvery:          null,
+
+                                  IsDevelopment:             null,
+                                  DevelopmentServers:        null,
+                                  DisableLogging:            null,
+                                  LoggingContext:            "CPOCommonAPIBase",
+                                  LoggingPath:               null,
+                                  LogfileName:               $"GraphDefined_OCPI{protocols.OCPIv2_1_1.Version.String}_CSO.log",
+                                  LogfileCreator:            null
+
+                              );
+
+            #endregion
+
+            #region OCPI v2.1
+
             cpoCommonAPI         = new CommonAPI(
 
-                                       OurBaseURL:                          URL.Parse($"http://127.0.0.1:{GraphDefinedCSO_Node1_HTTPPort}/ocpi/v2.1"),
-                                       OurVersionsURL:                      cpoVersionsAPIURL.Value,
                                        OurBusinessDetails:                  new BusinessDetails(
                                                                                 "GraphDefined CSO OCPI v2.1 Services",
                                                                                 URL.Parse("https://www.graphdefined.com/cso")
@@ -802,7 +842,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                        OurPartyId:                          Party_Id.   Parse("GEF"),
                                        OurRole:                             Roles.      CPO,
 
-                                       HTTPServer:                          GraphDefinedCSO_Node1.DefaultHTTPAPI!.HTTPServer,
+                                       BaseAPI:                             ocpiBaseAPI,
 
                                        AdditionalURLPathPrefix:             null,
                                        KeepRemovedEVSEs:                    null,
@@ -906,14 +946,54 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             #endregion
 
-            #region OCPI v2.1
+            #region OCPI
 
-            emsp1VersionsAPIURL  = URL.Parse($"http://127.0.0.1:{GraphDefinedEMP_Node1_HTTPPort}/ocpi/v2.1/versions");
+            emsp1VersionsAPIURL = URL.Parse($"http://127.0.0.1:{GraphDefinedEMP_Node1_HTTPPort}/ocpi/v2.1/versions");
+
+            var ocpiBaseAPI2 = new CommonAPIBase(
+
+                                  OurBaseURL:                URL.Parse($"http://127.0.0.1:{GraphDefinedEMP_Node1_HTTPPort}/ocpi/v2.1"),
+                                  OurVersionsURL:            emsp1VersionsAPIURL.Value,
+                                  HTTPServer:                GraphDefinedEMP_Node1.DefaultHTTPAPI!.HTTPServer,
+
+                                  AdditionalURLPathPrefix:   null,
+                                  //KeepRemovedEVSEs:          null,
+                                  LocationsAsOpenData:       true,
+                                  AllowDowngrades:           null,
+                                  Disable_RootServices:      false,
+
+                                  HTTPHostname:              null,
+                                  ExternalDNSName:           null,
+                                  HTTPServiceName:           null,
+                                  BasePath:                  null,
+
+                                  URLPathPrefix:             HTTPPath.Parse("/ocpi/v2.1"),
+                                  APIVersionHashes:          null,
+
+                                  DisableMaintenanceTasks:   null,
+                                  MaintenanceInitialDelay:   null,
+                                  MaintenanceEvery:          null,
+
+                                  DisableWardenTasks:        null,
+                                  WardenInitialDelay:        null,
+                                  WardenCheckEvery:          null,
+
+                                  IsDevelopment:             null,
+                                  DevelopmentServers:        null,
+                                  DisableLogging:            null,
+                                  LoggingContext:            "EMSP1CommonAPIBase",
+                                  LoggingPath:               null,
+                                  LogfileName:               $"GraphDefined_OCPI{protocols.OCPIv2_1_1.Version.String}_EMSP1.log",
+                                  LogfileCreator:            null
+
+                              );
+
+            #endregion
+
+            #region OCPI v2.1
 
             emsp1CommonAPI       = new CommonAPI(
 
-                                       OurBaseURL:                          URL.Parse($"http://127.0.0.1:{GraphDefinedEMP_Node1_HTTPPort}/ocpi/v2.1"),
-                                       OurVersionsURL:                      emsp1VersionsAPIURL.Value,
                                        OurBusinessDetails:                  new BusinessDetails(
                                                                                 "GraphDefined EMP OCPI v2.1 Services",
                                                                                 URL.Parse("https://www.graphdefined.com/emp")
@@ -922,7 +1002,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                        OurPartyId:                          Party_Id.   Parse("GDF"),
                                        OurRole:                             Roles.      EMSP,
 
-                                       HTTPServer:                          GraphDefinedEMP_Node1.DefaultHTTPAPI!.HTTPServer,
+                                       BaseAPI:                             ocpiBaseAPI2,
 
                                        AdditionalURLPathPrefix:             null,
                                        KeepRemovedEVSEs:                    null,
@@ -1332,6 +1412,129 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             #endregion
 
+            #region Create cpo/emsp1/emsp2 OCPI Base API
+
+            cpoVersionsAPIURL = URL.Parse("http://127.0.0.1:3301/ocpi/versions");
+
+            var cpoBaseAPI = new CommonAPIBase(
+
+                                  OurBaseURL:                URL.Parse("http://127.0.0.1:3301/ocpi"),
+                                  OurVersionsURL:            cpoVersionsAPIURL.Value,
+                                  HTTPServer:                cpoHTTPAPI.HTTPServer,
+                                  AdditionalURLPathPrefix:   null,
+                                  //KeepRemovedEVSEs:          null,
+                                  LocationsAsOpenData:       true,
+                                  AllowDowngrades:           null,
+                                  Disable_RootServices:      false,
+
+                                  HTTPHostname:              null,
+                                  ExternalDNSName:           null,
+                                  HTTPServiceName:           null,
+                                  BasePath:                  null,
+
+                                  URLPathPrefix:             HTTPPath.Parse("/ocpi"),
+                                  APIVersionHashes:          null,
+
+                                  DisableMaintenanceTasks:   null,
+                                  MaintenanceInitialDelay:   null,
+                                  MaintenanceEvery:          null,
+
+                                  DisableWardenTasks:        null,
+                                  WardenInitialDelay:        null,
+                                  WardenCheckEvery:          null,
+
+                                  IsDevelopment:             null,
+                                  DevelopmentServers:        null,
+                                  DisableLogging:            null,
+                                  LoggingContext:            null,
+                                  LoggingPath:               null,
+                                  LogfileName:               null,
+                                  LogfileCreator:            null
+
+                              );
+
+
+            emsp1VersionsAPIURL = URL.Parse("http://127.0.0.1:3401/ocpi/versions");
+
+            var emsp1BaseAPI = new CommonAPIBase(
+
+                                  OurBaseURL:                URL.Parse("http://127.0.0.1:3401/ocpi"),
+                                  OurVersionsURL:            emsp1VersionsAPIURL.Value,
+                                  HTTPServer:                emsp1HTTPAPI.HTTPServer,
+                                  AdditionalURLPathPrefix:   null,
+                                  //KeepRemovedEVSEs:          null,
+                                  LocationsAsOpenData:       true,
+                                  AllowDowngrades:           null,
+                                  Disable_RootServices:      false,
+
+                                  HTTPHostname:              null,
+                                  ExternalDNSName:           null,
+                                  HTTPServiceName:           null,
+                                  BasePath:                  null,
+
+                                  URLPathPrefix:             HTTPPath.Parse("/ocpi"),
+                                  APIVersionHashes:          null,
+
+                                  DisableMaintenanceTasks:   null,
+                                  MaintenanceInitialDelay:   null,
+                                  MaintenanceEvery:          null,
+
+                                  DisableWardenTasks:        null,
+                                  WardenInitialDelay:        null,
+                                  WardenCheckEvery:          null,
+
+                                  IsDevelopment:             null,
+                                  DevelopmentServers:        null,
+                                  DisableLogging:            null,
+                                  LoggingContext:            null,
+                                  LoggingPath:               null,
+                                  LogfileName:               null,
+                                  LogfileCreator:            null
+
+                              );
+
+
+            emsp2VersionsAPIURL = URL.Parse("http://127.0.0.1:3402/ocpi/versions");
+
+            var emsp2BaseAPI = new CommonAPIBase(
+
+                                  OurBaseURL:                URL.Parse("http://127.0.0.1:3402/ocpi"),
+                                  OurVersionsURL:            emsp2VersionsAPIURL.Value,
+                                  HTTPServer:                emsp2HTTPAPI.HTTPServer,
+                                  AdditionalURLPathPrefix:   null,
+                                  //KeepRemovedEVSEs:          null,
+                                  LocationsAsOpenData:       true,
+                                  AllowDowngrades:           null,
+                                  Disable_RootServices:      false,
+
+                                  HTTPHostname:              null,
+                                  ExternalDNSName:           null,
+                                  HTTPServiceName:           null,
+                                  BasePath:                  null,
+
+                                  URLPathPrefix:             HTTPPath.Parse("/ocpi"),
+                                  APIVersionHashes:          null,
+
+                                  DisableMaintenanceTasks:   null,
+                                  MaintenanceInitialDelay:   null,
+                                  MaintenanceEvery:          null,
+
+                                  DisableWardenTasks:        null,
+                                  WardenInitialDelay:        null,
+                                  WardenCheckEvery:          null,
+
+                                  IsDevelopment:             null,
+                                  DevelopmentServers:        null,
+                                  DisableLogging:            null,
+                                  LoggingContext:            null,
+                                  LoggingPath:               null,
+                                  LogfileName:               null,
+                                  LogfileCreator:            null
+
+                              );
+
+            #endregion
+
             #region Create cpo/emsp1/emsp2 OCPI Common API
 
             // Clean up log and databade directories...
@@ -1343,12 +1546,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             }
 
 
-            cpoVersionsAPIURL    = URL.Parse("http://127.0.0.1:3301/ocpi/v2.1/versions");
-
             cpoCommonAPI         = new CommonAPI(
 
-                                       OurBaseURL:                          URL.Parse("http://127.0.0.1:3301/ocpi/v2.1"),
-                                       OurVersionsURL:                      cpoVersionsAPIURL.Value,
                                        OurBusinessDetails:                  new BusinessDetails(
                                                                                 "GraphDefined CSO Services",
                                                                                 URL.Parse("https://www.graphdefined.com/cso")
@@ -1357,7 +1556,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                        OurPartyId:                          Party_Id.   Parse("GEF"),
                                        OurRole:                             Roles.      CPO,
 
-                                       HTTPServer:                          cpoHTTPAPI.HTTPServer,
+                                       BaseAPI:                             cpoBaseAPI,
 
                                        AdditionalURLPathPrefix:             null,
                                        KeepRemovedEVSEs:                    null,
@@ -1395,12 +1594,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                    );
 
 
-            emsp1VersionsAPIURL  = URL.Parse("http://127.0.0.1:3401/ocpi/v2.1/versions");
-
             emsp1CommonAPI       = new CommonAPI(
 
-                                       OurBaseURL:                          URL.Parse("http://127.0.0.1:3401/ocpi/v2.1"),
-                                       OurVersionsURL:                      emsp1VersionsAPIURL.Value,
                                        OurBusinessDetails:                  new BusinessDetails(
                                                                                 "GraphDefined EMSP #1 Services",
                                                                                 URL.Parse("https://www.graphdefined.com/emsp1")
@@ -1409,7 +1604,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                        OurPartyId:                          Party_Id.   Parse("GDF"),
                                        OurRole:                             Roles.      EMSP,
 
-                                       HTTPServer:                          emsp1HTTPAPI.HTTPServer,
+                                       BaseAPI:                             emsp1BaseAPI,
 
                                        AdditionalURLPathPrefix:             null,
                                        KeepRemovedEVSEs:                    null,
@@ -1447,12 +1642,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                    );
 
 
-            emsp2VersionsAPIURL  = URL.Parse("http://127.0.0.1:3402/ocpi/v2.1/versions");
-
             emsp2CommonAPI       = new CommonAPI(
 
-                                       OurBaseURL:                          URL.Parse("http://127.0.0.1:3402/ocpi/v2.1"),
-                                       OurVersionsURL:                      emsp2VersionsAPIURL.Value,
                                        OurBusinessDetails:                  new BusinessDetails(
                                                                                 "GraphDefined EMSP #2 Services",
                                                                                 URL.Parse("https://www.graphdefined.com/emsp2")
@@ -1461,7 +1652,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                        OurPartyId:                          Party_Id.   Parse("GD2"),
                                        OurRole:                             Roles.      EMSP,
 
-                                       HTTPServer:                          emsp2HTTPAPI.HTTPServer,
+                                       BaseAPI:                             emsp1BaseAPI,
 
                                        AdditionalURLPathPrefix:             null,
                                        KeepRemovedEVSEs:                    null,
@@ -1519,9 +1710,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                        HTTPRealm:                           "GraphDefined OCPI CPO WebAPI",
                                        HTTPLogins:                          [
                                                                                 new KeyValuePair<String, String>("a", "b")
-                                                                            ],
-                                       HTMLTemplate:                        null,
-                                       RequestTimeout:                      null
+                                                                            ]
                                    );
 
             emsp1WebAPI          = new OCPIWebAPI(
@@ -1533,9 +1722,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                        HTTPRealm:                           "GraphDefined OCPI EMSP #1 WebAPI",
                                        HTTPLogins:                          [
                                                                                 new KeyValuePair<String, String>("c", "d")
-                                                                            ],
-                                       HTMLTemplate:                        null,
-                                       RequestTimeout:                      null
+                                                                            ]
                                    );
 
             emsp2WebAPI          = new OCPIWebAPI(
@@ -1547,9 +1734,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                        HTTPRealm:                           "GraphDefined OCPI EMSP #2 WebAPI",
                                        HTTPLogins:                          [
                                                                                 new KeyValuePair<String, String>("e", "f")
-                                                                            ],
-                                       HTMLTemplate:                        null,
-                                       RequestTimeout:                      null
+                                                                            ]
                                    );
 
             ClassicAssert.IsNotNull(cpoWebAPI);
@@ -1563,8 +1748,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             cpoCPOAPI            = new CPOAPI(
 
                                        CommonAPI:                           cpoCommonAPI,
-                                       DefaultCountryCode:                  cpoCommonAPI.OurCountryCode,
-                                       DefaultPartyId:                      cpoCommonAPI.OurPartyId,
+                                       //DefaultCountryCode:                  cpoCommonAPI.OurCountryCode,
+                                       //DefaultPartyId:                      cpoCommonAPI.OurPartyId,
                                        AllowDowngrades:                     null,
 
                                        HTTPHostname:                        null,
@@ -1596,8 +1781,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             emsp1EMSPAPI         = new EMSPAPI(
 
                                        CommonAPI:                           emsp1CommonAPI,
-                                       DefaultCountryCode:                  emsp1CommonAPI.OurCountryCode,
-                                       DefaultPartyId:                      emsp1CommonAPI.OurPartyId,
+                                       //DefaultCountryCode:                  emsp1CommonAPI.OurCountryCode,
+                                       //DefaultPartyId:                      emsp1CommonAPI.OurPartyId,
                                        AllowDowngrades:                     null,
 
                                        HTTPHostname:                        null,
@@ -1629,8 +1814,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             emsp2EMSPAPI         = new EMSPAPI(
 
                                        CommonAPI:                           emsp2CommonAPI,
-                                       DefaultCountryCode:                  emsp2CommonAPI.OurCountryCode,
-                                       DefaultPartyId:                      emsp2CommonAPI.OurPartyId,
+                                       //DefaultCountryCode:                  emsp2CommonAPI.OurCountryCode,
+                                       //DefaultPartyId:                      emsp2CommonAPI.OurPartyId,
                                        AllowDowngrades:                     null,
 
                                        HTTPHostname:                        null,
@@ -1740,9 +1925,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             ClassicAssert.AreEqual(1, emsp1CommonAPI.RemoteParties.Count());
             ClassicAssert.AreEqual(1, emsp2CommonAPI.RemoteParties.Count());
 
-            ClassicAssert.AreEqual(2, File.ReadAllLines(cpoCommonAPI.  RemotePartyDBFileName).Length);
-            ClassicAssert.AreEqual(1, File.ReadAllLines(emsp1CommonAPI.RemotePartyDBFileName).Length);
-            ClassicAssert.AreEqual(1, File.ReadAllLines(emsp2CommonAPI.RemotePartyDBFileName).Length);
+            ClassicAssert.AreEqual(2, File.ReadAllLines(cpoCommonAPI.  BaseAPI.RemotePartyDBFileName).Length);
+            ClassicAssert.AreEqual(1, File.ReadAllLines(emsp1CommonAPI.BaseAPI.RemotePartyDBFileName).Length);
+            ClassicAssert.AreEqual(1, File.ReadAllLines(emsp2CommonAPI.BaseAPI.RemotePartyDBFileName).Length);
 
             #endregion
 
@@ -1805,7 +1990,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             cpoCPOAPI.CPOAPILogger?.Debug("all", LogTargets.Debug);
 
-            cpoCommonAPI.ClientConfigurations.Description = (remotePartyId) => I18NString.Create($"CPO Client for {remotePartyId}");
+            cpoCommonAPI.BaseAPI.ClientConfigurations.Description = (remotePartyId) => I18NString.Create($"CPO Client for {remotePartyId}");
 
 
 
@@ -1827,7 +2012,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             emsp1EMSPAPI.EMSPAPILogger?.Debug("all", LogTargets.Debug);
 
-            emsp1CommonAPI.ClientConfigurations.Description = (remotePartyId) => I18NString.Create($"EMSP #1 Client for {remotePartyId}");
+            emsp1CommonAPI.BaseAPI.ClientConfigurations.Description = (remotePartyId) => I18NString.Create($"EMSP #1 Client for {remotePartyId}");
 
 
 
@@ -1849,7 +2034,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             emsp2EMSPAPI.EMSPAPILogger?.Debug("all", LogTargets.Debug);
 
-            emsp2CommonAPI.ClientConfigurations.Description = (remotePartyId) => I18NString.Create($"EMSP #2 Client for {remotePartyId}");
+            emsp2CommonAPI.BaseAPI.ClientConfigurations.Description = (remotePartyId) => I18NString.Create($"EMSP #2 Client for {remotePartyId}");
 
             #endregion
 
