@@ -790,7 +790,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             cpoVersionsAPIURL = URL.Parse($"http://127.0.0.1:{GraphDefinedCSO_Node1_HTTPPort}/ocpi/v2.1/versions");
 
-            var ocpiBaseAPI = new CommonAPIBase(
+            var ocpiBaseAPI = new CommonBaseAPI(
 
                                   OurBaseURL:                URL.Parse($"http://127.0.0.1:{GraphDefinedCSO_Node1_HTTPPort}/ocpi/v2.1"),
                                   OurVersionsURL:            cpoVersionsAPIURL.Value,
@@ -800,7 +800,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                   //KeepRemovedEVSEs:          null,
                                   LocationsAsOpenData:       true,
                                   AllowDowngrades:           null,
-                                  Disable_RootServices:      false,
 
                                   HTTPHostname:              null,
                                   ExternalDNSName:           null,
@@ -840,7 +839,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                             ),
                                        OurCountryCode:                      CountryCode.Parse("DE"),
                                        OurPartyId:                          Party_Id.   Parse("GEF"),
-                                       OurRole:                             Roles.      CPO,
+                                       OurRole:                             Role.       CPO,
 
                                        BaseAPI:                             ocpiBaseAPI,
 
@@ -848,7 +847,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                        KeepRemovedEVSEs:                    null,
                                        LocationsAsOpenData:                 true,
                                        AllowDowngrades:                     null,
-                                       Disable_RootServices:                false,
 
                                        HTTPHostname:                        null,
                                        ExternalDNSName:                     null,
@@ -950,7 +948,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             emsp1VersionsAPIURL = URL.Parse($"http://127.0.0.1:{GraphDefinedEMP_Node1_HTTPPort}/ocpi/v2.1/versions");
 
-            var ocpiBaseAPI2 = new CommonAPIBase(
+            var ocpiBaseAPI2 = new CommonBaseAPI(
 
                                   OurBaseURL:                URL.Parse($"http://127.0.0.1:{GraphDefinedEMP_Node1_HTTPPort}/ocpi/v2.1"),
                                   OurVersionsURL:            emsp1VersionsAPIURL.Value,
@@ -960,7 +958,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                   //KeepRemovedEVSEs:          null,
                                   LocationsAsOpenData:       true,
                                   AllowDowngrades:           null,
-                                  Disable_RootServices:      false,
 
                                   HTTPHostname:              null,
                                   ExternalDNSName:           null,
@@ -1000,7 +997,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                             ),
                                        OurCountryCode:                      CountryCode.Parse("DE"),
                                        OurPartyId:                          Party_Id.   Parse("GDF"),
-                                       OurRole:                             Roles.      EMSP,
+                                       OurRole:                             Role.       EMSP,
 
                                        BaseAPI:                             ocpiBaseAPI2,
 
@@ -1008,7 +1005,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                        KeepRemovedEVSEs:                    null,
                                        LocationsAsOpenData:                 true,
                                        AllowDowngrades:                     null,
-                                       Disable_RootServices:                false,
 
                                        HTTPHostname:                        null,
                                        ExternalDNSName:                     null,
@@ -1416,7 +1412,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             cpoVersionsAPIURL = URL.Parse("http://127.0.0.1:3301/ocpi/versions");
 
-            var cpoBaseAPI = new CommonAPIBase(
+            var cpoBaseAPI = new CommonBaseAPI(
 
                                   OurBaseURL:                URL.Parse("http://127.0.0.1:3301/ocpi"),
                                   OurVersionsURL:            cpoVersionsAPIURL.Value,
@@ -1425,7 +1421,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                   //KeepRemovedEVSEs:          null,
                                   LocationsAsOpenData:       true,
                                   AllowDowngrades:           null,
-                                  Disable_RootServices:      false,
 
                                   HTTPHostname:              null,
                                   ExternalDNSName:           null,
@@ -1456,7 +1451,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             emsp1VersionsAPIURL = URL.Parse("http://127.0.0.1:3401/ocpi/versions");
 
-            var emsp1BaseAPI = new CommonAPIBase(
+            var emsp1BaseAPI = new CommonBaseAPI(
 
                                   OurBaseURL:                URL.Parse("http://127.0.0.1:3401/ocpi"),
                                   OurVersionsURL:            emsp1VersionsAPIURL.Value,
@@ -1465,7 +1460,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                   //KeepRemovedEVSEs:          null,
                                   LocationsAsOpenData:       true,
                                   AllowDowngrades:           null,
-                                  Disable_RootServices:      false,
 
                                   HTTPHostname:              null,
                                   ExternalDNSName:           null,
@@ -1496,7 +1490,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             emsp2VersionsAPIURL = URL.Parse("http://127.0.0.1:3402/ocpi/versions");
 
-            var emsp2BaseAPI = new CommonAPIBase(
+            var emsp2BaseAPI = new CommonBaseAPI(
 
                                   OurBaseURL:                URL.Parse("http://127.0.0.1:3402/ocpi"),
                                   OurVersionsURL:            emsp2VersionsAPIURL.Value,
@@ -1505,7 +1499,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                   //KeepRemovedEVSEs:          null,
                                   LocationsAsOpenData:       true,
                                   AllowDowngrades:           null,
-                                  Disable_RootServices:      false,
 
                                   HTTPHostname:              null,
                                   ExternalDNSName:           null,
@@ -1554,7 +1547,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                             ),
                                        OurCountryCode:                      CountryCode.Parse("DE"),
                                        OurPartyId:                          Party_Id.   Parse("GEF"),
-                                       OurRole:                             Roles.      CPO,
+                                       OurRole:                             Role.       CPO,
 
                                        BaseAPI:                             cpoBaseAPI,
 
@@ -1562,7 +1555,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                        KeepRemovedEVSEs:                    null,
                                        LocationsAsOpenData:                 true,
                                        AllowDowngrades:                     null,
-                                       Disable_RootServices:                false,
 
                                        HTTPHostname:                        null,
                                        ExternalDNSName:                     null,
@@ -1602,7 +1594,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                             ),
                                        OurCountryCode:                      CountryCode.Parse("DE"),
                                        OurPartyId:                          Party_Id.   Parse("GDF"),
-                                       OurRole:                             Roles.      EMSP,
+                                       OurRole:                             Role.       EMSP,
 
                                        BaseAPI:                             emsp1BaseAPI,
 
@@ -1610,7 +1602,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                        KeepRemovedEVSEs:                    null,
                                        LocationsAsOpenData:                 true,
                                        AllowDowngrades:                     null,
-                                       Disable_RootServices:                false,
 
                                        HTTPHostname:                        null,
                                        ExternalDNSName:                     null,
@@ -1650,7 +1641,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                             ),
                                        OurCountryCode:                      CountryCode.Parse("DE"),
                                        OurPartyId:                          Party_Id.   Parse("GD2"),
-                                       OurRole:                             Roles.      EMSP,
+                                       OurRole:                             Role.       EMSP,
 
                                        BaseAPI:                             emsp1BaseAPI,
 
@@ -1658,7 +1649,6 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                        KeepRemovedEVSEs:                    null,
                                        LocationsAsOpenData:                 true,
                                        AllowDowngrades:                     null,
-                                       Disable_RootServices:                false,
 
                                        HTTPHostname:                        null,
                                        ExternalDNSName:                     null,
@@ -1854,7 +1844,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             await cpoCommonAPI.AddRemoteParty  (CountryCode:                 emsp1CommonAPI.OurCountryCode,
                                                 PartyId:                     emsp1CommonAPI.OurPartyId,
-                                                Role:                        Roles.EMSP,
+                                                Role:                        Role.EMSP,
                                                 BusinessDetails:             emsp1CommonAPI.OurBusinessDetails,
 
                                                 AccessToken:                 AccessToken.Parse(emsp1_accessing_cpo__token),
@@ -1871,7 +1861,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             await cpoCommonAPI.AddRemoteParty  (CountryCode:                 emsp2CommonAPI.OurCountryCode,
                                                 PartyId:                     emsp2CommonAPI.OurPartyId,
-                                                Role:                        Roles.EMSP,
+                                                Role:                        Role.EMSP,
                                                 BusinessDetails:             emsp2CommonAPI.OurBusinessDetails,
                                                 AccessToken:                 AccessToken.Parse(emsp2_accessing_cpo__token),
                                                 AccessStatus:                AccessStatus.ALLOWED,
@@ -1887,7 +1877,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             await emsp1CommonAPI.AddRemoteParty(CountryCode:                 cpoCommonAPI.OurCountryCode,
                                                 PartyId:                     cpoCommonAPI.OurPartyId,
-                                                Role:                        Roles.CPO,
+                                                Role:                        Role.CPO,
                                                 BusinessDetails:             cpoCommonAPI.OurBusinessDetails,
 
                                                 AccessToken:                 AccessToken.Parse(cpo_accessing_emsp1__token),
@@ -1905,7 +1895,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             await emsp2CommonAPI.AddRemoteParty(CountryCode:                 cpoCommonAPI.OurCountryCode,
                                                 PartyId:                     cpoCommonAPI.OurPartyId,
-                                                Role:                        Roles.CPO,
+                                                Role:                        Role.CPO,
                                                 BusinessDetails:             cpoCommonAPI.OurBusinessDetails,
 
                                                 AccessToken:                 AccessToken.Parse(cpo_accessing_emsp2__token),
@@ -1925,9 +1915,9 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
             ClassicAssert.AreEqual(1, emsp1CommonAPI.RemoteParties.Count());
             ClassicAssert.AreEqual(1, emsp2CommonAPI.RemoteParties.Count());
 
-            ClassicAssert.AreEqual(2, File.ReadAllLines(cpoCommonAPI.  BaseAPI.RemotePartyDBFileName).Length);
-            ClassicAssert.AreEqual(1, File.ReadAllLines(emsp1CommonAPI.BaseAPI.RemotePartyDBFileName).Length);
-            ClassicAssert.AreEqual(1, File.ReadAllLines(emsp2CommonAPI.BaseAPI.RemotePartyDBFileName).Length);
+            ClassicAssert.AreEqual(2, File.ReadAllLines(cpoCommonAPI.  RemotePartyDBFileName).Length);
+            ClassicAssert.AreEqual(1, File.ReadAllLines(emsp1CommonAPI.RemotePartyDBFileName).Length);
+            ClassicAssert.AreEqual(1, File.ReadAllLines(emsp2CommonAPI.RemotePartyDBFileName).Length);
 
             #endregion
 
@@ -1935,7 +1925,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             await cpoCommonAPI.AddRemoteParty  (CountryCode:       CountryCode.Parse("XX"),
                                                 PartyId:           Party_Id.   Parse("BLE"),
-                                                Role:              Roles.EMSP,
+                                                Role:              Role.EMSP,
                                                 BusinessDetails:   new BusinessDetails(
                                                                        "Blocked EMSP"
                                                                    ),
@@ -1945,7 +1935,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             await emsp1CommonAPI.AddRemoteParty(CountryCode:       CountryCode.Parse("XX"),
                                                 PartyId:           Party_Id.   Parse("BLC"),
-                                                Role:              Roles.CPO,
+                                                Role:              Role.CPO,
                                                 BusinessDetails:   new BusinessDetails(
                                                                        "Blocked CPO"
                                                                    ),
@@ -1955,7 +1945,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
 
             await emsp2CommonAPI.AddRemoteParty(CountryCode:       CountryCode.Parse("XX"),
                                                 PartyId:           Party_Id.   Parse("BLC"),
-                                                Role:              Roles.CPO,
+                                                Role:              Role.CPO,
                                                 BusinessDetails:   new BusinessDetails(
                                                                        "Blocked CPO"
                                                                    ),

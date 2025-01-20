@@ -65,33 +65,33 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                 // Will call OCPICSOAdapter.AddStaticData(ChargingPool, ...)!
                 var addChargingPoolResult1 = await graphDefinedCSO.AddChargingPool(
 
-                                                 Id: ChargingPool_Id.Parse("DE*GEF*POOL1"),
-                                                 Name: I18NString.Create(Languages.en, "Test pool #1"),
-                                                 Description: I18NString.Create(Languages.en, "GraphDefined charging pool for tests #1"),
+                                                 Id:                   ChargingPool_Id.Parse("DE*GEF*POOL1"),
+                                                 Name:                 I18NString.Create(Languages.en, "Test pool #1"),
+                                                 Description:          I18NString.Create(Languages.en, "GraphDefined charging pool for tests #1"),
 
-                                                 Address: new Address(
+                                                 Address:              new Address(
 
-                                                                           Street: "Biberweg",
-                                                                           PostalCode: "07749",
-                                                                           City: I18NString.Create(Languages.de, "Jena"),
-                                                                           Country: Country.Germany,
+                                                                           Street:             "Biberweg",
+                                                                           PostalCode:         "07749",
+                                                                           City:               I18NString.Create(Languages.de, "Jena"),
+                                                                           Country:            Country.Germany,
 
-                                                                           HouseNumber: "18",
-                                                                           FloorLevel: null,
-                                                                           Region: null,
-                                                                           PostalCodeSub: null,
-                                                                           TimeZone: Time_Zone.TryParse("CET"),
-                                                                           OfficialLanguages: null,
-                                                                           Comment: null,
+                                                                           HouseNumber:        "18",
+                                                                           FloorLevel:         null,
+                                                                           Region:             null,
+                                                                           PostalCodeSub:      null,
+                                                                           TimeZone:           Time_Zone.TryParse("CET"),
+                                                                           OfficialLanguages:  null,
+                                                                           Comment:            null,
 
-                                                                           CustomData: null,
-                                                                           InternalData: null
+                                                                           CustomData:         null,
+                                                                           InternalData:       null
 
                                                                        ),
-                                                 GeoLocation: GeoCoordinate.Parse(50.93, 11.63),
+                                                 GeoLocation:          GeoCoordinate.Parse(50.93, 11.63),
 
-                                                 OpeningTimes: null,
-                                                 ChargingWhenClosed: true,
+                                                 OpeningTimes:         null,
+                                                 ChargingWhenClosed:   true,
 
                                                  //EnergyMix
                                                  //RelatedLocations
@@ -100,11 +100,10 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                  //Images
                                                  //LocationType
 
-                                                 InitialAdminStatus: ChargingPoolAdminStatusTypes.Operational,
-                                                 InitialStatus: ChargingPoolStatusTypes.Available,
+                                                 InitialAdminStatus:   ChargingPoolAdminStatusTypes.Operational,
+                                                 InitialStatus:        ChargingPoolStatusTypes.Available,
 
-                                                 Configurator: chargingPool =>
-                                                 {
+                                                 Configurator:         chargingPool => {
                                                  }
 
                                              );
@@ -146,40 +145,39 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                 // Will call OCPICSOAdapter.AddStaticData(ChargingPool, ...)!
                 var addChargingPoolResult2 = await graphDefinedCSO.AddChargingPool(
 
-                                                 Id: ChargingPool_Id.Parse("DE*GEF*POOL2"),
-                                                 Name: I18NString.Create(Languages.en, "Test pool #2"),
-                                                 Description: I18NString.Create(Languages.en, "GraphDefined charging pool for tests #2"),
+                                                 Id:                   ChargingPool_Id.Parse("DE*GEF*POOL2"),
+                                                 Name:                 I18NString.Create(Languages.en, "Test pool #2"),
+                                                 Description:          I18NString.Create(Languages.en, "GraphDefined charging pool for tests #2"),
 
-                                                 Address: new Address(
+                                                 Address:              new Address(
 
-                                                                           Street: "Biber Weg",
-                                                                           PostalCode: "07748",
-                                                                           City: I18NString.Create(Languages.de, "Neu-Jena"),
-                                                                           Country: Country.Germany,
+                                                                           Street:             "Biber Weg",
+                                                                           PostalCode:         "07748",
+                                                                           City:               I18NString.Create(Languages.de, "Neu-Jena"),
+                                                                           Country:            Country.Germany,
 
-                                                                           HouseNumber: "18b",
-                                                                           FloorLevel: null,
-                                                                           Region: null,
-                                                                           PostalCodeSub: null,
-                                                                           TimeZone: null,
-                                                                           OfficialLanguages: null,
-                                                                           Comment: null,
+                                                                           HouseNumber:        "18b",
+                                                                           FloorLevel:         null,
+                                                                           Region:             null,
+                                                                           PostalCodeSub:      null,
+                                                                           TimeZone:           null,
+                                                                           OfficialLanguages:  null,
+                                                                           Comment:            null,
 
-                                                                           CustomData: null,
-                                                                           InternalData: null
+                                                                           CustomData:         null,
+                                                                           InternalData:       null
 
                                                                        ),
-                                                 GeoLocation: GeoCoordinate.Parse(50.94, 11.64),
+                                                 GeoLocation:          GeoCoordinate.Parse(50.94, 11.64),
 
-                                                 OpeningTimes: null,
-                                                 ChargingWhenClosed: false,
+                                                 OpeningTimes:         null,
+                                                 ChargingWhenClosed:   false,
 
-                                                 InitialAdminStatus: ChargingPoolAdminStatusTypes.Operational,
-                                                 InitialStatus: ChargingPoolStatusTypes.Available,
+                                                 InitialAdminStatus:   ChargingPoolAdminStatusTypes.Operational,
+                                                 InitialStatus:        ChargingPoolStatusTypes.Available,
 
-                                                 Configurator: chargingPool =>
-                                                 {
-                                                 }
+                                                 Configurator:         chargingPool => {
+                                                                       }
 
                                              );
 
@@ -314,7 +312,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                     )
                                                                 ],
 
-                                          InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
+                                          InitialAdminStatus:   EVSEAdminStatusType.Operational,
                                           InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
@@ -368,7 +366,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                     )
                                                                 ],
 
-                                          InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
+                                          InitialAdminStatus:   EVSEAdminStatusType.Operational,
                                           InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
@@ -401,7 +399,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                     )
                                                                 ],
 
-                                          InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
+                                          InitialAdminStatus:   EVSEAdminStatusType.Operational,
                                           InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
@@ -434,7 +432,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                     )
                                                                 ],
 
-                                          InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
+                                          InitialAdminStatus:   EVSEAdminStatusType.Operational,
                                           InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
@@ -716,7 +714,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                     )
                                                                 ],
 
-                                          InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
+                                          InitialAdminStatus:   EVSEAdminStatusType.Operational,
                                           InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
@@ -749,7 +747,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                     )
                                                                 ],
 
-                                          InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
+                                          InitialAdminStatus:   EVSEAdminStatusType.Operational,
                                           InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
@@ -782,7 +780,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                     )
                                                                 ],
 
-                                          InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
+                                          InitialAdminStatus:   EVSEAdminStatusType.Operational,
                                           InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
@@ -815,7 +813,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                     )
                                                                 ],
 
-                                          InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
+                                          InitialAdminStatus:   EVSEAdminStatusType.Operational,
                                           InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
@@ -1324,7 +1322,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                     )
                                                                 ],
 
-                                          InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
+                                          InitialAdminStatus:   EVSEAdminStatusType.Operational,
                                           InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
@@ -1357,7 +1355,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                     )
                                                                 ],
 
-                                          InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
+                                          InitialAdminStatus:   EVSEAdminStatusType.Operational,
                                           InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
@@ -1390,7 +1388,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                     )
                                                                 ],
 
-                                          InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
+                                          InitialAdminStatus:   EVSEAdminStatusType.Operational,
                                           InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
@@ -1423,7 +1421,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                     )
                                                                 ],
 
-                                          InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
+                                          InitialAdminStatus:   EVSEAdminStatusType.Operational,
                                           InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
@@ -1789,7 +1787,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                           Name:                 I18NString.Create(Languages.en, "Test EVSE #1A1"),
                                           Description:          I18NString.Create(Languages.en, "GraphDefined EVSE for tests #1A1"),
 
-                                          InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
+                                          InitialAdminStatus:   EVSEAdminStatusType.Operational,
                                           InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
@@ -1812,7 +1810,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                           Name:                 I18NString.Create(Languages.en, "Test EVSE #1A2"),
                                           Description:          I18NString.Create(Languages.en, "GraphDefined EVSE for tests #1A2"),
 
-                                          InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
+                                          InitialAdminStatus:   EVSEAdminStatusType.Operational,
                                           InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
@@ -1835,7 +1833,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                           Name:                 I18NString.Create(Languages.en, "Test EVSE #1B1"),
                                           Description:          I18NString.Create(Languages.en, "GraphDefined EVSE for tests #1B1"),
 
-                                          InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
+                                          InitialAdminStatus:   EVSEAdminStatusType.Operational,
                                           InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
@@ -1858,7 +1856,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                           Name:                 I18NString.Create(Languages.en, "Test EVSE #2A1"),
                                           Description:          I18NString.Create(Languages.en, "GraphDefined EVSE for tests #2A1"),
 
-                                          InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
+                                          InitialAdminStatus:   EVSEAdminStatusType.Operational,
                                           InitialStatus:        EVSEStatusType.Available,
 
                                           Configurator:         evse => {
@@ -2050,7 +2048,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                           Name:                 I18NString.Create(Languages.en, "Test EVSE #1A1"),
                                           Description:          I18NString.Create(Languages.en, "GraphDefined EVSE for tests #1A1"),
 
-                                          InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
+                                          InitialAdminStatus:   EVSEAdminStatusType.Operational,
                                           InitialStatus:        EVSEStatusType.Available,
 
                                           ChargingConnectors:   [
@@ -2270,7 +2268,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                           Name:                 I18NString.Create(Languages.en, "Test EVSE #1A1"),
                                           Description:          I18NString.Create(Languages.en, "GraphDefined EVSE for tests #1A1"),
 
-                                          InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
+                                          InitialAdminStatus:   EVSEAdminStatusType.Operational,
                                           InitialStatus:        EVSEStatusType.Available,
 
                                           ChargingConnectors:   [
@@ -2568,7 +2566,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                           Name:                 I18NString.Create(Languages.en, "Test EVSE #1A1"),
                                           Description:          I18NString.Create(Languages.en, "GraphDefined EVSE for tests #1A1"),
 
-                                          InitialAdminStatus:   EVSEAdminStatusTypes.Operational,
+                                          InitialAdminStatus:   EVSEAdminStatusType.Operational,
                                           InitialStatus:        EVSEStatusType.Available,
 
                                           ChargingConnectors:   [

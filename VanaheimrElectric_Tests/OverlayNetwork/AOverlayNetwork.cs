@@ -20,11 +20,15 @@
 using NUnit.Framework;
 
 using org.GraphDefined.Vanaheimr.Illias;
-using org.GraphDefined.Vanaheimr.Hermod;
 using org.GraphDefined.Vanaheimr.Hermod.DNS;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 
+using cloud.charging.open.protocols.WWCP;
+using cloud.charging.open.protocols.WWCP.EMP;
+using cloud.charging.open.protocols.WWCP.NetworkingNode;
+
 using cloud.charging.open.protocols.OCPP;
+using cloud.charging.open.protocols.OCPP.WebSockets;
 using cloud.charging.open.protocols.OCPPv2_1;
 using cloud.charging.open.protocols.OCPPv2_1.CS;
 using cloud.charging.open.protocols.OCPPv2_1.CSMS;
@@ -32,12 +36,6 @@ using cloud.charging.open.protocols.OCPPv2_1.Gateway;
 using cloud.charging.open.protocols.OCPPv2_1.EnergyMeter;
 using cloud.charging.open.protocols.OCPPv2_1.NetworkingNode;
 using cloud.charging.open.protocols.OCPPv2_1.LocalController;
-using cloud.charging.open.protocols.OCPPv2_1.WebSockets;
-
-using cloud.charging.open.protocols.WWCP;
-using cloud.charging.open.protocols.WWCP.EMP;
-using cloud.charging.open.protocols.WWCP.NetworkingNode;
-using cloud.charging.open.protocols.OCPP.WebSockets;
 
 #endregion
 
@@ -1078,12 +1076,17 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                       TimeZone:                       null,
                                                       OpeningTimes:                   null,
                                                       ChargingWhenClosed:             null,
+                                                      ParkingType:                    null,
                                                       Accessibility:                  null,
-                                                      LocationLanguage:               null,
+                                                      LocationLanguages:              null,
                                                       HotlinePhoneNumber:             null,
+
+                                                      Services:                       null,
+                                                      RelatedLocations:               null,
 
                                                       Brands:                         null,
                                                       MobilityRootCAs:                null,
+                                                      EVRoamingPartners:              null,
 
                                                       InitialAdminStatus:             null,
                                                       InitialStatus:                  null,

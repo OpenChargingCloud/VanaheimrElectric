@@ -23,6 +23,7 @@ using NUnit.Framework;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod;
+using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 
 using cloud.charging.open.protocols.WWCP;
 using cloud.charging.open.protocols.WWCP.NetworkingNode;
@@ -559,13 +560,13 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
         #region Variables
 
-        #region SetAndVerifyQRCodePaymentParameters()
+        #region SetAndVerifyWebPaymentParameters()
 
         /// <summary>
-        /// Set QR-Code payment parameters.
+        /// Set and verify web payment parameters.
         /// </summary>
         [Test]
-        public async Task SetAndVerifyQRCodePaymentParameters()
+        public async Task SetAndVerifyWebPaymentParameters()
         {
 
             #region Initial checks
@@ -610,12 +611,12 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
             #endregion
 
-            var qrCodeURLTemplate  = "https://example.org/qr/{TOTP}";
+            var qrCodeURLTemplate  = URL.Parse("https://example.org/qr/{TOTP}");
             var sharedSecret       = RandomExtensions.RandomString(16);
 
             var qrCodeURLs         = new ConcurrentList<String>();
 
-            chargingStation1.EVSEs.First().OnQRCodeChanged += (timestamp,
+            chargingStation1.EVSEs.First().OnWebPaymentURLChanged += (timestamp,
                                                                evseId,
                                                                qrCodeURL,
                                                                remainingTime,
@@ -633,31 +634,31 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                   VariableData:       [
                                                                           new SetVariableData(
                                                                               new Component(
-                                                                                  Name:  nameof(QRCodePaymentsCtrlr),
+                                                                                  Name:  nameof(WebPaymentsCtrlr),
                                                                                   EVSE:  new protocols.OCPPv2_1.EVSE(protocols.OCPPv2_1.EVSE_Id.Parse(1))
                                                                               ),
                                                                               new Variable(
-                                                                                  Name:  nameof(QRCodePaymentsCtrlr.Enabled)
+                                                                                  Name:  nameof(WebPaymentsCtrlr.Enabled)
                                                                               ),
                                                                               "true"
                                                                           ),
                                                                           new SetVariableData(
                                                                               new Component(
-                                                                                  Name:  nameof(QRCodePaymentsCtrlr),
+                                                                                  Name:  nameof(WebPaymentsCtrlr),
                                                                                   EVSE:  new protocols.OCPPv2_1.EVSE(protocols.OCPPv2_1.EVSE_Id.Parse(1))
                                                                               ),
                                                                               new Variable(
-                                                                                  Name:  nameof(QRCodePaymentsCtrlr.URLTemplate)
+                                                                                  Name:  nameof(WebPaymentsCtrlr.URLTemplate)
                                                                               ),
-                                                                              qrCodeURLTemplate
+                                                                              qrCodeURLTemplate.ToString()
                                                                           ),
                                                                           new SetVariableData(
                                                                               new Component(
-                                                                                  Name:  nameof(QRCodePaymentsCtrlr),
+                                                                                  Name:  nameof(WebPaymentsCtrlr),
                                                                                   EVSE:  new protocols.OCPPv2_1.EVSE(protocols.OCPPv2_1.EVSE_Id.Parse(1))
                                                                               ),
                                                                               new Variable(
-                                                                                  Name:  nameof(QRCodePaymentsCtrlr.SharedSecret)
+                                                                                  Name:  nameof(WebPaymentsCtrlr.SharedSecret)
                                                                               ),
                                                                               sharedSecret
                                                                           )
@@ -690,31 +691,31 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                   VariableData:       [
                                                                           new SetVariableData(
                                                                               new Component(
-                                                                                  Name:  nameof(QRCodePaymentsCtrlr),
+                                                                                  Name:  nameof(WebPaymentsCtrlr),
                                                                                   EVSE:  new protocols.OCPPv2_1.EVSE(protocols.OCPPv2_1.EVSE_Id.Parse(1))
                                                                               ),
                                                                               new Variable(
-                                                                                  Name:  nameof(QRCodePaymentsCtrlr.Enabled)
+                                                                                  Name:  nameof(WebPaymentsCtrlr.Enabled)
                                                                               ),
                                                                               "true"
                                                                           ),
                                                                           new SetVariableData(
                                                                               new Component(
-                                                                                  Name:  nameof(QRCodePaymentsCtrlr),
+                                                                                  Name:  nameof(WebPaymentsCtrlr),
                                                                                   EVSE:  new protocols.OCPPv2_1.EVSE(protocols.OCPPv2_1.EVSE_Id.Parse(1))
                                                                               ),
                                                                               new Variable(
-                                                                                  Name:  nameof(QRCodePaymentsCtrlr.URLTemplate)
+                                                                                  Name:  nameof(WebPaymentsCtrlr.URLTemplate)
                                                                               ),
-                                                                              qrCodeURLTemplate
+                                                                              qrCodeURLTemplate.ToString()
                                                                           ),
                                                                           new SetVariableData(
                                                                               new Component(
-                                                                                  Name:  nameof(QRCodePaymentsCtrlr),
+                                                                                  Name:  nameof(WebPaymentsCtrlr),
                                                                                   EVSE:  new protocols.OCPPv2_1.EVSE(protocols.OCPPv2_1.EVSE_Id.Parse(1))
                                                                               ),
                                                                               new Variable(
-                                                                                  Name:  nameof(QRCodePaymentsCtrlr.SharedSecret)
+                                                                                  Name:  nameof(WebPaymentsCtrlr.SharedSecret)
                                                                               ),
                                                                               sharedSecret
                                                                           )
@@ -748,29 +749,29 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                  VariableData:       [
                                                                          new GetVariableData(
                                                                              new Component(
-                                                                                 Name:  nameof(QRCodePaymentsCtrlr),
+                                                                                 Name:  nameof(WebPaymentsCtrlr),
                                                                                  EVSE:  new protocols.OCPPv2_1.EVSE(protocols.OCPPv2_1.EVSE_Id.Parse(1))
                                                                              ),
                                                                              new Variable(
-                                                                                 Name:  nameof(QRCodePaymentsCtrlr.Enabled)
+                                                                                 Name:  nameof(WebPaymentsCtrlr.Enabled)
                                                                              )
                                                                          ),
                                                                          new GetVariableData(
                                                                              new Component(
-                                                                                 Name:  nameof(QRCodePaymentsCtrlr),
+                                                                                 Name:  nameof(WebPaymentsCtrlr),
                                                                                  EVSE:  new protocols.OCPPv2_1.EVSE(protocols.OCPPv2_1.EVSE_Id.Parse(1))
                                                                              ),
                                                                              new Variable(
-                                                                                 Name:  nameof(QRCodePaymentsCtrlr.URLTemplate)
+                                                                                 Name:  nameof(WebPaymentsCtrlr.URLTemplate)
                                                                              )
                                                                          ),
                                                                          new GetVariableData(
                                                                              new Component(
-                                                                                 Name:  nameof(QRCodePaymentsCtrlr),
+                                                                                 Name:  nameof(WebPaymentsCtrlr),
                                                                                  EVSE:  new protocols.OCPPv2_1.EVSE(protocols.OCPPv2_1.EVSE_Id.Parse(1))
                                                                              ),
                                                                              new Variable(
-                                                                                 Name:  nameof(QRCodePaymentsCtrlr.SharedSecret)
+                                                                                 Name:  nameof(WebPaymentsCtrlr.SharedSecret)
                                                                              )
                                                                          )
                                                                      ],
@@ -794,7 +795,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
 
 
             Assert.That(getVariablesResponse.Results.ElementAt(0).AttributeValue,    Is.EqualTo("true"));
-            Assert.That(getVariablesResponse.Results.ElementAt(1).AttributeValue,    Is.EqualTo(qrCodeURLTemplate));
+            Assert.That(getVariablesResponse.Results.ElementAt(1).AttributeValue,    Is.EqualTo(qrCodeURLTemplate.ToString()));
             Assert.That(getVariablesResponse.Results.ElementAt(2).AttributeValue,    Is.EqualTo(sharedSecret));
 
             #endregion
@@ -807,7 +808,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             {
                 await Task.Delay(50);
                 runs++;
-            } while (evse.QRCodePaymentsURL is null || runs > 100);
+            } while (evse.WebPaymentsURL is null || runs > 100);
 
 
             Assert.That(qrCodeURLs.Last(),   Is.EqualTo(expectedTOTPURLs.Current).
@@ -832,11 +833,11 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                               ComponentVariables:   [
                                                                         new ComponentVariable(
                                                                             new Component(
-                                                                                Name:  nameof(QRCodePaymentsCtrlr),
+                                                                                Name:  nameof(WebPaymentsCtrlr),
                                                                                 EVSE:  new protocols.OCPPv2_1.EVSE(protocols.OCPPv2_1.EVSE_Id.Parse(1))
                                                                             ),
                                                                             new Variable(
-                                                                                Name:  nameof(QRCodePaymentsCtrlr.URLTemplate)
+                                                                                Name:  nameof(WebPaymentsCtrlr.URLTemplate)
                                                                             )
                                                                         )
                                                                     ],

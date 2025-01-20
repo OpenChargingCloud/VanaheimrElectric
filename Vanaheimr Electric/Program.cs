@@ -993,9 +993,9 @@ namespace cloud.charging.open.vanaheimr.electric
 
                                     );
 
-            chargingStation1.EVSEs.First().QRCodePaymentsController.Enabled       = true;
-            chargingStation1.EVSEs.First().QRCodePaymentsController.URLTemplate   = $"http://127.0.0.1:{csms1_httpAPI_tcpPort}/qr/{{TOTP}}";
-            chargingStation1.EVSEs.First().QRCodePaymentsController.SharedSecret  = "g98w%h/AS0s4jsb0F8j0s-gjAthd";
+            chargingStation1.EVSEs.First().WebPaymentsController.Enabled       = true;
+            chargingStation1.EVSEs.First().WebPaymentsController.URLTemplate   = URL.Parse($"http://127.0.0.1:{csms1_httpAPI_tcpPort}/qr/{{TOTP}}");
+            chargingStation1.EVSEs.First().WebPaymentsController.SharedSecret  = "g98w%h/AS0s4jsb0F8j0s-gjAthd";
 
 
             ocppLocalController1.AllowedChargingStations.Add(chargingStation1.Id);
@@ -1073,7 +1073,7 @@ namespace cloud.charging.open.vanaheimr.electric
                                                       OpeningTimes:                   null,
                                                       ChargingWhenClosed:             null,
                                                       Accessibility:                  null,
-                                                      LocationLanguage:               null,
+                                                      LocationLanguages:              null,
                                                       HotlinePhoneNumber:             null,
 
                                                       Brands:                         null,
@@ -1268,9 +1268,9 @@ namespace cloud.charging.open.vanaheimr.electric
 
                                     );
 
-            chargingStation2.EVSEs.First().QRCodePaymentsController.Enabled       = true;
-            chargingStation2.EVSEs.First().QRCodePaymentsController.URLTemplate   = $"http://127.0.0.1:{csms1_httpAPI_tcpPort}/qr/{{TOTP}}";
-            chargingStation2.EVSEs.First().QRCodePaymentsController.SharedSecret  = "b0Fs4j0s-gg98w%h/AS0Athd";
+            chargingStation2.EVSEs.First().WebPaymentsController.Enabled       = true;
+            chargingStation2.EVSEs.First().WebPaymentsController.URLTemplate   = URL.Parse($"http://127.0.0.1:{csms1_httpAPI_tcpPort}/qr/{{TOTP}}");
+            chargingStation2.EVSEs.First().WebPaymentsController.SharedSecret  = "b0Fs4j0s-gg98w%h/AS0Athd";
 
             ocppLocalController1.AllowedChargingStations.Add(chargingStation2.Id);
 
@@ -1381,9 +1381,9 @@ namespace cloud.charging.open.vanaheimr.electric
 
                                     );
 
-            chargingStation3.EVSEs.First().QRCodePaymentsController.Enabled       = true;
-            chargingStation3.EVSEs.First().QRCodePaymentsController.URLTemplate   = $"http://127.0.0.1:{csms1_httpAPI_tcpPort}/qr/{{TOTP}}";
-            chargingStation3.EVSEs.First().QRCodePaymentsController.SharedSecret  = "9fGh/AXb743HFH0s-gg54thd";
+            chargingStation3.EVSEs.First().WebPaymentsController.Enabled       = true;
+            chargingStation3.EVSEs.First().WebPaymentsController.URLTemplate   = URL.Parse($"http://127.0.0.1:{csms1_httpAPI_tcpPort}/qr/{{TOTP}}");
+            chargingStation3.EVSEs.First().WebPaymentsController.SharedSecret  = "9fGh/AXb743HFH0s-gg54thd";
 
             ocppLocalController1.AllowedChargingStations.Add(chargingStation3.Id);
 
