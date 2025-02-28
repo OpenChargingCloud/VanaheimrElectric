@@ -52,3 +52,6 @@
 [submodule "libs/WWCP_EEBus"]
 	path = libs/WWCP_EEBus
 	url = https://github.com/OpenChargingCloud/WWCP_EEBus.git
+[submodule "libs/WWCP_DatexII"]
+	path = libs/WWCP_DatexII
+	url = https://github.com/OpenChargingCloud/WWCP_DatexII.git
