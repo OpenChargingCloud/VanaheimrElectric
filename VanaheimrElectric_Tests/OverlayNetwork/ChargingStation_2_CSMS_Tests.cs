@@ -438,7 +438,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
             var authorizeResponse = await chargingStation1.Authorize(
 
                                               IdToken:                       IdToken.TryParseRFID(RFIDUID1)!,
-                                              Certificate:                   null,
+                                              CertificateChain:              null,
                                               ISO15118CertificateHashData:   null,
                                               CustomData:                    null,
 
@@ -4448,7 +4448,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                                                   MaxTime:      null,
                                                                                   CustomData:   null
                                                                               ),
-                                                         ChargingTariffId:    null,
+                                                         //ChargingTariffId:    null,
 
                                                          CustomData:          null
 

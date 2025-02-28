@@ -295,7 +295,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                             ChargingPriority:      null,
                                                             CacheExpiryDateTime:   null,
                                                             ValidEVSEIds:          null,
-                                                            HasChargingTariff:     null,
+                                                            //HasChargingTariff:     null,
                                                             GroupIdToken:          null,
                                                             Language1:             null,
                                                             Language2:             null,
@@ -303,7 +303,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                             CustomData:            null
                                                         ),
                                CertificateStatus:       null,
-                               AllowedEnergyTransfer:   null,
+                               //AllowedEnergyTransfer:   null,
                                TransactionLimits:       null,
                                ResponseTimestamp:       authStartResult.ResponseTimestamp,
 
@@ -327,7 +327,7 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests.OverlayNetwork
                                                             AuthorizationStatus.Invalid
                                                         ),
                              CertificateStatus:         null,
-                             AllowedEnergyTransfer:     null,
+                             //AllowedEnergyTransfer:     null,
                              TransactionLimits:         null,
                              ResponseTimestamp:         authStartResult.ResponseTimestamp,
 
