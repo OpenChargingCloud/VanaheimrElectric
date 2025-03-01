@@ -112,7 +112,7 @@ namespace cloud.charging.open.vanaheimr.electric
         private static readonly KeyPair                      csms2_keyPair                         = ECCKeyPair.ParsePrivateKey("Da5Ero3vg9IumqNh+r9TEA7aSHxRccX7eds0VIgLXJs=")!;
         private static          RoamingNetwork?              csms2_roamingNetwork;
         private static          IChargingStationOperator?    csms2_cso;
-        private static          EMobilityServiceProvider?    csms2_emp;
+        //private static          EMobilityServiceProvider?    csms2_emp;
 
 
         private static          TestGatewayNode?             ocppGateway1;
@@ -165,7 +165,7 @@ namespace cloud.charging.open.vanaheimr.electric
         /// The Vanaheimr Electric example application.
         /// </summary>
         /// <param name="Arguments">Command line arguments</param>
-        public async static Task Main(String[] Arguments)
+        public static async Task Main(String[] Arguments)
         {
 
             #region Write processId to pid file
@@ -428,21 +428,21 @@ namespace cloud.charging.open.vanaheimr.electric
             };
 
 
-            var csms1_addEMPResult1   = await csms1_roamingNetwork.CreateEMobilityServiceProvider(
-                                                  Id:            EMobilityProvider_Id.Parse("DE-GDF"),
-                                                  Name:          I18NString.Create("GraphDefined EMP"),
-                                                  Description:   I18NString.Create("GraphDefined EMP Node 1")
-                                              );
+                var csms1_addEMPResult1   = await csms1_roamingNetwork.CreateEMobilityServiceProvider(
+                                                      Id:            EMobilityProvider_Id.Parse("DE-GDF"),
+                                                      Name:          I18NString.Create("GraphDefined EMP"),
+                                                      Description:   I18NString.Create("GraphDefined EMP Node 1")
+                                                  );
 
-            csms1_emp                 = csms1_addEMPResult1.Entity!;
-            csms1_remoteEMP           = csms1_emp.RemoteEMobilityProvider as EMobilityServiceProvider;
+                csms1_emp                 = csms1_addEMPResult1.Entity!;
+                csms1_remoteEMP           = csms1_emp.RemoteEMobilityProvider as EMobilityServiceProvider;
 
-            //csms1_remoteEMP?.AddToken(
-            //    LocalAuthentication.FromAuthToken(
-            //        AuthenticationToken.ParseHEX(RFIDUID1)
-            //    ),
-            //    TokenAuthorizationResultType.Authorized
-            //);
+                        //csms1_remoteEMP?.AddToken(
+                        //    LocalAuthentication.FromAuthToken(
+                        //        AuthenticationToken.ParseHEX(RFIDUID1)
+                        //    ),
+                        //    TokenAuthorizationResultType.Authorized
+                        //);
 
             #endregion
 
@@ -810,7 +810,7 @@ namespace cloud.charging.open.vanaheimr.electric
 
             #region Define signature policy
 
-            
+
 
             ocppLocalController1.OCPP.SignaturePolicy.AddSigningRule     (JSONContext.OCPP.Any,
                                                                          KeyPair:                ocppLocalController1_keyPair,
@@ -1110,7 +1110,7 @@ namespace cloud.charging.open.vanaheimr.electric
                                                       Id:                             protocols.WWCP.ChargingStation_Id.Parse("DE*GEF*S123*456"),
                                                       Name:                           I18NString.Create("ChargingStation DE*GEF 123*456"),
                                                       Description:                    I18NString.Create("Pool #1, Station #1"),
-                                                      RemoteChargingStationCreator:   cs => new ChargingStationAdapter(csms1, cs, chargingStation1),
+     //                                                 RemoteChargingStationCreator:   cs => new ChargingStationAdapter(csms1, cs, chargingStation1),
 
                                                       Address:                        null,
                                                       GeoLocation:                    null,

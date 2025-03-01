@@ -100,8 +100,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                  //Images
                                                  //LocationType
 
-                                                 InitialAdminStatus:   ChargingPoolAdminStatusTypes.Operational,
-                                                 InitialStatus:        ChargingPoolStatusTypes.Available,
+                                                 InitialAdminStatus:   ChargingPoolAdminStatusType.Operational,
+                                                 InitialStatus:        ChargingPoolStatusType.Available,
 
                                                  Configurator:         chargingPool => {
                                                  }
@@ -173,8 +173,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                  OpeningTimes:         null,
                                                  ChargingWhenClosed:   false,
 
-                                                 InitialAdminStatus:   ChargingPoolAdminStatusTypes.Operational,
-                                                 InitialStatus:        ChargingPoolStatusTypes.Available,
+                                                 InitialAdminStatus:   ChargingPoolAdminStatusType.Operational,
+                                                 InitialStatus:        ChargingPoolStatusType.Available,
 
                                                  Configurator:         chargingPool => {
                                                                        }
@@ -558,8 +558,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                        ),
                                                  GeoLocation:          GeoCoordinate.Parse(50.93, 11.63),
 
-                                                 InitialAdminStatus:   ChargingPoolAdminStatusTypes.Operational,
-                                                 InitialStatus:        ChargingPoolStatusTypes.Available,
+                                                 InitialAdminStatus:   ChargingPoolAdminStatusType.Operational,
+                                                 InitialStatus:        ChargingPoolStatusType.Available,
 
                                                  Configurator:         chargingPool => {
                                                                        }
@@ -602,8 +602,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                        ),
                                                  GeoLocation:          GeoCoordinate.Parse(50.93, 11.63),
 
-                                                 InitialAdminStatus:   ChargingPoolAdminStatusTypes.Operational,
-                                                 InitialStatus:        ChargingPoolStatusTypes.Available,
+                                                 InitialAdminStatus:   ChargingPoolAdminStatusType.Operational,
+                                                 InitialStatus:        ChargingPoolStatusType.Available,
 
                                                  Configurator:         chargingPool => {
                                                                        }
@@ -1166,8 +1166,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                        ),
                                                  GeoLocation:          GeoCoordinate.Parse(50.93, 11.63),
 
-                                                 InitialAdminStatus:   ChargingPoolAdminStatusTypes.Operational,
-                                                 InitialStatus:        ChargingPoolStatusTypes.Available,
+                                                 InitialAdminStatus:   ChargingPoolAdminStatusType.Operational,
+                                                 InitialStatus:        ChargingPoolStatusType.Available,
 
                                                  Configurator:         chargingPool => {
                                                                        }
@@ -1210,8 +1210,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                        ),
                                                  GeoLocation:          GeoCoordinate.Parse(50.93, 11.63),
 
-                                                 InitialAdminStatus:   ChargingPoolAdminStatusTypes.Operational,
-                                                 InitialStatus:        ChargingPoolStatusTypes.Available,
+                                                 InitialAdminStatus:   ChargingPoolAdminStatusType.Operational,
+                                                 InitialStatus:        ChargingPoolStatusType.Available,
 
                                                  Configurator:         chargingPool => {
                                                                        }
@@ -1641,8 +1641,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                        ),
                                                  GeoLocation:          GeoCoordinate.Parse(50.93, 11.63),
 
-                                                 InitialAdminStatus:   ChargingPoolAdminStatusTypes.Operational,
-                                                 InitialStatus:        ChargingPoolStatusTypes.Available,
+                                                 InitialAdminStatus:   ChargingPoolAdminStatusType.Operational,
+                                                 InitialStatus:        ChargingPoolStatusType.Available,
 
                                                  Configurator:         chargingPool => {
                                                                        }
@@ -1685,8 +1685,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                        ),
                                                  GeoLocation:          GeoCoordinate.Parse(50.93, 11.63),
 
-                                                 InitialAdminStatus:   ChargingPoolAdminStatusTypes.Operational,
-                                                 InitialStatus:        ChargingPoolStatusTypes.Available,
+                                                 InitialAdminStatus:   ChargingPoolAdminStatusType.Operational,
+                                                 InitialStatus:        ChargingPoolStatusType.Available,
 
                                                  Configurator:         chargingPool => {
                                                                        }
@@ -1998,8 +1998,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                        ),
                                                  GeoLocation:          GeoCoordinate.Parse(50.93, 11.63),
 
-                                                 InitialAdminStatus:   ChargingPoolAdminStatusTypes.Operational,
-                                                 InitialStatus:        ChargingPoolStatusTypes.Available,
+                                                 InitialAdminStatus:   ChargingPoolAdminStatusType.Operational,
+                                                 InitialStatus:        ChargingPoolStatusType.Available,
 
                                                  Configurator:         chargingPool => {
                                                                        }
@@ -2218,8 +2218,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                        ),
                                                  GeoLocation:          GeoCoordinate.Parse(50.93, 11.63),
 
-                                                 InitialAdminStatus:   ChargingPoolAdminStatusTypes.Operational,
-                                                 InitialStatus:        ChargingPoolStatusTypes.Available,
+                                                 InitialAdminStatus:   ChargingPoolAdminStatusType.Operational,
+                                                 InitialStatus:        ChargingPoolStatusType.Available,
 
                                                  Configurator:         chargingPool => {
                                                                        }
@@ -2516,8 +2516,8 @@ namespace cloud.charging.open.vanaheimr.electric.UnitTests
                                                                        ),
                                                  GeoLocation:          GeoCoordinate.Parse(50.93, 11.63),
 
-                                                 InitialAdminStatus:   ChargingPoolAdminStatusTypes.Operational,
-                                                 InitialStatus:        ChargingPoolStatusTypes.Available,
+                                                 InitialAdminStatus:   ChargingPoolAdminStatusType.Operational,
+                                                 InitialStatus:        ChargingPoolStatusType.Available,
 
                                                  Configurator:         chargingPool => {
                                                                        }
